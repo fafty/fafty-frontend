@@ -2,6 +2,8 @@
   "version": 2,
   "projects": {
     "fafty": "apps/fafty",
-    "fafty-e2e": "apps/fafty-e2e"
+    "fafty-e2e": "apps/fafty-e2e",
+    "notifications": "libs/notifications",
+    "shared-ui": "libs/shared/ui"
   }
 }

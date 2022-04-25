@@ -1,18 +1,18 @@
-import { AppProps } from 'next/app';
-import Head from 'next/head';
-import './styles.css';
+import '../styles/globals.sass'
+import type { AppProps, NextWebVitalsMetric } from 'next/app'
+import { NotificationProvider } from '@fafty-frontend/notifications'
 
-function CustomApp({ Component, pageProps }: AppProps) {
-  return (
+function FaftyApp({ Component, pageProps }: AppProps) {
+  return(
     <>
-      <Head>
-        <title>Welcome to fafty!</title>
-      </Head>
-      <main className="app">
+      <NotificationProvider>
         <Component {...pageProps} />
-      </main>
+      </NotificationProvider>
     </>
-  );
+  )  
+}
+export function reportWebVitals(metric: NextWebVitalsMetric) {
+  console.log(metric)
 }
 
-export default CustomApp;
+export default FaftyApp

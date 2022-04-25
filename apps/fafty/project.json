@@ -9,7 +9,14 @@
       "defaultConfiguration": "production",
       "options": {
         "root": "apps/fafty",
-        "outputPath": "dist/apps/fafty"
+        "outputPath": "dist/apps/fafty",
+        "assets": [
+          {
+            "glob": "**/*",
+            "input": "libs/notifications/src/assets",
+            "output": "assets/notifications"
+          }
+        ]
       },
       "configurations": {
         "production": {}
