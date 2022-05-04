@@ -1,7 +1,4 @@
-
-
 # Fafty Frontend - Monorepo
-
 
 ## Development server
 

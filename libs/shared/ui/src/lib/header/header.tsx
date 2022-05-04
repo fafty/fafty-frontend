@@ -1,21 +1,26 @@
 import Link from 'next/link'
-import { Fragment } from 'react'
-import { Popover, Transition } from '@headlessui/react'
+import { Fragment, useState, useEffect, SVGProps } from 'react'
+import { Popover, Transition, RadioGroup } from '@headlessui/react'
 import {
+  AnnotationIcon,
   ChartBarIcon,
   CursorClickIcon,
+  CogIcon,
   MenuIcon,
-  RefreshIcon,
-  ShieldCheckIcon,
-  ViewGridIcon,
+  MoonIcon,
+  ArrowSmLeftIcon,
+  ChevronRightIcon,
   XIcon,
   PlusIcon,
   DocumentAddIcon,
-  UserIcon,
-  PhotographIcon,
   LogoutIcon,
-  LightBulbIcon,
+  SunIcon,
+  QuestionMarkCircleIcon
 } from '@heroicons/react/outline'
+import { BrushIcon, GalleryIcon, ImageAddIcon } from '@remixicons/react/line'
+// import BrushLineIcon from '/assets/shared/ui/icons/brush-line.svg';
+import { useTheme } from '@fafty-frontend/theme'
+
 
 const solutions = [
   {
@@ -36,31 +41,107 @@ const resources = [
     name: 'Add Bundle',
     href: '#',
     description: 'description Add bundle',
-    icon: DocumentAddIcon,
+    icon: GalleryIcon,
   },
   {
     name: 'Add Nft',
     href: '#',
     description: 'description Add nft',
-    icon: DocumentAddIcon,
+    icon: ImageAddIcon,
   },
 ]
-const userProfile = {
-  userName: 'Enrico Eth',
-  userWallet: '0xx4cs2df345fs2sf2ty2asg'
-}
-function classNames(...classes: any[]) {
-  return classes.filter(Boolean).join(' ')
+
+const themeOptions = [
+  {
+    name: 'Light mode',
+    description: 'Adjust the appearance of Fafty to normal light mode.',
+    icon: <SunIcon className="h-6 w-6" aria-hidden="true" />,
+    theme: 'light'
+  },
+  {
+    name: 'Dark mode',
+    description: 'Adjust the appearance of Fafty to reduce glare and give your eyes a break.',
+    icon: <MoonIcon className="h-6 w-6" aria-hidden="true" />,
+    theme: 'dark'
+  },
+  {
+    name: 'System',
+    description: 'We’ll automatically adjust the display based on your device’s system settings.',
+    icon: <BrushIcon className="h-6 w-6" aria-hidden="true" />,
+    theme: 'system'
+  }
+]
+
+function CheckIcon(props: JSX.IntrinsicAttributes & SVGProps<SVGSVGElement>) {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" {...props}>
+      <circle className="fill-gray-800 dark:fill-gray-200 " cx={12} cy={12} r={12} opacity="0.2" />
+      <path
+        d="M7 13l3 3 7-7"
+        className="stroke-gray-800 dark:stroke-gray-200"
+        strokeWidth={1.5}
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  )
 }
 
 const Header = () => {
+  const [activeMenu, setActiveMenu] = useState('main');
+  const [mainMenuEnterFrom, setmainMenuEnterFrom] = useState('');
+  const [menuHeight, setMenuHeight] = useState(270);
+  const { theme, setTheme } = useTheme()
+
+  const hendlerOpenMainMenu = () => {
+    setmainMenuEnterFrom('')
+    setActiveMenu('main')
+  }
+
+  useEffect(() => {
+    setmainMenuEnterFrom("transform -translate-x-[110%] opacity-0")
+  }, [activeMenu])
+
+
+  function DropdownBack(props: any) {
+    return (
+      <div className="flex items-center self-center p-2">
+        <div>
+          <button type="button" onClick={() => props.goToMenu && setActiveMenu(props.goToMenu)} className="w-full rounded-full px-1 py-1 focus:outline-none text-neutral-700 bg-neutral-100 hover:bg-neutral-200/80 dark:text-neutral-200 dark:fill-neutral-200 dark:bg-neutral-700 dark:hover:bg-neutral-600">
+            <span className="sr-only">Back to main menu</span>
+            <ArrowSmLeftIcon className="h-6 w-6" width={16} height={16} aria-hidden="true" />
+          </button>
+        </div>
+        <div>
+          <h3 className="text-base font-bold text-slate-900 dark:text-slate-50 ml-3" dir="auto">{props.children}</h3>
+        </div>
+      </div>
+    );
+  }
+  function DropdownItem(props: any) {
+    return (
+      <a className="cursor-pointer focus:outline-none flex items-center rounded-lg p-2 transition duration-150 ease-in-out text-neutral-700 hover:bg-neutral-100 dark:text-neutral-100 dark:hover:bg-neutral-700" onClick={() => props.goToMenu && setActiveMenu(props.goToMenu)}>
+        <div className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-full px-1 py-1 focus:outline-none bg-neutral-200 text-neutral-700 dark:text-neutral-200 dark:fill-neutral-200 dark:bg-neutral-700">
+          {props.leftIcon}
+        </div>
+        <div className="ml-4">
+          <p className="text-sm font-medium">
+            {props.children}
+          </p>
+        </div>
+        <div className="justify-end ml-auto">
+          {props.rightIcon}
+        </div>
+      </a>
+    );
+  }
   return (
     <>
       <header className="header sticky top-0 z-50 backdrop-blur bg-white/95 dark:bg-neutral-800/95 border-b border-gray-100 dark:border-neutral-700 shadow transition duration-300">
         <Popover>
           <div className="container mx-auto px-8">
-            <div className="flex justify-between items-center  py-4 md:justify-start align-center">
-              <div className="flex ustify-start mr-auto">
+            <div className="flex justify-between items-center py-4 md:justify-start align-center">
+              <div className="flex justify-start mr-auto">
                 <Link href={'/'}>
                   <a className='fill-[#23262F] dark:fill-[#F4F5F6]'>
                     <svg width="120" viewBox="0 0 100 32" xmlns="http://www.w3.org/2000/svg">
@@ -94,10 +175,11 @@ const Header = () => {
                 <Popover className="relative mr-5 flex align-center rounded-full backdrop-blur bg-white/95 dark:bg-neutral-800/95">
                   {({ open }) => (
                     <>
-                      <Popover.Button className="w-10 h-10 rounded-full bg-white dark:bg-neutral-700 dark:hover:bg-neutral-600 box-border justify-center p-0 m-0 cursor-pointer flex relative drop-shadow-md shadow-md dark:text-gray-200 touch-manipulation items-center select-none border-0 list-none outline-none decoration-0 transition duration-150 ease-in-out">
-                        <PlusIcon className={'text-slate-900 dark:text-slate-50 touch-manipulation select-none border-0 list-none outline-none decoration-0 w-5'} />
+                      <Popover.Button className={`${open ? 'bg-blue-50 dark:bg-blue-500/20' : 'bg-neutral-200 dark:bg-neutral-700'} w-10 h-10 rounded-full hover:bg-blue-100  dark:hover:bg-neutral-600 box-border justify-center p-0 m-0 cursor-pointer flex relative dark:text-gray-200 touch-manipulation items-center select-none border-0 list-none outline-none decoration-0 transition duration-250 ease-in-out`}>
+                        <PlusIcon 
+                          className={`${open ? 'text-blue-500' : 'text-slate-900'} dark:text-slate-50 touch-manipulation select-none border-0 list-none outline-none decoration-0 w-5`}
+                           />
                       </Popover.Button>
-
                       <Transition
                         as={Fragment}
                         enter="transition ease-out duration-200"
@@ -107,19 +189,19 @@ const Header = () => {
                         leaveFrom="opacity-100 translate-y-0"
                         leaveTo="opacity-0 translate-y-1"
                       >
-                        <Popover.Panel className="absolute z-10 left-1/2 transform -translate-x-1/2 mt-14 px-2 w-screen max-w-xs sm:px-0">
-                          <div className="rounded-lg shadow-lg ring-1 ring-black ring-opacity-5 overflow-hidden">
-                            <div className="relative grid gap-6  px-5 py-6 sm:gap-8 sm:p-8 rounded-lg backdrop-blur bg-white dark:bg-neutral-800">
+                        <Popover.Panel className="absolute z-10 left-1/2 transform -translate-x-1/2 mt-14 w-screen max-w-xs sm:px-0">
+                          <div className="p-2 rounded-lg drop-shadow-lg shadow-lg ring-1 ring-black ring-opacity-5 bg-white dark:bg-neutral-800 overflow-hidden">
+                            <div className="relative grid gap-1 p-1">
                               {resources.map((item) => (
                                 <Link
                                   key={item.name}
                                   href={item.href}
                                 >
-                                  <a className="-m-3 p-3 flex items-center rounded-lg backdrop-blur hover:bg-white dark:hover:bg-neutral-800 text-gray-500 hover:text-gray-900">
+                                  <a className="focus:outline-none flex items-center rounded-lg p-2 transition duration-150 ease-in-out text-neutral-700 hover:bg-neutral-100 dark:text-neutral-100 dark:hover:bg-neutral-700">
                                     <item.icon className="flex-shrink-0 h-6 w-6 text-slate-900 dark:text-slate-50" aria-hidden="true" />
                                     <div>
                                       <p className="ml-4 text-base font-medium">{item.name}</p>
-                                      <p className="ml-4 text-sm text-gray-400">{item.description}description</p>
+                                      <p className="ml-4 text-sm text-gray-400">{item.description}</p>
                                     </div>
                                   </a>
                                 </Link>
@@ -133,20 +215,24 @@ const Header = () => {
                 </Popover>
                 <div className="flex items-center">
                   <Popover className="relative flex align-center">
-                    {({ open }) => (
+                  {({ open }) => {
+                    useEffect(() => {
+                      if (open) {
+                        hendlerOpenMainMenu()
+                      }
+                    }, [open])
+                    return (
                       <>
-                        <Popover.Button>
-                          <div className="flex -space-x-1 overflow-hidden border-2 rounded-full dark:hover:bg-neutral-600 box-border justify-center p-0 m-0 cursor-pointer relative drop-shadow-md shadow-md dark:text-gray-200 touch-manipulation items-center select-none list-none outline-none decoration-0 transition duration-150 ease-in-out">
-                            <img
-                              className="inline-block h-8 w-8 rounded-full ring-2 ring-white mr-3"
-                              src="https://images.unsplash.com/photo-1491528323818-fdd1faba62cc?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
-                              alt=""
-                            />
-                            <span className="pr-3 text-sm dark:text-gray-200">7.0034</span>
-                            <span className="text-sm text-green-600 pr-2">ETH</span>
-                          </div>
+                        <Popover.Button className={`${open ? 'bg-blue-100 dark:bg-blue-800/25 border-blue-500' : 'text-slate-900 border-neutral-300 dark:border-neutral-700'} flex -space-x-1 overflow-hidden border rounded-full dark:hover:bg-blue-600/25 box-border justify-center h-10 p-0 m-0 cursor-pointer relative dark:text-gray-200 touch-manipulation items-center select-none list-none outline-none decoration-0 transition duration-150 ease-in-out`}>
+                          <img
+                            className="inline-block ml-1 h-8 w-8 rounded-full ring-1 ring-white mr-3"
+                            src="https://images.unsplash.com/photo-1491528323818-fdd1faba62cc?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
+                            alt=""
+                          />
+                          <span className="pr-3 text-sm dark:text-gray-200">7.0034</span>
+                          <span className="text-sm text-green-600 pr-2">ETH</span>
+                          
                         </Popover.Button>
-
                         <Transition
                           as={Fragment}
                           enter="transition ease-out duration-200"
@@ -156,68 +242,189 @@ const Header = () => {
                           leaveFrom="opacity-100 translate-y-0"
                           leaveTo="opacity-0 translate-y-1"
                         >
-                          <Popover.Panel className="absolute z-10 left-1/2 transform -translate-x-1/2 mt-9 px-2 w-screen max-w-xs sm:px-0">
-                            <div className="rounded-lg shadow-lg ring-1 ring-black ring-opacity-5 overflow-hidden">
-                              <ul className="relative grid bg-white px-5 py-6 sm:p-8">
-                                <li>
-                                  <div className="text-2xl">{userProfile.userName}</div>
-                                </li>
-                                <li>
-                                  <div className="mb-4 text-gray-400">{userProfile.userWallet}</div>
-                                </li>
-                                <li className="mb-1">
-                                  <Link href={`/profile`}>
-                                    <a className="-mx-3 p-3 flex items-center rounded-lg hover:bg-gray-50 text-gray-500 hover:text-gray-900">
-                                      <UserIcon className="flex-shrink-0 h-6 w-6 text-indigo-500" aria-hidden="true" />
-                                      <div>
-                                        <p className="ml-4 text-base font-medium">My Profile</p>
-                                        <p className="ml-4 text-sm text-gray-400">My profile description</p>
-                                      </div>
-                                    </a>
-                                  </Link>
-                                </li>
-                                <li>
-                                  <Link href="#">
-                                    <a className="-mx-3 p-3 flex items-center rounded-lg hover:bg-gray-50 text-gray-500 hover:text-gray-900">
-                                      <PhotographIcon className="flex-shrink-0 h-6 w-6 text-slate-900 dark:text-slate-50" aria-hidden="true" />
-                                      <div>
-                                        <p className="ml-4 text-base font-medium">My items</p>
-                                        <p className="ml-4 text-sm text-gray-400">My item description</p>
-                                      </div>
-                                    </a>
-                                  </Link>
-                                </li>
-                                <li>
-                                  <span className="cursor-pointer -mx-3 p-3 flex items-center rounded-lg hover:bg-gray-50 text-gray-500 hover:text-gray-900">
-                                    <LightBulbIcon className="flex-shrink-0 h-6 w-6 text-slate-900 dark:text-slate-50" aria-hidden="true" />
-                                    <span className="ml-4 text-base font-medium">Dark theme</span>
-                                    <input
-                                      title='test'
-                                      id="comments"
-                                      name="comments"
-                                      type="checkbox"
-                                      className="ml-5 focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300 rounded"
-                                    />
-                                  </span>
-                                </li>
-                                <li>
-                                  <span className="cursor-pointer -mx-3 p-3 flex items-start rounded-lg hover:bg-gray-50 text-gray-500 hover:text-gray-900">
-                                    <LogoutIcon className="flex-shrink-0 h-6 w-6 text-slate-900 dark:text-slate-50" aria-hidden="true" />
-                                    <span className="ml-4 text-base font-medium">Logout</span>
-                                  </span>
-                                </li>
-                              </ul>
+                          <Popover.Panel className="absolute z-10 left-1/2 transform -translate-x-1/2 mt-14 px-2 w-screen max-w-xs max-h-[calc(100vh_-_60px)] sm:px-0 drop-shadow-lg shadow-lg">
+                            <div style={{ height: menuHeight }} className="relative overflow-hidden transition-[height] duration-200 p-2 rounded-lg text-gray-500 dark:text-gray-500 bg-white dark:bg-neutral-800">
+                              <Transition
+                                as="div"
+                                show={activeMenu === 'main'}
+                                appear={false}
+                                beforeEnter={() => setMenuHeight(420)}
+                                enterFrom={mainMenuEnterFrom}
+                                enterTo="transform translate-x-0 opacity-1"
+                                leaveFrom="transform translate-x-0 opacity-1"
+                                leaveTo="transform -translate-x-[110%] opacity-0"
+                                className="absolute w-[19rem] transition duration-200 ease-in-out"
+                              >
+                                <div className="relative grid gap-1 p-1 grid-cols-1">
+                                  <a className="focus:outline-none flex items-center rounded-lg p-2 transition duration-150 ease-in-out text-neutral-700 hover:bg-neutral-100 dark:text-neutral-100 dark:hover:bg-neutral-700">
+                                    <div className="flex h-14 w-14 flex-shrink-0 items-center justify-center bg-blue-600 rounded-full hover:bg-blue-500 px-1 py-1 focus:outline-none dark:bg-neutral-700 dark:hover:bg-neutral-600">
+                                      <img
+                                        className="inline-block h-12 w-12 rounded-full ring-2 ring-white m-1"
+                                        src="https://images.unsplash.com/photo-1491528323818-fdd1faba62cc?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
+                                        alt=""
+                                      />
+                                    </div>
+                                    <div className="ml-4">
+                                      <p className="text-sm font-medium">
+                                        Andrew Zhuk
+                                      </p>
+                                      <p className="text-xs text-neutral-400">
+                                        See your profile
+                                      </p>
+                                    </div>
+                                  </a>
+                                  <div className="py-2">
+                                    <div className="w-full border-t border-gray-100 dark:border-neutral-700"></div>
+                                  </div>
+                                  <a className="focus:outline-none flex items-center rounded-lg p-2 transition duration-150 ease-in-out text-neutral-700 hover:bg-neutral-100 dark:text-neutral-100 dark:hover:bg-neutral-700">
+                                    <div className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-full px-1 py-1 focus:outline-none bg-neutral-200 text-neutral-700 dark:text-neutral-200 dark:bg-neutral-700">
+                                      <AnnotationIcon className="h-6 w-6" aria-hidden="true" />
+                                    </div>
+                                    <div className="ml-4">
+                                      <p className="text-sm font-medium">
+                                        Give Feedback
+                                      </p>
+                                      <p className="text-xs text-neutral-400">
+                                        Help us improve Fafty.
+                                      </p>
+                                    </div>
+                                  </a>
+                                  <div className="py-2">
+                                    <div className="w-full border-t border-gray-100 dark:border-neutral-700"></div>
+                                  </div>
+                                  <DropdownItem leftIcon={<CogIcon className="h-6 w-6" aria-hidden="true" />} rightIcon={<ChevronRightIcon className="h-6 w-6" aria-hidden="true" />} goToMenu="settings">
+                                    Settings
+                                  </DropdownItem>
+                                  <DropdownItem leftIcon={<QuestionMarkCircleIcon className="h-6 w-6" aria-hidden="true" />} rightIcon={<ChevronRightIcon className="h-6 w-6" aria-hidden="true" />} goToMenu="help">
+                                    Help & Support
+                                  </DropdownItem>
+                                  <DropdownItem leftIcon={<BrushIcon className="h-6 w-6 " aria-hidden="true" />} rightIcon={<ChevronRightIcon className="h-6 w-6" aria-hidden="true" />} goToMenu="appearance">
+                                    Appearance
+                                  </DropdownItem>
+                                  <DropdownItem leftIcon={<LogoutIcon className="h-6 w-6" aria-hidden="true" />}>
+                                    Disconect
+                                  </DropdownItem>
+                                </div>
+                              </Transition>
+                              <Transition
+                                as="div"
+                                show={activeMenu === 'settings'}
+                                beforeEnter={() => setMenuHeight(320)}
+                                enter="transition duration-200 ease-in-out"
+                                enterFrom="transform translate-x-[110%]"
+                                enterTo="transform translate-x-0"
+                                leave="transition duration-200 ease-in-out"
+                                leaveFrom="transform translate-x-0"
+                                leaveTo="transform translate-x-[110%]"
+                                className="absolute w-[19rem] bg-white dark:bg-neutral-800"
+                              >
+                                <div className="relative grid gap-1 p-1 grid-cols-1">
+                                  <DropdownBack goToMenu="main">Settings</DropdownBack>
+                                  <DropdownItem leftIcon={<MenuIcon className="h-6 w-6" aria-hidden="true" />}>HTML</DropdownItem>
+                                  <DropdownItem leftIcon={<MenuIcon className="h-6 w-6" aria-hidden="true" />}>CSS</DropdownItem>
+                                  <DropdownItem leftIcon={<MenuIcon className="h-6 w-6" aria-hidden="true" />}>JavaScript</DropdownItem>
+                                  <DropdownItem leftIcon={<MenuIcon className="h-6 w-6" aria-hidden="true" />}>Awesome!</DropdownItem>
+                                </div>
+                              </Transition>
+                              <Transition
+                                as="div"
+                                show={activeMenu === 'help'}
+                                beforeEnter={() => setMenuHeight(320)}
+                                enter="transition duration-200 ease-in-out"
+                                enterFrom="transform translate-x-[110%]"
+                                enterTo="transform translate-x-0"
+                                leave="transition duration-200 ease-in-out"
+                                leaveFrom="transform translate-x-0"
+                                leaveTo="transform translate-x-[110%]"
+                                className="absolute w-[19rem] bg-white dark:bg-neutral-800"
+                              >
+                                <div className="relative grid gap-1 p-1 grid-cols-1">
+                                  <DropdownBack goToMenu="main">Display & Accessibility</DropdownBack>
+                                  <DropdownItem leftIcon={<MenuIcon className="h-6 w-6" aria-hidden="true" />}>HTML</DropdownItem>
+                                  <DropdownItem leftIcon={<MenuIcon className="h-6 w-6" aria-hidden="true" />}>CSS</DropdownItem>
+                                  <DropdownItem leftIcon={<MenuIcon className="h-6 w-6" aria-hidden="true" />}>JavaScript</DropdownItem>
+                                  <DropdownItem leftIcon={<MenuIcon className="h-6 w-6" aria-hidden="true" />}>Awesome!</DropdownItem>
+                                </div>
+                              </Transition>
+                              <Transition
+                                as="div"
+                                show={activeMenu === 'appearance'}
+                                beforeEnter={() => setMenuHeight(345)}
+                                enter="transition duration-200 ease-in-out"
+                                enterFrom="transform translate-x-[110%]"
+                                enterTo="transform translate-x-0"
+                                leave="transition duration-200 ease-in-out"
+                                leaveFrom="transform translate-x-0"
+                                leaveTo="transform translate-x-[110%]"
+                                className="absolute w-[19rem] bg-white dark:bg-neutral-800"
+                              >
+                                <div className="relative grid gap-1 p-1 grid-cols-1">
+                                  <DropdownBack goToMenu="main">Appearance</DropdownBack>
+                                  <RadioGroup value={theme} onChange={setTheme}>
+                                    <RadioGroup.Label className="sr-only">Theme mode</RadioGroup.Label>
+                                    <div className="space-y-2">
+                                      {themeOptions.map((theme) => (
+                                        <RadioGroup.Option
+                                          key={theme.name}
+                                          value={theme.theme}
+                                          className={({ active, checked }) =>
+                                            `${
+                                              active
+                                                ? 'ring-2 '
+                                                : ''
+                                            }
+                                            ${
+                                              checked ? 'bg-white bg-opacity-75 text-slate-900 dark:text-slate-50 dark:bg-neutral-700' : 'bg-'
+                                            }
+                                              focus:outline-none relative flex cursor-pointer rounded-lg px-2 py-2 text-neutral-700 hover:bg-neutral-100 dark:text-neutral-100 dark:hover:bg-neutral-700`
+                                          }
+                                        >
+                                          {({ active, checked }) => (
+                                            <>
+                                              <div className="flex w-full items-center justify-between">
+                                                <div className="flex items-center">
+                                                  <div className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-full focus:outline-none bg-neutral-200 fill-neutral-700 dark:fill-neutral-200 dark:bg-neutral-700">
+                                                    {/* <MoonIcon className="h-6 w-6" aria-hidden="true" /> */}
+                                                    {theme.icon}
+                                                  </div>
+                                                  <div className="ml-4">
+                                                    <RadioGroup.Label
+                                                      as="p"
+                                                      className={`font-medium`}
+                                                    >
+                                                      {theme.name}
+                                                    </RadioGroup.Label>
+                                                    <p className={`text-xs text-neutral-400`}>
+                                                      {theme.description}
+                                                    </p>
+                                                  </div>
+                                                </div>
+                                                <div className="flex-shrink-0 text-white">
+                                                  {checked ? 
+                                                    <CheckIcon className="h-6 w-6" />
+                                                  :
+                                                    <div className="h-6 w-6" />
+                                                  }
+                                                </div>
+                                              </div>
+                                            </>
+                                          )}
+                                        </RadioGroup.Option>
+                                      ))}
+                                    </div>
+                                  </RadioGroup>
+                                </div>
+                              </Transition>
                             </div>
                           </Popover.Panel>
                         </Transition>
                       </>
-                    )}
+                    )}}
                   </Popover>
                 </div>
               </div>
             </div>
           </div>
-
           <Transition
             as={Fragment}
             enter="duration-200 ease-out"
@@ -268,7 +475,6 @@ const Header = () => {
                     <a href="#" className="text-base font-medium text-gray-900 hover:text-gray-700">
                       Pricing
                     </a>
-
                     <a href="#" className="text-base font-medium text-gray-900 hover:text-gray-700">
                       Docs
                     </a>

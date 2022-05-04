@@ -1,6 +1,8 @@
-import Header from '../components/layouts/header'
-import Footer from '../components/layouts/footer'
-import Meta from '../components/layouts/meta'
+// import Header from '../components/layouts/header'
+// import Footer from '../components/layouts/footer'
+// import Meta from '../components/layouts/meta'
+
+import { Header, Footer, Meta } from '@fafty-frontend/shared/ui'
 
 // import Head from 'next/head';
 import Link from 'next/link';
@@ -70,12 +72,12 @@ const ProfileLayout = ({ children, title, description }: Props) => {
                   </Link>
                 </div>
                 <div className="flex gap-3 mb-8">
-                  <button className="border text-slate-500 bg-white p-2 rounded-3xl text-xl hover:bg-indigo-700 hover:text-white">Unfollow</button>
-                  <button className="border-0 text-white bg-indigo-700 p-2 rounded-3xl text-xl">Follow</button>
-                  <button className="text-slate-500 rounded-full border w-12 h-12 flex hover:bg-indigo-700 hover:text-white">
+                  <button title='test' className="border text-slate-500 bg-white p-2 rounded-3xl text-xl hover:bg-indigo-700 hover:text-white">Unfollow</button>
+                  <button title='test' className="border-0 text-white bg-indigo-700 p-2 rounded-3xl text-xl">Follow</button>
+                  <button title='test' className="text-slate-500 rounded-full border w-12 h-12 flex hover:bg-indigo-700 hover:text-white">
                     <ShareIcon className="w-5 m-auto" />
                   </button>
-                  <button className="text-slate-500 rounded-full border w-12 h-12 flex hover:bg-indigo-700 hover:text-white">
+                  <button title='test' className="text-slate-500 rounded-full border w-12 h-12 flex hover:bg-indigo-700 hover:text-white">
                     <FlagIcon className="w-5 m-auto" />
                   </button>
                 </div>

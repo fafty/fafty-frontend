@@ -5,8 +5,9 @@ import CardPic1 from '../public/card-pic-1.jpeg'
 import CardPic2 from '../public/card-pic-2.jpeg'
 import CardPic3 from '../public/card-pic-3.jpeg'
 import CardPic4 from '../public/card-pic-4.jpeg'
+import ItemTypes from '../types/item'
 export default function Home() {
-  const items = [
+  const items: ItemTypes[] = [
     {
       token: 1,
       title: 'Basic Tee',

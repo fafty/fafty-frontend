@@ -13,7 +13,7 @@ const Item = ({ item }: Props) => {
         <div className="item-wrapper">
           <div className="item-block">
             <div className="item-card">
-              <Link href={`/nft/[slug]`} as={`/nft/${encodeURIComponent(item.slug)}`}>
+              <Link href={`/nft/[slug]`} as={`/nft/${encodeURIComponent(item.slug as string)}`}>
                 <a className="item-card-link">
                   <div className="thumbnail-wrapper nft">
                     <div className="thumbnail">

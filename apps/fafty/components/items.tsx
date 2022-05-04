@@ -30,7 +30,7 @@ const Items = ({ items }: Props) => {
     }
   }, [])
 
-	const scrollContainer = useCallback((node: { getBoundingClientRect: () => { (): any; new(): any; width: any; }; }) => {
+	const scrollContainer = useCallback((node) => {
     if (node !== null) {
       const calculated = node.getBoundingClientRect().width
       setWidth(calculated)
@@ -76,7 +76,7 @@ const Items = ({ items }: Props) => {
     } else if (direction === 'forward') {
       items.scroll({
         left: items.scrollLeft += itemsContainer.current.parentElement.clientWidth,
-        behavior: 'smooth'
+        behavior: 'smooth' 
       })
     }
   }

@@ -1,13 +1,13 @@
 import { StaticImageData } from "next/image"
 
 export default interface Item {
-  token?: number
-  title?: string
+  token: number
+  title: string
   body?: string
   price?: number
   ticker?: string
   edit_count?: number
-  slug?: string
+  slug: string
   type?: string
   thumbnail?: {
     src: StaticImageData

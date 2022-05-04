@@ -15,6 +15,11 @@
             "glob": "**/*",
             "input": "libs/notifications/src/assets",
             "output": "assets/notifications"
+          },
+          {
+            "glob": "**/*",
+            "input": "libs/shared/ui/src/assets",
+            "output": "assets/shared/ui"
           }
         ]
       },

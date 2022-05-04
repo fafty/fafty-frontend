@@ -50,7 +50,7 @@ export default function Nft() {
                     <li>
                       <button type="button" onClick={() => setTab('home')} aria-selected={tab === 'home'} className="py-2 px-3 w-full flex items-center focus:outline-none focus-visible:underline">
                         <svg className="h-6 w-6 transition-all ease-out transition-medium" viewBox="0 0 24 24" fill="currentColor">
-                          <path fill-rule="evenodd" clip-rule="evenodd" d="M12.707 2.293a1 1 0 00-1.414 0l-9 9a1 1 0 101.414 1.414L4 12.414V21a1 1 0 001 1h5a1 1 0 001-1v-6h2v6a1 1 0 001 1h5a1 1 0 001-1v-8.586l.293.293a1 1 0 001.414-1.414l-9-9zM18 10.414l-6-6-6 6V20h3v-6a1 1 0 011-1h4a1 1 0 011 1v6h3v-9.586z" />
+                          <path fillRule="evenodd" clipRule="evenodd" d="M12.707 2.293a1 1 0 00-1.414 0l-9 9a1 1 0 101.414 1.414L4 12.414V21a1 1 0 001 1h5a1 1 0 001-1v-6h2v6a1 1 0 001 1h5a1 1 0 001-1v-8.586l.293.293a1 1 0 001.414-1.414l-9-9zM18 10.414l-6-6-6 6V20h3v-6a1 1 0 011-1h4a1 1 0 011 1v6h3v-9.586z" />
                         </svg>
                         <span className="ml-2 text-sm font-medium transition-all ease-out transition-medium">
                           Home
@@ -60,7 +60,7 @@ export default function Nft() {
                     <li>
                       <button type="button" onClick={() => setTab('test')} aria-selected={tab === 'test'} className="py-2 px-3 w-full flex items-center focus:outline-none focus-visible:underline">
                         <svg className="h-6 w-6 transition-all ease-out transition-medium" viewBox="0 0 24 24" fill="currentColor">
-                          <path fill-rule="evenodd" clip-rule="evenodd" d="M11.617 1.076a1 1 0 011.09.217l5.657 5.657a9 9 0 11-13.113.41A1 1 0 017 8.022v2.292a2 2 0 104 0V2a1 1 0 01.617-.924zM13 4.414v5.9A4 4 0 015.212 11.6 7 7 0 1016.95 8.364L13 4.414z" />
+                          <path fillRule="evenodd" clipRule="evenodd" d="M11.617 1.076a1 1 0 011.09.217l5.657 5.657a9 9 0 11-13.113.41A1 1 0 017 8.022v2.292a2 2 0 104 0V2a1 1 0 01.617-.924zM13 4.414v5.9A4 4 0 015.212 11.6 7 7 0 1016.95 8.364L13 4.414z" />
                         </svg>
                         <span className="ml-2 text-sm font-medium transition-all ease-out transition-medium">
                           Test

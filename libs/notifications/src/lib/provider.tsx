@@ -61,16 +61,6 @@ const NotificationProvider: React.FC<TNotificationProvider> = ({children, maxNot
     }, countdown);
   };
 
-  // const playSound = () => {
-  //   play()
-  //   // const audio = new Audio('/assets/notifications/sounds/pop-up.mp3');
-  //   // audio.addEventListener('canplaythrough', (event) => {
-  //   //   // the audio is now playable; play it if permissions allow
-  //   //   audio.controls = false;
-  //   //   audio.play();
-  //   // });
-  // };
-
   const contextValue: TProviderContext = {
     enqueueNotification: enqueue,
     closeNotification: dismiss,
