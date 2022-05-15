@@ -1,7 +1,4 @@
-// import CardPic1 from '../public/card-pic-1.jpeg'
-// import CardPic2 from '../public/card-pic-2.jpeg'
-// import CardPic3 from '../public/card-pic-3.jpeg'
-// import CardPic4 from '../public/card-pic-4.jpeg'
+
 export default function Hero() {
   return (
     <div className="relative overflow-hidden">
@@ -27,14 +24,14 @@ export default function Hero() {
                     <div className="flex-shrink-0 grid grid-cols-1 gap-y-6 lg:gap-y-8">
                       <div className="w-44 h-64 rounded-lg overflow-hidden sm:opacity-0 lg:opacity-100">
                         <img
-                          src="https://ui8-crypter-nft-html.herokuapp.com/img/content/video-preview@2x.jpg"
+                          src="/assets/shared/ui/images/card-pic-1.jpeg"
                           alt=""
                           className="w-full h-full object-center object-cover"
                         />
                       </div>
                       <div className="backdrop-blur w-44 h-64 rounded-lg overflow-hidden">
                         <img
-                          src="https://ui8-crypter-nft-html.herokuapp.com/img/content/selection-pic-1@2x.jpg"
+                          src="/assets/shared/ui/images/card-pic-2.jpeg"
                           alt=""
                           className="w-full h-full object-center object-cover"
                         />
@@ -43,21 +40,21 @@ export default function Hero() {
                     <div className="flex-shrink-0 grid grid-cols-1 gap-y-6 lg:gap-y-8">
                       <div className="w-44 h-64 rounded-lg overflow-hidden">
                         <img
-                          src="https://ui8-crypter-nft-html.herokuapp.com/img/content/card-pic-4@2x.jpg"
+                          src="/assets/shared/ui/images/card-pic-2.jpeg"
                           alt=""
                           className="w-full h-full object-center object-cover"
                         />
                       </div>
                       <div className="w-44 h-64 rounded-lg overflow-hidden">
                         <img
-                          src="https://ui8-crypter-nft-html.herokuapp.com/img/content/card-pic-3@2x.jpg"
+                          src="/assets/shared/ui/images/card-pic-4.jpeg"
                           alt=""
                           className="w-full h-full object-center object-cover"
                         />
                       </div>
                       <div className="w-44 h-64 rounded-lg overflow-hidden">
                         <img
-                          src="https://ui8-crypter-nft-html.herokuapp.com/img/content/card-pic-5@2x.jpg"
+                          src="/assets/shared/ui/images/card-pic-2.jpeg"
                           alt=""
                           className="w-full h-full object-center object-cover"
                         />
@@ -66,14 +63,14 @@ export default function Hero() {
                     <div className="flex-shrink-0 grid grid-cols-1 gap-y-6 lg:gap-y-8">
                       <div className="w-44 h-64 rounded-lg overflow-hidden">
                         <img
-                          src="https://ui8-crypter-nft-html.herokuapp.com/img/content/card-pic-6@2x.jpg"
+                          src="/assets/shared/ui/images/card-pic-2.jpeg"
                           alt=""
                           className="w-full h-full object-center object-cover"
                         />
                       </div>
                       <div className="w-44 h-64 rounded-lg overflow-hidden">
                         <img
-                          src="https://ui8-crypter-nft-html.herokuapp.com/img/content/card-pic-7@2x.jpg"
+                          src="/assets/shared/ui/images/card-pic-2.jpeg"
                           alt=""
                           className="w-full h-full object-center object-cover"
                         />
@@ -82,7 +79,6 @@ export default function Hero() {
                   </div>
                 </div>
               </div>
-
               <a href="#" className="inline-block text-center bg-blue-600 border border-transparent rounded-md py-3 px-8 font-medium text-white hover:bg-blue-700">
                 Shop Collection
               </a>

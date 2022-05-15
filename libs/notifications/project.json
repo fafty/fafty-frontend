@@ -1,5 +1,4 @@
 {
-  "root": "libs/notifications",
   "sourceRoot": "libs/notifications/src",
   "projectType": "library",
   "tags": [],

@@ -26,26 +26,26 @@ const solutions = [
   {
     name: 'Bundles',
     description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
-    href: '#',
+    href: '/assets/create',
     icon: ChartBarIcon,
   },
   {
     name: 'Nfts',
     description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
-    href: '#',
+    href: '/assets/create',
     icon: CursorClickIcon,
   }
 ]
 const resources = [
   {
     name: 'Add Bundle',
-    href: '#',
+    href: '/assets/create',
     description: 'description Add bundle',
     icon: GalleryIcon,
   },
   {
     name: 'Add Nft',
-    href: '#',
+    href: '/assets/create',
     description: 'description Add nft',
     icon: ImageAddIcon,
   },
@@ -214,7 +214,7 @@ const Header = () => {
                   )}
                 </Popover>
                 <div className="flex items-center">
-                  <Popover className="relative flex align-center">
+                  <Popover className="relative inline-block align-center">
                   {({ open }) => {
                     useEffect(() => {
                       if (open) {
@@ -242,13 +242,13 @@ const Header = () => {
                           leaveFrom="opacity-100 translate-y-0"
                           leaveTo="opacity-0 translate-y-1"
                         >
-                          <Popover.Panel className="absolute z-10 left-1/2 transform -translate-x-1/2 mt-14 px-2 w-screen max-w-xs max-h-[calc(100vh_-_60px)] sm:px-0 drop-shadow-lg shadow-lg">
+                          <Popover.Panel className="absolute z-10 right-0 origin-top-right mt-4 px-2 w-screen max-w-xs max-h-[calc(100vh_-_60px)] sm:px-0 drop-shadow-lg shadow-lg">
                             <div style={{ height: menuHeight }} className="relative overflow-hidden transition-[height] duration-200 p-2 rounded-lg text-gray-500 dark:text-gray-500 bg-white dark:bg-neutral-800">
                               <Transition
                                 as="div"
                                 show={activeMenu === 'main'}
                                 appear={false}
-                                beforeEnter={() => setMenuHeight(420)}
+                                beforeEnter={() => setMenuHeight(620)}
                                 enterFrom={mainMenuEnterFrom}
                                 enterTo="transform translate-x-0 opacity-1"
                                 leaveFrom="transform translate-x-0 opacity-1"
@@ -293,10 +293,19 @@ const Header = () => {
                                     <div className="w-full border-t border-gray-100 dark:border-neutral-700"></div>
                                   </div>
                                   <DropdownItem leftIcon={<CogIcon className="h-6 w-6" aria-hidden="true" />} rightIcon={<ChevronRightIcon className="h-6 w-6" aria-hidden="true" />} goToMenu="settings">
-                                    Settings
+                                    Favorites
+                                  </DropdownItem>
+                                  <DropdownItem leftIcon={<CogIcon className="h-6 w-6" aria-hidden="true" />} rightIcon={<ChevronRightIcon className="h-6 w-6" aria-hidden="true" />} goToMenu="settings">
+                                    Watchlist
+                                  </DropdownItem>
+                                  <DropdownItem leftIcon={<CogIcon className="h-6 w-6" aria-hidden="true" />} rightIcon={<ChevronRightIcon className="h-6 w-6" aria-hidden="true" />} goToMenu="settings">
+                                    My collections
                                   </DropdownItem>
                                   <DropdownItem leftIcon={<QuestionMarkCircleIcon className="h-6 w-6" aria-hidden="true" />} rightIcon={<ChevronRightIcon className="h-6 w-6" aria-hidden="true" />} goToMenu="help">
                                     Help & Support
+                                  </DropdownItem>
+                                  <DropdownItem leftIcon={<CogIcon className="h-6 w-6" aria-hidden="true" />} rightIcon={<ChevronRightIcon className="h-6 w-6" aria-hidden="true" />} goToMenu="settings">
+                                    Settings
                                   </DropdownItem>
                                   <DropdownItem leftIcon={<BrushIcon className="h-6 w-6 " aria-hidden="true" />} rightIcon={<ChevronRightIcon className="h-6 w-6" aria-hidden="true" />} goToMenu="appearance">
                                     Appearance
@@ -458,14 +467,14 @@ const Header = () => {
                   <div className="mt-6">
                     <nav className="grid gap-y-8">
                       {solutions.map((item) => (
+                        <Link href={ item.href } key={ item.href} >
                         <a
-                          key={item.name}
-                          href={item.href}
                           className="-m-3 px-2 py-3 flex items-center rounded-md w-full font-medium text-gray-100 hover:bg-gray-500 focus:outline-nonedark:hover:bg-stone-600"
                         >
                           <item.icon className="flex-shrink-0 h-6 w-6 text-slate-900  dark:text-slate-50" aria-hidden="true" />
                           <span className="ml-3 text-base font-medium text-slate-900  dark:text-slate-50">{item.name}</span>
                         </a>
+                        </Link>
                       ))}
                     </nav>
                   </div>

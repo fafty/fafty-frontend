@@ -1,4 +1,4 @@
-# Snackfy
+# Fafty Pop-Up Notifications library
 
 Notifications is a notification provider for React/Next that can easily show, stack up, queue and customize notifications inside application.
 

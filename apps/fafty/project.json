@@ -1,5 +1,4 @@
 {
-  "root": "apps/fafty",
   "sourceRoot": "apps/fafty",
   "projectType": "application",
   "targets": {
@@ -20,6 +19,11 @@
             "glob": "**/*",
             "input": "libs/shared/ui/src/assets",
             "output": "assets/shared/ui"
+          },
+          {
+            "glob": "**/*",
+            "input": "libs/editor/src/assets",
+            "output": "assets/editor"
           }
         ]
       },
