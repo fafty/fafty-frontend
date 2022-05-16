@@ -1,4 +1,7 @@
 # Fafty Frontend - Monorepo
+[![Continuous Integration](https://github.com/fafty/fafty-frontend/actions/workflows/ci.yml/badge.svg?branch=master)](https://github.com/fafty/fafty-frontend/actions/workflows/ci.yml)
+[![CodeQL](https://github.com/fafty/fafty-frontend/actions/workflows/codeql.yml/badge.svg?branch=master)](https://github.com/fafty/fafty-frontend/actions/workflows/codeql.yml)
+[![Codacy Security Scan](https://github.com/fafty/fafty-frontend/actions/workflows/codacy.yml/badge.svg?branch=master)](https://github.com/fafty/fafty-frontend/actions/workflows/codacy.yml)
 
 ## Development server
 
