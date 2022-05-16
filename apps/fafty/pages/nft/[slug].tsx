@@ -1,8 +1,6 @@
-import { useState } from "react";
 import MainLayout from "../../layouts/main"
 
 export default function Nft() {
-  const [tab, setTab] = useState('light');
 
   return (
     <MainLayout title={""} description={""}>
@@ -39,40 +37,8 @@ export default function Nft() {
             <div>
               <p className="text-base leading-normal text-slate-900 dark:text-slate-50">This NFT Card will give you Access to Special Airdrops. To learn more about UI8 please visit https://ui8.net</p>
             </div>
-            <div className="antialiased bg-gray-200 min-h-screen p-8">
-              <div className="flex justify-center">
-                <nav className="w-56 relative">
-                  <span className="absolute h-10 w-full bg-white rounded-lg shadow ease-out transition-transform transition-medium"
-                    // style={`transform: translateY(calc(100% * ${1}))` }
-                    >
-                  </span>
-                  <ul className="relative">
-                    <li>
-                      <button type="button" onClick={() => setTab('home')} aria-selected={tab === 'home'} className="py-2 px-3 w-full flex items-center focus:outline-none focus-visible:underline">
-                        <svg className="h-6 w-6 transition-all ease-out transition-medium" viewBox="0 0 24 24" fill="currentColor">
-                          <path fillRule="evenodd" clipRule="evenodd" d="M12.707 2.293a1 1 0 00-1.414 0l-9 9a1 1 0 101.414 1.414L4 12.414V21a1 1 0 001 1h5a1 1 0 001-1v-6h2v6a1 1 0 001 1h5a1 1 0 001-1v-8.586l.293.293a1 1 0 001.414-1.414l-9-9zM18 10.414l-6-6-6 6V20h3v-6a1 1 0 011-1h4a1 1 0 011 1v6h3v-9.586z" />
-                        </svg>
-                        <span className="ml-2 text-sm font-medium transition-all ease-out transition-medium">
-                          Home
-                        </span>
-                      </button>
-                    </li>
-                    <li>
-                      <button type="button" onClick={() => setTab('test')} aria-selected={tab === 'test'} className="py-2 px-3 w-full flex items-center focus:outline-none focus-visible:underline">
-                        <svg className="h-6 w-6 transition-all ease-out transition-medium" viewBox="0 0 24 24" fill="currentColor">
-                          <path fillRule="evenodd" clipRule="evenodd" d="M11.617 1.076a1 1 0 011.09.217l5.657 5.657a9 9 0 11-13.113.41A1 1 0 017 8.022v2.292a2 2 0 104 0V2a1 1 0 01.617-.924zM13 4.414v5.9A4 4 0 015.212 11.6 7 7 0 1016.95 8.364L13 4.414z" />
-                        </svg>
-                        <span className="ml-2 text-sm font-medium transition-all ease-out transition-medium">
-                          Test
-                        </span>
-                      </button>
-                    </li>
-                  </ul>
-                </nav>
-              </div>
-            </div>
             <div className="flex flex-col space-y-8 items-start justify-start w-full">
-              {/* <div className="flex flex-col items-start justify-start w-full p-1.5 border-2 rounded-full border-gray-200 dark:border-neutral-700">
+              <div className="flex flex-col items-start justify-start w-full p-1.5 border-2 rounded-full border-gray-200 dark:border-neutral-700">
                 <div className="inline-flex space-x-2 items-start justify-start w-96">
                   <div className="flex items-center justify-center px-3 py-1.5 bg-gray-700 rounded-full">
                     <p className="text-sm font-bold leading-none text-gray-50">Info</p>
@@ -87,25 +53,6 @@ export default function Nft() {
                     <p className="text-sm font-bold leading-none text-gray-500">Bids</p>
                   </div>
                 </div>
-              </div> */}
-              <div className="flex w-full rounded-md bg-gray-100 relative tabs">
-                <button 
-                  className={`tabs-item relative z-10 py-1 my-2 ml-2 text-center rounded-md w-full text-sm cursor-pointer select-none focus:outline-none ${tab === 'light' ? 'active' : ''}`}
-                  onClick={() => {
-                    setTab('light');
-                  }}
-                >
-                  Light
-                </button>
-                <button 
-                  className={`tabs-item relative z-10 py-1 my-2 ml-2 text-center rounded-md w-full text-sm cursor-pointer select-none focus:outline-none ${tab === 'dark' ? 'active' : ''}`}
-                  onClick={() => {
-                    setTab('dark');
-                  }}
-                >
-                  Dark
-                </button>
-                <span className="tab-item-animate rounded-md bg-white"></span>
               </div>
               <div className="flex flex-col space-y-4 items-start justify-start w-full">
                 <div className="flex flex-col space-y-4 items-start justify-start w-full pb-4 border-b-2 border-gray-100 dark:border-neutral-700">

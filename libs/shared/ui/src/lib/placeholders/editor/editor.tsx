@@ -1,4 +1,4 @@
-const EditorPlaceholder = () => {
+const EditorPlaceholder = (): JSX.Element => {
   return (
     <>
       <div className="border border-gray-100 dark:border-neutral-700 shadow rounded-md my-4 max-w-[600px] w-full mx-auto">

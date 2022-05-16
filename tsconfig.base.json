@@ -18,10 +18,7 @@
       "@fafty-frontend/editor": ["libs/editor/src/index.ts"],
       "@fafty-frontend/notifications": ["libs/notifications/src/index.ts"],
       "@fafty-frontend/shared/ui": ["libs/shared/ui/src/index.ts"],
-      "@fafty-frontend/theme": ["libs/theme/src/index.ts"],
-      "@fafty-frontend/ui": ["libs/ui/src/index.ts"],
-      "@fafty-frontend/ui2": ["libs/ui2/src/index.ts"],
-      "@fafty-frontend/ui3": ["libs/ui3/src/index.ts"]
+      "@fafty-frontend/theme": ["libs/theme/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]

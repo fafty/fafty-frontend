@@ -1,4 +1,4 @@
-
+import Image from 'next/image'
 export default function Hero() {
   return (
     <div className="relative overflow-hidden">
@@ -22,56 +22,105 @@ export default function Hero() {
                 <div className="absolute transform sm:left-1/2 sm:top-0 sm:translate-x-8 lg:left-1/2 lg:top-1/2 lg:-translate-y-1/2 lg:translate-x-8">
                   <div className="flex items-center space-x-6 lg:space-x-8">
                     <div className="flex-shrink-0 grid grid-cols-1 gap-y-6 lg:gap-y-8">
-                      <div className="w-44 h-64 rounded-lg overflow-hidden sm:opacity-0 lg:opacity-100">
-                        <img
+                      <div className="relative w-44 h-64 rounded-lg overflow-hidden sm:opacity-0 lg:opacity-100">
+                        {/* <img
                           src="/assets/shared/ui/images/card-pic-1.jpeg"
                           alt=""
                           className="w-full h-full object-center object-cover"
+                        /> */}
+                        <Image
+                          src='/card-pic-1.jpeg'
+                          loading="eager"
+                          alt={'Card 1'}
+                          layout='fill'
+                          className="w-full h-full object-center object-cover"
                         />
                       </div>
-                      <div className="backdrop-blur w-44 h-64 rounded-lg overflow-hidden">
-                        <img
+                      <div className="relative backdrop-blur w-44 h-64 rounded-lg overflow-hidden">
+                        {/* <img
                           src="/assets/shared/ui/images/card-pic-2.jpeg"
                           alt=""
+                          className="w-full h-full object-center object-cover"
+                        /> */}
+                        <Image
+                          src='/card-pic-1.jpeg'
+                          loading="eager"
+                          alt={'Card 2'}
+                          layout='fill'
                           className="w-full h-full object-center object-cover"
                         />
                       </div>
                     </div>
                     <div className="flex-shrink-0 grid grid-cols-1 gap-y-6 lg:gap-y-8">
-                      <div className="w-44 h-64 rounded-lg overflow-hidden">
-                        <img
+                      <div className="relative w-44 h-64 rounded-lg overflow-hidden">
+                        {/* <img
                           src="/assets/shared/ui/images/card-pic-2.jpeg"
                           alt=""
                           className="w-full h-full object-center object-cover"
+                        /> */}
+                        <Image
+                          src='/card-pic-2.jpeg'
+                          loading="eager"
+                          alt={'Card 2'}
+                          layout='fill'
+                          className="w-full h-full object-center object-cover"
                         />
                       </div>
-                      <div className="w-44 h-64 rounded-lg overflow-hidden">
-                        <img
+                      <div className="relative w-44 h-64 rounded-lg overflow-hidden">
+                        {/* <img
                           src="/assets/shared/ui/images/card-pic-4.jpeg"
                           alt=""
                           className="w-full h-full object-center object-cover"
+                        /> */}
+                        <Image
+                          src='/card-pic-4.jpeg'
+                          loading="eager"
+                          alt={'Card 4'}
+                          layout='fill'
+                          className="w-full h-full object-center object-cover"
                         />
                       </div>
-                      <div className="w-44 h-64 rounded-lg overflow-hidden">
-                        <img
+                      <div className="relative w-44 h-64 rounded-lg overflow-hidden">
+                        {/* <img
                           src="/assets/shared/ui/images/card-pic-2.jpeg"
                           alt=""
+                          className="w-full h-full object-center object-cover"
+                        /> */}
+                        <Image
+                          src='/card-pic-2.jpeg'
+                          loading="eager"
+                          alt={'Card 2'}
+                          layout='fill'
                           className="w-full h-full object-center object-cover"
                         />
                       </div>
                     </div>
                     <div className="flex-shrink-0 grid grid-cols-1 gap-y-6 lg:gap-y-8">
-                      <div className="w-44 h-64 rounded-lg overflow-hidden">
-                        <img
+                      <div className="relative w-44 h-64 rounded-lg overflow-hidden">
+                        {/* <img
                           src="/assets/shared/ui/images/card-pic-2.jpeg"
                           alt=""
                           className="w-full h-full object-center object-cover"
+                        /> */}
+                        <Image
+                          src='/card-pic-2.jpeg'
+                          loading="eager"
+                          alt={'Card 1'}
+                          layout='fill'
+                          className="w-full h-full object-center object-cover"
                         />
                       </div>
-                      <div className="w-44 h-64 rounded-lg overflow-hidden">
-                        <img
+                      <div className="relative w-44 h-64 rounded-lg overflow-hidden">
+                        {/* <img
                           src="/assets/shared/ui/images/card-pic-2.jpeg"
                           alt=""
+                          className="w-full h-full object-center object-cover"
+                        /> */}
+                        <Image
+                          src='/card-pic-2.jpeg'
+                          loading="eager"
+                          alt={'Card 2'}
+                          layout='fill'
                           className="w-full h-full object-center object-cover"
                         />
                       </div>

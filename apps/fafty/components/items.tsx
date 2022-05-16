@@ -10,7 +10,7 @@ type Props = {
   items: ItemType[]
 }
 
-const Items = ({ items }: Props) => {
+const Items = ({ items }: Props): JSX.Element => {
   const [width, setWidth] = useState(null)
   const [notificationId, setNotificationId] = useState(null)
   const [arrows, setArrows] = useState({left: null, right: null})
@@ -25,7 +25,6 @@ const Items = ({ items }: Props) => {
     if (!isSupported) return
     itemsContainer.current.addEventListener('scroll', toggleArrow, { passive: true })
     return () => {
-      console.log('return useEffect')
       itemsContainer.current?.removeEventListener('scroll', toggleArrow)
     }
   }, [])

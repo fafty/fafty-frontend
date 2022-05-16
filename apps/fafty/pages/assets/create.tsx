@@ -1,5 +1,5 @@
 import dynamic from 'next/dynamic'
-import MainLayout from 'apps/fafty/layouts/main';
+import MainLayout  from '../../layouts/main'
 import { lazy, Suspense, useRef } from 'react';
 
 import { EditorPlaceholder } from '@fafty-frontend/shared/ui';
