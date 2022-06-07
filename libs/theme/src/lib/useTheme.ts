@@ -1,8 +1,8 @@
 import { useContext } from 'react'
 import ThemeContext from './context'
-import { TProviderContext } from './types'
+import { ProviderContextProps } from './types'
 
 // Custom hook to switch the theme on function components
-const useTheme = ():TProviderContext => useContext(ThemeContext)
+const useTheme = ():ProviderContextProps => useContext(ThemeContext)
 
 export default useTheme

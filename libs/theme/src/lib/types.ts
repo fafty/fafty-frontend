@@ -4,7 +4,7 @@ interface ValueObject {
   [themeName: string]: string
 }
 
-export interface TProviderContext {
+export interface ProviderContextProps {
   /** List of all available theme names */
   themes: string[]
   /** Forced theme name for the current page */
@@ -19,7 +19,7 @@ export interface TProviderContext {
   systemTheme?: 'dark' | 'light'
 }
 
-export interface TThemeProvider {
+export interface ThemeProviderProps {
   children?: ReactNode
   /** List of all available theme names */
   themes?: string[]

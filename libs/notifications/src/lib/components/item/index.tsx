@@ -1,7 +1,8 @@
-import { TNotificationItem } from '../../types';
+import { NotificationItemProps } from '../../types';
 import { XIcon } from '@heroicons/react/outline'
+import {FC} from "react";
 
-const NotificationItem: React.FC<TNotificationItem> = (props) => {
+const NotificationItem: FC<NotificationItemProps> = (props) => {
   const { id, open, message, actions, options, onDismiss } = props;
   return (
     <div className={open ? 'animate-slideup' : 'animate-slidedown'}>

@@ -1,117 +1,162 @@
-import React, { useState, useRef, useCallback, useEffect } from 'react';
-import ItemType from '../types/item'
-import Item from '../components/item'
-import { useWindowWidthChange, useDebouncedFunction } from '../hooks'
-import isClient from '../utils/isClient'
-import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/outline'
-import { useNotifications } from '@fafty-frontend/notifications'
+import React, { useState, useRef, useEffect } from 'react';
+import ItemProps from '../types/item';
+import Item from '../components/item';
+import isClient from '../utils/isClient';
+import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/outline';
+import { useNotifications } from '@fafty-frontend/notifications';
+import { useDebouncedCallback } from '../hooks';
+import classNames from 'classnames';
 
 type Props = {
-  items: ItemType[]
-}
+  items: ItemProps[];
+};
 
 const Items = ({ items }: Props): JSX.Element => {
-  const [width, setWidth] = useState(null)
-  const [notificationId, setNotificationId] = useState(null)
-  const [arrows, setArrows] = useState({left: null, right: null})
-  const { enqueueNotification, closeNotification } = useNotifications()
-
-  useEffect(() => {
-    toggleArrow()
-    // Make sure element supports addEventListener
-    // On
-    const element = isClient ? window : undefined
-    const isSupported = element && element.addEventListener
-    if (!isSupported) return
-    itemsContainer.current.addEventListener('scroll', toggleArrow, { passive: true })
-    return () => {
-      itemsContainer.current?.removeEventListener('scroll', toggleArrow)
-    }
-  }, [])
-
-	const scrollContainer = useCallback((node) => {
-    if (node !== null) {
-      const calculated = node.getBoundingClientRect().width
-      setWidth(calculated)
-      debouncedtoggleArrow()
-    }
-  }, [width])
-
-  const itemsContainer = useRef<HTMLDivElement>(null)
-
-  const handleClick = (): void => {
-    const id = enqueueNotification({
-      message: 'This is an awesome Notification! and other more data here',
-      options: { dismissible: true }
-    });
-    setNotificationId(id)
-  };
-
-  useWindowWidthChange((change: number): void => {
-    setWidth(width - change)
-    // debouncedtoggleArrow()
-  })
+  const [notificationId, setNotificationId] = useState<number>();
+  const { enqueueNotification, closeNotification } = useNotifications();
+  const itemsContainerRef = useRef<HTMLDivElement | null>(null);
+  const [arrows, setArrows] = useState({ left: false, right: false });
 
   const toggleArrow = (): void => {
-    const hasScrollbar = itemsContainer.current.clientWidth < itemsContainer.current.scrollWidth
-    const scrolledFromLeft = itemsContainer.current.offsetWidth + itemsContainer.current.scrollLeft
-    const scrolledToRight = scrolledFromLeft >= itemsContainer.current.scrollWidth
-    const scrolledToLeft = itemsContainer.current.scrollLeft === 0
-    setArrows({left: hasScrollbar && !scrolledToLeft, right: hasScrollbar && !scrolledToRight})
-  }
+    if (itemsContainerRef.current === null) return;
+    const hasScrollbar =
+      itemsContainerRef.current.clientWidth <
+      itemsContainerRef.current.scrollWidth;
+    const scrolledFromLeft =
+      itemsContainerRef.current.offsetWidth +
+      itemsContainerRef.current.scrollLeft;
+    const scrolledToRight =
+      scrolledFromLeft >= itemsContainerRef.current.scrollWidth;
+    const scrolledToLeft = itemsContainerRef.current.scrollLeft === 0;
 
-  const debouncedtoggleArrow = useDebouncedFunction(toggleArrow, 100)
+    setArrows({
+      left: hasScrollbar && !scrolledToLeft,
+      right: hasScrollbar && !scrolledToRight,
+    });
+  };
+  const debouncedtoggleArrow = useDebouncedCallback(() => {
+    toggleArrow();
+  }, 100);
+
+
+  useEffect(() => {
+    // Make sure element supports addEventListener
+    // On
+    const element = isClient ? window : undefined;
+    const isSupported = element && element.addEventListener;
+    if (!isSupported) return;
+    // Set first arrows
+    toggleArrow();
+    const refCurrent = itemsContainerRef.current
+    // Add event listener
+    const events = [
+      {event: 'resize', callback: debouncedtoggleArrow},
+      {event: 'scroll', callback: debouncedtoggleArrow}
+    ];
+    if (refCurrent) {
+      events.forEach(({ event, callback }) => {
+        refCurrent.addEventListener(event, callback);
+      });
+    }
+    return () => {
+      // Remove event listener on unmount
+      if (refCurrent) {
+        events.forEach(({ event, callback }) => {
+          refCurrent.removeEventListener(event, callback);
+        });
+      }
+    };
+  }, []);
+
+  const handleClick = (): void => {
+    // create notification demo
+    const id = enqueueNotification({
+      message: 'This is an awesome Notification! and other more data here',
+      options: { dismissible: true },
+    });
+    setNotificationId(id);
+  };
 
   /**
    * Increase/decrease the current page value
    * @param {String} direction (Optional) The direction to advance
-  */
-  const advancePage = (direction: string): void => {
-    closeNotification(notificationId)
+   */
+  const scrollItems = (direction: string): void => {
+    notificationId && closeNotification(notificationId);
+    if (itemsContainerRef.current === null) return;
+    const items =
+      itemsContainerRef.current?.parentElement?.querySelector('.items');
+    if (items === null || items === undefined) return;
 
-    const items = itemsContainer.current.parentElement.querySelector('.items')
-    if (direction === 'backward') {
-      items.scrollLeft -= itemsContainer.current.parentElement.clientWidth
-    } else if (direction === 'forward') {
+    const operator = direction === 'right' ? '+' : '-';
+    const scrollLeft = eval('items.scrollLeft' + operator + 'itemsContainerRef.current?.clientWidth');
+    items &&
       items.scroll({
-        left: items.scrollLeft += itemsContainer.current.parentElement.clientWidth,
-        behavior: 'smooth' 
-      })
-    }
+        left: scrollLeft,
+        behavior: 'smooth',
+      });
+  };
+
+  const Button = ({ direction }: { direction: string }): JSX.Element => {
+    const isVisible = direction === 'right' ? arrows.right : arrows.left;
+    return (
+      <div
+        className={
+          classNames(
+            'navigation-wrapper',
+            {
+              left: direction === 'left',
+              right: direction === 'right',
+              'opacity-0': !isVisible,
+              'opacity-100': isVisible,
+            }
+          )
+        }
+      >
+        <div className="navigation">
+          <div
+            className="button"
+            {...{ 'aria-label': direction === 'rught' ? 'Next Items' : 'Previous Items' }}
+            role="button"
+            {...(!isVisible && { 'aria-hidden': true, 'aria-disabled': true })}
+            tabIndex={isVisible ? 0 : -1}
+            onClick={() => scrollItems(direction)}
+          >
+            {direction === 'right' ? (
+              <ChevronRightIcon className="h-6 w-6" aria-hidden="true"/>
+            ) : (
+              <ChevronLeftIcon className="h-6 w-6" aria-hidden="true" />
+            )}
+          </div>
+        </div>
+      </div>
+    );
   }
 
   return (
-    <>
-      <div>
-      <button type="button" onClick={handleClick}>Show notification</button>
-        <div className='items-slider'>
-          <button type="button" aria-hidden={!arrows.left} className={'navigation-wrapper left ' + (arrows.left ? 'opacity-100' : 'opacity-0 invisible')}>
-            <div className="navigation">
-              <div aria-label="Previous Items" className="button" tabIndex={arrows.left ? 0 : -1} aria-disabled={!arrows.left} role="button" onClick={() => advancePage('backward')}>
-                <ChevronLeftIcon className="h-6 w-6" />
-              </div>
-            </div>
-          </button>
-          <div ref={scrollContainer} className="wrapper-items">
-            <div ref={itemsContainer} aria-label="Nft list" role="region" className="items">
-              <div className='min-w-[44px]' />
-                {items.map((item, index) => (
-                  <Item key={index} item={item} />
-                ))}
-              <div className='min-w-[44px]' />
-            </div>
+    <div>
+      <button type="button" onClick={handleClick}>
+        Show notification
+      </button>
+      <div className="items-slider">
+        <Button direction="left" />
+        <div className="wrapper-items">
+          <div
+            ref={itemsContainerRef}
+            aria-label="Items list"
+            role="region"
+            className="items"
+          >
+            <div className="min-w-[44px]" />
+            {items &&
+              items.map((item, index) => <Item key={index} item={item} />)}
+            <div className="min-w-[44px]" />
           </div>
-          <button type="button" aria-hidden={!arrows.right} className={'navigation-wrapper right ' + (arrows.right ? 'opacity-100' : 'opacity-0')}>
-            <div className="navigation">
-              <div aria-label="Next Items" aria-disabled={!arrows.right} className="button" tabIndex={arrows.right ? 0 : -1} role="button" onClick={() => advancePage('forward')}>
-                <ChevronRightIcon className="h-6 w-6" aria-hidden="true" />
-              </div>
-            </div>
-          </button>
         </div>
+        <Button direction="right" />
       </div>
-    </>
-  )
-}
+    </div>
+  );
+};
 
-export default Items
+export default Items;

@@ -6,6 +6,8 @@
     "fafty-e2e": "apps/fafty-e2e",
     "notifications": "libs/notifications",
     "shared-ui": "libs/shared/ui",
-    "theme": "libs/theme"
+    "theme": "libs/theme",
+    "uploader": "libs/uploader",
+    "usehooks": "libs/usehooks"
   }
 }

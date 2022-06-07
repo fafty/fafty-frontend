@@ -34,8 +34,7 @@ export const disableAnimation = () => {
 export const getSystemTheme = (e?: MediaQueryList | MediaQueryListEvent) => {
   if (!e) e = window.matchMedia('(prefers-color-scheme: dark)');
   const isDark = e.matches;
-  const systemTheme = isDark ? 'dark' : 'light';
-  return systemTheme;
+  return isDark ? 'dark' : 'light';
 };
 
 export const encodeBase64 = (str: string) => {

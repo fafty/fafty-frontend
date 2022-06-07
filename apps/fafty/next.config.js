@@ -14,7 +14,7 @@ const nextConfig = {
   nx: {
     // Set this to true if you would like to to use SVGR
     // See: https://github.com/gregberge/svgr
-    svgr: false,
+    svgr: true,
   },
   env: {
     commitHash: commitHash,
@@ -35,70 +35,33 @@ const nextConfig = {
     // latest git commit hash here
     return commitHash
   },
-  // webpack: (config, { buildId, dev, isServer, defaultLoaders, webpack }) => {
-  //   // Note: we provide webpack above so you should not `require` it
-  //   // Perform customizations to webpack config
-  //   // Important: return the modified config
-  //   config.plugins.push({
-  //     test: /\.(ogg|mp3|wav|mpe?g)$/i,
-  //     use: [
-  //       {
-  //         loader: 'file-loader',
-  //         options: {
-  //           name: '[path][name].[ext]',
-  //         },
-  //       },
-  //     ],
-  //   })
-  //   return config
-  // },
-  // webpack(config, options) {
-  //   // const { isServer } = options;
-  //   config.module.rules.push({
-  //     test: /\.(ogg|mp3|wav|mpe?g)$/i,
-  //     exclude: config.exclude,
-  //     use: [
-  //       {
-  //         loader: 'file-loader',
-  //         options: {
-  //           name: '[path][name].[ext]',
-  //         },
-  //       },
-  //     ],
-  //   });
-  //   return config;
-  // },
-  // webpack(config) {
-  //   config.module.rules.push({
-  //     test: /\.svg$/i,
-  //     issuer: { and: [/\.(js|ts|md)x?$/] },
-  //     use: [
-  //       {
-  //         loader: '@svgr/webpack',
-  //         options: {
-  //           prettier: false,
-  //           svgo: true,
-  //           svgoConfig: { plugins: [{ removeViewBox: false }] },
-  //           titleProp: true,
-  //         }
-  //       }
-  //     ]
-  //   });
-  //   return config;
-  // },
   webpack(config) {
     config.module.rules.push({
       test: /\.svg$/i,
       issuer: /\.[jt]sx?$/,
       use: ['@svgr/webpack'],
-    })
-
-    return config
+    });
+    return config;
   },
   experimental: {
     concurrentFeatures: true,
-    serverComponents: true,
-  }
+    // serverComponents: true,
+    images: { layoutRaw: true }
+  },
+  swcMinify: true,
+  compress: false,
+  oweredByHeader: false,
+  trailingSlash: true,
+  // compiler: {
+  //   // ssr and displayName are configured by default
+  //   styledComponents: true,
+  //   relay: {
+  //     // This should match relay.config.js
+  //     src: './',
+  //     artifactDirectory: './__generated__',
+  //     language: 'typescript',
+  //   },
+  // }
 };
 
 module.exports = withNx(nextConfig);

@@ -1,6 +1,5 @@
 import { createContext } from 'react'
-import { TProviderContext } from './types'
+import { ProviderContextProps } from './types'
 
 // Context used by the hook useTheme()
-
-export default createContext<TProviderContext>({ setTheme: _ => {}, themes: [] })
+export default createContext<ProviderContextProps>({ setTheme: _ => {}, themes: [] })

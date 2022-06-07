@@ -2,19 +2,19 @@ import React, { useEffect, useState } from 'react';
 import NotificationItem from './components/item';
 import Context from './context';
 import useSound from 'use-sound';
-import { TNotificationProvider, TNotification, TQueueableNotification, TProviderContext } from './types'
+import { NotificationProviderProps, NotificationProps, QueueableNotificationProps, ProviderContextProps } from './types'
 
-const NotificationProvider: React.FC<TNotificationProvider> = ({children, maxNotifications = 1, customStyle }) => {
-  const [queue, setQueue] = useState<TNotification[]>([]);
-  const [notifications, setNotifications] = useState<TNotification[]>([]);
+const NotificationProvider: React.FC<NotificationProviderProps> = ({children, maxNotifications = 1, customStyle }) => {
+  const [queue, setQueue] = useState<NotificationProps[]>([]);
+  const [notifications, setNotifications] = useState<NotificationProps[]>([]);
   const [playSound] = useSound('/assets/notifications/sounds/pop-up.mp3');
   useEffect(() => {
     if (notifications.length < maxNotifications) {
       addNext()
     }
-  }, [queue, notifications])
+  }, [queue, notifications, maxNotifications])
 
-  const enqueue = (notification: TQueueableNotification) => {
+  const enqueue = (notification: QueueableNotificationProps) => {
     const id = new Date().getTime() + Math.floor(Math.random() * 1000);
     setQueue((state) => state.concat({ ...notification, id, open: true }));
     return id
@@ -22,7 +22,7 @@ const NotificationProvider: React.FC<TNotificationProvider> = ({children, maxNot
 
   const addNext = (): void => {
     if (queue.length) {
-      const notification: TNotification = queue[0];
+      const notification: NotificationProps = queue[0];
       setQueue((state) => {
         state.shift()
         return state
@@ -49,19 +49,19 @@ const NotificationProvider: React.FC<TNotificationProvider> = ({children, maxNot
     enqueueForRemove(id);
   };
 
-  const enqueueForDismiss = (id: number, countdown: number = 5000): void => {
+  const enqueueForDismiss = (id: number, countdown = 5000): void => {
     setTimeout(() => {
       dismiss(id);
     }, countdown);
   };
 
-  const enqueueForRemove = (id: number, countdown: number = 400): void => {
+  const enqueueForRemove = (id: number, countdown = 400): void => {
     setTimeout(() => {
       remove(id);
     }, countdown);
   };
 
-  const contextValue: TProviderContext = {
+  const contextValue: ProviderContextProps = {
     enqueueNotification: enqueue,
     closeNotification: dismiss,
   };

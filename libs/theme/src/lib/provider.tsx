@@ -4,12 +4,12 @@ import NextScript from 'next/script';
 import NextHead from 'next/head';
 import React, { useCallback, useEffect, useState, memo } from 'react';
 import Context from './context';
-import { TThemeProvider, TProviderContext } from './types';
+import { ThemeProviderProps, ProviderContextProps } from './types';
 import { disableAnimation, encodeBase64, getSystemTheme, getTheme } from './utils';
 
 const colorSchemes = ['light', 'dark'];
 
-const ThemeProvider: React.FC<TThemeProvider> = ({
+const ThemeProvider: React.FC<ThemeProviderProps> = ({
   disableTransitionOnChange = true,
   enableSystem = true,
   enableColorScheme = true,
@@ -114,10 +114,10 @@ const ThemeProvider: React.FC<TThemeProvider> = ({
 
   // Whenever theme or forcedTheme changes, apply it
   useEffect(() => {
-    return applyTheme(theme);
+    theme && applyTheme(theme);
   }, [theme]);
 
-  const contextValue: TProviderContext = {
+  const contextValue: ProviderContextProps = {
     theme: theme,
     setTheme: setTheme,
     resolvedTheme: theme === 'system' ? resolvedTheme : theme,
@@ -159,7 +159,7 @@ const ThemeScript = memo(
     value,
     attrs,
     nonce,
-  }: TThemeProvider & { attrs: string[]; defaultTheme: string }) => {
+  }: ThemeProviderProps & { attrs: string[]; defaultTheme: string }) => {
     const defaultSystem = defaultTheme === 'system';
 
     // Code-golfing the amount of characters in the script

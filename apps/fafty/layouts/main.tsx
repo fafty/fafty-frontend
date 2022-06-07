@@ -1,10 +1,8 @@
-// import Header from '../components/layouts/header'
-// import Footer from '../components/layouts/footer'
-// import Meta from '../components/layouts/meta'
 import { Header, Footer, Meta } from '@fafty-frontend/shared/ui'
+import {ReactNode} from "react";
 
 type Props = {
-  children: React.ReactNode,
+  children: ReactNode,
   title: string,
   description: string
 }

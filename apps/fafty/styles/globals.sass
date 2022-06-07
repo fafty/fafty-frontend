@@ -1,7 +1,484 @@
-@import "~tailwindcss/base.css"
-@import "~tailwindcss/components.css"
-@import "~tailwindcss/utilities.css"
-@import "~tailwindcss/screens.css"
+@tailwind base
+@tailwind components
+@tailwind utilities
+@tailwind screens
+
+@layer utilities
+  .animation-delay-2000
+    animation-delay: 2s
+  .animation-delay-4000
+    animation-delay: 4s
+
+  .placeholder
+    .circle
+      @apply bg-neutral-300 dark:bg-neutral-700 rounded-full
+    .line
+      @apply bg-neutral-300 dark:bg-neutral-700 rounded
+
+.floating-input > input
+  &::placeholder
+    color: transparent
+
+  &:focus, &:not(:placeholder-shown)
+    @apply pt-8
+
+  label
+    @apply opacity-75 scale-75 -translate-y-3 translate-x-1
+
+
+.uppy-Root
+  width: 100%
+  height: 100%
+.for-dragdrop
+  &.has-attachments
+    position: absolute
+    left: 0
+    right: 0
+    top: 0
+    bottom: 0
+    display: none
+    z-index: 2
+    padding: 20px
+  &.show
+    display: block !important
+    & + #attachment .wrapper-input
+      opacity: 0 !important
+    .dragdrop-container
+      background-color: var(--drag-over-background-color) !important
+.dragdrop-container
+  display: flex
+  align-items: center
+  justify-content: center
+  border-radius: 7px
+  background-color: transparent
+  cursor: pointer
+  /* font-family: $font-family-base; */
+  max-width: 100%
+
+  &:focus
+    outline: none
+    // box-shadow: 0 0 0 3px rgba(0,0,0, 0.4)
+
+  // firefox fix: removes thin dotted outline
+  &::-moz-focus-inner
+    border: 0
+
+.dragdrop-inner
+  margin: 0
+  text-align: center
+  padding: 100px 20px
+  min-height: 350px
+  line-height: 1.4
+
+// http://tympanus.net/codrops/2015/09/15/styling-customizing-file-inputs-smart-way/
+.tip-text
+  display: flex
+  align-items: center
+  justify-content: center
+  padding-top: 15px
+  -webkit-transition: all .12s ease
+  transition: all .12s ease
+.wrapper-input
+  display: flex
+  align-items: center
+  justify-content: center
+  padding-top: 15px
+  opacity: 1
+  -webkit-transition: all .12s ease
+  transition: all .12s ease
+
+// .dragdrop-cloud
+//   width: 60px
+//   height: 60px
+//   color: #393a3a
+//   margin-bottom: 17px
+
+.uppy-DragDrop--is-dragdrop-supported
+  border: 2px dashed #393a3a
+  &.has-error
+    border-color: #c81a32
+.uppy-DragDrop--isDraggingOver
+  border: 2px dashed #007be8
+  // background: var(--table-hover-background)
+.dragdrop-label, .dragdrop-label-tip
+  // color: var(--page-text-color)
+  display: block
+  cursor: pointer
+  font-size: 1.15em
+  margin-bottom: 5px
+  @apply text-gray-800 dark:text-gray-200
+.dragdrop-label-tip
+  // visibility:
+  display: none
+.uppy-DragDrop-note
+  font-size: 1em
+  color: #444
+.dragdrop-browse
+  color: #007be8
+.attachment-container-preview
+  display: -ms-flexbox
+  display: flex
+  -ms-flex-wrap: wrap
+  flex-wrap: wrap
+  .attachment-preview
+    border: none
+    box-shadow: none
+    padding: 4px
+    // width: 250px
+    height: 250px
+    // flex: 0 0 50%
+    // width: 50%
+    // max-width: 50%
+    // width: 80vw
+    // height: 80vw
+    background-size: contain
+    .attachment-wrap
+      width: 100%
+      height: 100%
+      overflow: hidden
+      position: relative
+      display: -ms-flexbox
+      display: flex
+      -ms-flex-pack: center
+      justify-content: center
+      -ms-flex-align: center
+      align-items: center
+      -ms-flex-direction: column
+      flex-direction: column
+      // box-shadow: 0 0 2px 0 rgba(0,0,0,.4)
+      border-radius: 10px
+      // new
+      // -webkit-animation-name: skeletonAnimate
+      // background-image: -webkit-gradient(linear, center top, center bottom, from(deg), color-stop(0, red), color-stop(.15, orange), color-stop(.3, yellow), color-stop(.45, green), color-stop(.6, blue), color-stop(.75, indigo), color-stop(.8, violet), to(red))
+      // background-image: -webkit-linear-gradient(135deg, red 0%, orange 15%, yellow 30%, green 45%, blue 60%,indigo 75%, violet 80%, red 100%)
+      // background-repeat: repeat
+      // background-size: 50% auto
+      .placeholder
+        -webkit-animation-duration: 2.5s
+        -webkit-animation-fill-mode: forwards
+        -webkit-animation-iteration-count: infinite
+        -webkit-animation-name: placeholderSkeleton
+        -webkit-animation-timing-function: linear
+        background: var(--placeholder-gradient-background-color)
+        background-image: -webkit-linear-gradient(15deg, var(--placeholder-gradient-background-color) 0%, var(--placeholder-gradient-background-color) 34%, var(--placeholder-gradient-main-color) 49%, var(--placeholder-gradient-background-color) 64% , var(--placeholder-gradient-background-color) 100%) //dark-mode
+        background-repeat: no-repeat
+        background-size: 600px 304px
+        height: 100%
+        width: 100%
+        position: relative
+    .action
+      position: absolute
+      left: 0
+      top: 0
+      border-radius: 10px
+      margin: 6px
+      padding: 0 6px
+      color: #fff
+      background: rgba(0,0,0,.5)
+      font-size: .75rem
+      font-weight: 500
+      z-index: 1
+    .delete
+      display: none
+      position: absolute
+      right: 0
+      top: 0
+      width: 24px
+      height: 24px
+      border-radius: 100%
+      margin: 6px
+      padding: 3px
+      color: #fff
+      background: rgba(0,0,0,.5)
+      font-size: .75rem
+      font-weight: 500
+      z-index: 1
+      cursor: pointer
+      border: none
+      flex-direction: row
+      align-items: center
+      svg
+        vertical-align: -4px
+        opacity: 0.7
+      &:hover
+        svg
+          opacity: 1
+    img, video
+      background-color: #fff
+      border: none
+      box-shadow: none
+      border-radius: 10px
+      width: 100%
+      height: 100%
+      object-fit: cover
+      transform: translateZ(0)
+    &:hover.complete .delete, &:hover.error .delete
+      display: flex
+  &.draggable
+    .delete
+      display: none !important
+
+.attachment-wrap
+  .action, .item-progress
+    opacity: 1
+    transition: all 0.7s ease-in-out
+.sortable-chosen, sortable-chosen.draggable-ghost
+  .attachment-wrap
+    .action, .item-progress
+      opacity: 0
+      transition: all 0.1s ease-in-out
+.draggable-ghost
+  // background-color: #dadada
+  // opacity: 1
+
+.draggable-ghost
+  opacity: 0.3
+  transition: all 0.1s ease-in-out
+  .attachment-wrap
+    .action, .item-progress
+      visibility: hidden
+      // transition: all 0.5s ease-in-out
+
+.sortable-choosen
+  .item-progress
+    opacity: 0.3
+    transition: all 0.5s ease-in-out
+.uppy-DashboardItem-previewInnerWrap
+  width: 100%
+  height: 100%
+  overflow: hidden
+  position: relative
+  display: -ms-flexbox
+  display: flex
+  -ms-flex-pack: center
+  justify-content: center
+  -ms-flex-align: center
+  align-items: center
+  -ms-flex-direction: column
+  flex-direction: column
+  box-shadow: 0 0 2px 0 rgba(0,0,0,.4)
+  border-radius: 3px
+@media (min-width: 460px)
+  .attachment-container-preview.attachments
+    .attachment-preview
+      flex: 0 0 50%
+      width: 50%
+      max-width: 50%
+@media (min-width: 760px)
+  .attachment-container-preview.attachments
+    .attachment-preview
+      flex: 0 0 33.333%
+      width: 33.333%
+      max-width: 33.333%
+@media (max-width: 460px)
+  .attachment-container-preview
+    .attachment-preview
+      &.complete, &.error
+        .delete
+          display: flex
+.attachment-container-preview.cover
+  .attachment-preview
+    flex: 0 0 100%
+    width: 100%
+    max-width: 100%
+
+
+.reset
+  -webkit-appearance: none
+  line-height: 1
+  padding: 0
+  color: inherit
+  -webkit-backface-visibility: visible
+  backface-visibility: visible
+  background: none
+  border: none
+  border-collapse: separate
+  border-image: none
+  border-radius: 0
+  border-spacing: 0
+  box-shadow: none
+  clear: none
+  cursor: auto
+  display: inline
+  empty-cells: show
+  float: none
+  font-family: inherit
+  font-size: inherit
+  font-style: normal
+  font-variant: normal
+  font-weight: 400
+  font-stretch: normal
+  -webkit-hyphens: none
+  -ms-hyphens: none
+  hyphens: none
+  left: auto
+  letter-spacing: normal
+  list-style: none
+  margin: 0
+  max-height: none
+  max-width: none
+  min-height: 0
+  min-width: 0
+  opacity: 1
+  outline: medium none invert
+  overflow: visible
+  overflow-x: visible
+  overflow-y: visible
+  text-align: left
+  text-decoration: none
+  text-indent: 0
+  text-shadow: none
+  text-transform: none
+  top: auto
+  transform: none
+  transform-origin: 50% 50% 0
+  transform-style: flat
+  transition: none 0s ease 0s
+  unicode-bidi: normal
+  vertical-align: baseline
+  visibility: visible
+  white-space: normal
+  z-index: auto
+.item-progress
+  display: none
+  position: absolute
+  top: 50%
+  left: 50%
+  transform: translate(-50%, -50%)
+  z-index: 1
+  color: #fff
+  text-align: center
+  width: 120px
+  transition: all .35 ease
+  .percentage, .preprocess
+    display: none
+  &.pending, &.compressing, &.uploading, &.complete, &.error, &.in-upload-queue
+    display: block
+  &.pending, &.compressing, &.uploading, &.in-upload-queue
+    .bg, .bg-main, .percentage
+      opacity: 1
+  &.uploading, &.in-upload-queue
+    .cancel
+      opacity: 1
+  &.pending, &.compressing, &.in-upload-queue
+    .preprocess
+      display: block
+  // &.compressing
+  //   .preprocess
+  //     display: block
+  &.uploading
+    .percentage
+      display: block
+    .bg, .bg-main, .percentage, .cancel
+      opacity: 1
+  &.error
+    .percentage
+      display: block
+    .bg, .bg-main, .percentage
+      opacity: 1
+    svg
+      g.retry
+        opacity: 1 !important
+    .cancel
+      opacity: 0
+  .uppy-DashboardItem-progressIndicator
+    // @include clear-focus
+    display: inline-block
+    width: 38px
+    height: 38px
+    opacity: 0.9
+    cursor: pointer
+    // &:focus
+    //   svg.UppyIcon-progressCircle .bg
+    svg
+      g.retry
+        opacity: 0
+        fill: none
+        stroke: currentColor
+        stroke-width: 2
+        stroke-linecap: round
+        stroke-linejoin: round
+svg.UppyIcon-progressCircle
+  width: 100%
+  height: 100%
+  &.UppyIcon
+    max-width: 100%
+    max-height: 100%
+    fill: currentColor
+    display: inline-block
+    overflow: hidden
+  .bg-main
+    opacity: 0
+  .bg
+    stroke: hsla(0,0%,100%,.4)
+    opacity: 0
+  .percentage
+    stroke: #fff
+    transition: stroke-dashoffset .5s ease-out
+    opacity: 0
+  .cancel
+    fill: #fff
+    opacity: 0
+    transition: all 0.2s
+  .check
+    opacity: 0
+    fill: #fff
+    transition: all 0.2s
+// svg.UppyIcon.retry
+//   fill: #fff
+// Svg styles that depend on the state of the file.
+.uppy-DashboardItem.is-complete .item-progress
+  transform: initial
+  top: -9px
+  right: -8px
+  left: initial
+  width: auto
+.is-error
+  width: 18px
+  height: 18px
+  .uppy-size--md
+    width: 28px
+    height: 28px
+.is-complete
+  width: 18px
+  height: 18px
+  opacity: 1
+  .uppy-size--md
+    width: 22px
+    height: 22px
+.uppy-DashboardItem.is-noIndividualCancellation
+  .uppy-DashboardItem-progressIndicator
+    cursor: default
+  .cancel
+    display: none
+.is-processing
+  opacity: 0
+.is-complete
+  cursor: default
+  .progres
+    stroke: #555
+    fill: #555
+    opacity: 1
+  .check
+    opacity: 1
+.uppy-size--md .uppy-DashboardItem-progressIndicator
+  width: 55px
+  height: 55px
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 .editor-text-bold
   font-weight: bold
@@ -55,7 +532,7 @@
   margin-bottom: 8px
   tab-size: 2
 
-  /* white-space: pre;
+  white-space: pre
   overflow-x: auto
   position: relative
 
@@ -118,22 +595,19 @@
   font-size: 24px
   color: rgb(5, 5, 5)
   font-weight: 400
-  margin: 0
-  margin-bottom: 12px
+  margin: 0 0 12px
   padding: 0
 
 .editor-heading-h2
   font-size: 15px
   color: rgb(101, 103, 107)
   font-weight: 700
-  margin: 0
-  margin-top: 10px
+  margin: 10px 0 0
   padding: 0
   text-transform: uppercase
 
 .editor-quote
-  margin: 0
-  margin-left: 20px
+  margin: 0 0 0 20px
   font-size: 15px
   color: rgb(101, 103, 107)
   border-left-color: rgb(206, 208, 212)
@@ -149,70 +623,41 @@
 .editor-listitem
   margin: 5px 20px
 
-.ul1
+.ul1, .ul2, .ul3, .ul4, .ul5,
+.ol1, .ol2, .ol3, .ol4, .ol5
   padding: 0
-  margin: 0
-  margin-left: 16px
+  margin: 0 0 0 16px
+
+.ul1
   list-style-type: disc
 
 .ul2
-  padding: 0
-  margin: 0
-  margin-left: 16px
   list-style-type: circle
 
-.ul3
-  padding: 0
-  margin: 0
-  margin-left: 16px
+.ul3, .ul5
   list-style-type: square
 
 .ul4
-  padding: 0
-  margin: 0
-  margin-left: 16px
   list-style-type: circle
 
-.ul5
-  padding: 0
-  margin: 0
-  margin-left: 16px
-  list-style-type: square
-
 .ol1
-  padding: 0
-  margin: 0
-  margin-left: 16px
   list-style-type: decimal
 
 .ol2
-  padding: 0
-  margin: 0
-  margin-left: 16px
   list-style-type: upper-alpha
 
 .ol3
-  padding: 0
-  margin: 0
-  margin-left: 16px
   list-style-type: lower-alpha
 
 .ol4
-  padding: 0
-  margin: 0
-  margin-left: 16px
   list-style-type: upper-roman
 
 .ol5
-  padding: 0
-  margin: 0
-  margin-left: 16px
   list-style-type: lower-roman
 
 .editor-list-ul
   padding: 0
-  margin: 0
-  margin-left: 16px
+  margin: 0 0 0 16px
 
 .editor-listitem
   margin: 8px 32px

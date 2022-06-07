@@ -28,7 +28,15 @@
         ]
       },
       "configurations": {
-        "production": {}
+        "production": {
+          "budgets": [
+            {
+              "type": "initial",
+              "maximumWarning": "100kb",
+              "maximumError": "1mb"
+            }
+          ]
+        }
       }
     },
     "serve": {

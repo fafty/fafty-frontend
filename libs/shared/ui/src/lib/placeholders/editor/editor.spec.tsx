@@ -4,7 +4,7 @@ import EditorPlaceholder from './editor';
 
 describe('Meta', () => {
   it('should render successfully', () => {
-    const { baseElement } = render(<EditorPlaceholder title={''} description={''} />);
+    const { baseElement } = render(<EditorPlaceholder />);
     expect(baseElement).toBeTruthy();
   });
 });

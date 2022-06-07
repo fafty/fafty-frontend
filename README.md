@@ -2,6 +2,7 @@
 [![Continuous Integration](https://github.com/fafty/fafty-frontend/actions/workflows/ci.yml/badge.svg?branch=master)](https://github.com/fafty/fafty-frontend/actions/workflows/ci.yml)
 [![CodeQL](https://github.com/fafty/fafty-frontend/actions/workflows/codeql.yml/badge.svg?branch=master)](https://github.com/fafty/fafty-frontend/actions/workflows/codeql.yml)
 [![Codacy Security Scan](https://github.com/fafty/fafty-frontend/actions/workflows/codacy.yml/badge.svg?branch=master)](https://github.com/fafty/fafty-frontend/actions/workflows/codacy.yml)
+[![Codacy Badge](https://app.codacy.com/project/badge/Grade/a3c2b7e4c8654547927789ca983f3b93)](https://www.codacy.com/gh/fafty/fafty-frontend/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=fafty/fafty-frontend&amp;utm_campaign=Badge_Grade)
 
 ## Development server
 
@@ -52,7 +53,6 @@ Run `nx g @nrwl/react:lib new-lib` to generate a library.
 > You can also use any of the plugins above to generate libraries as well.
 
 Libraries are shareable across libraries and applications. They can be imported from `@fafty-frontend/newlib`.
-
 
 ## For more info 
 

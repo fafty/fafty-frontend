@@ -1,56 +1,56 @@
 import { CSSProperties, ReactNode } from 'react';
 
-interface TAction {
+interface ActionProps {
   name: string;
   action: () => void;
 }
 
-interface TActions {
-  first: TAction;
-  second?: TAction;
+interface ActionsProps {
+  first: ActionProps;
+  second?: ActionProps;
 }
 
-export type TCustomStyleObj = CSSProperties | undefined;
+export type CustomStyleObjProps = CSSProperties | undefined;
 
-interface TCustomStyle {
-  default?: TCustomStyleObj;
-  success?: TCustomStyleObj;
-  error?: TCustomStyleObj;
-  warning?: TCustomStyleObj;
-  info?: TCustomStyleObj;
+interface CustomStyleProps {
+  default?: CustomStyleObjProps;
+  success?: CustomStyleObjProps;
+  error?: CustomStyleObjProps;
+  warning?: CustomStyleObjProps;
+  info?: CustomStyleObjProps;
 }
 
-interface TOptions {
+interface OptionsProps {
   countdown?: number;
   persist?: boolean;
   dismissible?: boolean;
-  customIcon?: any;
-  customStyle?: TCustomStyle;
+  customIcon?: SVGElement;
+  customStyle?: CustomStyleProps;
 }
 
-export interface TQueueableNotification {
+export interface QueueableNotificationProps {
   message: string;
-  actions?: TActions;
-  options?: TOptions;
+  actions?: ActionsProps;
+  options?: OptionsProps;
 }
 
-export interface TNotification extends TQueueableNotification {
+export interface NotificationProps extends QueueableNotificationProps {
   id: number;
   open: boolean;
 }
 
-export interface TNotificationItem extends TNotification {
+export interface NotificationItemProps extends NotificationProps {
   onDismiss: (id: number) => void;
 }
 
-export interface TNotificationProvider {
+export interface NotificationProviderProps {
   children?: ReactNode;
   maxNotifications?: number;
-  customStyle?: TCustomStyle;
-  customDismiss?: any;
+  customStyle?: CustomStyleProps;
+  customDismiss?: SVGElement;
 }
 
-export interface TProviderContext {
-  enqueueNotification: (Snack: TQueueableNotification) => number;
+export interface ProviderContextProps {
+  enqueueNotification: (Snack: QueueableNotificationProps) => number;
   closeNotification: (id: number) => void;
 }

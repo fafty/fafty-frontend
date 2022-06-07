@@ -1,5 +1,5 @@
 import '../styles/globals.sass'
-import type { AppProps, NextWebVitalsMetric } from 'next/app'
+import type { AppProps } from 'next/app'
 import { ThemeProvider } from '@fafty-frontend/theme'
 import { NotificationProvider } from '@fafty-frontend/notifications'
 
@@ -13,9 +13,6 @@ function FaftyApp({ Component, pageProps }: AppProps) {
       </ThemeProvider>
     </>
   )  
-}
-export function reportWebVitals(metric: NextWebVitalsMetric) {
-  console.log(metric)
 }
 
 export default FaftyApp

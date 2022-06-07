@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <defs>
+    <linearGradient id="a" x1="360.879" x2="141.213" y1="351.455" y2="-69.2936" gradientTransform="matrix(.24049 0 0 -.24049 2.3551 87.9521)" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#00ffa3"/>
+      <stop offset="1" stop-color="#dc1fff"/>
+    </linearGradient>
+    <linearGradient id="b" x1="264.829" x2="45.163" y1="401.601" y2="-19.1475" gradientTransform="matrix(.24049 0 0 -.24049 2.3551 87.9521)" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#00ffa3"/>
+      <stop offset="1" stop-color="#dc1fff"/>
+    </linearGradient>
+    <linearGradient id="c" x1="312.548" x2="92.8822" y1="376.688" y2="-44.061" gradientTransform="matrix(.24049 0 0 -.24049 2.3551 87.9521)" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#00ffa3"/>
+      <stop offset="1" stop-color="#dc1fff"/>
+    </linearGradient>
+  </defs>
+  <g fill-rule="evenodd">
+    <path fill="url(#a)" d="M17.8906 69.651a3.1294 3.1294 0 0 1 2.2125-.9139h76.3306c1.3949 0 2.0923 1.6834 1.1063 2.6694L82.4614 86.4851a3.1293 3.1293 0 0 1-2.2125.9138H3.9183c-1.3949 0-2.0923-1.6834-1.1063-2.6694L17.8906 69.651Z"/>
+    <path fill="url(#b)" d="M17.8906 13.3529c.6012-.5772 1.3948-.9139 2.2125-.9139h76.3306c1.3949 0 2.0923 1.6835 1.1063 2.6695L82.4614 30.187a3.1293 3.1293 0 0 1-2.2125.9139H3.9183c-1.3949 0-2.0923-1.6835-1.1063-2.6694l15.0786-15.0786Z"/>
+    <path fill="url(#c)" d="M82.4614 41.3216a3.1293 3.1293 0 0 0-2.2125-.9139H3.9183c-1.3949 0-2.0923 1.6834-1.1063 2.6694l15.0786 15.0786a3.1298 3.1298 0 0 0 2.2125.9138h76.3306c1.3949 0 2.0923-1.6834 1.1063-2.6694L82.4614 41.3216Z"/>
+  </g>
+</svg>
