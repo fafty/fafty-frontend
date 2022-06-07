@@ -22,49 +22,47 @@ module.exports = {
         'notification-enter': {
           '0%': {
             opacity: 0,
-            transform: 'translateY(20%)'
+            transform: 'translateY(20%)',
           },
           '100%': {
             opacity: 1,
-            transform: 'translateY(0)'
+            transform: 'translateY(0)',
           },
         },
         'notification-out': {
           '0%': {
             opacity: 1,
-            transform: 'translateY(0)'
+            transform: 'translateY(0)',
           },
           '100%': {
             opacity: 0,
-            transform: 'translateY(20%)'
+            transform: 'translateY(20%)',
           },
         },
         blob: {
           '0%': {
-            transform: "translate(0px, 0px) scale(1)",
+            transform: 'translate(0px, 0px) scale(1)',
           },
           '33%': {
-            transform: "translate(30px, -50px) scale(1.1)",
+            transform: 'translate(30px, -50px) scale(1.1)',
           },
           '66%': {
-            transform: "translate(-20px, 20px) scale(0.9)",
+            transform: 'translate(-20px, 20px) scale(0.9)',
           },
           '100%': {
-            transform: "tranlate(0px, 0px) scale(1)",
+            transform: 'tranlate(0px, 0px) scale(1)',
           },
-        }
+        },
       },
       animation: {
         slideup: 'notification-enter 0.4s cubic-bezier(.66,-0.01,.25,1.04)',
         slidedown: 'notification-out 0.4s cubic-bezier(.66,-0.01,.25,1.04)',
-        blob: 'blob 7s infinite'
-      }
-    }
+        blob: 'blob 7s infinite',
+      },
+    },
   },
   variants: {
     extend: {},
   },
-  plugins: [
-    require('@tailwindcss/forms'),
-  ]
-}
+  plugins: [require('@tailwindcss/forms')],
+};

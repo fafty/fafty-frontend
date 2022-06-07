@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import MainLayout from '../layouts/main';
 
-export default function ErrorPage() {
+const NotFoundPage = (): JSX.Element => {
   return (
     <MainLayout title={'undefined'} description={'undefined'}>
       <section className="bg-primary py-[120px] relative z-10 text-slate-900 dark:text-slate-50">
@@ -157,19 +157,6 @@ export default function ErrorPage() {
                 </svg>
               </div>
               <div className="mx-auto max-w-[400px] text-center mt-8">
-                {/* <h2
-                  className="
-                  font-bold
-                  text-white
-                  mb-2
-                  text-[50px]
-                  sm:text-[80px]
-                  md:text-[100px]
-                  leading-none
-                  "
-                >
-                  404
-                </h2> */}
                 <h4 className="font-semibold text-[22px] leading-tight mb-3">Oops! That page can’t be found</h4>
                 <p className="text-lg mb-8">The page you are looking for it maybe deleted</p>
                 <Link href={'/'}>
@@ -185,3 +172,4 @@ export default function ErrorPage() {
     </MainLayout>
   );
 }
+export default NotFoundPage;

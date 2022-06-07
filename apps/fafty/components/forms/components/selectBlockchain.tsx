@@ -34,7 +34,7 @@ const SelectBlockchain = (): JSX.Element => {
       name: 'Polygon',
       description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed euismod, nisi eu consectetur euismod, nisl nisl consectetur nisl, eu tincidunt nisl nisl euismod nisl.',
       logo: '/images/logos/polygon.svg',
-    },
+    }
   ];
 
   function classNames(...classes: string[]) {

@@ -24,7 +24,7 @@ const ProfileMenu = (): JSX.Element => {
             >
               <ProfileButton
                 avatarUrl={
-                  'https://avatars.githubusercontent.com/u/3300389?v=4'
+                  '/images/demo-avatar.jpeg'
                 }
                 balance={70.23}
                 ticker={'ETH'}
