@@ -1,43 +1,74 @@
-import React, { useEffect, useState } from 'react';
+import { FC, useEffect, useState } from 'react';
 import NotificationItem from './components/item';
 import Context from './context';
 import useSound from 'use-sound';
-import { NotificationProviderProps, NotificationProps, QueueableNotificationProps, ProviderContextProps } from './types'
 
-const NotificationProvider: React.FC<NotificationProviderProps> = ({children, maxNotifications = 1, customStyle }) => {
+import {
+  NotificationProviderProps,
+  NotificationProps,
+  QueueableNotificationProps,
+  ProviderContextProps,
+} from './types';
+
+const NotificationProvider = ({
+  children,
+  maxNotifications = 1,
+  customStyle,
+}: NotificationProviderProps) => {
   const [queue, setQueue] = useState<NotificationProps[]>([]);
   const [notifications, setNotifications] = useState<NotificationProps[]>([]);
   const [playSound] = useSound('/assets/notifications/sounds/pop-up.mp3');
   useEffect(() => {
     if (notifications.length < maxNotifications) {
-      addNext()
+      addNext();
     }
-  }, [queue, notifications, maxNotifications])
+  }, [queue, notifications, maxNotifications]);
 
   const enqueue = (notification: QueueableNotificationProps) => {
     const id = new Date().getTime() + Math.floor(Math.random() * 1000);
     setQueue((state) => state.concat({ ...notification, id, open: true }));
-    return id
-  }
+    return id;
+  };
+
+  // Todo: Needs review it in safari, does not play the sound every time. These are solutions instead of 'useSound' - cause execution and script evaluation slow down by library 'Howler'.
+  // const playSound = (() => {
+  //   let context: AudioContext | null = null;
+  //   return async (url: string) => {
+  //     console.log('playSound');
+  //     if (context) context.close();
+  //     context = new AudioContext();
+  //     const source = context.createBufferSource();
+  //     source.buffer = await fetch(url, {cache: "force-cache"})
+  //     .then(res => res.arrayBuffer())
+  //     .then(arrayBuffer => context && context.decodeAudioData(arrayBuffer));
+  //     console.log('source.buffer', source.buffer);
+  //     source.connect(context.destination);
+  //     console.log('source', source);
+  //     source.start(0);
+  //   };
+  // })();
 
   const addNext = (): void => {
     if (queue.length) {
       const notification: NotificationProps = queue[0];
       setQueue((state) => {
-        state.shift()
-        return state
+        state.shift();
+        return state;
       });
+      // playSound('/assets/notifications/sounds/pop-up.mp3');
       playSound();
-      setNotifications((state) => [{ ...notification }].concat(state))
+      setNotifications((state) => [{ ...notification }].concat(state));
       if (!notification.options?.persist) {
-        enqueueForDismiss(notification.id, notification.options?.countdown)
+        enqueueForDismiss(notification.id, notification.options?.countdown);
       }
     }
   };
 
   const remove = (id: number): void => {
-    setNotifications((state) => state.filter((notification) => notification.id !== id))
-  }
+    setNotifications((state) =>
+      state.filter((notification) => notification.id !== id)
+    );
+  };
 
   const dismiss = (id: number): void => {
     setNotifications((state) =>

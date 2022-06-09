@@ -18,9 +18,9 @@ const Footer = () => {
                 </div>
                 <Link href={'/'}>
                   <a className="inline-block max-w-[160px] mb-6" rel="nofollow noopener" target="_blank">
-                    <h6 className="m-t text-4xl font font-extrabold tracking-tight text-slate-900  dark:text-slate-50  sm:text-4xl">
+                    <div className="m-t text-4xl font font-extrabold tracking-tight text-slate-900  dark:text-slate-50  sm:text-4xl">
                       Fafty
-                    </h6>
+                    </div>
                   </a>
                 </Link>
                 <p className="text-base text-body-color mb-7">
@@ -31,12 +31,14 @@ const Footer = () => {
             </div>
             <div className="w-full sm:w-1/2 lg:w-2/12 px-4">
               <div className="w-full mb-10">
-                <h4 className="text-dark text-lg font-semibold mb-9">Company</h4>
+                <div className="text-dark text-lg font-semibold mb-9">Company</div>
                 <ul>
                   <li>
-                    <a className="inline-block text-base text-body-color hover:text-primary leading-loose mb-2">
-                      About
-                    </a>
+                    <Link href={'/about'}>
+                      <a className="inline-block text-base text-body-color hover:text-primary leading-loose mb-2">
+                        About
+                      </a>
+                    </Link>
                   </li>
                   <li>
                     <a className="inline-block text-base text-body-color hover:text-primary leading-loose mb-2">
@@ -68,7 +70,7 @@ const Footer = () => {
             </div>
             <div className="w-full sm:w-1/2 lg:w-2/12 px-4">
               <div className="w-full mb-10">
-                <h4 className="text-dark text-lg font-semibold mb-9">Products</h4>
+                <div className="text-dark text-lg font-semibold mb-9">Products</div>
                 <ul>
                   <li>
                     <a className="inline-block text-base text-body-color hover:text-primary leading-loose mb-2">
@@ -102,7 +104,7 @@ const Footer = () => {
             </div>
             <div className="w-full sm:w-1/2 lg:w-2/12 px-4">
               <div className="w-full mb-10">
-                <h4 className="text-dark text-lg font-semibold mb-9">Quick Links</h4>
+                <div className="text-dark text-lg font-semibold mb-9">Quick Links</div>
                 <ul>
                   <li>
                     <Link href={'/blog/newsletter'}>
@@ -126,7 +128,7 @@ const Footer = () => {
             </div>
             <div className="w-full sm:w-1/2 lg:w-3/12 px-4">
               <div className="w-full mb-10">
-                <h4 className="text-dark text-lg font-semibold mb-9">Follow Us On</h4>
+                <div className="text-dark text-lg font-semibold mb-9">Follow Us On</div>
                 <div className="flex items-center mb-6">
                   <a
                     className="

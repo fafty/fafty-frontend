@@ -157,7 +157,7 @@ const NotFoundPage = (): JSX.Element => {
                 </svg>
               </div>
               <div className="mx-auto max-w-[400px] text-center mt-8">
-                <h4 className="font-semibold text-[22px] leading-tight mb-3">Oops! That page can’t be found</h4>
+                <h1 className="font-semibold text-[22px] leading-tight mb-3">Oops! That page can’t be found</h1>
                 <p className="text-lg mb-8">The page you are looking for it maybe deleted</p>
                 <Link href={'/'}>
                   <a className="text-base font-semibold inline-block text-center border-2 dark:border-gray-100 border-neutral-700 rounded-lg px-8 py-3 hover:bg-white dark:hover:text-neutral-700 hover:text-primary transition">

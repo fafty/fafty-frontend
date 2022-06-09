@@ -48,7 +48,7 @@ const nextConfig = {
     // serverComponents: true,
     images: { layoutRaw: true }
   },
-  swcMinify: true,
+  // swcMinify: true,
   compress: false,
   oweredByHeader: false,
   trailingSlash: true,

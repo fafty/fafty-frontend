@@ -23,7 +23,7 @@ const Block = ({
             className={`h-3 ${widthFirst} line`}
           />
           <div
-            className={`h-3 ${widthSecond} line`}
+            className={`h-3 ml-1 ${widthSecond} line`}
           />
         </div>
         {full && (

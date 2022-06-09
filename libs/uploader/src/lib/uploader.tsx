@@ -1,6 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import {
-  ErrorResponse,
   FileRemoveReason,
   SuccessResponse,
   Uppy,
@@ -16,9 +15,10 @@ import toArray from '@uppy/utils/lib/toArray';
 import Item from './ui/item';
 import classNames from 'classnames';
 import { useNotifications } from '@fafty-frontend/notifications';
-import { useIsomorphicLayoutEffect, useTimeout } from '@fafty-frontend/usehooks';
+import { useIsomorphicLayoutEffect } from '@fafty-frontend/usehooks';
 import Sortable from 'sortablejs';
 import { gsap } from 'gsap';
+
 export interface ExistingFileProps {
   id: string;
   file_id: string;
@@ -296,7 +296,7 @@ const Uploader = ({
           // queueProcessing: true
         })
         .use(AwsS3, {
-          limit: 4,
+          limit: 2,
           async getUploadParameters(file) {
             // Send a request to our signing endpoint.
             const requestOptions = {
@@ -306,11 +306,8 @@ const Uploader = ({
                 'Content-Type': 'application/json',
               },
             };
-            console.log('before fetch');
             const url = `/api/v0/${presignEndpoint}?filename=${file.name}&type=${file.type}`;
             const response = await fetch(url, requestOptions);
-            console.log('response fetch');
-
             const data = await response.json();
             return {
               method: data.method,
