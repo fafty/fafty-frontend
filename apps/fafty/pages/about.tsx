@@ -1,6 +1,5 @@
 import Head from 'next/head';
 import MainLayout from '../layouts/main';
-import Script from "next/script";
 
 const AboutPage = (): JSX.Element => {
   const jsonLd = {
@@ -16,7 +15,7 @@ const AboutPage = (): JSX.Element => {
   return (
     <MainLayout title={'About us'} description={'Fafty NFT marketplace'}>
       <Head>
-        <Script
+        <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
           key="item-jsonld"
