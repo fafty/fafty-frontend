@@ -2,8 +2,71 @@
 import Link from 'next/link'
 
 const Footer = () => {
+  const links = {
+    company: [
+      {
+        name: 'About',
+        href: '/about'
+      },
+      {
+        name: 'Blog',
+        href: '/blog'
+      },
+      {
+        name: 'Jobs',
+        href: '/jobs'
+      },
+      {
+        name: 'Referral Program',
+        href: '/referral-Program'
+      },
+      {
+        name: 'Press Kit',
+        href: '/press-Kit'
+      },
+      {
+        name: 'Legal',
+        href: '/legal'
+      }
+    ],
+    products: [
+      {
+        name: 'Products Overview',
+        href: '/'
+      },
+      {
+        name: 'Documentation',
+        href: '/documentation'
+      },
+      {
+        name: 'Release Notes',
+        href: '/release-notes'
+      },
+      {
+        name: 'Share your ideas',
+        href: '/ideas'
+      },
+      {
+        name: 'Taxes',
+        href: '/taxes'
+      }
+    ],
+    'quick-links': [
+      {
+        name: 'Newsletter Signup',
+        href: '/blog/newsletter'
+      },
+      {
+        name: 'System Status',
+        href: '/system-status'
+      },
+      {
+        name: 'Report Abuse',
+        href: '/report-abuse'
+      }
+    ]
+  }
   return (
-    <>
       <footer className="relative bg-white dark:bg-neutral-800  text-slate-900  dark:text-slate-50 border-t border-gray-100 dark:border-neutral-700 pt-20 lg:pt-[120px] pb-10 lg:pb-20">
         <div className="container mx-auto px-8">
           <div className="flex flex-wrap -mx-4">
@@ -33,38 +96,15 @@ const Footer = () => {
               <div className="w-full mb-10">
                 <div className="text-dark text-lg font-semibold mb-9">Company</div>
                 <ul>
-                  <li>
-                    <Link href={'/about'}>
-                      <a className="inline-block text-base text-body-color hover:text-primary leading-loose mb-2">
-                        About
-                      </a>
-                    </Link>
-                  </li>
-                  <li>
-                    <a className="inline-block text-base text-body-color hover:text-primary leading-loose mb-2">
-                      Blog
-                    </a>
-                  </li>
-                  <li>
-                    <a className="inline-block text-base text-body-color hover:text-primary leading-loose mb-2">
-                      Jobs
-                    </a>
-                  </li>
-                  <li>
-                    <a className="inline-block text-base text-body-color hover:text-primary leading-loose mb-2">
-                      Referral Program
-                    </a>
-                  </li>
-                  <li>
-                    <a className="inline-block text-base text-body-color hover:text-primary leading-loose mb-2">
-                      Press Kit
-                    </a>
-                  </li>
-                  <li>
-                    <a className="inline-block text-base text-body-color hover:text-primary leading-loose mb-2">
-                      Legal
-                    </a>
-                  </li>
+                  {links.company.map((link, index) => (
+                    <li key={index}>
+                      <Link href={link.href}>
+                        <a className="inline-block text-base text-body-color hover:text-primary leading-loose mb-2">
+                          {link.name}
+                        </a>
+                      </Link>
+                    </li>
+                  ))}
                 </ul>
               </div>
             </div>
@@ -72,33 +112,15 @@ const Footer = () => {
               <div className="w-full mb-10">
                 <div className="text-dark text-lg font-semibold mb-9">Products</div>
                 <ul>
-                  <li>
-                    <a className="inline-block text-base text-body-color hover:text-primary leading-loose mb-2">
-                      Products Overview
-                    </a>
-                  </li>
-                  
-                  <li>
-                    <a className="inline-block text-base text-body-color hover:text-primary leading-loose mb-2">
-                      Documentation
-                    </a>
-                  </li>
-                  <li>
-                    <a className="inline-block text-base text-body-color hover:text-primary leading-loose mb-2">
-                      Release Notes
-                    </a>
-                  </li>
-                  {/* Link to land page for subscribe user to newsletter. */}
-                  <li>
-                    <a className="inline-block text-base text-body-color hover:text-primary leading-loose mb-2">
-                      Share your ideas
-                    </a>
-                  </li>
-                  <li>
-                    <a className="inline-block text-base text-body-color hover:text-primary leading-loose mb-2">
-                      Taxes
-                    </a>
-                  </li>
+                  {links.products.map((link, index) => (
+                    <li key={index}>
+                      <Link href={link.href}>
+                        <a className="inline-block text-base text-body-color hover:text-primary leading-loose mb-2">
+                          {link.name}
+                        </a>
+                      </Link>
+                    </li>
+                  ))}
                 </ul>
               </div>
             </div>
@@ -106,23 +128,15 @@ const Footer = () => {
               <div className="w-full mb-10">
                 <div className="text-dark text-lg font-semibold mb-9">Quick Links</div>
                 <ul>
-                  <li>
-                    <Link href={'/blog/newsletter'}>
-                      <a className="inline-block text-base text-body-color hover:text-primary leading-loose mb-2">
-                        Newsletter Signup
-                      </a>
-                    </Link>
-                  </li>  
-                  <li>
-                    <a className="inline-block text-base text-body-color hover:text-primary leading-loose mb-2">
-                      System Status
-                    </a>
-                  </li>
-                  <li>
-                    <a className="inline-block text-base text-body-color hover:text-primary leading-loose mb-2">
-                      Report Abuse
-                    </a>
-                  </li>
+                  {links["quick-links"].map((link, index) => (
+                    <li key={index}>
+                      <Link href={link.href}>
+                        <a className="inline-block text-base text-body-color hover:text-primary leading-loose mb-2">
+                          {link.name}
+                        </a>
+                      </Link>
+                    </li>
+                  ))}
                 </ul>
               </div>
             </div>
@@ -299,7 +313,6 @@ const Footer = () => {
           </span>
         </div>
       </footer>
-    </>
   )
 }
 
