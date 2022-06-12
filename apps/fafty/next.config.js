@@ -11,6 +11,7 @@ const commitHash = require('child_process')
  * @type {import('@nrwl/next/plugins/with-nx').WithNxOptions}
  **/
 const nextConfig = {
+  reactStrictMode: true,
   nx: {
     // Set this to true if you would like to to use SVGR
     // See: https://github.com/gregberge/svgr
@@ -34,14 +35,6 @@ const nextConfig = {
   generateBuildId: async () => {
     // latest git commit hash here
     return commitHash
-  },
-  webpack(config) {
-    config.module.rules.push({
-      test: /\.svg$/i,
-      issuer: /\.[jt]sx?$/,
-      use: ['@svgr/webpack'],
-    });
-    return config;
   },
   experimental: {
     concurrentFeatures: true,

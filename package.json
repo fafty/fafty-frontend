@@ -69,11 +69,13 @@
     "@uppy/compressor": "^0.3.0",
     "@uppy/core": "^2.2.0",
     "@uppy/thumbnail-generator": "^2.1.1",
+    "axios": "^0.27.2",
     "classnames": "^2.3.1",
     "core-js": "^3.6.5",
     "gsap": "^3.10.4",
     "lexical": "^0.3.2",
     "next": "12.1.6",
+    "next-auth": "^4.4.0",
     "react": "18.1.0",
     "react-dom": "18.1.0",
     "react-hook-form": "^7.31.3",
@@ -127,7 +129,6 @@
     "nx": "14.1.9",
     "postcss": "^8.4.12",
     "prettier": "^2.5.1",
-    "react-bootstrap-icons": "^1.8.2",
     "react-test-renderer": "18.1.0",
     "remixicons": "^1.0.0",
     "sortablejs": "^1.15.0",
@@ -137,7 +138,6 @@
     "ts-node": "10.8.1",
     "typescript": "~4.7.3",
     "url-loader": "^4.1.1",
-    "webpack-bundle-analyzer": "^4.5.0",
     "yarn": "^1.22.18"
   }
 }

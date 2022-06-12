@@ -3,34 +3,46 @@ import Image from 'next/image';
 import { CheckIcon, SelectorIcon } from '@heroicons/react/solid';
 import { Fragment, useState } from 'react';
 
-const SelectBlockchain = (): JSX.Element => {
-  const blockchains = [
+
+interface BlockchainProps {
+  id: string;
+  name: string;
+  description: string;
+  logo: string;
+}
+
+interface Props {
+  current: string;
+  onChange: (value: string) => void;
+}
+const SelectBlockchain = ({current, onChange}:Props): JSX.Element => {
+  const blockchains:BlockchainProps[] = [
     {
-      id: 1,
+      id: 'ethereum',
       name: 'Ethereum',
       description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed euismod, nisi eu consectetur euismod, nisl nisl consectetur nisl, eu tincidunt nisl nisl euismod nisl.',
       logo: '/images/logos/ethereum.svg',
     },
     {
-      id: 2,
+      id: 'dfinity',
       name: 'Dfinity Internet Computer',
       description: 'Dfinity bla bla bla',
       logo: '/images/logos/dfinity.svg',
     },
     {
-      id: 3,
+      id: 'near',
       name: 'Near',
       description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed euismod, nisi eu consectetur euismod, nisl nisl consectetur nisl, eu tincidunt nisl nisl euismod nisl.',
       logo: '/images/logos/near.svg',
     },
     {
-      id: 4,
+      id: 'solana',
       name: 'Solana',
       description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed euismod, nisi eu consectetur euismod, nisl nisl consectetur nisl, eu tincidunt nisl nisl euismod nisl.',
       logo: '/images/logos/solana.svg',
     },
     {
-      id: 5,
+      id: 'polygon',
       name: 'Polygon',
       description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed euismod, nisi eu consectetur euismod, nisl nisl consectetur nisl, eu tincidunt nisl nisl euismod nisl.',
       logo: '/images/logos/polygon.svg',
@@ -41,10 +53,16 @@ const SelectBlockchain = (): JSX.Element => {
     return classes.filter(Boolean).join(' ');
   }
 
-  const [selected, setSelected] = useState(blockchains[1]);
+  const defaultSelected = blockchains.find(b => b.id === current);
 
+  const [selected, setSelected] = useState(defaultSelected || blockchains [1]);
+
+  const handleSelect = (value: BlockchainProps) => {
+    setSelected(value);
+    onChange(value.id);
+  }
   return (
-    <Listbox value={selected} onChange={setSelected}>
+    <Listbox value={selected} onChange={handleSelect}>
       {({ open }) => (
         <>
           <Listbox.Label className="block text-sm font-medium text-gray-700 dark:text-gray-100">

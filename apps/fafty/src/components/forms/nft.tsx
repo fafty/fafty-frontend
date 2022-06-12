@@ -1,8 +1,7 @@
 import dynamic from 'next/dynamic';
-import {ChangeEventHandler, lazy, Suspense, useState} from 'react';
-import {Controller, useForm} from 'react-hook-form';
-
-import {EditorPlaceholder} from '@fafty-frontend/shared/ui';
+import { ChangeEventHandler, lazy, Suspense, useRef, useState } from 'react';
+import { Controller, useForm } from 'react-hook-form';
+import { EditorPlaceholder } from '@fafty-frontend/shared/ui';
 
 const SelectBlockchain = lazy(() => import('./components/selectBlockchain'));
 
@@ -22,41 +21,33 @@ const Editor = dynamic<EditorProps>(
   () => import('@fafty-frontend/editor').then((mod) => mod.Editor),
   {
     ssr: false,
-    loading: () => <EditorPlaceholder/>,
+    loading: () => <EditorPlaceholder />,
   }
 );
 
-// const onDescriptionChange = (e: any) => {
-//   console.log('create page editorState', e);
-// };
-
-// const onUnlockableContentChange = (unlockableContent: JSON) => {
-//   console.log('create page unlockableContent', unlockableContent);
-// };
-
-export default function NftForm() {
+interface FormProps {
+  name: string;
+  description: string;
+  unlockableContent: string;
+  supplyUnits: number;
+  blockchain: string;
+}
+interface Props {
+  data: FormProps;
+  onSubmit: (data: FormProps) => void;
+}
+const NftForm = ({ data, onSubmit }: Props): JSX.Element => {
   const [hasUnlockableContent, setHasUnlockableContent] = useState(false);
-
-  // const handleChangeUnlockableContent = ({
-  //   name,
-  //   value,
-  // }: {
-  //   name: string;
-  //   value: boolean;
-  // }) => {
-  //   console.log('create page handleChangeUnlockableContent', name, value);
-  //   setHasUnlockableContent(value);
-  // };
 
   const {
     control,
     register,
     handleSubmit,
-    formState: {errors},
+    formState: { errors },
   } = useForm();
 
   return (
-    <form onSubmit={handleSubmit((data) => console.log(data))}>
+    <form onSubmit={handleSubmit((data) => { onSubmit(data as FormProps)} )}>
       <div className="mb-5 relative">
         <label
           htmlFor="item-name"
@@ -74,8 +65,8 @@ export default function NftForm() {
           } text-gray-700 dark:text-gray-100 dark:bg-neutral-900/90 mt-1 border focus:outline-none rounded-md shadow-sm focus:border-gray-500 focus:shadow w-full p-3 h-12`}
           placeholder="Enter name of Nft"
           autoComplete="off"
-          defaultValue="test"
-          {...(errors.name && {'aria-invalid': true})}
+          defaultValue={data.name}
+          {...(errors.name && { 'aria-invalid': true })}
           {...register('name', {
             required: true,
             minLength: 5,
@@ -107,7 +98,7 @@ export default function NftForm() {
             minLength: 5,
             maxLength: 30,
           }}
-          render={({field}) => (
+          render={({ field }) => (
             <Editor
               {...field}
               initialEditorState={field.value}
@@ -157,8 +148,7 @@ export default function NftForm() {
               } Unlockable Content`}
               onChange={(e) => setHasUnlockableContent(e.target.checked)}
             />
-            <div
-              className="w-14 h-7 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-[4px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-6 after:w-6 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>
+            <div className="w-14 h-7 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-[4px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-6 after:w-6 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>
           </label>
         </div>
       </div>
@@ -170,19 +160,18 @@ export default function NftForm() {
             // defaultValue="acasc  cacascacsasca"
             rules={{
               required: true,
-              minLength: 5,
-              maxLength: 30,
+              maxLength: 300,
             }}
-            render={({field}) => (
+            render={({ field }) => (
               <Editor
                 {...field}
-                {...(errors.unlockableContent && {'aria-invalid': true})}
+                {...(errors.unlockableContent && { 'aria-invalid': true })}
                 initialEditorState={field.value}
                 name="unlockableContent"
-                // onChange={onUnlockableContentChange}
                 placeholder={
                   'Enter content (access key, code to redeem, link to a file, etc.)'
                 }
+                isRichText={false}
                 hasError={errors.unlockableContent}
               />
             )}
@@ -221,9 +210,9 @@ export default function NftForm() {
               : 'border-gray-200 dark:border-neutral-800'
           } text-gray-700 dark:text-gray-100 dark:bg-neutral-900/90 mt-1 border focus:outline-none rounded-md shadow-sm focus:border-gray-500 focus:shadow w-full p-3 h-12`}
           placeholder="Enter of supply units"
-          defaultValue="1"
+          defaultValue={data.supplyUnits}
           min="1"
-          {...(errors.supplyUnits && {'aria-invalid': true})}
+          {...(errors.supplyUnits && { 'aria-invalid': true })}
           {...register('supplyUnits', {
             required: true,
             min: 1,
@@ -239,9 +228,21 @@ export default function NftForm() {
         </span>
       </div>
       <Suspense fallback={<div>Loading...</div>}>
-        <SelectBlockchain/>
+        <Controller
+          name="blockchain"
+          control={control}
+          defaultValue={data.blockchain}
+          render={({ field }) => (
+            <SelectBlockchain
+              {...field}
+              current={field.value}
+            />
+          )}
+        />
       </Suspense>
-      <input type="submit"/>
+      <input type="submit" />
     </form>
   );
-}
+};
+
+export default NftForm;

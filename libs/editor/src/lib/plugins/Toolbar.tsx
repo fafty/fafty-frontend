@@ -41,28 +41,27 @@ import {
   getCodeLanguages,
 } from '@lexical/code';
 import { IS_APPLE } from '../enviroments';
-import {
-  TextIndentLeft,
-  TextIndentRight,
-  ArrowCounterclockwise,
-  ArrowClockwise,
-  TextParagraph,
-  TypeH1,
-  TypeH2,
-  TypeH3,
-  TypeBold,
-  TypeItalic,
-  TypeUnderline,
-  TypeStrikethrough,
-  TextLeft,
-  TextRight,
-  TextCenter,
-  Justify,
-  ListUl,
-  ListOl,
-  ChatSquareQuote,
-  Code,
-} from 'react-bootstrap-icons';
+import {ReactComponent as TextIndentLeft} from '../icons/text-indent-left.svg'
+import {ReactComponent as TextIndentRight} from '../icons/text-indent-right.svg'
+import {ReactComponent as ArrowCounterclockwise} from '../icons/arrow-counterclockwise.svg'
+import {ReactComponent as ArrowClockwise} from '../icons/arrow-clockwise.svg'
+import {ReactComponent as TextParagraph} from '../icons/text-paragraph.svg'
+import {ReactComponent as TypeH1} from '../icons/type-h1.svg'
+import {ReactComponent as TypeH2} from '../icons/type-h2.svg'
+import {ReactComponent as TypeH3} from '../icons/type-h3.svg'
+import {ReactComponent as TypeBold} from '../icons/type-bold.svg'
+import {ReactComponent as TypeItalic} from '../icons/type-italic.svg'
+import {ReactComponent as TypeUnderline} from '../icons/type-underline.svg'
+import {ReactComponent as TypeStrikethrough} from '../icons/type-strikethrough.svg'
+import {ReactComponent as TextLeft} from '../icons/text-left.svg'
+import {ReactComponent as TextRight} from '../icons/text-right.svg'
+import {ReactComponent as TextCenter} from '../icons/text-center.svg'
+import {ReactComponent as Justify} from '../icons/justify.svg'
+import {ReactComponent as ListUl} from '../icons/list-ul.svg'
+import {ReactComponent as ListOl} from '../icons/list-ol.svg'
+import {ReactComponent as ChatSquareQuote} from '../icons/chat-square-quote.svg'
+import {ReactComponent as Code} from '../icons/code.svg'
+
 import Dropdown from '../ui/dropdown';
 
 const supportedBlockTypes: Set<string> = new Set([

@@ -1,9 +1,84 @@
 import MainLayout from "../../layouts/main"
 
-export default function Nft() {
+import { useRouter } from 'next/router';
+import api from '../../api';
+import { useEffect, useMemo, useState } from "react";
 
+interface BreadcrumbProps {
+  name: string;
+  href?: string;
+}
+interface NftProps {
+  category: string;
+  name: string;
+  description: string;
+  image: string;
+  slug: string;
+  price: string;
+  owner: string;
+  id: string;
+  tokenId: string;
+  createdAt: string;
+  updatedAt: string;
+}
+export default function Nft() {
+  const param = useRouter();
+  const { id } = param.query;
+  const breadcrumb: BreadcrumbProps[] = useMemo(() => [], []);
+
+  const [detail, setDetail] = useState<NftProps | null>(null);
+  const [isLoading, setLoading] = useState(false);
+  const [isError, setError] = useState(false);
+  
+
+  useEffect(() => {
+    const fetchData = async () => {
+      setLoading(true);
+      if (id) {
+        const response = await api.get<NftProps>(`api/posts/${id}`);
+
+        if (response.data) {
+          breadcrumb.push({
+            name: 'Fafty',
+            href: `/`
+          });
+          breadcrumb.push({
+            name: response.data.category,
+            href: `/assets/${response.data.slug}`
+          });
+          breadcrumb.push({
+            name: response.data.name
+          });
+          setDetail(response.data);
+          setLoading(false);
+        } else {
+          setError(true);
+        }
+      }
+    };
+    fetchData();
+
+    return () => {
+      setLoading(false);
+      setError(false);
+      setDetail(null);
+      breadcrumb.length = 0;
+    };
+  }, [id, breadcrumb]);
+
+  if (isLoading) {
+    return <MainLayout title={""} description={""}>
+      <div className="flex justify-center">
+        <div className="spinner"></div>
+      </div>
+    </MainLayout>
+  }
+
+  if (isError) return <div>Failed to load</div>;
+  if (!detail) return <p>No data</p>;
+  
   return (
-    <MainLayout title={""} description={""}>
+    <MainLayout title={detail.name} description={detail.description}>
       <div className="grid sm:grid-cols-1 md:grid-cols-[1fr,350px] lg:grid-cols-[1fr,400px] grid-rows-3 gap-y-16 sm:gap-x-2 md:gap-x-4 lg:gap-x-8 xl:gap-x-10 2xl:gap-x-13  py-24 px-4">
         <div className="row-start-1 row-span-2 lg:mr-10 ">
           <div className="bg-gray-200 flex rounded-2xl overflow-hidden w-full h-full group">

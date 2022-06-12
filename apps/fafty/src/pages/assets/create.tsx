@@ -8,6 +8,7 @@ import {
   UploaderPlaceholder,
 } from '@fafty-frontend/shared/ui';
 import NftForm from "../../components/forms/nft";
+import { data } from 'autoprefixer';
 
 interface ExistingFileProps {
   id: string;
@@ -44,6 +45,17 @@ const onUploaderChange = () => {
   console.log('create page onUploaderChange');
 };
 
+const onSubmit = (data: any) => {
+  console.log('create page onSubmit', data);
+}
+
+const defaultData = {
+  name: '',
+  description: '',
+  unlockableContent: '',
+  supplyUnits: 1,
+  blockchain: 'ethereum',
+}
 export default function Create() {
   return (
     <MainLayout title={'Create Nft'} description={'Create Nft description'}>
@@ -56,7 +68,7 @@ export default function Create() {
           </div>
         </div>
         <div className="py-10 lg:pl-4 lg:pt-6 lg:pb-16 lg:col-start-2 lg:col-span-2 lg:border-l lg:border-gray-200 dark:lg:border-neutral-700 lg:pr-8">
-          <NftForm />
+          <NftForm data={defaultData} onSubmit={onSubmit} />
         </div>
       </div>
     </MainLayout>

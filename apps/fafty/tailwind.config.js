@@ -7,9 +7,9 @@ module.exports = {
   mode: 'jit',
   presets: [require('../../tailwind-workspace-preset.js')],
   content: [
-    join(__dirname, 'pages/**/*.{js,ts,jsx,tsx}'),
-    join(__dirname, 'components/**/*!(*.stories|*.spec).{ts,tsx}'),
-    join(__dirname, 'layouts/**/*!(*.stories|*.spec).{ts,tsx}'),
+    join(__dirname, 'src/pages/**/*.{js,ts,jsx,tsx}'),
+    join(__dirname, 'src/components/**/*!(*.stories|*.spec).{ts,tsx}'),
+    join(__dirname, 'src/layouts/**/*!(*.stories|*.spec).{ts,tsx}'),
     ...createGlobPatternsForDependencies(__dirname),
   ],
   darkMode: 'class', // or 'media' or 'class'
