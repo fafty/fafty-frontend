@@ -16,26 +16,26 @@ const pagesLinks = [
   {
     name: 'Bundles',
     description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
-    href: '/assets/create',
+    href: '/account/assets/create',
     icon: ChartBarIcon,
   },
   {
     name: 'Nfts',
     description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
-    href: '/assets/create',
+    href: '/account/assets/create',
     icon: CursorClickIcon,
   }
 ]
 const createLinks = [
   {
     name: 'Add Bundle',
-    href: '/assets/create',
+    href: '/account/assets/create',
     description: 'description Add bundle',
     icon: GalleryIcon,
   },
   {
     name: 'Add Nft',
-    href: '/assets/create',
+    href: '/account/assets/create',
     description: 'description Add nft',
     icon: ImageAddIcon,
   },

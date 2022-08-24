@@ -1,4 +1,4 @@
-import { MutableRefObject, useEffect, useState } from 'react';
+import { MutableRefObject, useEffect, useLayoutEffect, useState } from 'react';
 
 const useOnScreen = <T extends Element>(
   ref: MutableRefObject<T>,
@@ -6,7 +6,7 @@ const useOnScreen = <T extends Element>(
 ): boolean => {
   // State and setter for storing whether element is visible
   const [isIntersecting, setIntersecting] = useState<boolean>(false);
-  useEffect(() => {
+  useLayoutEffect(() => {
     const observer = new IntersectionObserver(
       ([entry]) => {
         // Update our state when observer callback fires

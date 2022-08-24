@@ -3,6 +3,8 @@
   "projects": {
     "editor": "libs/editor",
     "fafty": "apps/fafty",
+    "fafty-creator": "apps/fafty-creator",
+    "fafty-creator-e2e": "apps/fafty-creator-e2e",
     "fafty-e2e": "apps/fafty-e2e",
     "notifications": "libs/notifications",
     "shared-ui": "libs/shared/ui",

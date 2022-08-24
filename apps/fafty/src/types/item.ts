@@ -1,17 +1,17 @@
 export default interface ItemProps {
   token: number
-  title: string
-  body?: string
+  name: string
+  description?: string
   price?: number
   ticker?: string
   edit_count?: number
   slug: string
   type?: string
-  thumbnail: {
+  asset: {
     src: string
     dominant_color?: string
   }
-  adult_content?: boolean
+  sensitive_content?: boolean
   properties?: object
   contract_address?: string
   token_id?: number

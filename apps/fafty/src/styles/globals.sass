@@ -116,10 +116,12 @@
 .dragdrop-browse
   color: #007be8
 .attachment-container-preview
-  display: -ms-flexbox
-  display: flex
-  -ms-flex-wrap: wrap
-  flex-wrap: wrap
+  // display: -ms-flexbox
+  // display: flex
+  // -ms-flex-wrap: wrap
+  // flex-wrap: wrap
+  flex-grow: 1
+  height: 100%
   .attachment-preview
     border: none
     box-shadow: none
@@ -278,6 +280,8 @@
           display: flex
 .attachment-container-preview.cover
   .attachment-preview
+    flex-grow: 1
+    height: 100%
     flex: 0 0 100%
     width: 100%
     max-width: 100%
@@ -723,296 +727,353 @@ svg.UppyIcon-progressCircle
   &:nth-child(3).active ~ .tab-item-animate
     transform: translateX(calc(33.333% * 2)) scaleX(0.333)
 
+.collection-slider
+  position: relative
+  width: 100%
+  margin-top: 5px
+  margin-bottom: 5px
+  .navigation-wrapper
+    transition: visibility 0.3s ease 0.3s, opacity 300ms ease 0.3s
+    @apply block z-10 absolute box-border top-[calc(50%_+_5px)] translate-y-[-50%] will-change-transform
+    &.left
+      @apply left-0
+      transform: translate(calc(-50% + 0px), -50%)
+    &.right
+      @apply right-0
+      transform: translate(calc(50% + 0px), -50%)
+    .navigation
+      margin: 10px
+      @apply rounded-full bg-white dark:bg-neutral-700 dark:hover:bg-neutral-600
+      .button
+        -webkit-tap-highlight-color: transparent
+        tap-highlight-color: transparent
+        @apply w-8 h-8 rounded-full box-border justify-center p-0 m-0 cursor-pointer flex relative drop-shadow-md shadow-md dark:text-gray-200 touch-manipulation items-center select-none border-0 list-none outline-none decoration-0
+  .wrapper-items
+    @apply relative z-0 overflow-x-hidden overflow-y-hidden w-full pt-3 -mt-3 -mb-3 will-change-scroll
+  .items
+    // font-family: inherit
+    padding-bottom: 32px
+    -ms-scroll-snap-type: x mandatory
+    scroll-snap-type: x mandatory
+    scroll-padding: 48px
+    box-sizing: border-box
+    width: calc(100% + 88px)
+    scrollbar-width: none
+    margin-bottom: -20px
+    margin-left: -44px
+    margin-right: -44px
+    display: flex
+    -webkit-overflow-scrolling: touch
+    overflow-scrolling: touch
+    white-space: nowrap
+    scroll-snap-destination: 0 100%
+    overflow-y: auto
+    overflow-x: scroll
+    padding-top: 8px
+    -webkit-scroll-snap-points-x: repeat(calc(100% - 128px))
+    scroll-snap-points-x: repeat(calc(100% - 128px))
+    scroll-behavior: smooth
+    .item
+      font-family: inherit
+      // width: calc((100% - 88px)/6 - 8px) // temp solution disabling // @media (max-width: 1553px) and (min-width: 1396px)
+      // width: calc((100% - 88px)/10 - 8px)
+      box-sizing: border-box
+      scroll-snap-align: start
+      flex-shrink: 0
+      white-space: normal
+      display: flex
+      align-items: stretch
+      margin-left: 4px
+      margin-right: 4px
 .items-slider
   position: relative
   width: 100%
   margin-top: 10px
   margin-bottom: 10px
-
-.navigation-wrapper
-  // display: block
-  // z-index: 1
-  // overflow-y: hidden
-  // overflow-x: hidden
-  // box-sizing: border-box
-  // position: absolute
-  // top: calc(50% - 20px)
-  // opacity: 1
-  // transition-timing-function: ease
-  // transition-duration: .3s
-  // transition-property: opacity
-  // transform: translateY(-50%)
-  // transition-timing-function: ease
-  transition: visibility 0.3s ease 0.3s, opacity 300ms ease 0.3s
-  @apply block z-10 absolute box-border top-[calc(50%_-_20px)] translate-y-[-50%] will-change-transform
-  &.left
-    @apply left-0
-    // left: 0px
-    transform: translate(calc(-50% + 0px), -50%)
-  &.right
-    right: 0px
-    transform: translate(calc(50% + 0px), -50%)
-  .navigation
-    // border-radius: 50%
-    margin: 10px
-    // box-shadow: 0 2px 8px var(--shadow-1)
-    // background-color: var(--card-background-color)
-    @apply rounded-full bg-white dark:bg-neutral-700 dark:hover:bg-neutral-600
-    .button
-      // width: 48px
-      // height: 48px
-      // justify-content: center
+  .navigation-wrapper
+    // display: block
+    // z-index: 1
+    // overflow-y: hidden
+    // overflow-x: hidden
+    // box-sizing: border-box
+    // position: absolute
+    // top: calc(50% - 20px)
+    // opacity: 1
+    // transition-timing-function: ease
+    // transition-duration: .3s
+    // transition-property: opacity
+    // transform: translateY(-50%)
+    // transition-timing-function: ease
+    transition: visibility 0.3s ease 0.3s, opacity 300ms ease 0.3s
+    @apply block z-10 absolute box-border top-[calc(50%_-_20px)] translate-y-[-50%] will-change-transform
+    &.left
+      @apply left-0
+      // left: 0px
+      transform: translate(calc(-50% + 0px), -50%)
+    &.right
+      right: 0px
+      transform: translate(calc(50% + 0px), -50%)
+    .navigation
       // border-radius: 50%
-      // padding: 0
-      // box-sizing: border-box
-      // margin: 0
-      -webkit-tap-highlight-color: transparent
-      tap-highlight-color: transparent
-      // cursor: pointer
-      // color: var(--page-text-color)
-      @apply w-12 h-12 rounded-full box-border justify-center p-0 m-0 cursor-pointer flex relative drop-shadow-md shadow-md dark:text-gray-200 touch-manipulation items-center select-none border-0 list-none outline-none decoration-0
-      // box-shadow: 0 0 0 1px var(--shadow-1)
-      // position: relative
-      // display: flex
-      // text-align: inherit
-      // touch-action: manipulation
-      // align-items: center
-      // -webkit-user-select: none
-      // border-width: 0
-      // border: 0
-      // list-style: none
-      // outline: none
-      // text-decoration: none
-      // &:hover
-      //   background-color: var(--dropdown-item-hover-background-color)
-.wrapper-items
-  @apply relative z-0 overflow-x-hidden overflow-y-hidden w-full pt-3 -mt-3 -mb-3 will-change-scroll
-  // overflow-y: hidden
-  // overflow-x: hidden
-  // width: 100%
-  // padding-top: 10px
-  // margin-top: -10px
-  // margin-bottom: -10px
-  // // font-family: inherit
-  // position: relative
-  // z-index: 0
-.items
-  // font-family: inherit
-  padding-bottom: 32px
-  -ms-scroll-snap-type: x mandatory
-  scroll-snap-type: x mandatory
-  scroll-padding: 48px
-  box-sizing: border-box
-  width: calc(100% + 88px)
-  scrollbar-width: none
-  margin-bottom: -20px
-  margin-left: -44px
-  margin-right: -44px
-  display: flex
-  -webkit-overflow-scrolling: touch
-  overflow-scrolling: touch
-  white-space: nowrap
-  scroll-snap-destination: 0 100%
-  overflow-y: auto
-  overflow-x: scroll
-  padding-top: 8px
-  -webkit-scroll-snap-points-x: repeat(calc(100% - 128px))
-  scroll-snap-points-x: repeat(calc(100% - 128px))
-  scroll-behavior: smooth
-  .item
-    font-family: inherit
-    // width: calc((100% - 88px)/6 - 8px) // temp solution disabling // @media (max-width: 1553px) and (min-width: 1396px)
-    // width: calc((100% - 88px)/10 - 8px)
-    box-sizing: border-box
-    scroll-snap-align: start
-    flex-shrink: 0
-    white-space: normal
-    display: flex
-    align-items: stretch
-    margin-left: 4px
-    margin-right: 4px
-    // flex-basis: 0px
-@media (min-width: 300px) and (max-width: 564px)
-  .item
-    width: calc((100% - 88px)/2 - 8px)
-@media (min-width: 565px) and (max-width: 739px)
-  .item
-    width: calc((100% - 88px)/3 - 8px)
-@media (min-width: 740px) and (max-width: 889px)
-  .item
-    width: calc((100% - 88px)/4 - 8px)
-@media (min-width: 890px) and (max-width: 1079px)
-  .item
-    width: calc((100% - 88px)/5 - 8px)
-@media (min-width: 1080px) and (max-width: 10000px)
-  .item
-    width: calc((100% - 88px)/6 - 8px)
-
-.item
-  // flex-basis: 0px
-  .item-wrapper
-    display: flex
-    width: 100%
-    height: 100%
-    // min-width: 150px
-    min-width: 164.5px
-    &.game
-      min-width: 137px
-    &.user
-      min-width: 137px
-    &.offer
-      max-width: 336.5px
-    &.offer .item-card-body
-      // max-width: 336.5px !important
-    .item-block
-      font-family: inherit
-      position: relative
-      width: 100%
-      display: flex
-      flex-grow: 1
-      .item-card
-        font-family: inherit
-        border-radius: 8px
-        overflow-y: hidden
-        // box-shadow: 0 1px 2px var(--shadow-2)
-        box-sizing: border-box
-        overflow-x: hidden
-        position: relative
-        width: 100%
-        @apply bg-white dark:bg-neutral-800 dark:hover:bg-neutral-700 transition duration-150 ease-in-out
-        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2)
+      margin: 10px
+      // box-shadow: 0 2px 8px var(--shadow-1)
+      // background-color: var(--card-background-color)
+      @apply rounded-full bg-white dark:bg-neutral-700 dark:hover:bg-neutral-600
+      .button
+        // width: 48px
+        // height: 48px
+        // justify-content: center
+        // border-radius: 50%
+        // padding: 0
+        // box-sizing: border-box
+        // margin: 0
+        -webkit-tap-highlight-color: transparent
+        tap-highlight-color: transparent
+        // cursor: pointer
+        // color: var(--page-text-color)
+        @apply w-12 h-12 rounded-full box-border justify-center p-0 m-0 cursor-pointer flex relative drop-shadow-md shadow-md dark:text-gray-200 touch-manipulation items-center select-none border-0 list-none outline-none decoration-0
+        // box-shadow: 0 0 0 1px var(--shadow-1)
+        // position: relative
+        // display: flex
+        // text-align: inherit
+        // touch-action: manipulation
+        // align-items: center
+        // -webkit-user-select: none
+        // border-width: 0
+        // border: 0
+        // list-style: none
+        // outline: none
+        // text-decoration: none
         // &:hover
         //   background-color: var(--dropdown-item-hover-background-color)
-        a.item-card-link
-          min-height: 0
-          padding-right: 0
+  .wrapper-items
+    @apply relative z-0 overflow-x-hidden overflow-y-hidden w-full pt-3 -mt-3 -mb-3 will-change-scroll
+    // overflow-y: hidden
+    // overflow-x: hidden
+    // width: 100%
+    // padding-top: 10px
+    // margin-top: -10px
+    // margin-bottom: -10px
+    // // font-family: inherit
+    // position: relative
+    // z-index: 0
+  .items
+    // font-family: inherit
+    padding-bottom: 32px
+    -ms-scroll-snap-type: x mandatory
+    scroll-snap-type: x mandatory
+    scroll-padding: 48px
+    box-sizing: border-box
+    width: calc(100% + 88px)
+    scrollbar-width: none
+    margin-bottom: -20px
+    margin-left: -44px
+    margin-right: -44px
+    display: flex
+    -webkit-overflow-scrolling: touch
+    overflow-scrolling: touch
+    white-space: nowrap
+    scroll-snap-destination: 0 100%
+    overflow-y: auto
+    overflow-x: scroll
+    padding-top: 8px
+    -webkit-scroll-snap-points-x: repeat(calc(100% - 128px))
+    scroll-snap-points-x: repeat(calc(100% - 128px))
+    scroll-behavior: smooth
+    .item
+      font-family: inherit
+      // width: calc((100% - 88px)/6 - 8px) // temp solution disabling // @media (max-width: 1553px) and (min-width: 1396px)
+      // width: calc((100% - 88px)/10 - 8px)
+      box-sizing: border-box
+      scroll-snap-align: start
+      flex-shrink: 0
+      white-space: normal
+      display: flex
+      align-items: stretch
+      margin-left: 4px
+      margin-right: 4px
+      // flex-basis: 0px
+  @media (min-width: 300px) and (max-width: 564px)
+    .item
+      width: calc((100% - 88px)/2 - 8px)
+  @media (min-width: 565px) and (max-width: 739px)
+    .item
+      width: calc((100% - 88px)/3 - 8px)
+  @media (min-width: 740px) and (max-width: 889px)
+    .item
+      width: calc((100% - 88px)/4 - 8px)
+  @media (min-width: 890px) and (max-width: 1079px)
+    .item
+      width: calc((100% - 88px)/5 - 8px)
+  @media (min-width: 1080px) and (max-width: 10000px)
+    .item
+      width: calc((100% - 88px)/6 - 8px)
+
+  .item
+    // flex-basis: 0px
+    .item-wrapper
+      display: flex
+      width: 100%
+      height: 100%
+      // min-width: 150px
+      min-width: 164.5px
+      &.game
+        min-width: 137px
+      &.user
+        min-width: 137px
+      &.offer
+        max-width: 336.5px
+      &.offer .item-card-body
+        // max-width: 336.5px !important
+      .item-block
+        font-family: inherit
+        position: relative
+        width: 100%
+        display: flex
+        flex-grow: 1
+        .item-card
+          font-family: inherit
+          border-radius: 8px
+          overflow-y: hidden
+          // box-shadow: 0 1px 2px var(--shadow-2)
           box-sizing: border-box
-          padding-bottom: 0
-          flex-shrink: 0
-          margin-bottom: 0
-          -webkit-tap-highlight-color: transparent
-          tap-highlight-color: transparent
-          cursor: pointer
-          flex-basis: auto
+          overflow-x: hidden
           position: relative
-          margin-top: 0
           width: 100%
-          padding-top: 0
-          display: flex
-          text-align: inherit
-          min-width: 0
-          margin-left: 0
-          align-items: stretch
-          background-color: transparent
-          touch-action: manipulation
-          z-index: 0
-          height: 100%
-          margin-right: 0
-          flex-direction: column
-          -webkit-user-select: none
-          -ms-user-select: none
-          user-select: none
-          padding-left: 0
-          border-color: rgba(0,0,0, 0.4)
-          border-left-width: 0
-          border-top-width: 0
-          border-bottom-width: 0
-          // border-style: solid
-          list-style: none
-          outline: none !important
-          text-decoration: none
-          .thumbnail-wrapper
+          @apply bg-white dark:bg-neutral-800 dark:hover:bg-neutral-700 transition duration-150 ease-in-out
+          box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2)
+          // &:hover
+          //   background-color: var(--dropdown-item-hover-background-color)
+          a.item-card-link
+            min-height: 0
+            padding-right: 0
+            box-sizing: border-box
+            padding-bottom: 0
+            flex-shrink: 0
+            margin-bottom: 0
+            -webkit-tap-highlight-color: transparent
+            tap-highlight-color: transparent
+            cursor: pointer
+            flex-basis: auto
             position: relative
+            margin-top: 0
             width: 100%
-            height: 0
-            .thumbnail
-              min-width: 0
-              min-height: 0
-              box-sizing: border-box
+            padding-top: 0
+            display: flex
+            text-align: inherit
+            min-width: 0
+            margin-left: 0
+            align-items: stretch
+            background-color: transparent
+            touch-action: manipulation
+            z-index: 0
+            height: 100%
+            margin-right: 0
+            flex-direction: column
+            -webkit-user-select: none
+            -ms-user-select: none
+            user-select: none
+            padding-left: 0
+            border-color: rgba(0,0,0, 0.4)
+            border-left-width: 0
+            border-top-width: 0
+            border-bottom-width: 0
+            // border-style: solid
+            list-style: none
+            outline: none !important
+            text-decoration: none
+            .thumbnail-wrapper
+              position: relative
+              width: 100%
+              height: 0
+              .thumbnail
+                min-width: 0
+                min-height: 0
+                box-sizing: border-box
+                position: absolute
+                top: 0
+                bottom: 0
+                left: 0
+                right: 0
+                margin-top: 0
+                margin-bottom: 0
+                margin-left: 0
+                margin-right: 0
+                padding-top: 0
+                padding-bottom: 0
+                padding-right: 0
+                display: flex
+                justify-content: space-between
+                align-items: stretch
+                flex-shrink: 1
+                flex-direction: column
+                flex-grow: 1
+                z-index: 0
+                padding-left: 0
+                // border-style: solid
+                img
+                  display: inline-block
+                  width: 100%
+                  height: 100%
+                  object-fit: cover
+                  border: 0
+              &.game
+                padding-top: 150% // custom for diferent variants
+              &.user
+                padding-top: 100% // custom for diferent variants
+              &.offer
+                padding-top: 60%
+              &.nft
+                padding-top: 100%
+            .item-card-body
+              @apply text-slate-800 dark:text-slate-200
+              // color: var(--page-text-color)
+              -webkit-font-smoothing: antialiased
+              font-smoothing: antialiased
+              display: flex
+              padding: 12px
+              flex-direction: column
+              flex-grow: 1
+              // max-width: 164px // temp solution
+              .item-card-content
+                display: flex
+                flex-direction: column
+                margin-top: -5px
+                margin-bottom: -5px
+                font-size: .7375rem
+                .item-head
+                  @apply flex
+                  flex-wrap: nowrap
+                  .item-price
+                    @apply ml-auto text-xs font-bold text-green-500 border-2 border-green-500 rounded px-1 py-1
+                    flex-shrink: 0
+                    align-self: flex-start
+                .item-card-title
+                  display: flex
+                  flex-direction: column
+                  word-break: break-word
+                  margin-bottom: 5px
+                  span
+                    font-weight: 600
+                    font-size: .9375rem
+                    text-align: left
+                    max-width: 100%
+                    word-wrap: break-word
+                    display: block
+                    line-height: 1.3333
+              .item-card-action
+                margin-top: auto
+                padding-top: 20px
+                button
+                  @apply font-medium font-semibold text-gray-900 dark:text-gray-50 bg-gray-200 dark:bg-neutral-700 hover:bg-gray-300 mb-1 w-full rounded-[7px] px-2 py-2 focus:outline-none transition duration-150 ease-in-out
+            .item-hover
+              background-color: rgba(0, 0, 0, 0.05)
+              border-radius: inherit
               position: absolute
               top: 0
               bottom: 0
               left: 0
               right: 0
-              margin-top: 0
-              margin-bottom: 0
-              margin-left: 0
-              margin-right: 0
-              padding-top: 0
-              padding-bottom: 0
-              padding-right: 0
-              display: flex
-              justify-content: space-between
-              align-items: stretch
-              flex-shrink: 1
-              flex-direction: column
-              flex-grow: 1
-              z-index: 0
-              padding-left: 0
-              // border-style: solid
-              img
-                display: inline-block
-                width: 100%
-                height: 100%
-                object-fit: cover
-                border: 0
-            &.game
-              padding-top: 150% // custom for diferent variants
-            &.user
-              padding-top: 100% // custom for diferent variants
-            &.offer
-              padding-top: 60%
-            &.nft
-              padding-top: 100%
-          .item-card-body
-            @apply text-slate-800 dark:text-slate-200
-            // color: var(--page-text-color)
-            -webkit-font-smoothing: antialiased
-            font-smoothing: antialiased
-            display: flex
-            padding: 12px
-            flex-direction: column
-            flex-grow: 1
-            // max-width: 164px // temp solution
-            .item-card-content
-              display: flex
-              flex-direction: column
-              margin-top: -5px
-              margin-bottom: -5px
-              font-size: .7375rem
-              .item-head
-                @apply flex
-                flex-wrap: nowrap
-                .item-price
-                  @apply ml-auto text-xs font-bold text-green-500 border-2 border-green-500 rounded px-1 py-1
-                  flex-shrink: 0
-                  align-self: flex-start
-              .item-card-title
-                display: flex
-                flex-direction: column
-                word-break: break-word
-                margin-bottom: 5px
-                span
-                  font-weight: 600
-                  font-size: .9375rem
-                  text-align: left
-                  max-width: 100%
-                  word-wrap: break-word
-                  display: block
-                  line-height: 1.3333
-            .item-card-action
-              margin-top: auto
-              padding-top: 20px
-              button
-                @apply font-medium font-semibold text-gray-900 dark:text-gray-50 bg-gray-200 dark:bg-neutral-700 hover:bg-gray-300 mb-1 w-full rounded-[7px] px-2 py-2 focus:outline-none transition duration-150 ease-in-out
-          .item-hover
-            background-color: rgba(0, 0, 0, 0.05)
-            border-radius: inherit
-            position: absolute
-            top: 0
-            bottom: 0
-            left: 0
-            right: 0
-            pointer-events: none
-            opacity: 0
-            transition-property: opacity
+              pointer-events: none
+              opacity: 0
+              transition-property: opacity

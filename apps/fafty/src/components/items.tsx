@@ -6,6 +6,7 @@ import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/outline';
 import { useNotifications } from '@fafty-frontend/notifications';
 import { useDebouncedCallback } from '../hooks';
 import classNames from 'classnames';
+import api from '../api';
 
 type Props = {
   items: ItemProps[];

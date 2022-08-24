@@ -1,4 +1,4 @@
-import { FC, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import NotificationItem from './components/item';
 import Context from './context';
 import useSound from 'use-sound';

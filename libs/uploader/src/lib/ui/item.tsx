@@ -48,12 +48,12 @@ const Label = ({ item, progress }: { item: any, progress: any }): JSX.Element =>
 const Item = ({
   engine,
   item,
-  previewHeight,
+  // previewHeight,
   onAction
 }: {
   engine: any,
   item: ThumbnailProps,
-  previewHeight: number,
+  // previewHeight: number,
   onAction: ({ id, globalId, action }: { id: string, globalId?: string, action: string,  reason: FileRemoveReason }) => void
 }) => {
 

@@ -39,8 +39,12 @@ const nextConfig = {
   experimental: {
     concurrentFeatures: true,
     // serverComponents: true,
-    images: { layoutRaw: true }
+    images: { allowFutureImage: true }
   },
+  images: {
+    domains: ['fafty-assets.s3.amazonaws.com']
+  },
+
   // swcMinify: true,
   compress: false,
   oweredByHeader: false,

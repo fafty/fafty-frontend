@@ -17,7 +17,7 @@ const nodes = [
     // TableRowNode,
     AutoLinkNode,
     LinkNode,
-    TypeaheadNode
+    // TypeaheadNode
 ];
 
 export default nodes;

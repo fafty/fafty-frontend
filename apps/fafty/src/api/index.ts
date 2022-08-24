@@ -7,14 +7,14 @@ const api = axios.create({
   paramsSerializer: params => qs.stringify(params, { encode: false })
 });
 
-api.interceptors.request.use(async config => {
-  const session = await getSession();
+// api.interceptors.request.use(async config => {
+//   const session = await getSession();
     
-  if (config.headers && session) {
-    config.headers.Authorization = `Bearer ${session.accessToken}`;
-  }
-  return config;
-});
+//   if (config.headers && session) {
+//     config.headers.Authorization = `Bearer ${session.accessToken}`;
+//   }
+//   return config;
+// });
 
 export const fetcher = (url: string) => api.get(url).then(res => res.data);
 

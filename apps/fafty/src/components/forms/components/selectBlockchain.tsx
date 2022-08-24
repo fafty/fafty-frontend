@@ -1,170 +1,340 @@
-import { Listbox, Transition } from '@headlessui/react';
-import Image from 'next/image';
-import { CheckIcon, SelectorIcon } from '@heroicons/react/solid';
-import { Fragment, useState } from 'react';
+import { useOnScreen } from '@fafty-frontend/usehooks';
+import { Transition, RadioGroup } from '@headlessui/react';
+import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/outline';
+import { useDebouncedCallback } from 'apps/fafty/src/hooks';
+import isClient from 'apps/fafty/src/utils/isClient';
+import classNames from 'classnames';
+import Image from 'next/future/image';
+import { MutableRefObject, SVGProps, useEffect, useRef, useState } from 'react';
 
-
-interface BlockchainProps {
+interface CollectionProps {
   id: string;
   name: string;
-  description: string;
   logo: string;
+  speed: string;
+  popularity: string;
+  fees: string;
+}
+interface ResponceProps {
+  record: CollectionProps;
 }
 
 interface Props {
   current: string;
   onChange: (value: string) => void;
 }
-const SelectBlockchain = ({current, onChange}:Props): JSX.Element => {
-  const blockchains:BlockchainProps[] = [
-    {
-      id: 'ethereum',
-      name: 'Ethereum',
-      description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed euismod, nisi eu consectetur euismod, nisl nisl consectetur nisl, eu tincidunt nisl nisl euismod nisl.',
-      logo: '/images/logos/ethereum.svg',
-    },
-    {
-      id: 'dfinity',
-      name: 'Dfinity Internet Computer',
-      description: 'Dfinity bla bla bla',
-      logo: '/images/logos/dfinity.svg',
-    },
-    {
-      id: 'near',
-      name: 'Near',
-      description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed euismod, nisi eu consectetur euismod, nisl nisl consectetur nisl, eu tincidunt nisl nisl euismod nisl.',
-      logo: '/images/logos/near.svg',
-    },
-    {
-      id: 'solana',
-      name: 'Solana',
-      description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed euismod, nisi eu consectetur euismod, nisl nisl consectetur nisl, eu tincidunt nisl nisl euismod nisl.',
-      logo: '/images/logos/solana.svg',
-    },
-    {
-      id: 'polygon',
-      name: 'Polygon',
-      description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed euismod, nisi eu consectetur euismod, nisl nisl consectetur nisl, eu tincidunt nisl nisl euismod nisl.',
-      logo: '/images/logos/polygon.svg',
-    }
-  ];
-
-  function classNames(...classes: string[]) {
-    return classes.filter(Boolean).join(' ');
+declare global {
+  interface Array<T> {
+    move(from: T, to: T): Array<T>;
   }
+}
+Array.prototype.move = function<T>(this: T[], from: number, to: number){
+  this.splice(to,0,this.splice(from,1)[0]);
+  return this;
+};
 
-  const defaultSelected = blockchains.find(b => b.id === current);
-
-  const [selected, setSelected] = useState(defaultSelected || blockchains [1]);
-
-  const handleSelect = (value: BlockchainProps) => {
-    setSelected(value);
-    onChange(value.id);
-  }
+function CheckIcon(props: JSX.IntrinsicAttributes & SVGProps<SVGSVGElement>) {
   return (
-    <Listbox value={selected} onChange={handleSelect}>
-      {({ open }) => (
-        <>
-          <Listbox.Label className="block text-sm font-medium text-gray-700 dark:text-gray-100">
-            Blockchain
-          </Listbox.Label>
-          <div className="mt-1 relative">
-            <Listbox.Button className="relative w-full bg-white dark:bg-neutral-900 border border-gray-300 rounded-md shadow-sm pl-3 pr-10 py-1 text-left cursor-default focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
-              <span className="flex items-center relative">
-                <Image
-                  src={selected.logo}
-                  alt={selected.name}
-                  className="flex-shrink-0 h-6 w-6"
-                  layout="raw"
-                  width="1.5rem"
-                  height="1.5rem"
-                />
-                <div className="flow-root truncate">
-                  <div className="ml-3 block truncate">{selected.name}</div>
-                  <div className="ml-3 block truncate text-xs text-gray-400">
-                    {selected.description}
-                  </div>
-                </div>
-              </span>
-              <span className="ml-3 absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none">
-                <SelectorIcon
-                  className="h-5 w-5 text-gray-400"
-                  aria-hidden="true"
-                />
-              </span>
-            </Listbox.Button>
-            <Transition
-              show={open}
-              as={Fragment}
-              leave="transition ease-in duration-100"
-              leaveFrom="opacity-100"
-              leaveTo="opacity-0"
-            >
-              <Listbox.Options className="absolute z-10 mt-1 w-full bg-white dark:bg-neutral-800 shadow-lg max-h-56 rounded-md text-base ring-1 ring-black ring-opacity-5 overflow-auto focus:outline-none sm:text-sm">
-                {blockchains.map((blockchain) => (
-                  <Listbox.Option
-                    key={blockchain.id}
-                    className={({ active }) =>
-                      classNames(
-                        active ? 'text-white bg-blue-600' : 'text-gray-900',
-                        'cursor-default select-none relative py-2 pl-3 pr-9'
-                      )
+    <svg viewBox="0 0 24 24" fill="none" {...props}>
+      <circle
+        className="fill-blue-600"
+        cx={12}
+        cy={12}
+        r={12}
+      />
+      <path
+        d="M7 13l3 3 7-7"
+        className="stroke-white "
+        strokeWidth={2.5}
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  );
+}
+const collections: CollectionProps[] = [
+  {
+    id: 'ethereum',
+    name: 'Ethereum',
+    logo: '/images/logos/ethereum.svg',
+    speed: 'Low',
+    popularity: 'High',
+    fees: 'High',
+  },
+  {
+    id: 'dfinity',
+    name: 'Dfinity Internet Computer',
+    logo: '/images/logos/dfinity.svg',
+    speed: 'High',
+    popularity: 'Average',
+    fees: 'Low',
+  },
+  {
+    id: 'near',
+    name: 'Near',
+    logo: '/images/logos/near.svg',
+    speed: 'High',
+    popularity: 'Average',
+    fees: 'Low',
+  },
+  {
+    id: 'solana',
+    name: 'Solana',
+    logo: '/images/logos/solana.svg',
+    speed: 'High',
+    popularity: 'Average',
+    fees: 'Low',
+  },
+  {
+    id: 'polygon',
+    name: 'Polygon',
+    logo: '/images/logos/polygon.svg',
+    speed: 'High',
+    popularity: 'Average',
+    fees: 'Low',
+  },
+];
+
+const SelectBlockchain = ({ current, onChange }: Props): JSX.Element => {
+
+  const defaultSelected = collections.find((b) => b.id === current);
+  const [selected, setSelected] = useState(defaultSelected?.id || 'dfinity');
+  const [previousSelected, setPreviousSelected] = useState(defaultSelected?.id || null);
+  const itemsContainerRef = useRef<HTMLDivElement | null>(null);
+  const [arrows, setArrows] = useState({ left: false, right: false });
+
+  const toggleArrow = (): void => {
+    if (itemsContainerRef.current === null) return;
+    const hasScrollbar =
+      itemsContainerRef.current.clientWidth <
+      itemsContainerRef.current.scrollWidth;
+    const scrolledFromLeft =
+      itemsContainerRef.current.offsetWidth +
+      itemsContainerRef.current.scrollLeft;
+    const scrolledToRight =
+      scrolledFromLeft >= itemsContainerRef.current.scrollWidth;
+    const scrolledToLeft = itemsContainerRef.current.scrollLeft === 0;
+
+    setArrows({
+      left: hasScrollbar && !scrolledToLeft,
+      right: hasScrollbar && !scrolledToRight,
+    });
+  };
+  const debouncedtoggleArrow = useDebouncedCallback(() => {
+    toggleArrow();
+  }, 100);
+
+  useEffect(() => {
+    // Make sure element supports addEventListener
+    // On
+    const element = isClient ? window : undefined;
+    const isSupported = element && element.addEventListener;
+    if (!isSupported) return;
+    // Set first arrows
+    toggleArrow();
+    const refCurrent = itemsContainerRef.current;
+    // Add event listener
+    const events = [
+      { event: 'resize', callback: debouncedtoggleArrow },
+      { event: 'scroll', callback: debouncedtoggleArrow },
+    ];
+    if (refCurrent) {
+      events.forEach(({ event, callback }) => {
+        refCurrent.addEventListener(event, callback);
+      });
+    }
+    return () => {
+      // Remove event listener on unmount
+      if (refCurrent) {
+        events.forEach(({ event, callback }) => {
+          refCurrent.removeEventListener(event, callback);
+        });
+      }
+    };
+  }, []);
+
+  const onScreen: boolean = useOnScreen<HTMLDivElement>(itemsContainerRef as MutableRefObject<HTMLDivElement>, "0px");
+  useEffect(() => {
+    // console.log('onScreen', onScreen);
+    if (onScreen) {
+      scrollItemsToCenterSelected(selected, 0);
+    }
+  }, [onScreen]);
+
+  useEffect(() => {
+    if ( selected !== previousSelected) {
+      scrollItemsToCenterSelected(selected, 300);
+    }
+    onChange(selected);
+    setPreviousSelected(selected);
+  }, [selected]);
+
+  useEffect(() => {
+    const defaultSelected = collections.find((b) => b.id === current);
+    setSelected(defaultSelected?.id || 'dfinity');
+    // console.log('selected', selected);
+  }, [current]);
+
+  /**
+   * Increase/decrease the current page value
+   * @param {String} direction (Optional) The direction to advance
+   */
+  const scrollItems = (direction: string): void => {
+    if (itemsContainerRef.current === null) return;
+    const items =
+      itemsContainerRef.current?.parentElement?.querySelector('.items');
+    if (items === null || items === undefined) return;
+
+    const operator = direction === 'right' ? '+' : '-';
+    const scrollLeft = eval(
+      'items.scrollLeft' + operator + 'itemsContainerRef.current?.clientWidth'
+    );
+    items &&
+      items.scroll({
+        left: scrollLeft,
+        behavior: 'smooth',
+      });
+  };
+
+  /**
+   * Scroll to the center of the selected item
+   * @param {String} id The id of item to scroll to
+  */
+   const scrollItemsToCenterSelected = (id: string, delay: number): void => {
+    // console.log('current id', id);
+    const item = document.getElementById(id);
+    if (item === null || item === undefined) return;
+    setTimeout(function(){
+      item.scrollIntoView({
+        behavior: 'smooth',
+        block: 'nearest',
+        inline: 'center',
+      })
+    }, delay);
+  };
+
+  const Button = ({ direction }: { direction: string }): JSX.Element => {
+    const isVisible = direction === 'right' ? arrows.right : arrows.left;
+    return (
+      <div
+        className={classNames('navigation-wrapper', {
+          left: direction === 'left',
+          right: direction === 'right',
+          'opacity-0': !isVisible,
+          'opacity-100': isVisible,
+        })}
+      >
+        <div className="navigation">
+          <div
+            className="button"
+            {...{
+              'aria-label':
+                direction === 'right' ? 'Next Items' : 'Previous Items',
+            }}
+            role="button"
+            {...(!isVisible && { 'aria-hidden': true, 'aria-disabled': true })}
+            tabIndex={isVisible ? 0 : -1}
+            onClick={() => scrollItems(direction)}
+          >
+            {direction === 'right' ? (
+              <ChevronRightIcon className="h-4 w-4" aria-hidden="true" />
+            ) : (
+              <ChevronLeftIcon className="h-4 w-4" aria-hidden="true" />
+            )}
+          </div>
+        </div>
+      </div>
+    );
+  };
+
+  return (
+    <>
+      <div className="collection-slider">
+        <Button direction="left" />
+        <div className="wrapper-items">
+          <RadioGroup
+            value={selected}
+            onChange={setSelected}
+            as="div"
+            ref={itemsContainerRef}
+            aria-label="Items list"
+            role="region"
+            className="items"
+          >
+            <div className="min-w-[44px]" />
+            {collections.map((collection) => (
+              <RadioGroup.Option
+                key={collection.name}
+                value={collection.id}
+                className={({ checked }) =>
+                  classNames(
+                    'item my-2 focus:outline-none flex cursor-pointer rounded-lg overflow-hidden relative shadow',
+                    {
+                      'ring-2 ring-blue-600': checked,
+                      'bg-white bg-opacity-75 text-slate-900 dark:text-slate-50 dark:bg-neutral-700':
+                        checked,
                     }
-                    value={blockchain}
-                  >
-                    {({ selected, active }) => (
-                      <>
-                        <div className="flex items-center">
-                          <Image
-                            src={blockchain.logo}
-                            alt={blockchain.name}
-                            className="flex-shrink-0 h-6 w-6 rounded-full"
-                            layout="raw"
-                            width="1.5rem"
-                            height="1.5rem"
-                          />
-                          <div className="ml-3 block truncate">
-                            <div
-                              className={classNames(
-                                selected ? 'font-semibold' : 'font-normal',
-                                'dark:text-white'
-                              )}
-                            >
-                              {blockchain.name}
+                  )
+                }
+              >
+                {({ checked }) => (
+                  <div id={collection.id} className="relative select-none">
+                    <div className="relative max-w-sm mx-auto bg-white shadow-lg ring-1 ring-black/5 rounded-xl flex items-center gap-6 dark:bg-neutral-800 dark:highlight-white/5 transition ease-in-out duration-150 hover:bg-neutral-100 dark:hover:bg-neutral-700">
+                      <div className="absolute top-[0.3rem] right-[0.3rem]">
+                        {checked && <CheckIcon className="h-4 w-4" />}
+                      </div>
+                      <div className="absolute -left-6 w-24 h-24 rounded-full shadow-lg bg-blue-100 flex items-center justify-center">
+                        <Image
+                          src={collection.logo}
+                          alt={collection.name}
+                          className="w-16 h-16"
+                          // layout="raw"
+                          width="24"
+                          height="24"
+                        />
+                      </div>
+                      <div className="flex flex-col py-4 pl-20 pr-2">
+                        <strong className="text-slate-900 text-sm font-medium dark:text-slate-200">{collection.name}</strong>
+                        <div className="flex justify-center">
+                          <div className="flex flex-row space-x-4 mt-1 text-xs">
+                            <div className="text-slate-500 dark:text-slate-400 flex flex-col items-center justify-center">
+                              <div className="">
+                                Speed
+                              </div>  
+                              <div className="">
+                                {collection.speed}
+                              </div>
                             </div>
-                            <div
-                              className={classNames(
-                                selected ? 'font-semibold' : 'font-normal',
-                                'text-xs block truncate text-gray-400'
-                              )}
-                            >
-                              {blockchain.description}
+                            <div className="text-slate-500 dark:text-slate-400 flex flex-col items-center justify-center">
+                              <div className=" ">
+                                Popularity
+                              </div>  
+                              <div className="">
+                                {collection.popularity}
+                              </div>
+                            </div>
+                            <div className="text-slate-500 dark:text-slate-400 flex flex-col items-center justify-center">
+                              <div className="">
+                                Fees
+                              </div>  
+                              <div className="">
+                                {collection.fees}
+                              </div>
                             </div>
                           </div>
                         </div>
-
-                        {selected ? (
-                          <span
-                            className={classNames(
-                              active
-                                ? 'text-white'
-                                : 'text-blue-600 dark:text-white',
-                              'absolute inset-y-0 right-0 flex items-center pr-4'
-                            )}
-                          >
-                            <CheckIcon className="h-5 w-5" aria-hidden="true" />
-                          </span>
-                        ) : null}
-                      </>
-                    )}
-                  </Listbox.Option>
-                ))}
-              </Listbox.Options>
-            </Transition>
-          </div>
-        </>
-      )}
-    </Listbox>
+                      </div>
+                    </div>
+                  </div>
+                )}
+              </RadioGroup.Option>
+            ))}
+            <div className="min-w-[44px]" />
+          </RadioGroup>
+        </div>
+        <Button direction="right" />
+      </div>
+    </>
   );
 };
 

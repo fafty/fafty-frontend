@@ -19,12 +19,12 @@ const Item = ({ item }: Props) => {
                 <div className="thumbnail-wrapper nft">
                   <div className="thumbnail">
                     <Image
-                      src={item.thumbnail.src}
+                      src={item.asset.src}
                       style={{
-                        backgroundColor: item.thumbnail?.dominant_color,
+                        backgroundColor: item.asset?.dominant_color,
                       }}
-                      loading="lazy"
-                      alt={item.title}
+                      loading="eager"
+                      alt={item.name}
                       layout="fill"
                     />
                   </div>
@@ -33,7 +33,7 @@ const Item = ({ item }: Props) => {
                   <div className="item-card-content">
                     <div className="item-head">
                       <div className="item-card-title">
-                        <span>{item.title}</span>
+                        <span>{item.name}</span>
                       </div>
                       <div className="item-price">
                         {item.price} {item.ticker}

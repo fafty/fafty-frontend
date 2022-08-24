@@ -36,12 +36,17 @@
               "maximumError": "1mb"
             }
           ]
+        },
+        "development": {
+          "outputPath": "apps/fafty"
         }
       }
     },
     "serve": {
       "executor": "@nrwl/next:server",
       "options": {
+        "port": 4200,
+        "hostname": "localhost",
         "buildTarget": "fafty:build",
         "dev": true
       },
@@ -62,7 +67,7 @@
       "executor": "@nrwl/jest:jest",
       "outputs": ["coverage/apps/fafty"],
       "options": {
-        "jestConfig": "apps/fafty/jest.config.js",
+        "jestConfig": "apps/fafty/jest.config.ts",
         "passWithNoTests": true
       }
     },
