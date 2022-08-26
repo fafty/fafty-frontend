@@ -102,53 +102,24 @@ const SelectStep1 = ({ Context }: {Context: any}) => {
   } = useForm({
     mode: 'onChange',
     reValidateMode: 'onChange',
+    defaultValues: {
+      ...stepData?.step1?.state
+    }
   });
 
   /**
    *  Local State
    */
-  const [loading, setLoading] = useState(false);
-  // const [adult_content, setAdultContent] = useState(false);
-
-  const [hasUnlockableContent, setHasUnlockableContent] = useState(false);
-  const [hasAdultContent, setHasAdultContent] = useState(false);
 
   const formFields = watch();
 
-  const implementStoredData = useCallback(() => {
-    setLoading(true);
-    if (step1Answered && stepData) {
-      console.log('implementStoredData1', stepData);
-      const {
-        step1: {
-          state: { name, description, unlockable_content, adult_content },
-        },
-      } = stepData;
-      setValue('name', name, {
-        shouldValidate: false,
-      });
-      setValue('description', description, {
-        shouldValidate: false,
-      });
-      setValue('unlockable_content', unlockable_content, {
-        shouldValidate: false,
-      });
-      setValue('adult_content', adult_content, {
-        shouldValidate: false,
-      });
-    }
-    setTimeout(() => {
-      setLoading(false);
-    }, 500);
-  }, [stepData, step1Answered]); //setValue,
+  const [hasUnlockableContent, setHasUnlockableContent] = useState(false);
 
   /**
    * Load data from context store on component mount and save data to context store on component unmount
    */
   useLayoutEffect(() => {
-    implementStoredData();
     return () => {
-      console.log('useEffect step1Answered', step1Answered);
       storeData();
     };
   }, []);
@@ -157,40 +128,18 @@ const SelectStep1 = ({ Context }: {Context: any}) => {
    * Monitor User Input
    */
   useEffect(() => {
-    // Did user provide a solution? Then enable next button
-    console.log('isValid', isValid, 'step1Answered', step1Answered);
-    // if (isValid) {
-    //   setStep1Answered(true);
-    //   if (step1Answered === false) {
-    //     setStep1Answered(true);
-    //   }
-    // } else {
-    //   if (step1Answered) {
-    //     setStep1Answered(false);
-    //   }
-    // }
-
     if (isValid) {
       setStep1Answered(true);
     }
   }, [formFields, isValid, setStep1Answered]);
 
   const storeData = () => {
-    if (step1Answered) {
-    };
-    const collected = {
+    setStepData({
       step1: {
         solved: true,
         state: getValues(),
       }
-    };
-    const result = {
-      ...stepData,
-      ...collected
-    };
-    setStepData(result);
-    console.log('Store Step 1', collected);
-    console.log('after store data', stepData);
+    });
   };
 
   return (
@@ -250,10 +199,10 @@ const SelectStep1 = ({ Context }: {Context: any}) => {
                   placeholder="Enter some description"
                   namespace="description"
                   hasError={errors.description as unknown as boolean}
-                  loading={loading}
+                  loading={false}
                 />
                 )}
-                />
+              />
           </Suspense>
           <span className="text-red-500">
             {errors.description?.type === 'required' && (
@@ -283,7 +232,7 @@ const SelectStep1 = ({ Context }: {Context: any}) => {
                 className="sr-only peer"
                 name="unlockableContent"
                 aria-label={`${
-                  hasUnlockableContent ? 'Activate' : 'Deactivate'
+                  hasUnlockableContent? 'Activate' : 'Deactivate'
                 } Unlockable Content`}
                 onChange={(e) => setHasUnlockableContent(e.target.checked)}
               />
@@ -308,7 +257,7 @@ const SelectStep1 = ({ Context }: {Context: any}) => {
                 isRichText={false}
                 namespace="unlockable_content"
                 hasError={errors.unlockable_content as unknown as boolean}
-                loading={loading}
+                loading={false}
               />
             // </Suspense>
           )}

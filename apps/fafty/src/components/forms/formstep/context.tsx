@@ -2,8 +2,8 @@ import { createContext } from 'react';
 
 export interface Step1Props {
   name: string,
-  description: object,
-  unlockable_content: object,
+  description: null | object,
+  unlockable_content: null | object,
   adult_content: boolean,
 }
 
@@ -18,21 +18,20 @@ export interface Step3Props {
   age: number,
 }
 
+export interface StepData<T> {
+  solved: boolean,
+  state: T
+}
+
 export interface StepsProps {
   asset: object
-  step1: {
-    state: Step1Props,
-    solved: boolean
-  }
-  step2: {
-    state: Step2Props,
-    solved: boolean
-  }
-  step3: {
-    state: Step3Props
-    solved: boolean
-  }
+  step1: StepData<Step1Props>
+  step2: StepData<Step2Props>
+  step3: StepData<Step3Props>
 }
+
+export type SetStepDataProps = Record<string, StepData<Step1Props> | StepData<Step2Props> | StepData<Step3Props>>
+
 export interface ContextProps {
   activeStep: number;
   setActiveStep: (step: number) => void;
@@ -43,7 +42,7 @@ export interface ContextProps {
   setComponent: (components: { [key: string]: any }) => void;
   view: null | JSX.Element;
   stepData: StepsProps;
-  setStepData: (stepData: StepsProps) => void;
+  setStepData: (stepData: SetStepDataProps) => void;
   setView: (view: JSX.Element) => void;
   solutionProvided: boolean;
   setSolutionProvided: (solutionProvided: boolean) => void;

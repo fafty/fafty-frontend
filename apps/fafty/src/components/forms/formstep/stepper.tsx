@@ -117,8 +117,12 @@ const SelectStepper = (): JSX.Element => {
     const StepView = `step${activeStep + 1}`;
     if (!components[StepView as keyof typeof components]) {
       const { default: View } = await import(`./steps/${StepView}`);
+
+
       const Component = <View Context={Context} />;
+      
       setComponent({ ...components, [StepView]: Component });
+
       setView(Component);
     } else {
       setView(components[StepView as keyof typeof components]);
@@ -204,9 +208,9 @@ const SelectStepper = (): JSX.Element => {
                     style={{ width: `${activeStep * (100 / 3)}%` }}
                   ></div>
                 </div>
-                <div className="text-xs w-10 text-gray-600">
-                  {activeStep * (100 / 3)} %
-                </div>
+                <span className="text-xs w-10 text-gray-600">
+                  {(activeStep * (100 / 3)).toFixed(2)} %
+                </span>
               </div>
             </div>
           </div>

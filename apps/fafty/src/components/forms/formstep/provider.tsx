@@ -1,5 +1,5 @@
-import { useState, ReactNode, useEffect } from 'react';
-import Context, { ContextProps, StepsProps } from './context';
+import { useState, ReactNode, useEffect, useCallback } from 'react';
+import Context, { SetStepDataProps } from './context';
 
 export const StepperContextProvider = ({
   children,
@@ -17,9 +17,9 @@ export const StepperContextProvider = ({
     asset: {},
     step1: {
       state: {
-        name: '' ,
-        description: {},
-        unlockable_content: {},
+        name: '',
+        description: null,
+        unlockable_content: null,
         adult_content: false,
       },
       solved: false,
@@ -42,6 +42,10 @@ export const StepperContextProvider = ({
     console.log('stepData in provider', stepData)
   }, [stepData])
 
+  const onSetStepData = useCallback((data: SetStepDataProps) => {
+    setStepData((prev) => ({ ...prev, ...data}))
+  }, [setStepData])
+
   const contextValues = {    	
 		step1Answered,
     setStep1Answered,
@@ -52,7 +56,7 @@ export const StepperContextProvider = ({
 	  finished,
     setFinished,
 	  stepData,
-    setStepData
+    setStepData: onSetStepData
 	};
 
   return (<Context.Provider value={contextValues}>{children}</Context.Provider>);

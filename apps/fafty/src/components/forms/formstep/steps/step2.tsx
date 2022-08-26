@@ -1,25 +1,20 @@
 import {
-    useState,
     useEffect,
     useContext,
-    useCallback,
-    ChangeEventHandler,
     Suspense,
     lazy,
-    useLayoutEffect
+    useLayoutEffect,
+    Context
   } from 'react';
   import { Controller, useForm } from 'react-hook-form';
-  import { EditorPlaceholder } from '@fafty-frontend/shared/ui';
-  import classNames from 'classnames';
-  import dynamic from 'next/dynamic';
   import { motion } from 'framer-motion';
-  import { ContextProps, Step2Props } from '../context';
+  import { ContextProps } from '../context';
   
   const SelectBlockchain = lazy(() => import('../../components/selectBlockchain'));
   const SelectCollection = lazy(() => import('../../components/selectCollection'));
 
   
-  const SelectStep2 = ({ Context }: { Context: ContextProps }) => {
+  const SelectStep2 = ({ Context }: { Context: Context<ContextProps> }) => {
     /**
      * Context Store
      */
@@ -42,51 +37,22 @@ import {
       formState: { errors, isValid },
     } = useForm({
       defaultValues: {
-        blockchain_name: 'dfinity',
-        collection_token: 'none',
-        supply_units: 1
+        blockchain_name: stepData?.step2?.state?.blockchain_name || 'dfinity',
+        collection_token: stepData?.step2?.state?.collection_token ||  'none',
+        supply_units: stepData?.step2?.state?.supply_units || 1
       },
       mode: 'onChange',
       reValidateMode: 'onChange',
-    });
-  
-    /**
-     *  Local State
-     */
-    // const [loading, setLoading] = useState(false);
-    // const [adult_content, setAdultContent] = useState(false);
-  
+    });  
   
     const formFields = watch();
-  
-    const implementStoredData = useCallback(() => {
-      if (step2Answered && stepData) {
-        console.log('implementStoredData2', stepData);
-        const {
-          step2: {
-            state: { supply_units, blockchain_name, collection_token },
-          },
-        } = stepData;
-        setValue('supply_units', supply_units, {
-          shouldValidate: false
-        });
-        setValue('blockchain_name', blockchain_name, {
-          shouldValidate: false
-        });
-        setValue('collection_token', collection_token, {
-          shouldValidate: false
-        });
-      }
-     
-    }, [stepData, setValue, step2Answered]);
+
   
     /**
      * Load data from context store on component mount and save data to context store on component unmount
      */
      useLayoutEffect(() => {
-      implementStoredData();
       return () => {
-        console.log('useEffect step2Answered', step2Answered);
         storeData();
       };
     }, []);
@@ -95,17 +61,6 @@ import {
      * Monitor User Input
      */
     useEffect(() => {
-      // Did user provide a solution? Then enable next button
-      // if (isValid) {
-      //   setStep2Answered(true);
-      //   if (step2Answered === false) {
-      //     setStep2Answered(true);
-      //   }
-      // } else {
-      //   if (step2Answered) {
-      //     setStep2Answered(false);
-      //   }
-      // }
       if (isValid) {
         setStep2Answered(true);
       }
@@ -113,19 +68,12 @@ import {
   
     const storeData = () => {
       if (step2Answered) {
-        const collected = {
+        setStepData({
           step2: {
             solved: true,
             state: getValues(),
           }
-        };
-        const result = {
-          ...stepData,
-          ...collected
-        };
-        setStepData(result);
-        console.log('Store Step 2', collected);
-        console.log('after store data', stepData);
+        });
       };
     };
   
