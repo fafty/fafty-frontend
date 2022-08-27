@@ -32,9 +32,13 @@ export const disableAnimation = () => {
 };
 
 export const getSystemTheme = (e?: MediaQueryList | MediaQueryListEvent) => {
-  if (!e) e = window.matchMedia('(prefers-color-scheme: dark)');
-  const isDark = e.matches;
-  return isDark ? 'dark' : 'light';
+  if (typeof window !== 'undefined') {
+    if (!e) e = window.matchMedia('(prefers-color-scheme: dark)');
+    const isDark = e.matches;
+    return isDark ? 'dark' : 'light';
+  }
+
+  return 'ligt';
 };
 
 export const encodeBase64 = (str: string) => {

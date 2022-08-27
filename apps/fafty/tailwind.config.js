@@ -18,6 +18,9 @@ module.exports = {
       spacing: {
         7: '1.75rem',
       },
+      zIndex: {
+        1: 1
+      },
       keyframes: {
         'notification-enter': {
           '0%': {

@@ -1,11 +1,12 @@
 import MainLayout from '../../layouts/main';
 import Image from 'next/future/image';
-import { Tab } from '@headlessui/react'
-import { motion } from "framer-motion";
+import { Tab } from '@headlessui/react';
+import { motion } from 'framer-motion';
 import { useRouter } from 'next/router';
 import api from '../../api';
 import { Fragment, useEffect, useMemo, useState } from 'react';
-import classNames from 'classnames';
+import { getSystemTheme } from '@fafty-frontend/theme';
+import { useTheme } from '@fafty-frontend/theme';
 
 interface BreadcrumbProps {
   name: string;
@@ -18,7 +19,7 @@ interface NftProps {
   asset: {
     src: string;
     dominant_color: string;
-  }
+  };
   slug: string;
   price: string;
   ticker: string;
@@ -30,8 +31,17 @@ interface NftProps {
 interface ResponceProps {
   record: NftProps;
 }
+
+const TABS = [
+  { title: 'Info', value: 'info' },
+  { title: 'Owners', value: 'owners' },
+  { title: 'History', value: 'history' },
+  { title: 'Bids', value: 'bids' },
+];
+
 export default function Nft() {
   const param = useRouter();
+  const { theme } = useTheme();
   const { slug } = param.query;
   const breadcrumb: BreadcrumbProps[] = useMemo(() => [], []);
 
@@ -39,7 +49,20 @@ export default function Nft() {
   const [isLoading, setLoading] = useState(false);
   const [isError, setError] = useState(false);
 
-  const [tabIndex, setTabIndex] = useState(0)
+  const [tabIndex, setTabIndex] = useState(0);
+
+  const isDarkMode = useMemo(() => {
+    const currentTheme = theme === 'system' ? getSystemTheme() : theme;
+
+    return currentTheme === 'dark';
+  }, [theme]);
+
+  const tabStyles = useMemo(() => {
+    return {
+      background: isDarkMode ? 'rgb(249 250 251)' : 'rgb(55 65 81)',
+      text: isDarkMode ? 'rgb(55 65 81)' : 'rgb(249 250 251)',
+    };
+  }, [isDarkMode]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -127,7 +150,7 @@ export default function Nft() {
               height={400}
               className="w-full h-full object-center object-cover"
             />
-             <div className="absolute ml-5 mt-5 transition motion-reduce:hover:translate-y-0 motion-reduce:transition-none duration-750 delay-300 group-hover:opacity-0 group-hover:delay-1 ease-in-out">
+            <div className="absolute ml-5 mt-5 transition motion-reduce:hover:translate-y-0 motion-reduce:transition-none duration-750 delay-300 group-hover:opacity-0 group-hover:delay-1 ease-in-out">
               <div className=" inline-flex space-x-2 items-start justify-start ">
                 <div className="flex items-center justify-center px-2 pt-2 pb-1.5 bg-gray-800 rounded drop-shadow shadow hover:opacity-100">
                   <p className="text-xs font-bold leading-3 text-gray-50 uppercase">
@@ -166,129 +189,73 @@ export default function Nft() {
                 {/* { detail.description } */}
               </p>
             </div>
-            { tabIndex }
-            https://codesandbox.io/s/5q8j5?file=/src/Example.jsx
             <Tab.Group selectedIndex={tabIndex} onChange={setTabIndex}>
               <div className="flex flex-col space-y-8 items-start justify-start w-full">
                 <div className="flex flex-col items-start justify-start w-full p-1 border-2 rounded-full border-gray-200 dark:border-neutral-700">
                   <Tab.List>
                     <div className="inline-flex space-x-2 items-start justify-start w-96 transition-[background-color] duration-100 ease-linear">
-                      <Tab as={Fragment}>
-                        {({ selected }) => (
-                          <button
-                            className={
-                              classNames(
-                                'flex items-center justify-center px-3 py-1.5 rounded-full focus:outline-none transition-[background-color] duration-100 ease-linear',
-                                {
-                                  'bg-gray-700 dark:bg-gray-50': selected
-                                }
-                              )
-                            }
-                          >
-                            <span
-                              className={
-                                classNames(
-                                  'text-sm font-bold leading-none',
-                                  {
-                                    'text-gray-50 dark:text-gray-700': selected
-                                  }
-                                )
-                              }
+                      {TABS.map((tab) => (
+                        <Tab as={Fragment} key={tab.value}>
+                          {({ selected }) => (
+                            <motion.div
+                              className="flex items-center relative justify-center px-3 py-1.5 rounded-full outline-none cursor-pointer"
+                              initial={{
+                                color: selected ? tabStyles.text : '',
+                              }}
+                              animate={{
+                                color: selected ? tabStyles.text : '',
+                              }}
+                              transition={{ duration: 0.3 }}
                             >
-                              Info
-                            </span>
-                          </button>
-                        )}
-                      </Tab>
-                      <Tab as={Fragment}>
-                        {({ selected }) => (
-                          <button
-                            className={
-                              classNames(
-                                'flex items-center justify-center px-3 py-1.5 rounded-full focus:outline-none transition-[background-color] duration-100 ease-linear',
-                                {
-                                  'bg-gray-700 dark:bg-gray-50': selected
-                                }
-                              )
-                            }
-                          >
-                            <span 
-                              className={
-                                classNames(
-                                  'text-sm font-bold leading-none',
-                                  {
-                                    'text-gray-50 dark:text-gray-700': selected
-                                  }
-                                )
-                              }
-                            >
-                              Owners
-                            </span>
-                          </button>
-                        )}
-                      </Tab>
-                      <Tab as={Fragment}>
-                        {({ selected }) => (
-                          <button
-                            className={
-                              classNames(
-                                'flex items-center justify-center px-3 py-1.5 rounded-full focus:outline-none transition-[background-color] duration-75 ease-linear',
-                                {
-                                  'bg-gray-700 dark:bg-gray-50': selected
-                                }
-                              )
-                            }
-                          >
-                            <span 
-                              className={
-                                classNames(
-                                  'text-sm font-bold leading-none',
-                                  {
-                                    'text-gray-50 dark:text-gray-700': selected
-                                  }
-                                )
-                              }
-                            >
-                              History
-                            </span>
-                          </button>
-                        )}
-                      </Tab>
-                      <Tab as={Fragment}>
-                        {({ selected }) => (
-                          
-                          <button
-                            className={
-                              classNames(
-                                'flex items-center justify-center px-3 py-1.5 rounded-full focus:outline-none transition-[background-color] duration-75 ease-linear',
-                                {
-                                  'bg-gray-700 dark:bg-gray-50': selected
-                                }
-                              )
-                            }
-                          >
-                            <span 
-                              className={
-                                classNames(
-                                  'text-sm font-bold leading-none',
-                                  {
-                                    'text-gray-50 dark:text-gray-700': selected
-                                  }
-                                )
-                              }
-                            >
-                              Bids
-                            </span>
-                          </button>
-                        )}
-                      </Tab>
+                              <span className="relative outline-none text-sm font-bold leading-none z-1">
+                                {tab.title}
+                              </span>
+                              {selected && (
+                                <motion.div
+                                  className="absolute w-full h-full rounded-full top-0 left-0 outline-none"
+                                  layoutId="selected"
+                                  initial={{
+                                    backgroundColor: tabStyles.background,
+                                  }}
+                                  animate={{
+                                    backgroundColor: tabStyles.background,
+                                  }}
+                                  transition={{ duration: 0.3 }}
+                                />
+                              )}
+                            </motion.div>
+                            // <button
+                            //   className={classNames(
+                            //     'flex items-center justify-center px-3 py-1.5 rounded-full focus:outline-none transition-[background-color] duration-100 ease-linear',
+                            //     {
+                            //       'bg-gray-700 dark:bg-gray-50': selected,
+                            //     }
+                            //   )}
+                            // >
+                            //   <span
+                            //     className={classNames(
+                            //       'text-sm font-bold leading-none',
+                            //       {
+                            //         'text-gray-50 dark:text-gray-700': selected,
+                            //       }
+                            //     )}
+                            //   >
+                            //     {tab.title}
+                            //   </span>
+                            // </button>
+                          )}
+                        </Tab>
+                      ))}
                     </div>
                   </Tab.List>
                 </div>
                 <div className="flex flex-col space-y-4 items-start justify-start w-full">
                   <div className="flex flex-col space-y-4 items-start justify-start w-full pb-4 border-b-2 border-gray-100 dark:border-neutral-700">
                     <div className="inline-flex space-x-4 items-center justify-start ">
-                      <div className="relative" style={{ width: 48, height: 48 }}>
+                      <div
+                        className="relative"
+                        style={{ width: 48, height: 48 }}
+                      >
                         <div className="inline-flex items-center justify-center w-12 h-12 bg-purple-500 rounded-full">
                           <img
                             className="w-12 h-full"
