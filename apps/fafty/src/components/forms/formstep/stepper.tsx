@@ -11,6 +11,7 @@ import Context from './context';
 import { UploaderPlaceholder } from '@fafty-frontend/shared/ui';
 import dynamic from 'next/dynamic';
 import { AnimatePresence, motion } from 'framer-motion';
+import classNames from 'classnames';
 
 interface ExistingFileProps {
   id: string;
@@ -81,7 +82,7 @@ const SelectStepper = (): JSX.Element => {
     step2Answered,
     finished,
     stepData: data,
-    setStepData: setFormData,
+    setStepData,
   } = useContext(Context);
 
   const [solutionProvided, setSolutionProvided] = useState(false);
@@ -118,9 +119,8 @@ const SelectStepper = (): JSX.Element => {
     if (!components[StepView as keyof typeof components]) {
       const { default: View } = await import(`./steps/${StepView}`);
 
-
       const Component = <View Context={Context} />;
-      
+
       setComponent({ ...components, [StepView]: Component });
 
       setView(Component);
@@ -136,6 +136,12 @@ const SelectStepper = (): JSX.Element => {
     loadComponent();
   }, [activeStep, loadComponent]);
 
+  useEffect(() => {
+    if (!data?.asset?.id) {
+      setActiveStep(0);
+    }
+  }, [data?.asset?.id]);
+
   /*
    * Step Management
    */
@@ -148,8 +154,7 @@ const SelectStepper = (): JSX.Element => {
   };
 
   const handleNext = (activeStep: number, steps: number | any[]) => {
-    console.log('handleNext');
-    if (activeStep === 2 - 1 && finished) {
+    if (activeStepNumeric === 2 && finished) {
       alert('Finished! You can now submit your form');
     }
 
@@ -180,121 +185,149 @@ const SelectStepper = (): JSX.Element => {
     });
   };
 
+  const onChangeFile = useCallback(
+    (values: FileProps | FileProps[]) => {
+      const currentFile = Array.isArray(values) ? values[0] : values;
+
+      if (setStepData) {
+        setStepData({
+          asset: currentFile,
+          step1: {
+            solved: false,
+            state: {
+              name: currentFile?.metadata?.filename || '',
+              description: null,
+              unlockable_content: null,
+              adult_content: false,
+            },
+          },
+        });
+      }
+    },
+    [setStepData]
+  );
+
+  const activeStepNumeric = activeStep + 1;
+
   return (
     <>
-      <div className="mt-4 lg:mt-0 lg:row-span-3 lg:col-span-1">
+      <div
+        className={classNames('mt-4 lg:mt-0 lg:row-span-3', {
+          'lg:col-[-2_/2]': !data?.asset?.id,
+          'lg:col-1': !!data?.asset?.id,
+        })}
+      >
         <div className="rounded-lg border border-gray-100 dark:border-neutral-800 bg-white dark:bg-neutral-900/90 shadow ">
-          <div className="sticky top-[80px] p-3 mx-auto h-[500px]">
-            <Uploader
-              hasError={false}
-              onChange={(values) => (console.log(values), values)}
-            />
+          <div className="sticky top-[80px] mx-auto h-[500px]">
+            <Uploader hasError={false} onChange={onChangeFile} />
           </div>
         </div>
       </div>
 
-      <div className="py-10 lg:pl-4 lg:pt-6 lg:pb-16 lg:col-start-2 lg:col-span-2 lg:border-l lg:border-gray-200 dark:lg:border-neutral-700 lg:pr-8">
-        <div>Create NFT</div>
-        <div className="box mt-1 p-1">
-          <div className="mt-3  mb-10 alignitemscenter">
-            <div className="flex flex-row">
-              <div className="flex uppercase tracking-wide text-xs font-bold text-gray-500 mb-1 leading-tight">
-                Step: {activeStep + 1} of 3
-              </div>
-              <div className="flex ml-auto items-center md:w-64">
-                <div className="w-full bg-white rounded-full mr-2">
-                  <div
-                    className="rounded-full bg-green-500 text-xs leading-none h-2 text-center text-white"
-                    style={{ width: `${activeStep * (100 / 3)}%` }}
-                  ></div>
+      {!!data?.asset?.id && (
+        <div className="py-10 lg:pl-4 lg:pt-6 lg:pb-16 lg:col-start-2 lg:col-span-2 lg:border-l lg:border-gray-200 dark:lg:border-neutral-700 lg:pr-8">
+          <div>Create NFT</div>
+          <div className="box mt-1 p-1">
+            <div className="mt-3  mb-10 alignitemscenter">
+              <div className="flex flex-row">
+                <div className="flex uppercase tracking-wide text-xs font-bold text-gray-500 mb-1 leading-tight">
+                  Step: {activeStep + 1} of 3
                 </div>
-                <span className="text-xs w-10 text-gray-600">
-                  {(activeStep * (100 / 3)).toFixed(2)} %
-                </span>
+                <div className="flex ml-auto items-center md:w-64">
+                  <div className="w-full bg-white rounded-full mr-2">
+                    <div
+                      className="rounded-full bg-green-500 text-xs leading-none h-2 text-center text-white"
+                      style={{ width: `${activeStepNumeric * (100 / 3)}%` }}
+                    ></div>
+                  </div>
+                  <span className="text-xs w-10 text-gray-600 whitespace-nowrap">
+                    {(activeStepNumeric * (100 / 3)).toFixed(2)} %
+                  </span>
+                </div>
               </div>
             </div>
-          </div>
-          <AnimatePresence exitBeforeEnter={true}>
-            <motion.div
-              variants={{
-                initial: {
-                  height: 'auto',
-                },
-                animate: {
-                  height: 'auto',
-                  transition: {
-                    when: 'beforeChildren',
-                  },
-                },
-                exit: {
-                  height: 'auto',
-                  transition: {
-                    when: 'afterChildren',
-                  },
-                },
-              }}
-              initial="initial"
-              animate="animate"
-              exit="exit"
-              key={activeStep}
-              className="text-lg font-light"
-            >
+            <AnimatePresence exitBeforeEnter={true}>
               <motion.div
                 variants={{
                   initial: {
-                    opacity: 0,
+                    height: 'auto',
                   },
                   animate: {
-                    opacity: 1,
+                    height: 'auto',
+                    transition: {
+                      when: 'beforeChildren',
+                    },
                   },
                   exit: {
-                    opacity: 0,
+                    height: 'auto',
+                    transition: {
+                      when: 'afterChildren',
+                    },
                   },
                 }}
+                initial="initial"
+                animate="animate"
+                exit="exit"
+                key={activeStep}
+                className="text-lg font-light"
               >
-                {/* Active Step  */}
-                {activeStep !== 2 ? (
-                  <Fragment>
-                    <Suspense fallback="Loading Form View..">{view}</Suspense>
-                    <div className="flex pt-2">
-                      {activeStep > 0 && (
-                        <>
-                          <button
-                            disabled={activeStep === 0}
-                            onClick={handleBack}
-                            className="mr-1"
-                          >
-                            Back
-                          </button>
-                        </>
-                      )}
-                      <div />
-                      {isStepOptional(activeStep) && (
-                        <>
-                          {allowSkip && (
-                            <button className="mr-1" onClick={handleSkip}>
-                              Skip
+                <motion.div
+                  variants={{
+                    initial: {
+                      opacity: 0,
+                    },
+                    animate: {
+                      opacity: 1,
+                    },
+                    exit: {
+                      opacity: 0,
+                    },
+                  }}
+                >
+                  {/* Active Step  */}
+                  {activeStep <= 2 ? (
+                    <Fragment>
+                      <Suspense fallback="Loading Form View..">{view}</Suspense>
+                      <div className="flex pt-2">
+                        {activeStep > 0 && (
+                          <>
+                            <button
+                              disabled={activeStep === 0}
+                              onClick={handleBack}
+                              className="mr-1"
+                            >
+                              Back
                             </button>
-                          )}
-                        </>
-                      )}
-                      <button
-                        className="inline-flex items-center px-4 py-2 font-semibold leading-6 text-sm shadow rounded-md text-white bg-blue-500 hover:bg-blue-400"
-                        disabled={!solutionProvided}
-                        onClick={() => handleNext(activeStep, 2)}
-                      >
-                        {activeStep === 3 - 1 ? 'Save' : 'Next'}
-                      </button>
-                    </div>
-                  </Fragment>
-                ) : (
-                  <></>
-                )}
+                          </>
+                        )}
+                        <div />
+                        {isStepOptional(activeStep) && (
+                          <>
+                            {allowSkip && (
+                              <button className="mr-1" onClick={handleSkip}>
+                                Skip
+                              </button>
+                            )}
+                          </>
+                        )}
+                        <button
+                          className="inline-flex items-center px-4 py-2 font-semibold leading-6 text-sm shadow rounded-md text-white bg-blue-500 hover:bg-blue-400"
+                          disabled={!solutionProvided}
+                          onClick={() => handleNext(activeStep, 2)}
+                        >
+                          {activeStepNumeric === 3 ? 'Save' : 'Next'}
+                        </button>
+                      </div>
+                    </Fragment>
+                  ) : (
+                    <></>
+                  )}
+                </motion.div>
               </motion.div>
-            </motion.div>
-          </AnimatePresence>
+            </AnimatePresence>
+          </div>
         </div>
-      </div>
+      )}
     </>
   );
 };

@@ -10,10 +10,7 @@ import {
 } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { EditorPlaceholder } from '@fafty-frontend/shared/ui';
-import classNames from 'classnames';
 import dynamic from 'next/dynamic';
-import { motion } from 'framer-motion';
-import { ContextProps, Step1Props } from '../context';
 
 interface EditorProps {
   isAutocomplete?: boolean;
@@ -28,6 +25,7 @@ interface EditorProps {
   namespace: string;
   loading?: boolean;
 }
+// const Editor = lazy<EditorProps>(() => import('@fafty-frontend/editor').then((mod) => mod.Editor));
 
 const Editor = dynamic<EditorProps>(
   () => import('@fafty-frontend/editor').then((mod) => mod.Editor),
@@ -90,15 +88,12 @@ const SelectStep1 = ({ Context }: { Context: any }) => {
     control,
     register,
     watch,
-    setValue,
+    reset,
     getValues,
     formState: { errors, isValid },
   } = useForm({
     mode: 'onChange',
     reValidateMode: 'onChange',
-    defaultValues: {
-      ...stepData?.step1?.state,
-    },
   });
 
   /**
@@ -116,6 +111,12 @@ const SelectStep1 = ({ Context }: { Context: any }) => {
       storeData();
     };
   }, []);
+
+  useEffect(() => {
+    reset({
+      ...stepData?.step1?.state,
+    });
+  }, [stepData?.step1?.state]);
 
   /**
    * Monitor User Input

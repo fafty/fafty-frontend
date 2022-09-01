@@ -232,8 +232,8 @@ const Uploader = ({
   }, []);
 
   useEffect(() => {
-    if (isLoading == false) {
-      var draggablesection = document.getElementById('draggable');
+    if (!isLoading) {
+      const draggablesection = document.getElementById('draggable');
       const draggable = new Sortable(draggablesection as HTMLElement, {
         sort: true,
         animation: 400,
@@ -256,7 +256,6 @@ const Uploader = ({
 
         // Element dragging ended
         onEnd: function (/**Event*/ evt) {
-          var itemEl = evt.item; // dragged HTMLElement
           evt.to; // target list
           evt.from; // previous list
           evt.oldIndex; // element's old index within old parent
@@ -268,7 +267,6 @@ const Uploader = ({
         },
       });
     }
-    return () => {};
   }, [isLoading]);
 
   const engine = useMemo(() => {
@@ -308,19 +306,22 @@ const Uploader = ({
           limit: 2,
           async getUploadParameters(file) {
             // Send a request to our signing endpoint.
-            const base = process.env['NEXT_PUBLIC_API_URL'];
-            const url = `${base}/${presignEndpoint}`;
+            // const base = process.env['NEXT_PUBLIC_API_URL'];
+            // const url = `${base}/${presignEndpoint}`;
             const data = await api
-              .post(url, {
-                filename: file.name,
-                type: file.type,
-              },
-              { 
-                headers: {
-                  accept: 'application/json',
-                  'content-type': 'application/json',
+              .post(
+                presignEndpoint,
+                {
+                  filename: file.name,
+                  type: file.type,
+                },
+                {
+                  headers: {
+                    accept: 'application/json',
+                    'content-type': 'application/json',
+                  },
                 }
-              })
+              )
               .then((res) => {
                 return res.data;
               })
@@ -404,7 +405,10 @@ const Uploader = ({
           try {
             // for edit page
             console.log('file removed', file);
-            console.log('file removed?', files.filter((f) => f.id !== file.id));
+            console.log(
+              'file removed?',
+              files.filter((f) => f.id !== file.id)
+            );
             setFiles((files) => files.filter((f) => f.id !== file.id));
             setThumbnails((thumbnails) =>
               thumbnails.filter((t) => t.id !== file.id)
@@ -438,7 +442,7 @@ const Uploader = ({
 
   useEffect(() => {
     const data = files.map((file) => {
-      return file.attachment
+      return file.attachment;
     });
     if (maxNumberOfFiles > 1) {
       onChange(data);
@@ -447,9 +451,10 @@ const Uploader = ({
     }
   }, [files]);
 
-  useEffect(() => {
-    return () => engine.close();
-  }, [engine]);
+  // useEffect(() => {
+  // TODO check why unmount on dynamic import
+  // return () => engine.close();
+  // }, [engine]);
 
   useEffect(() => {
     console.log('isDragging', isDragging);
@@ -676,23 +681,23 @@ const Uploader = ({
     >
       <div
         id="draggable"
-        className={classNames(
-          {
-            'grow h-full': thumbnails.length > 0
-          }
-        )}
+        className={classNames({
+          'grow h-full': thumbnails.length > 0,
+        })}
       >
         {isLoading ? (
           <PlaceHolders />
         ) : (
           <div
-            className={classNames('attachment-container-preview flex flex-wrap', {
-              draggable: isSorting,
-              attachments: maxNumberOfFiles > 1,
-              cover: maxNumberOfFiles === 1,
-            })}
+            className={classNames(
+              'attachment-container-preview flex flex-wrap',
+              {
+                draggable: isSorting,
+                attachments: maxNumberOfFiles > 1,
+                cover: maxNumberOfFiles === 1,
+              }
+            )}
           >
-          
             {thumbnails.map((item) => (
               <Item
                 key={item.id}
@@ -723,7 +728,8 @@ const Uploader = ({
               {
                 'border-blue-500': isDraggingOver,
                 'border-dashed': !isDraggingOver,
-                'border-gray-300 dark:border-neutral-300': !hasError && dragDropSupported && !isDraggingOver,
+                'border-gray-300 dark:border-neutral-300':
+                  !hasError && dragDropSupported && !isDraggingOver,
                 'border-red-500 ': hasError && !isDraggingOver,
               }
             )}

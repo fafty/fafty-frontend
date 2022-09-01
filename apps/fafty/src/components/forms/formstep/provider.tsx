@@ -1,5 +1,5 @@
 import { useState, ReactNode, useEffect, useCallback } from 'react';
-import Context, { SetStepDataProps } from './context';
+import Context, { CommentsModerationType, CommentsOrderType, SetStepDataProps } from './context';
 
 export const StepperContextProvider = ({
   children,
@@ -12,7 +12,9 @@ export const StepperContextProvider = ({
 
   const [finished, setFinished] = useState<boolean>(false);
   const [stepData, setStepData] = useState({
-    asset: {},
+    asset: {
+      id: '',
+    },
     step1: {
       state: {
         name: '',
@@ -33,34 +35,37 @@ export const StepperContextProvider = ({
     step3: {
       state: {
         allow_ratings: true,
-        comments_moderation: 'allow_all',
-        comments_order: 'new',
-        tags: []
+        comments_moderation: 'allow_all' as CommentsModerationType,
+        comments_order: 'new' as CommentsOrderType,
+        tags: [],
       },
       solved: false,
     },
   });
 
   useEffect(() => {
-    console.log('stepData in provider', stepData)
-  }, [stepData])
+    console.log('stepData in provider', stepData);
+  }, [stepData]);
 
-  const onSetStepData = useCallback((data: SetStepDataProps) => {
-    setStepData((prev) => ({ ...prev, ...data}))
-  }, [setStepData])
+  const onSetStepData = useCallback(
+    (data: SetStepDataProps) => {
+      setStepData((prev) => ({ ...prev, ...data }));
+    },
+    [setStepData]
+  );
 
-  const contextValues = {    	
-		step1Answered,
+  const contextValues = {
+    step1Answered,
     setStep1Answered,
-		step2Answered,
+    step2Answered,
     setStep2Answered,
-		step3Answered,
+    step3Answered,
     setStep3Answered,
-	  finished,
+    finished,
     setFinished,
-	  stepData,
-    setStepData: onSetStepData
-	};
+    stepData,
+    setStepData: onSetStepData,
+  };
 
-  return (<Context.Provider value={contextValues}>{children}</Context.Provider>);
+  return <Context.Provider value={contextValues}>{children}</Context.Provider>;
 };

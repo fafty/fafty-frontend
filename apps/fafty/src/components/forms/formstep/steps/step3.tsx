@@ -5,11 +5,20 @@ import {
   ChangeEventHandler,
   Suspense,
   useLayoutEffect,
+  useMemo,
+  Fragment,
 } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { EditorPlaceholder } from '@fafty-frontend/shared/ui';
-import classNames from 'classnames';
 import dynamic from 'next/dynamic';
+import { Switch, RadioGroup, Listbox } from '@headlessui/react';
+import {
+  COMMENTS_MODERATION_OPTIONS,
+  COMMENTS_ORDER_OPTIONS,
+} from '../constants';
+import classNames from 'classnames';
+import { motion, AnimatePresence } from 'framer-motion';
+import { ArrowDownSIcon } from '@remixicons/react/line';
 
 interface EditorProps {
   isAutocomplete?: boolean;
@@ -32,7 +41,6 @@ const Editor = dynamic<EditorProps>(
     loading: () => <EditorPlaceholder header={true} />,
   }
 );
-
 
 const SelectStep3 = ({ Context }: { Context: any }) => {
   /**
@@ -92,128 +100,131 @@ const SelectStep3 = ({ Context }: { Context: any }) => {
     });
   };
 
+  const selectedOrderComments = useMemo(() => {
+    return COMMENTS_ORDER_OPTIONS.find(
+      ({ value }) => value === formFields.comments_order
+    );
+  }, [formFields.comments_order]);
+
   return (
     <>
       <div>
         <div className="mb-5 relative">
           <label
             htmlFor="item-name"
-            className="block text-sm font-medium text-gray-700 dark:text-gray-100"
+            className="block text-sm font-medium text-gray-700 dark:text-gray-100 mb-3"
           >
-            Name
+            Comments moderation
           </label>
-          <input
-            type="text"
-            id="item-name"
-            className={`${
-              errors.name
-                ? 'border-red-500'
-                : 'border-gray-200 dark:border-neutral-800'
-            } text-gray-700 dark:text-gray-100 dark:bg-neutral-900/90 mt-1 border focus:outline-none rounded-md shadow-sm focus:border-gray-500 focus:shadow w-full p-3 h-12`}
-            placeholder="Enter name of Nft"
-            autoComplete="off"
-            {...(errors.name && { 'aria-invalid': true })}
-            {...register('name', {
-              required: true,
-              minLength: 5,
-              maxLength: 30,
-            })}
+          <Controller
+            name="comments_moderation"
+            control={control}
+            render={({ field }) => (
+              <RadioGroup {...field}>
+                {COMMENTS_MODERATION_OPTIONS.map((commentsOption) => (
+                  <RadioGroup.Option
+                    value={commentsOption.value}
+                    key={commentsOption.value}
+                  >
+                    {({ checked }) => (
+                      <div className="flex mb-2.5 items-center cursor-pointer">
+                        <div
+                          className={classNames(
+                            'rounded-full w-4 h-4 mr-2.5 border border-white',
+                            {
+                              'flex items-center justify-center': checked,
+                            }
+                          )}
+                        >
+                          <AnimatePresence>
+                            {checked && (
+                              <motion.div
+                                className="flex rounded w-2 h-2 bg-white"
+                                initial={{ opacity: 0 }}
+                                animate={{ opacity: 1 }}
+                              />
+                            )}
+                          </AnimatePresence>
+                        </div>
+                        <span className="text-sm w-10 text-gray-200 whitespace-nowrap">
+                          {commentsOption.title}
+                        </span>
+                      </div>
+                    )}
+                  </RadioGroup.Option>
+                ))}
+              </RadioGroup>
+            )}
           />
-          <span className="text-red-500">
-            {errors.name?.type === 'required' && (
-              <span role="alert">Name is required.</span>
-            )}
-            {errors.name?.type === 'minLength' && (
-              <span role="alert">Min length of name is 5 characters.</span>
-            )}
-            {errors.name?.type === 'maxLength' && (
-              <span role="alert">Max length of name is 30 characters.</span>
-            )}
-          </span>
         </div>
-        <div className="my-3">
-          <label className="text-sm font-medium text-gray-700 dark:text-gray-100">
-            Description
+
+        <div className="mb-5 relative">
+          <label
+            htmlFor="item-name"
+            className="block text-sm font-medium text-gray-700 dark:text-gray-100 mb-3"
+          >
+            Order by
           </label>
-          <Suspense fallback={<EditorPlaceholder header={true} />}>
-            <Controller
-              name="description"
-              control={control}
-              defaultValue={formFields.description}
-              render={({ field }) => (
-                <Editor
-                  {...field}
-                  initialEditorState={field.value}
-                  name="description"
-                  placeholder="Enter some description"
-                  namespace="description"
-                  hasError={errors.description as unknown as boolean}
-                  loading={false}
-                />
-              )}
-            />
-          </Suspense>
-          <span className="text-red-500">
-            {errors.description?.type === 'required' && (
-              <span role="alert">Description is required.</span>
+          <Controller
+            name="comments_order"
+            control={control}
+            render={({ field }) => (
+              <Listbox {...field} as="div">
+                <div className="relative mt-1">
+                  <Listbox.Button className="flex w-40 px-5 py-2.5 items-center border text-sm border-gray-200 rounded-xl justify-between">
+                    {selectedOrderComments?.title}
+                    <ArrowDownSIcon className="h-4 w-4 fill-gray-200 flex-shrink-0" />
+                  </Listbox.Button>
+                  <Listbox.Options className="absolute mt-2 z-10 w-32 overflow-hidden p-2 rounded-lg text-gray-500 dark:text-gray-500 bg-white dark:bg-neutral-800 ">
+                    {COMMENTS_ORDER_OPTIONS.map((option) => (
+                      <Listbox.Option
+                        key={option.value}
+                        className="w-32"
+                        value={option.value}
+                      >
+                        {({ active, selected }) => (
+                          <li className="cursor-pointer focus:outline-none text-sm flex items-center p-2 transition duration-150 ease-in-out text-neutral-700 hover:bg-neutral-100 dark:text-neutral-100 dark:hover:bg-neutral-700">
+                            {option.title}
+                          </li>
+                        )}
+                      </Listbox.Option>
+                    ))}
+                  </Listbox.Options>
+                </div>
+              </Listbox>
             )}
-          </span>
+          />
         </div>
-        <div className="flex my-3">
-          <div className="flex-row">
-            <div className="block text-sm font-medium text-gray-700 dark:text-gray-100">
-              Unlockable Content
-            </div>
-            <div className="text-xs block truncate text-gray-400">
-              Include unlockable content that can only be revealed by the owner
-              of the item.
-            </div>
-          </div>
-          <div className="ml-auto">
-            <label
-              htmlFor="unlockable-content-toggle"
-              className="inline-flex relative items-center cursor-pointer"
-            >
-              <input
-                type="checkbox"
-                value=""
-                id="unlockable-content-toggle"
-                className="sr-only peer"
-                name="unlockableContent"
-                aria-label={`${
-                  hasUnlockableContent ? 'Activate' : 'Deactivate'
-                } Unlockable Content`}
-                onChange={(e) => setHasUnlockableContent(e.target.checked)}
-              />
-              <div className="w-14 h-7 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-[4px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-6 after:w-6 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>
-            </label>
-          </div>
+
+        <div className="mb-5 relative">
+          <label
+            htmlFor="item-name"
+            className="block text-sm font-medium text-gray-700 dark:text-gray-100 mb-3"
+          >
+            Allow ratings
+          </label>
+          <Controller
+            name="allow_ratings"
+            control={control}
+            defaultValue={formFields.allow_ratings}
+            render={({ field }) => (
+              <Switch
+                {...field}
+                checked={field.value}
+                onChange={(value: boolean) => setValue('allow_ratings', value)}
+                className={`${
+                  formFields.allow_ratings ? 'bg-blue-600' : 'bg-gray-600'
+                } relative inline-flex h-6 w-11 items-center rounded-full`}
+              >
+                <span
+                  className={`${
+                    formFields.allow_ratings ? 'translate-x-6' : 'translate-x-1'
+                  } inline-block h-4 w-4 transform rounded-full bg-white`}
+                />
+              </Switch>
+            )}
+          />
         </div>
-        <Controller
-          name="unlockable_content"
-          control={control}
-          defaultValue={formFields.unlockable_content}
-          render={({ field }) => (
-            <Editor
-              {...field}
-              {...(errors.unlockable_content && {
-                'aria-invalid': true,
-              })}
-              initialEditorState={field.value}
-              name="unlockable_content"
-              placeholder="Enter content (access key, code to redeem, link to a file, etc.)"
-              isRichText={false}
-              namespace="unlockable_content"
-              hasError={errors.unlockable_content as unknown as boolean}
-              loading={false}
-            />
-          )}
-        />
-        <span className="text-red-500">
-          {errors.unlockable_content?.type === 'required' && (
-            <span role="alert">Content is required.</span>
-          )}
-        </span>
       </div>
       {!step3Answered && (
         <div>
