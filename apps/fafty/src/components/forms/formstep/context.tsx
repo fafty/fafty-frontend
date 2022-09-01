@@ -14,8 +14,10 @@ export interface Step2Props {
 }
 
 export interface Step3Props {
-  citizens: number,
-  age: number,
+  allow_ratings: boolean,
+  comments_moderation: Record<string, 'allow_all' | 'automoderation' | 'hold_all' | 'DISABLED'>,
+  comments_order: Record<string, 'interesting' | 'new'>,
+  tags: []
 }
 
 export interface StepData<T> {

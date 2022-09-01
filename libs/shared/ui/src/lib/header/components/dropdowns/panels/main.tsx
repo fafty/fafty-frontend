@@ -243,7 +243,6 @@ const MainPanel = ({
           initial="enter"
           animate="center"
           exit="exit"
-          // transition={{ type: 'spring', duration: 0.6 }}
         >
           {activeMenu === 'main' && (
             <div className="relative grid gap-1 p-1 grid-cols-1">

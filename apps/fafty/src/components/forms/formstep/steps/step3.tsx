@@ -2,18 +2,14 @@ import {
   useState,
   useEffect,
   useContext,
-  useCallback,
   ChangeEventHandler,
   Suspense,
-  lazy,
   useLayoutEffect,
 } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { EditorPlaceholder } from '@fafty-frontend/shared/ui';
 import classNames from 'classnames';
 import dynamic from 'next/dynamic';
-import { motion } from 'framer-motion';
-import { ContextProps, Step1Props } from '../context';
 
 interface EditorProps {
   isAutocomplete?: boolean;
@@ -37,50 +33,12 @@ const Editor = dynamic<EditorProps>(
   }
 );
 
-const variants = {
-  visible: {
-    height: 'auto',
-    transition: {
-      duration: 0.2,
-      delay: 0.1,
-      when: 'beforeChildren',
-      staggerChildren: 0.1,
-    },
-  },
-  hidden: {
-    height: 0,
-    transition: {
-      duration: 0.2,
-      delay: 0.1,
-      staggerChildren: 0.1,
-      when: 'afterChildren',
-      staggerDirection: -1,
-    },
-  },
-};
 
-const childVariants = {
-  visible: {
-    opacity: 1,
-    transition: {
-      duration: 0.2,
-      delay: 0.1,
-    },
-  },
-  hidden: {
-    opacity: 0,
-    transition: {
-      duration: 0.2,
-      delay: 0.1,
-    },
-  },
-};
-
-const SelectStep1 = ({ Context }: { Context: any }) => {
+const SelectStep3 = ({ Context }: { Context: any }) => {
   /**
    * Context Store
    */
-  const { step1Answered, setStep1Answered, stepData, setStepData } =
+  const { step3Answered, setStep3Answered, stepData, setStepData } =
     useContext(Context);
 
   /**
@@ -97,7 +55,7 @@ const SelectStep1 = ({ Context }: { Context: any }) => {
     mode: 'onChange',
     reValidateMode: 'onChange',
     defaultValues: {
-      ...stepData?.step1?.state,
+      ...stepData?.step3?.state,
     },
   });
 
@@ -105,7 +63,6 @@ const SelectStep1 = ({ Context }: { Context: any }) => {
    *  Local State
    */
   const formFields = watch();
-
   const [hasUnlockableContent, setHasUnlockableContent] = useState(false);
 
   /**
@@ -122,13 +79,13 @@ const SelectStep1 = ({ Context }: { Context: any }) => {
    */
   useEffect(() => {
     if (isValid) {
-      setStep1Answered(true);
+      setStep3Answered(true);
     }
-  }, [formFields, isValid, setStep1Answered]);
+  }, [formFields, isValid, setStep3Answered]);
 
   const storeData = () => {
     setStepData({
-      step1: {
+      step3: {
         solved: true,
         state: getValues(),
       },
@@ -237,7 +194,6 @@ const SelectStep1 = ({ Context }: { Context: any }) => {
           control={control}
           defaultValue={formFields.unlockable_content}
           render={({ field }) => (
-            // <Suspense fallback={<EditorPlaceholder header={false} />}>
             <Editor
               {...field}
               {...(errors.unlockable_content && {
@@ -251,7 +207,6 @@ const SelectStep1 = ({ Context }: { Context: any }) => {
               hasError={errors.unlockable_content as unknown as boolean}
               loading={false}
             />
-            // </Suspense>
           )}
         />
         <span className="text-red-500">
@@ -259,44 +214,11 @@ const SelectStep1 = ({ Context }: { Context: any }) => {
             <span role="alert">Content is required.</span>
           )}
         </span>
-        {/* <motion.div
-          initial={'hidden'}
-          variants={variants}
-          animate={hasUnlockableContent ? `visible` : `hidden`}
-        >
-          <motion.div variants={childVariants}>
-            <Controller
-              name="unlockable_content"
-              control={control}
-              defaultValue={formFields.unlockable_content}
-              render={({ field }) => (
-                <Editor
-                  {...field}
-                  {...(errors.unlockable_content && {
-                    'aria-invalid': true,
-                  })}
-                  initialEditorState={field.value}
-                  name="unlockable_content"
-                  placeholder="Enter content (access key, code to redeem, link to a file, etc.)"
-                  isRichText={false}
-                  namespace='unlockable_content'
-                  hasError={errors.unlockable_content as unknown as boolean}
-                  loading={loading}
-                />
-              )}
-            />
-            <span className="text-red-500">
-              {errors.unlockable_content?.type === 'required' && (
-                <span role="alert">Content is required.</span>
-              )}
-            </span>
-          </motion.div>
-        </motion.div> */}
       </div>
-      {!step1Answered && (
+      {!step3Answered && (
         <div>
           <p>
-            When alll answers are correct the next step button will be enabled!
+            When all answers are correct the next step button will be enabled!
           </p>
         </div>
       )}
@@ -304,4 +226,4 @@ const SelectStep1 = ({ Context }: { Context: any }) => {
   );
 };
 
-export default SelectStep1;
+export default SelectStep3;

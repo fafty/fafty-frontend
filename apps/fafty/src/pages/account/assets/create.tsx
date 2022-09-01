@@ -12,7 +12,7 @@ const defaultData = {
   unlockable_content: '',
   supply_units: 1,
   blockchain_name: 'near',
-  collenction_slug: 'none',
+  collection_token: 'none',
   sensitive_content: false
 }
 export default function Create() {

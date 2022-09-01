@@ -10,8 +10,6 @@ export const StepperContextProvider = ({
   const [step2Answered, setStep2Answered] = useState(false);
   const [step3Answered, setStep3Answered] = useState(false);
 
-  // const [pendingSave, setPendingSave] = useState(false);
-
   const [finished, setFinished] = useState<boolean>(false);
   const [stepData, setStepData] = useState({
     asset: {},
@@ -33,7 +31,12 @@ export const StepperContextProvider = ({
       solved: false,
     },
     step3: {
-      state: { citizens: 0, age: 0 },
+      state: {
+        allow_ratings: true,
+        comments_moderation: 'allow_all',
+        comments_order: 'new',
+        tags: []
+      },
       solved: false,
     },
   });

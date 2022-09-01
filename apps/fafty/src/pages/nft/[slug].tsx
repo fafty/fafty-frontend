@@ -52,6 +52,7 @@ export default function Nft() {
   const [tabIndex, setTabIndex] = useState(0);
 
   const isDarkMode = useMemo(() => {
+    // FIXME Module '"@fafty-frontend/theme"' has no exported member 'getSystemTheme'.
     const currentTheme = theme === 'system' ? getSystemTheme() : theme;
 
     return currentTheme === 'dark';

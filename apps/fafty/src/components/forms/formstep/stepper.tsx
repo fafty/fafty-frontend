@@ -7,7 +7,7 @@ import React, {
   Suspense,
   CSSProperties,
 } from 'react';
-import Context, { ContextProps } from './context';
+import Context from './context';
 import { UploaderPlaceholder } from '@fafty-frontend/shared/ui';
 import dynamic from 'next/dynamic';
 import { AnimatePresence, motion } from 'framer-motion';
