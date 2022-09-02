@@ -13,9 +13,13 @@ export interface Step2Props {
   collection_token: string;
 }
 
-export type CommentsModerationType = 'allow_all' | 'automoderation' | 'hold_all' | 'disabled'
+export type CommentsModerationType =
+  | 'allow_all'
+  | 'automoderation'
+  | 'hold_all'
+  | 'disabled';
 
-export type CommentsOrderType =  'interesting' | 'new'
+export type CommentsOrderType = 'interesting' | 'new';
 
 export interface Step3Props {
   allow_ratings: boolean;
@@ -70,6 +74,7 @@ export interface ContextProps {
   setSolutionProvided: (solutionProvided: boolean) => void;
   setStep1Answered: (step1Answered: boolean) => void;
   setStep2Answered: (step2Answered: boolean) => void;
+  setStep3Answered: (step3Answered: boolean) => void;
   step1Answered: boolean;
   step2Answered: boolean;
   step3Answered: boolean;

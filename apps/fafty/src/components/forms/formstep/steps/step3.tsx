@@ -7,6 +7,7 @@ import {
   useLayoutEffect,
   useMemo,
   Fragment,
+  Context,
 } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { EditorPlaceholder } from '@fafty-frontend/shared/ui';
@@ -19,6 +20,7 @@ import {
 import classNames from 'classnames';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ArrowDownSIcon } from '@remixicons/react/line';
+import { ContextProps } from '../context';
 
 interface EditorProps {
   isAutocomplete?: boolean;
@@ -42,12 +44,12 @@ const Editor = dynamic<EditorProps>(
   }
 );
 
-const SelectStep3 = ({ Context }: { Context: any }) => {
+const SelectStep3 = ({ Context }: { Context: Context<ContextProps> }) => {
   /**
    * Context Store
    */
   const { step3Answered, setStep3Answered, stepData, setStepData } =
-    useContext(Context);
+    useContext<ContextProps>(Context);
 
   /**
    * React-Hook-Form hook
@@ -209,7 +211,9 @@ const SelectStep3 = ({ Context }: { Context: any }) => {
             defaultValue={formFields.allow_ratings}
             render={({ field }) => (
               <Switch
-                {...field}
+                ref={field.ref}
+                name={field.name}
+                onBlur={field.onBlur}
                 checked={field.value}
                 onChange={(value: boolean) => setValue('allow_ratings', value)}
                 className={`${

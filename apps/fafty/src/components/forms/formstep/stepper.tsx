@@ -6,12 +6,14 @@ import React, {
   useCallback,
   Suspense,
   CSSProperties,
+  useMemo,
 } from 'react';
 import Context from './context';
 import { UploaderPlaceholder } from '@fafty-frontend/shared/ui';
 import dynamic from 'next/dynamic';
 import { AnimatePresence, motion } from 'framer-motion';
 import classNames from 'classnames';
+import api from '../../../api';
 
 interface ExistingFileProps {
   id: string;
@@ -80,12 +82,13 @@ const SelectStepper = (): JSX.Element => {
   const {
     step1Answered,
     step2Answered,
+    step3Answered,
     finished,
     stepData: data,
     setStepData,
+    setFinished,
   } = useContext(Context);
 
-  const [solutionProvided, setSolutionProvided] = useState(false);
   /*
    * Local Store
    */
@@ -95,24 +98,6 @@ const SelectStepper = (): JSX.Element => {
 
   const [components, setComponent] = useState({});
   const [view, setView] = useState<JSX.Element | null>(null);
-
-  /*
-   * Monitor Form Progress
-   */
-  useEffect(() => {
-    // console.log('Monitor Form Progress - step1Answered', step1Answered);
-    setSolutionProvided(false);
-    if (activeStep === 0 && step1Answered) {
-      setSolutionProvided(true);
-      // console.log('Monitor Form Progress - setSolutionProvided true ');
-    }
-    if (activeStep === 1 && step2Answered) {
-      setSolutionProvided(true);
-    }
-    if (activeStep === 2 - 1 && finished) {
-      setSolutionProvided(true);
-    }
-  }, [activeStep, step1Answered, step2Answered, finished]);
 
   const loadComponent = useCallback(async () => {
     const StepView = `step${activeStep + 1}`;
@@ -153,9 +138,20 @@ const SelectStepper = (): JSX.Element => {
     return skipped.has(step);
   };
 
+  const submitData = useCallback(async () => {
+    try {
+      await api.post('nft', data);
+
+      setFinished?.(true);
+    } catch (e) {
+      setFinished?.(true);
+      console.log(e);
+    }
+  }, [data]);
+
   const handleNext = (activeStep: number, steps: number | any[]) => {
-    if (activeStepNumeric === 2 && finished) {
-      alert('Finished! You can now submit your form');
+    if (activeStepNumeric === 3 && step3Answered) {
+      return submitData();
     }
 
     let newSkipped = skipped;
@@ -208,6 +204,26 @@ const SelectStepper = (): JSX.Element => {
   );
 
   const activeStepNumeric = activeStep + 1;
+
+  const buttonNextDisabled = useMemo(() => {
+    if (activeStepNumeric === 3) {
+      return !(step1Answered && step2Answered && step3Answered);
+    }
+
+    if (activeStepNumeric === 2) {
+      return !step2Answered;
+    }
+
+    return !step1Answered;
+  }, [step1Answered, step2Answered, step3Answered, activeStepNumeric]);
+
+  if (finished) {
+    return (
+      <div className="lg-col-3 h-full flex justify-center">
+        <span>Congratulations! Your nft is uploaded!</span>
+      </div>
+    );
+  }
 
   return (
     <>
@@ -312,7 +328,7 @@ const SelectStepper = (): JSX.Element => {
                         )}
                         <button
                           className="inline-flex items-center px-4 py-2 font-semibold leading-6 text-sm shadow rounded-md text-white bg-blue-500 hover:bg-blue-400"
-                          disabled={!solutionProvided}
+                          disabled={buttonNextDisabled}
                           onClick={() => handleNext(activeStep, 2)}
                         >
                           {activeStepNumeric === 3 ? 'Save' : 'Next'}
