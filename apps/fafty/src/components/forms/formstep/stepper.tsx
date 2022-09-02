@@ -140,11 +140,17 @@ const SelectStepper = (): JSX.Element => {
 
   const submitData = useCallback(async () => {
     try {
-      await api.post('nft', data);
+      await api.post('nft', {
+        nft: {
+          asset: data?.asset,
+          ...data?.step1.state,
+          ...data?.step2.state,
+          ...data?.step3.state,
+        },
+      });
 
       setFinished?.(true);
     } catch (e) {
-      setFinished?.(true);
       console.log(e);
     }
   }, [data]);
@@ -184,6 +190,9 @@ const SelectStepper = (): JSX.Element => {
   const onChangeFile = useCallback(
     (values: FileProps | FileProps[]) => {
       const currentFile = Array.isArray(values) ? values[0] : values;
+      const formattedFileName = (currentFile?.metadata?.filename || '')
+        .replace(/[-_%]/g, '')
+        .replace(/(.*)\.(.*?)$/, '$1');
 
       if (setStepData) {
         setStepData({
@@ -191,7 +200,7 @@ const SelectStepper = (): JSX.Element => {
           step1: {
             solved: false,
             state: {
-              name: currentFile?.metadata?.filename || '',
+              name: formattedFileName,
               description: null,
               unlockable_content: null,
               adult_content: false,
