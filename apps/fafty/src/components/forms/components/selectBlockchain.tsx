@@ -28,20 +28,15 @@ declare global {
     move(from: T, to: T): Array<T>;
   }
 }
-Array.prototype.move = function<T>(this: T[], from: number, to: number){
-  this.splice(to,0,this.splice(from,1)[0]);
+Array.prototype.move = function <T>(this: T[], from: number, to: number) {
+  this.splice(to, 0, this.splice(from, 1)[0]);
   return this;
 };
 
 function CheckIcon(props: JSX.IntrinsicAttributes & SVGProps<SVGSVGElement>) {
   return (
     <svg viewBox="0 0 24 24" fill="none" {...props}>
-      <circle
-        className="fill-blue-600"
-        cx={12}
-        cy={12}
-        r={12}
-      />
+      <circle className="fill-blue-600" cx={12} cy={12} r={12} />
       <path
         d="M7 13l3 3 7-7"
         className="stroke-white "
@@ -96,10 +91,11 @@ const collections: CollectionProps[] = [
 ];
 
 const SelectBlockchain = ({ current, onChange }: Props): JSX.Element => {
-
   const defaultSelected = collections.find((b) => b.id === current);
   const [selected, setSelected] = useState(defaultSelected?.id || 'dfinity');
-  const [previousSelected, setPreviousSelected] = useState(defaultSelected?.id || null);
+  const [previousSelected, setPreviousSelected] = useState(
+    defaultSelected?.id || null
+  );
   const itemsContainerRef = useRef<HTMLDivElement | null>(null);
   const [arrows, setArrows] = useState({ left: false, right: false });
 
@@ -153,7 +149,10 @@ const SelectBlockchain = ({ current, onChange }: Props): JSX.Element => {
     };
   }, []);
 
-  const onScreen: boolean = useOnScreen<HTMLDivElement>(itemsContainerRef as MutableRefObject<HTMLDivElement>, "0px");
+  const onScreen: boolean = useOnScreen<HTMLDivElement>(
+    itemsContainerRef as MutableRefObject<HTMLDivElement>,
+    '0px'
+  );
   useEffect(() => {
     // console.log('onScreen', onScreen);
     if (onScreen) {
@@ -162,7 +161,7 @@ const SelectBlockchain = ({ current, onChange }: Props): JSX.Element => {
   }, [onScreen]);
 
   useEffect(() => {
-    if ( selected !== previousSelected) {
+    if (selected !== previousSelected) {
       scrollItemsToCenterSelected(selected, 300);
     }
     onChange(selected);
@@ -199,17 +198,16 @@ const SelectBlockchain = ({ current, onChange }: Props): JSX.Element => {
   /**
    * Scroll to the center of the selected item
    * @param {String} id The id of item to scroll to
-  */
-   const scrollItemsToCenterSelected = (id: string, delay: number): void => {
-    // console.log('current id', id);
+   */
+  const scrollItemsToCenterSelected = (id: string, delay: number): void => {
     const item = document.getElementById(id);
     if (item === null || item === undefined) return;
-    setTimeout(function(){
+    setTimeout(function () {
       item.scrollIntoView({
         behavior: 'smooth',
         block: 'nearest',
         inline: 'center',
-      })
+      });
     }, delay);
   };
 
@@ -294,32 +292,22 @@ const SelectBlockchain = ({ current, onChange }: Props): JSX.Element => {
                         />
                       </div>
                       <div className="flex flex-col py-4 pl-20 pr-2">
-                        <strong className="text-slate-900 text-sm font-medium dark:text-slate-200">{collection.name}</strong>
+                        <strong className="text-slate-900 text-sm font-medium dark:text-slate-200">
+                          {collection.name}
+                        </strong>
                         <div className="flex justify-center">
                           <div className="flex flex-row space-x-4 mt-1 text-xs">
                             <div className="text-slate-500 dark:text-slate-400 flex flex-col items-center justify-center">
-                              <div className="">
-                                Speed
-                              </div>  
-                              <div className="">
-                                {collection.speed}
-                              </div>
+                              <div className="">Speed</div>
+                              <div className="">{collection.speed}</div>
                             </div>
                             <div className="text-slate-500 dark:text-slate-400 flex flex-col items-center justify-center">
-                              <div className=" ">
-                                Popularity
-                              </div>  
-                              <div className="">
-                                {collection.popularity}
-                              </div>
+                              <div className=" ">Popularity</div>
+                              <div className="">{collection.popularity}</div>
                             </div>
                             <div className="text-slate-500 dark:text-slate-400 flex flex-col items-center justify-center">
-                              <div className="">
-                                Fees
-                              </div>  
-                              <div className="">
-                                {collection.fees}
-                              </div>
+                              <div className="">Fees</div>
+                              <div className="">{collection.fees}</div>
                             </div>
                           </div>
                         </div>

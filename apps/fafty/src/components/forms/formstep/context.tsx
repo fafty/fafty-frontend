@@ -8,7 +8,7 @@ export interface Step1Props {
 }
 
 export interface Step2Props {
-  blockchain_name: string;
+  blockchain: string;
   supply_units: number;
   collection_token: string;
 }
@@ -19,7 +19,7 @@ export type CommentsModerationType =
   | 'hold_all'
   | 'disabled';
 
-export type CommentsOrderType = 'interesting' | 'new';
+export type CommentsOrderType = 'interesting' | 'newest';
 
 export interface Step3Props {
   allow_ratings: boolean;

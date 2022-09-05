@@ -193,7 +193,7 @@ const SelectStepper = (): JSX.Element => {
       const formattedFileName = (currentFile?.metadata?.filename || '')
         .replace(/[-_%]/g, '')
         .replace(/(.*)\.(.*?)$/, '$1')
-        .replace(/^ +| +$|( ) +/g,"$1");
+        .replace(/^ +| +$|( ) +/g, '$1');
 
       if (setStepData) {
         setStepData({

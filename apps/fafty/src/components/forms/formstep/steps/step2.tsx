@@ -35,7 +35,7 @@ const SelectStep2 = ({ Context }: { Context: Context<ContextProps> }) => {
     formState: { errors, isValid },
   } = useForm({
     defaultValues: {
-      blockchain_name: stepData?.step2?.state?.blockchain_name || 'dfinity',
+      blockchain: stepData?.step2?.state?.blockchain || 'dfinity',
       collection_token: stepData?.step2?.state?.collection_token || 'none',
       supply_units: stepData?.step2?.state?.supply_units || 1,
     },
@@ -118,9 +118,9 @@ const SelectStep2 = ({ Context }: { Context: Context<ContextProps> }) => {
           </span>
         </motion.div>
         <Controller
-          name="blockchain_name"
+          name="blockchain"
           control={control}
-          defaultValue={formFields.blockchain_name}
+          defaultValue={formFields.blockchain}
           render={({ field }) => (
             <Suspense fallback={<div>Loading...</div>}>
               <SelectBlockchain {...field} current={field.value} />

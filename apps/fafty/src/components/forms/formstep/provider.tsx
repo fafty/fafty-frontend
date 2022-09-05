@@ -1,5 +1,9 @@
 import { useState, ReactNode, useEffect, useCallback } from 'react';
-import Context, { CommentsModerationType, CommentsOrderType, SetStepDataProps } from './context';
+import Context, {
+  CommentsModerationType,
+  CommentsOrderType,
+  SetStepDataProps,
+} from './context';
 
 export const StepperContextProvider = ({
   children,
@@ -26,7 +30,7 @@ export const StepperContextProvider = ({
     },
     step2: {
       state: {
-        blockchain_name: 'dfinity',
+        blockchain: 'dfinity',
         supply_units: 1,
         collection_token: 'none',
       },

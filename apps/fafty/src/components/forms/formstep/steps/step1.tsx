@@ -2,16 +2,15 @@ import {
   useState,
   useEffect,
   useContext,
-  useCallback,
   ChangeEventHandler,
   Suspense,
-  lazy,
   useLayoutEffect,
+  Context,
 } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { EditorPlaceholder } from '@fafty-frontend/shared/ui';
 import dynamic from 'next/dynamic';
-
+import { ContextProps, Step1Props } from '../context';
 interface EditorProps {
   isAutocomplete?: boolean;
   maxCharacters?: null | number;
@@ -74,12 +73,12 @@ const childVariants = {
   },
 };
 
-const SelectStep1 = ({ Context }: { Context: any }) => {
+const SelectStep1 = ({ Context }: { Context: Context<ContextProps> }) => {
   /**
    * Context Store
    */
   const { step1Answered, setStep1Answered, stepData, setStepData } =
-    useContext(Context);
+    useContext<ContextProps>(Context);
 
   /**
    * React-Hook-Form hook
@@ -131,7 +130,7 @@ const SelectStep1 = ({ Context }: { Context: any }) => {
     setStepData({
       step1: {
         solved: true,
-        state: getValues(),
+        state: getValues() as Step1Props,
       },
     });
   };

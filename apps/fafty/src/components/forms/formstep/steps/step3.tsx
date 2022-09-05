@@ -73,7 +73,6 @@ const SelectStep3 = ({ Context }: { Context: Context<ContextProps> }) => {
    *  Local State
    */
   const formFields = watch();
-  const [hasUnlockableContent, setHasUnlockableContent] = useState(false);
 
   /**
    * Load data from context store on component mount and save data to context store on component unmount
