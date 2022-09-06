@@ -40,7 +40,7 @@ export const StepperContextProvider = ({
       state: {
         allow_ratings: true,
         comments_moderation: 'allow_all' as CommentsModerationType,
-        comments_order: 'new' as CommentsOrderType,
+        comments_order: 'newest' as CommentsOrderType,
         tags: [],
       },
       solved: false,
