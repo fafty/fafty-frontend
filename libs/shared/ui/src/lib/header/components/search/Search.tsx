@@ -80,7 +80,9 @@ export const Search = () => {
   });
 
   useEffect(() => {
-    call(inputValue);
+    if (inputValue) {
+      call(inputValue);
+    }
   }, [debouncedValue]);
 
   useEffect(() => {

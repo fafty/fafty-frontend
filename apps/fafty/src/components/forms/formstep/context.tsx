@@ -20,7 +20,7 @@ export type CommentsModerationType =
   | 'hold_all'
   | 'disabled';
 
-export type CommentsOrderType = 'interesting' | 'new';
+export type CommentsOrderType = 'interesting' | 'newest';
 
 export interface Step3Props {
   allow_ratings: boolean;

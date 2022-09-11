@@ -24,6 +24,6 @@ export const COMMENTS_ORDER_OPTIONS = [
     },
     {
         title: 'New',
-        value: 'new'
+        value: 'newest'
     }
 ]

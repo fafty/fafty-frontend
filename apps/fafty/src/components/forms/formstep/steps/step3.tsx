@@ -22,6 +22,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { ArrowDownSIcon } from '@remixicons/react/line';
 import { ContextProps } from '../context';
 import { TagsSelect } from '../../components/tagsSelect';
+import { useComponentDidUpdate } from '@fafty-frontend/usehooks';
 
 interface EditorProps {
   isAutocomplete?: boolean;
@@ -74,6 +75,20 @@ const SelectStep3 = ({ Context }: { Context: Context<ContextProps> }) => {
    *  Local State
    */
   const formFields = watch();
+
+  useComponentDidUpdate(
+    (prev) => {
+      if (
+        prev.allow_ratings !== formFields.allow_ratings ||
+        prev.tags.length !== formFields.tags.length ||
+        prev.comments_order !== formFields.comments_order ||
+        prev.comments_moderation !== formFields.comments_moderation
+      ) {
+        storeData();
+      }
+    },
+    { ...formFields }
+  );
 
   /**
    * Load data from context store on component mount and save data to context store on component unmount

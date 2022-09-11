@@ -13,3 +13,5 @@ export type Tag = {
 export type GetPopularResponse = {
   records: Tag[];
 };
+
+export type GetSearchTagsResponse = GetPopularResponse;

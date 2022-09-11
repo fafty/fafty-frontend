@@ -1,3 +1,5 @@
+import Link from 'next/link';
+
 import Image from 'next/image';
 export default function Hero() {
   return (
@@ -19,12 +21,11 @@ export default function Hero() {
           </div>
           <div>
             <div className="mt-10">
-              <a
-                href="#"
-                className="z-10 relative inline-block text-center bg-blue-600 border border-transparent rounded-md py-3 px-8 font-medium text-white hover:bg-blue-700"
-              >
-                Shop Collection
-              </a>
+              <Link href="/collections">
+                <a className="z-10 relative inline-block text-center bg-blue-600 border border-transparent rounded-md py-3 px-8 font-medium text-white hover:bg-blue-700">
+                  Shop Collection
+                </a>
+              </Link>
               <div
                 aria-hidden="true"
                 className="pointer-events-none lg:absolute lg:inset-y-0 lg:max-w-7xl lg:mx-auto lg:w-full"
