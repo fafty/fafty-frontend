@@ -44,7 +44,11 @@ const createLinks = [
   },
 ];
 
-const Header = (): JSX.Element => {
+type Props = {
+  onAuth: (key: string) => void;
+};
+
+const Header = ({ onAuth }: Props): JSX.Element => {
   return (
     <header className="header sticky top-0 z-50 backdrop-blur bg-white/95 dark:bg-neutral-800/95 border-b border-gray-100 dark:border-neutral-700 shadow transition duration-300">
       <Popover>
@@ -91,6 +95,7 @@ const Header = (): JSX.Element => {
                 </a>
               </Link>
             </Popover.Group>
+            <button onClick={() => onAuth('ic')}>auth test</button>
             <div className="hidden md:flex items-center justify-end">
               <Popover className="relative mr-5 flex align-center rounded-full backdrop-blur bg-white/95 dark:bg-neutral-800/95">
                 {({ open }) => (
@@ -218,7 +223,7 @@ const Header = (): JSX.Element => {
                       href={item.href}
                       className="text-base font-medium text-gray-900 hover:text-gray-700"
                     >
-                      {item.name}
+                      {item.name}.
                     </a>
                   ))}
                 </div>

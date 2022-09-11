@@ -21,6 +21,7 @@ import classNames from 'classnames';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ArrowDownSIcon } from '@remixicons/react/line';
 import { ContextProps } from '../context';
+import { TagsSelect } from '../../components/tagsSelect';
 
 interface EditorProps {
   isAutocomplete?: boolean;
@@ -226,6 +227,20 @@ const SelectStep3 = ({ Context }: { Context: Context<ContextProps> }) => {
                 />
               </Switch>
             )}
+          />
+        </div>
+        <div className="mb-5 relative">
+          <label
+            htmlFor="item-name"
+            className="block text-sm font-medium text-gray-700 dark:text-gray-100 mb-3"
+          >
+            Tags
+          </label>
+          <Controller
+            name="tags"
+            control={control}
+            defaultValue={formFields.tags}
+            render={({ field }) => <TagsSelect {...field} />}
           />
         </div>
       </div>

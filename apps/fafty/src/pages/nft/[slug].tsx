@@ -7,6 +7,9 @@ import api from '../../api';
 import { Fragment, useEffect, useMemo, useState } from 'react';
 import { getSystemTheme } from '@fafty-frontend/theme';
 import { useTheme } from '@fafty-frontend/theme';
+import { Tabs } from '../../components/nft/Tabs';
+import { Info } from '../../components/nft/tabs/Info';
+import { Owners } from '../../components/nft/tabs/Owners';
 
 interface BreadcrumbProps {
   name: string;
@@ -32,16 +35,8 @@ interface ResponceProps {
   record: NftProps;
 }
 
-const TABS = [
-  { title: 'Info', value: 'info' },
-  { title: 'Owners', value: 'owners' },
-  { title: 'History', value: 'history' },
-  { title: 'Bids', value: 'bids' },
-];
-
 export default function Nft() {
   const param = useRouter();
-  const { theme } = useTheme();
   const { slug } = param.query;
   const breadcrumb: BreadcrumbProps[] = useMemo(() => [], []);
 
@@ -51,19 +46,16 @@ export default function Nft() {
 
   const [tabIndex, setTabIndex] = useState(0);
 
-  const isDarkMode = useMemo(() => {
-    // FIXME Module '"@fafty-frontend/theme"' has no exported member 'getSystemTheme'.
-    const currentTheme = theme === 'system' ? getSystemTheme() : theme;
-
-    return currentTheme === 'dark';
-  }, [theme]);
-
-  const tabStyles = useMemo(() => {
-    return {
-      background: isDarkMode ? 'rgb(249 250 251)' : 'rgb(55 65 81)',
-      text: isDarkMode ? 'rgb(55 65 81)' : 'rgb(249 250 251)',
-    };
-  }, [isDarkMode]);
+  const renderTabContent = useMemo(() => {
+    switch (tabIndex) {
+      case 0:
+        return <Info />;
+      case 1:
+        return <Owners />;
+      default:
+        return null;
+    }
+  }, [tabIndex]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -190,129 +182,10 @@ export default function Nft() {
                 {/* { detail.description } */}
               </p>
             </div>
-            <Tab.Group selectedIndex={tabIndex} onChange={setTabIndex}>
-              <div className="flex flex-col space-y-8 items-start justify-start w-full">
-                <div className="flex flex-col items-start justify-start w-full p-1 border-2 rounded-full border-gray-200 dark:border-neutral-700">
-                  <Tab.List>
-                    <div className="inline-flex space-x-2 items-start justify-start w-96 transition-[background-color] duration-100 ease-linear">
-                      {TABS.map((tab) => (
-                        <Tab as={Fragment} key={tab.value}>
-                          {({ selected }) => (
-                            <motion.div
-                              className="flex items-center relative justify-center px-3 py-1.5 rounded-full outline-none cursor-pointer"
-                              initial={{
-                                color: selected ? tabStyles.text : '',
-                              }}
-                              animate={{
-                                color: selected ? tabStyles.text : '',
-                              }}
-                              transition={{ duration: 0.3 }}
-                            >
-                              <span className="relative outline-none text-sm font-bold leading-none z-1">
-                                {tab.title}
-                              </span>
-                              {selected && (
-                                <motion.div
-                                  className="absolute w-full h-full rounded-full top-0 left-0 outline-none"
-                                  layoutId="selected"
-                                  initial={{
-                                    backgroundColor: tabStyles.background,
-                                  }}
-                                  animate={{
-                                    backgroundColor: tabStyles.background,
-                                  }}
-                                  transition={{ duration: 0.3 }}
-                                />
-                              )}
-                            </motion.div>
-                            // <button
-                            //   className={classNames(
-                            //     'flex items-center justify-center px-3 py-1.5 rounded-full focus:outline-none transition-[background-color] duration-100 ease-linear',
-                            //     {
-                            //       'bg-gray-700 dark:bg-gray-50': selected,
-                            //     }
-                            //   )}
-                            // >
-                            //   <span
-                            //     className={classNames(
-                            //       'text-sm font-bold leading-none',
-                            //       {
-                            //         'text-gray-50 dark:text-gray-700': selected,
-                            //       }
-                            //     )}
-                            //   >
-                            //     {tab.title}
-                            //   </span>
-                            // </button>
-                          )}
-                        </Tab>
-                      ))}
-                    </div>
-                  </Tab.List>
-                </div>
-                <div className="flex flex-col space-y-4 items-start justify-start w-full">
-                  <div className="flex flex-col space-y-4 items-start justify-start w-full pb-4 border-b-2 border-gray-100 dark:border-neutral-700">
-                    <div className="inline-flex space-x-4 items-center justify-start ">
-                      <div
-                        className="relative"
-                        style={{ width: 48, height: 48 }}
-                      >
-                        <div className="inline-flex items-center justify-center w-12 h-12 bg-purple-500 rounded-full">
-                          <img
-                            className="w-12 h-full"
-                            src="https://via.placeholder.com/49.339351654052734x74"
-                          />
-                        </div>
-                        <div className="inline-flex items-center justify-center w-6 h-6 p-1.5 absolute right-0 bottom-0">
-                          <div className="flex-1 h-full rounded-full">
-                            <img
-                              className="flex-1 h-full rounded-full"
-                              src="https://via.placeholder.com/12x12"
-                            />
-                          </div>
-                        </div>
-                      </div>
-                      <div className="inline-flex flex-col space-y-0.5 items-start justify-start">
-                        <p className="text-sm leading-normal text-gray-500">
-                          Owner
-                        </p>
-                        <div className="inline-flex space-x-1 items-start justify-start">
-                          <p className="text-sm font-medium leading-normal text-gray-800">
-                            Raquel
-                          </p>
-                          <p className="text-sm font-medium leading-normal text-gray-800">
-                            Will
-                          </p>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="flex flex-col space-y-4 items-start justify-start w-full pb-4 border-b-2 border-gray-100 dark:border-neutral-700">
-                    <div className="inline-flex space-x-4 items-center justify-start">
-                      <div className="flex items-center justify-center w-12 h-12 bg-green-500 rounded-full">
-                        <img
-                          className="flex-1 h-full"
-                          src="https://via.placeholder.com/48x71.9912109375"
-                        />
-                      </div>
-                      <div className="inline-flex flex-col space-y-0.5 items-start justify-start">
-                        <p className="text-sm leading-normal text-gray-500">
-                          Creator
-                        </p>
-                        <div className="inline-flex space-x-1 items-start justify-start">
-                          <p className="text-sm font-medium leading-normal text-gray-800">
-                            Selina
-                          </p>
-                          <p className="text-sm font-medium leading-normal text-gray-800">
-                            Mayert
-                          </p>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </Tab.Group>
+            <div className="flex flex-col space-y-2.5">
+              <Tabs tabIndex={tabIndex} setTabIndex={setTabIndex} />
+              {renderTabContent}
+            </div>
             <div className="flex flex-col space-y-8 items-start justify-center w-full p-6 bg-white dark:bg-neutral-800 text-slate-900 dark:text-slate-200 border-t border-gray-100 dark:border-neutral-700 rounded-2xl drop-shadow-2xl shadow-md">
               <div className="text-base font-medium leading-normal">
                 <div className="flex space-x-1 items-start justify-start">

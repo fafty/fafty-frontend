@@ -61,6 +61,12 @@
   },
   "private": true,
   "dependencies": {
+    "@dfinity/agent": "^0.13.2",
+    "@dfinity/auth-client": "^0.13.2",
+    "@dfinity/authentication": "^0.13.2",
+    "@dfinity/candid": "^0.13.2",
+    "@dfinity/identity": "^0.13.2",
+    "@dfinity/principal": "^0.13.2",
     "@lexical/react": "^0.3.2",
     "@nrwl/next": "14.5.8",
     "@types/react-transition-group": "^4.4.4",
@@ -143,4 +149,3 @@
     "yarn": "^1.22.18"
   }
 }
-

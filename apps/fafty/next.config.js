@@ -11,7 +11,7 @@ const commitHash = require('child_process')
  * @type {import('@nrwl/next/plugins/with-nx').WithNxOptions}
  **/
 const nextConfig = {
-  reactStrictMode: true,
+  reactStrictMode: false,
   nx: {
     // Set this to true if you would like to to use SVGR
     // See: https://github.com/gregberge/svgr
@@ -24,25 +24,25 @@ const nextConfig = {
     return [
       {
         source: '/*',
-        headers: [{ key: 'Web-Build', value: commitHash }]
+        headers: [{ key: 'Web-Build', value: commitHash }],
       },
       {
         key: 'X-DNS-Prefetch-Control',
-        value: 'on'
-      }
+        value: 'on',
+      },
     ];
   },
   generateBuildId: async () => {
     // latest git commit hash here
-    return commitHash
+    return commitHash;
   },
   experimental: {
     concurrentFeatures: true,
     // serverComponents: true,
-    images: { allowFutureImage: true }
+    images: { allowFutureImage: true },
   },
   images: {
-    domains: ['fafty-assets.s3.amazonaws.com']
+    domains: ['fafty-assets.s3.amazonaws.com'],
   },
 
   // swcMinify: true,

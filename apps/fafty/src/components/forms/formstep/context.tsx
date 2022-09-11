@@ -1,4 +1,5 @@
 import { createContext } from 'react';
+import { Tag } from '../../../api/callbacks/tags/types';
 
 export interface Step1Props {
   name: string;
@@ -19,13 +20,13 @@ export type CommentsModerationType =
   | 'hold_all'
   | 'disabled';
 
-export type CommentsOrderType = 'interesting' | 'newest';
+export type CommentsOrderType = 'interesting' | 'new';
 
 export interface Step3Props {
   allow_ratings: boolean;
   comments_moderation: CommentsModerationType;
   comments_order: CommentsOrderType;
-  tags: never[];
+  tags: Tag[];
 }
 
 export interface StepData<T> {
