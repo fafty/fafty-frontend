@@ -18,7 +18,7 @@ const MainLayout = ({ children, title, description }: Props) => {
   };
 
   useEffect(() => {
-    if (!auth.principal) {
+    if (!auth.principal && auth.wallet) {
       auth.wallet?.logIn();
     }
   }, [auth.wallet]);
@@ -31,6 +31,7 @@ const MainLayout = ({ children, title, description }: Props) => {
     <>
       <Meta title={title} description={description} />
       <Header
+        onLogOut={() => auth.wallet?.logOut?.()}
         onAuth={onAuth}
         balance={balance}
         isAuth={!!auth.principal?.toString()}

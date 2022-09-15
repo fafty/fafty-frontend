@@ -70,13 +70,12 @@ const variants = {
         backgroundColor: 'rgba(0, 0, 0, 0.5)',
         opacity: 0,
         overflow: 'hidden',
-
       },
       transitionEnd: {
         // after animation has finished, reset the position to relative
         position: 'relative',
         overflow: 'hidden',
-      }
+      },
     };
   },
   center: ({ direction, menu }: { direction: number; menu: string }) => {
@@ -85,7 +84,7 @@ const variants = {
       x: 0,
       opacity: 1,
       height: 'auto',
-     
+
       transition: {
         duration: 0.3,
         ease: 'easeInOut',
@@ -93,8 +92,8 @@ const variants = {
         height: {
           duration: 0.5,
           delay: 0.1,
-        }
-      }
+        },
+      },
     };
   },
   exit: ({ direction, menu }: { direction: number; menu: string }) => {
@@ -117,8 +116,8 @@ const variants = {
         height: {
           duration: 0.5,
           delay: 0.1,
-        }
-      }
+        },
+      },
     };
   },
 };
@@ -147,9 +146,11 @@ function CheckIcon(props: JSX.IntrinsicAttributes & SVGProps<SVGSVGElement>) {
 const MainPanel = ({
   open,
   close,
+  onLogOut,
 }: {
   open: boolean;
   close: boolean;
+  onLogOut: () => void;
 }): JSX.Element => {
   const [activeMenu, setActiveMenu] = useState('main');
   const { theme, setTheme } = useTheme();
@@ -162,6 +163,7 @@ const MainPanel = ({
   interface DropdownItemOrBackProps {
     children: ReactNode;
     goToMenu?: string;
+    onClick?: () => void;
     leftIcon?: (props: SVGProps<SVGSVGElement>) => JSX.Element;
     rightIcon?: (props: SVGProps<SVGSVGElement>) => JSX.Element;
   }
@@ -206,6 +208,7 @@ const MainPanel = ({
     const {
       children,
       goToMenu,
+      onClick,
       leftIcon: LeftIcon,
       rightIcon: RightIcon,
     } = props;
@@ -213,7 +216,7 @@ const MainPanel = ({
     return (
       <a
         className="cursor-pointer focus:outline-none flex items-center rounded-lg p-2 transition duration-150 ease-in-out text-neutral-700 hover:bg-neutral-100 dark:text-neutral-100 dark:hover:bg-neutral-700"
-        onClick={() => goTo(goToMenu)}
+        onClick={() => (goToMenu ? goTo(goToMenu) : onClick?.())}
       >
         <div className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-full px-1 py-1 focus:outline-none bg-neutral-200 text-neutral-700 dark:text-neutral-200 dark:fill-neutral-200 dark:bg-neutral-700">
           {LeftIcon && <LeftIcon className="h-6 w-6" aria-hidden="true" />}
@@ -234,7 +237,7 @@ const MainPanel = ({
         exitBeforeEnter={false}
         custom={{ direction: direction, activeMenu: activeMenu }}
       >
-        <motion.div 
+        <motion.div
           layoutTransition
           layout
           key={activeMenu}
@@ -299,7 +302,9 @@ const MainPanel = ({
               >
                 Appearance
               </DropdownItem>
-              <DropdownItem leftIcon={LogoutIcon}>Disconnect</DropdownItem>
+              <DropdownItem onClick={onLogOut} leftIcon={LogoutIcon}>
+                Disconnect
+              </DropdownItem>
             </div>
           )}
           {activeMenu === 'settings' && (

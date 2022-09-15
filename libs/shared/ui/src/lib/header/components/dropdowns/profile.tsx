@@ -5,7 +5,13 @@ import MainPanelPlaceholder from '../../../placeholders/header/components/dropdo
 import classNames from 'classnames';
 const MainPanel = lazy(() => import('./panels/main'));
 
-const ProfileMenu = ({ balance }: { balance: number }): JSX.Element => {
+const ProfileMenu = ({
+  balance,
+  onLogOut,
+}: {
+  balance: number;
+  onLogOut: () => void;
+}): JSX.Element => {
   return (
     <Popover className="relative inline-block align-center">
       {({ open }) => {
@@ -38,7 +44,7 @@ const ProfileMenu = ({ balance }: { balance: number }): JSX.Element => {
             >
               <Popover.Panel className="absolute z-10 right-0 origin-top-right mt-4 px-2 w-screen max-w-xs max-h-[calc(100vh_-_60px)] sm:px-0 drop-shadow-lg shadow-lg">
                 <Suspense fallback={<MainPanelPlaceholder />}>
-                  <MainPanel open close />
+                  <MainPanel onLogOut={onLogOut} open close />
                 </Suspense>
               </Popover.Panel>
             </Transition>

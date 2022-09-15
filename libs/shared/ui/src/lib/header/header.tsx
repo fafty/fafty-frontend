@@ -48,9 +48,10 @@ type Props = {
   balance: number;
   isAuth: boolean;
   onAuth: (key: string) => void;
+  onLogOut: () => void;
 };
 
-const Header = ({ onAuth, balance, isAuth }: Props): JSX.Element => {
+const Header = ({ onAuth, balance, isAuth, onLogOut }: Props): JSX.Element => {
   return (
     <header className="header sticky top-0 z-50 backdrop-blur bg-white/95 dark:bg-neutral-800/95 border-b border-gray-100 dark:border-neutral-700 shadow transition duration-300">
       <Popover>
@@ -165,7 +166,7 @@ const Header = ({ onAuth, balance, isAuth }: Props): JSX.Element => {
                   )}
                 </Popover>
                 <div className="flex items-center">
-                  <ProfileMenu balance={balance} />
+                  <ProfileMenu balance={balance} onLogOut={onLogOut} />
                 </div>
               </div>
             )}
