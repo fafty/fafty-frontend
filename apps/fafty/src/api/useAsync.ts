@@ -12,7 +12,7 @@ export type RequestParams<D, P> = {
 export function useAsync<D, P>({
   callback,
   mapper,
-  withMount = true,
+  withMount = false,
 }: RequestParams<D, P>) {
   const [data, setData] = useState<D>();
   const [errorMessage, setErrorMessage] = useState('');

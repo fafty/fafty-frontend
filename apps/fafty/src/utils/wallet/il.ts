@@ -1,6 +1,9 @@
 import { Actor, HttpAgent, Identity } from '@dfinity/agent';
 import { AuthClient } from '@dfinity/auth-client';
 import { auth } from '../../auth';
+import ledger_idl from '../canister/ledger.did';
+import { getAccountId } from '../account';
+import _SERVICE from '../canister/ledger_type';
 
 const DFX_NETWORK = process.env.REACT_APP_DFX_NETWORK || 'ic';
 
@@ -103,7 +106,9 @@ export default function internetIdentity() {
 
           auth.setPrincipal(identity.getPrincipal());
 
-          //   getBalance();
+          setTimeout(() => {
+            getBalance();
+          }, 0);
 
           console.log('Logged in with II');
         },
@@ -120,12 +125,39 @@ export default function internetIdentity() {
     auth.setPrincipal(undefined);
   }
 
+  async function getBalance(): Promise<any> {
+    if (identity !== null) {
+      const ledgerActor = await getActor<_SERVICE>(
+        'ryjl3-tyaaa-aaaaa-aaaba-cai',
+        ledger_idl
+      );
+
+      console.log(ledgerActor);
+
+      const accountId = getAccountId(identity.getPrincipal().toString(), 0);
+
+      const req = {
+        account: accountId,
+      };
+
+      console.log(req);
+
+      const raw_balance = await ledgerActor?.account_balance_dfx(req);
+
+      if (raw_balance !== undefined) {
+        const balance = raw_balance.e8s;
+
+        auth.setBalance(balance);
+      }
+    }
+  }
+
   return {
     name: 'ii',
     logIn,
     logOut,
     getActor,
     // requestTransfer,
-    // getBalance,
+    getBalance,
   };
 }

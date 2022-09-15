@@ -11,7 +11,7 @@ const defaultData = {
   description: '',
   unlockable_content: '',
   supply_units: 1,
-  blockchain_name: 'near',
+  blockchain: 'near',
   collection_token: 'none',
   sensitive_content: false
 }

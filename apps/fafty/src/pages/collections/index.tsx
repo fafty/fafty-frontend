@@ -1,15 +1,53 @@
+import Link from 'next/link';
+import { MutableRefObject, useEffect, useRef, useState } from 'react';
 import { useAsync } from '../../api/useAsync';
 import { getCollections } from '../../api/callbacks/collections';
 import { GetCollectionResponse } from '../../api/callbacks/collections/types';
 import { Masonry } from 'masonic';
 import MainLayout from '../../layouts/main';
-import Link from 'next/link';
+import { useOnScreen } from '@fafty-frontend/usehooks';
+
+const mapper = (
+  data: GetCollectionResponse,
+  prev?: GetCollectionResponse
+): GetCollectionResponse => {
+  if (prev && Object.keys(prev).length) {
+    return { ...prev, ...data, records: [...prev.records, ...data.records] };
+  }
+
+  return data;
+};
+
+const LIMIT = 10;
 
 const Collections = () => {
-  const { data } = useAsync<GetCollectionResponse, undefined>({
-    callback: getCollections,
-    withMount: true,
+  const [offset, setOffset] = useState(0);
+
+  const loaderAreaRef = useRef<HTMLDivElement | null>(null);
+  const onScreen = useOnScreen<HTMLDivElement>(
+    loaderAreaRef as MutableRefObject<HTMLDivElement>
+  );
+
+  const { data, isLoading, call } = useAsync<GetCollectionResponse, undefined>({
+    callback: () => getCollections({ offset, limit: LIMIT }),
+    mapper,
   });
+
+  const allowLoad = data ? data?.records.length < data?.paginate?.count : true;
+
+  const loadMore = () => {
+    setOffset((prev) => prev + LIMIT);
+  };
+
+  useEffect(() => {
+    if (!isLoading && onScreen && allowLoad) {
+      loadMore();
+    }
+  }, [onScreen, isLoading, allowLoad]);
+
+  useEffect(() => {
+    call();
+  }, [offset]);
 
   return (
     <MainLayout title="collections" description="collections">
@@ -42,6 +80,9 @@ const Collections = () => {
             )}
           />
         )}
+        <div className="flex relative">
+          <div className="flex absolute b-full h-[300px]" ref={loaderAreaRef} />
+        </div>
       </div>
     </MainLayout>
   );

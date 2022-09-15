@@ -45,10 +45,12 @@ const createLinks = [
 ];
 
 type Props = {
+  balance: number;
+  isAuth: boolean;
   onAuth: (key: string) => void;
 };
 
-const Header = ({ onAuth }: Props): JSX.Element => {
+const Header = ({ onAuth, balance, isAuth }: Props): JSX.Element => {
   return (
     <header className="header sticky top-0 z-50 backdrop-blur bg-white/95 dark:bg-neutral-800/95 border-b border-gray-100 dark:border-neutral-700 shadow transition duration-300">
       <Popover>
@@ -94,70 +96,79 @@ const Header = ({ onAuth }: Props): JSX.Element => {
                   Nfts
                 </a>
               </Link>
+              {!isAuth && (
+                <button
+                  className="text-base font-medium text-slate-900 dark:text-slate-50 hover:text-slate-800 dark:hover:text-slate-300"
+                  onClick={() => onAuth('ic')}
+                >
+                  Login
+                </button>
+              )}
             </Popover.Group>
-            <button onClick={() => onAuth('ic')}>auth test</button>
-            <div className="hidden md:flex items-center justify-end">
-              <Popover className="relative mr-5 flex align-center rounded-full backdrop-blur bg-white/95 dark:bg-neutral-800/95">
-                {({ open }) => (
-                  <>
-                    <Popover.Button
-                      title="Add items"
-                      aria-label="Add items"
-                      className={`${
-                        open
-                          ? 'bg-blue-50 dark:bg-blue-500/20'
-                          : 'bg-neutral-200 dark:bg-neutral-700'
-                      } w-10 h-10 rounded-full hover:bg-blue-100  dark:hover:bg-neutral-600 box-border justify-center p-0 m-0 cursor-pointer flex relative dark:text-gray-200 touch-manipulation items-center select-none border-0 list-none outline-none decoration-0 transition duration-250 ease-in-out`}
-                    >
-                      <PlusIcon
+            {isAuth && (
+              <div className="hidden md:flex items-center justify-end">
+                <Popover className="relative mr-5 flex align-center rounded-full backdrop-blur bg-white/95 dark:bg-neutral-800/95">
+                  {({ open }) => (
+                    <>
+                      <Popover.Button
+                        title="Add items"
+                        aria-label="Add items"
                         className={`${
-                          open ? 'text-blue-500' : 'text-slate-900'
-                        } dark:text-slate-50 touch-manipulation select-none border-0 list-none outline-none decoration-0 w-5`}
-                      />
-                    </Popover.Button>
-                    <Transition
-                      as={Fragment}
-                      enter="transition ease-out duration-200"
-                      enterFrom="opacity-0 translate-y-1"
-                      enterTo="opacity-100 translate-y-0"
-                      leave="transition ease-in duration-150"
-                      leaveFrom="opacity-100 translate-y-0"
-                      leaveTo="opacity-0 translate-y-1"
-                    >
-                      <Popover.Panel className="absolute z-10 left-1/2 transform -translate-x-1/2 mt-14 w-screen max-w-xs sm:px-0">
-                        <div className="p-2 rounded-lg drop-shadow-lg shadow-lg ring-1 ring-black ring-opacity-5 bg-white dark:bg-neutral-800 overflow-hidden">
-                          <div className="relative grid gap-1 p-1">
-                            {createLinks.map((item) => (
-                              <Link key={item.name} href={item.href}>
-                                <a className="focus:outline-none flex items-center rounded-lg p-2 transition duration-150 ease-in-out text-neutral-700 hover:bg-neutral-100 dark:text-neutral-100 dark:hover:bg-neutral-700">
-                                  <div className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-full px-1 py-1 focus:outline-none bg-neutral-200 text-neutral-700 dark:text-neutral-200 dark:fill-neutral-200 dark:bg-neutral-700">
-                                    <item.icon
-                                      className="flex-shrink-0 h-6 w-6 fill-slate-900 dark:fill-slate-50"
-                                      aria-hidden="true"
-                                    />
-                                  </div>
-                                  <div>
-                                    <p className="ml-4 text-base font-medium">
-                                      {item.name}
-                                    </p>
-                                    <p className="ml-4 text-sm text-gray-400">
-                                      {item.description}
-                                    </p>
-                                  </div>
-                                </a>
-                              </Link>
-                            ))}
+                          open
+                            ? 'bg-blue-50 dark:bg-blue-500/20'
+                            : 'bg-neutral-200 dark:bg-neutral-700'
+                        } w-10 h-10 rounded-full hover:bg-blue-100  dark:hover:bg-neutral-600 box-border justify-center p-0 m-0 cursor-pointer flex relative dark:text-gray-200 touch-manipulation items-center select-none border-0 list-none outline-none decoration-0 transition duration-250 ease-in-out`}
+                      >
+                        <PlusIcon
+                          className={`${
+                            open ? 'text-blue-500' : 'text-slate-900'
+                          } dark:text-slate-50 touch-manipulation select-none border-0 list-none outline-none decoration-0 w-5`}
+                        />
+                      </Popover.Button>
+                      <Transition
+                        as={Fragment}
+                        enter="transition ease-out duration-200"
+                        enterFrom="opacity-0 translate-y-1"
+                        enterTo="opacity-100 translate-y-0"
+                        leave="transition ease-in duration-150"
+                        leaveFrom="opacity-100 translate-y-0"
+                        leaveTo="opacity-0 translate-y-1"
+                      >
+                        <Popover.Panel className="absolute z-10 left-1/2 transform -translate-x-1/2 mt-14 w-screen max-w-xs sm:px-0">
+                          <div className="p-2 rounded-lg drop-shadow-lg shadow-lg ring-1 ring-black ring-opacity-5 bg-white dark:bg-neutral-800 overflow-hidden">
+                            <div className="relative grid gap-1 p-1">
+                              {createLinks.map((item) => (
+                                <Link key={item.name} href={item.href}>
+                                  <a className="focus:outline-none flex items-center rounded-lg p-2 transition duration-150 ease-in-out text-neutral-700 hover:bg-neutral-100 dark:text-neutral-100 dark:hover:bg-neutral-700">
+                                    <div className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-full px-1 py-1 focus:outline-none bg-neutral-200 text-neutral-700 dark:text-neutral-200 dark:fill-neutral-200 dark:bg-neutral-700">
+                                      <item.icon
+                                        className="flex-shrink-0 h-6 w-6 fill-slate-900 dark:fill-slate-50"
+                                        aria-hidden="true"
+                                      />
+                                    </div>
+                                    <div>
+                                      <p className="ml-4 text-base font-medium">
+                                        {item.name}
+                                      </p>
+                                      <p className="ml-4 text-sm text-gray-400">
+                                        {item.description}
+                                      </p>
+                                    </div>
+                                  </a>
+                                </Link>
+                              ))}
+                            </div>
                           </div>
-                        </div>
-                      </Popover.Panel>
-                    </Transition>
-                  </>
-                )}
-              </Popover>
-              <div className="flex items-center">
-                <ProfileMenu />
+                        </Popover.Panel>
+                      </Transition>
+                    </>
+                  )}
+                </Popover>
+                <div className="flex items-center">
+                  <ProfileMenu balance={balance} />
+                </div>
               </div>
-            </div>
+            )}
           </div>
         </div>
         <Transition

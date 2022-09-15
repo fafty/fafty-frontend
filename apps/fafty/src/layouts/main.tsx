@@ -1,5 +1,5 @@
 import { Header, Footer, Meta } from '@fafty-frontend/shared/ui';
-import { ReactNode, useEffect } from 'react';
+import { ReactNode, useEffect, useMemo } from 'react';
 import { useAuth } from '../auth';
 
 type Props = {
@@ -18,15 +18,23 @@ const MainLayout = ({ children, title, description }: Props) => {
   };
 
   useEffect(() => {
-    auth.wallet?.logIn();
+    if (!auth.principal) {
+      auth.wallet?.logIn();
+    }
   }, [auth.wallet]);
 
-  console.log(auth.principal?.toString());
+  const balance = useMemo(() => {
+    return Number(auth.balance) / Math.pow(10, 8) || 0;
+  }, [auth.balance]);
 
   return (
     <>
       <Meta title={title} description={description} />
-      <Header onAuth={onAuth} />
+      <Header
+        onAuth={onAuth}
+        balance={balance}
+        isAuth={!!auth.principal?.toString()}
+      />
       <main className="relative container mx-auto px-8">{children}</main>
       <Footer />
     </>

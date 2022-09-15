@@ -5,29 +5,26 @@ import MainPanelPlaceholder from '../../../placeholders/header/components/dropdo
 import classNames from 'classnames';
 const MainPanel = lazy(() => import('./panels/main'));
 
-const ProfileMenu = (): JSX.Element => {
+const ProfileMenu = ({ balance }: { balance: number }): JSX.Element => {
   return (
     <Popover className="relative inline-block align-center">
       {({ open }) => {
         return (
           <>
             <Popover.Button
-              className={
-                classNames(
-                  'flex -space-x-1 overflow-hidden border rounded-full dark:hover:bg-blue-600/25 box-border justify-center h-10 p-0 m-0 cursor-pointer relative dark:text-gray-200 touch-manipulation items-center select-none list-none outline-none decoration-0 transition duration-150 ease-in-out',
-                  {
-                    'bg-blue-100 dark:bg-blue-800/25 border-blue-500': open,
-                    'text-slate-900 border-neutral-300 dark:border-neutral-700': !open,
-                  }
-                )
-              }
+              className={classNames(
+                'flex -space-x-1 overflow-hidden border rounded-full dark:hover:bg-blue-600/25 box-border justify-center h-10 p-0 m-0 cursor-pointer relative dark:text-gray-200 touch-manipulation items-center select-none list-none outline-none decoration-0 transition duration-150 ease-in-out',
+                {
+                  'bg-blue-100 dark:bg-blue-800/25 border-blue-500': open,
+                  'text-slate-900 border-neutral-300 dark:border-neutral-700':
+                    !open,
+                }
+              )}
             >
               <ProfileButton
-                avatarUrl={
-                  '/images/demo-avatar.jpeg'
-                }
-                balance={70.23}
-                ticker={'ETH'}
+                avatarUrl={'/images/demo-avatar.jpeg'}
+                balance={balance}
+                ticker={'ICP'}
               />
             </Popover.Button>
             <Transition

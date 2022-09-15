@@ -51,7 +51,7 @@ interface FormProps {
   unlockable_content: string | null;
   sensitive_content: boolean;
   supply_units: number | null;
-  blockchain_name: string;
+  blockchain: string;
   collection_token: string;
 }
 
