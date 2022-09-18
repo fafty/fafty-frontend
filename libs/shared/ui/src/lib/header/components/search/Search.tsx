@@ -95,16 +95,43 @@ export const Search = () => {
 
   return (
     <div className="relative w-full mx-4 max-w-[600px]" ref={containerRef}>
-      <div className=" flex items-center p-2 border border-white rounded">
-        <SearchIcon className="h-6 w-6 fill-white mr-2 flex-shrink-0" />
-        <input
-          onFocus={onFocus}
-          onChange={onChangeValue}
-          value={inputValue}
-          className="h-full w-full bg-transparent outline-none"
-        />
+      <div className="flex items-center">
+        <div className="w-full h-[50px]">
+          <div className="pointer-events-none absolute p-2 inset-y-0 left-0 flex items-center pl-3 pr-5">
+            <span
+              className={classNames(
+                {
+                  'fill-blue-500': isOpened,
+                  'fill-gray-300': !isOpened,
+                },
+                'sm:text-sm'
+              )}
+            >
+              <SearchIcon className="h-5 w-5 mr-2 flex-shrink-0" />
+            </span>
+          </div>
+          <input
+            onFocus={onFocus}
+            onChange={onChangeValue}
+            value={inputValue}
+            autoComplete="off"
+            spellCheck="false"
+            type="search"
+            autoCorrect="off"
+            autoCapitalize="off"
+            name="search"
+            id="search"
+            className={classNames(
+              !!data?.records?.length && isOpened
+                ? 'border-b-0 rounded-t-md border-blue-500'
+                : 'rounded-md',
+              'border-2 focus:ring-0 focus:ring-offset-0 block w-full bg-transparent border-gray-300 pl-9 pr-3 p-3 focus:border-blue-500 ring-0 focus-within:border-blue-500 sm:text-sm md:text-base'
+            )}
+            placeholder="Search for NFTs, Collections, Users, Bundles etc."
+          />
+        </div>
         {!!data?.records?.length && isOpened && (
-          <div className="flex flex-col absolute bg-white right-0 left-0 top-full rounded">
+          <div className="flex flex-col absolute backdrop-blur bg-white/95 dark:bg-neutral-800/95 border-x-2 border-b-2 border-blue-500 shadow transition duration-300 right-0 left-0 top-full rounded-b-md">
             {data.records.map(({ searchable }, index) => {
               const isActive = index === activeIndex;
 
@@ -112,23 +139,26 @@ export const Search = () => {
                 <div
                   onClick={onClickItem}
                   className={classNames(
-                    'flex flex-col p-2 w-full cursor-pointer',
+                    'flex flex-col p-2 w-full cursor-pointer focus:outline-none transition duration-150 ease-in-out text-neutral-700 hover:bg-neutral-100/95 dark:text-neutral-100 dark:hover:bg-neutral-700/95',
                     {
-                      'bg-neutral-600': isActive,
+                      'bg-neutral-100/95 dark:bg-neutral-700/95': isActive,
                     }
                   )}
                   key={index}
                   onMouseEnter={() => setActiveIndex(index)}
                 >
                   <span
-                    className={classNames('text-base font-bold text-gray-900', {
-                      'text-slate-50': isActive,
-                    })}
+                    className={classNames(
+                      'mx-3 text-base font-medium',
+                      {
+                        'text-neutral-700 dark:text-neutral-200': isActive,
+                      }
+                    )}
                   >
                     {searchable.name}
                   </span>
                   {!isObject(searchable.description) && (
-                    <span className="text-sm text-bold text-gray-600">
+                    <span className="text-sm text-bold text-gray-300">
                       {searchable.description}
                     </span>
                   )}
