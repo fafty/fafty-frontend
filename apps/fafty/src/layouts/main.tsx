@@ -1,6 +1,6 @@
 import { Header, Footer, Meta } from '@fafty-frontend/shared/ui';
 import { ReactNode, useEffect, useMemo } from 'react';
-import { useAuth } from '../auth';
+import { useAuth } from '../utils/auth';
 
 type Props = {
   children: ReactNode;

@@ -2,7 +2,7 @@ import '../styles/globals.sass';
 import type { AppProps } from 'next/app';
 import { ThemeProvider } from '@fafty-frontend/theme';
 import { NotificationProvider } from '@fafty-frontend/notifications';
-import { ProvideAuth } from '../auth';
+import { ProvideAuth } from '../utils/auth';
 
 function FaftyApp({ Component, pageProps }: AppProps) {
   return (

@@ -1,77 +1,20 @@
 import { Actor, HttpAgent, Identity } from '@dfinity/agent';
+import { auth } from '../auth';
+import { getHost } from '../canister/actor';
 import { AuthClient } from '@dfinity/auth-client';
-import { auth } from '../../auth';
-import ledger_idl from '../canister/ledger.did';
+import { WalletInterface } from './plug';
+
+import ledger_idl from '../canister/ledger.did.js';
+import _SERVICE, {
+  AccountBalanceArgs,
+  SendArgs,
+} from '../canister/ledger_type';
+import { getCanisterIds } from '../canister/principals';
 import { getAccountId } from '../account';
-import _SERVICE from '../canister/ledger_type';
-
-const DFX_NETWORK = process.env.REACT_APP_DFX_NETWORK || 'ic';
-
-const dfxConfig = {
-  canisters: {
-    icpunks: {
-      build: './service/build.sh',
-      candid: 'service/icpunks/icpunks.did',
-      wasm: 'service/target/wasm32-unknown-unknown/release/icpunks.wasm',
-      type: 'custom',
-    },
-    ledger_proxy: {
-      main: 'service/motoko/ledger_proxy.mo',
-      type: 'motoko',
-    },
-    icpunks_storage: {
-      main: 'service/motoko/storage.mo',
-      type: 'motoko',
-    },
-    icpunks_claim: {
-      main: 'service/motoko/claim.mo',
-      type: 'motoko',
-    },
-    icpunks_assets: {
-      dependencies: ['icpunks'],
-      frontend: {
-        entrypoint: 'src/index.tsx',
-      },
-      source: ['build'],
-      type: 'assets',
-    },
-  },
-  dfx: '0.7.2',
-  networks: {
-    ic: {
-      providers: ['https://boundary.ic0.app/'],
-      type: 'persistent',
-    },
-    local: {
-      bind: '127.0.0.1:8000',
-      type: 'ephemeral',
-    },
-  },
-  version: 1,
-};
-
-export function getHost() {
-  if (DFX_NETWORK === 'ic') return dfxConfig.networks.ic.providers[0];
-
-  return dfxConfig.networks.local.bind;
-}
-
-export interface WalletInterface {
-  name: string;
-
-  logIn: () => void;
-  logOut: () => void;
-
-  requestTransfer: (data: any) => any;
-
-  getActor: <Type>(canisterId: string, idl: any) => Promise<Type | undefined>;
-
-  getBalance: () => any;
-}
 
 const IDENTITY_URL = 'https://identity.ic0.app';
 
-export default function internetIdentity() {
+export default function internetIdentity(): WalletInterface {
   let authClient: AuthClient | null = null;
   let identity: Identity | null = null;
 
@@ -108,7 +51,7 @@ export default function internetIdentity() {
 
           setTimeout(() => {
             getBalance();
-          }, 0);
+          }, 100);
 
           console.log('Logged in with II');
         },
@@ -125,22 +68,50 @@ export default function internetIdentity() {
     auth.setPrincipal(undefined);
   }
 
-  async function getBalance(): Promise<any> {
+  async function requestTransfer(data: any): Promise<any> {
     if (identity !== null) {
+      const principals = getCanisterIds();
       const ledgerActor = await getActor<_SERVICE>(
-        'ryjl3-tyaaa-aaaaa-aaaba-cai',
+        principals.ledger,
         ledger_idl
       );
 
-      console.log(ledgerActor);
+      const sendArgs: SendArgs = {
+        to: data.to,
+        fee: { e8s: BigInt(10000).valueOf() },
+        memo: BigInt(0).valueOf(),
+        from_subaccount: [],
+        created_at_time: [],
+        amount: { e8s: data.amount },
+      };
+
+      try {
+        const height = await ledgerActor?.send_dfx(sendArgs);
+
+        return true;
+      } catch (e) {
+        console.error(e);
+
+        return false;
+      }
+    }
+
+    return false;
+  }
+
+  async function getBalance(): Promise<any> {
+    if (identity !== null) {
+      const principals = getCanisterIds();
+      const ledgerActor = await getActor<_SERVICE>(
+        principals.ledger,
+        ledger_idl
+      );
 
       const accountId = getAccountId(identity.getPrincipal().toString(), 0);
 
-      const req = {
+      const req: AccountBalanceArgs = {
         account: accountId,
       };
-
-      console.log(req);
 
       const raw_balance = await ledgerActor?.account_balance_dfx(req);
 
@@ -157,7 +128,7 @@ export default function internetIdentity() {
     logIn,
     logOut,
     getActor,
-    // requestTransfer,
+    requestTransfer,
     getBalance,
   };
 }

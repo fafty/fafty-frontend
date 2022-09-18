@@ -1,8 +1,10 @@
 import { createContext, ReactNode, useContext, useState } from 'react';
 import { HttpAgent } from '@dfinity/agent';
 
+import internetIdentity from './wallet/ii';
+
+import plugWallet, { WalletInterface } from './wallet/plug';
 import { Principal } from '@dfinity/principal';
-import internetIdentity, { WalletInterface } from '../utils/wallet/il';
 
 export interface AuthContext {
   isShow: boolean;
@@ -14,6 +16,7 @@ export interface AuthContext {
 
   balance: bigint | null;
 
+  usePlug: () => void;
   useInternetIdentity: () => void;
 
   setPrincipal: (principal: Principal | undefined) => void;
@@ -32,6 +35,12 @@ export function useProvideAuth(): AuthContext {
   const [display, setDisplay] = useState(false);
 
   const [balance, setBalance] = useState<bigint | null>(null);
+
+  const usePlug = function () {
+    const wlt = plugWallet();
+    setWallet(wlt);
+    setDisplay(false);
+  };
 
   const useInternetIdentity = function () {
     const wlt = internetIdentity();
@@ -56,6 +65,8 @@ export function useProvideAuth(): AuthContext {
       balance,
 
       wallet,
+
+      usePlug,
       useInternetIdentity,
       setBalance,
     };
