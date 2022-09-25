@@ -22,7 +22,15 @@ export type Collection = {
   created_at: string;
 };
 
-export type GetCollectionResponse = {
+export type GetCollectionsResponse = {
   paginate: Paginate;
   records: Collection[];
+};
+
+export type GetCollectionParams = {
+  slug: string;
+};
+
+export type GetCollectionResponse = {
+  record: Collection;
 };

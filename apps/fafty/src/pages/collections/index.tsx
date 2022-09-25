@@ -1,16 +1,16 @@
 import Link from 'next/link';
-import { MutableRefObject, useEffect, useRef, useState } from 'react';
-import { useAsync } from '../../api/useAsync';
-import { getCollections } from '../../api/callbacks/collections';
-import { GetCollectionResponse } from '../../api/callbacks/collections/types';
 import { Masonry } from 'masonic';
 import MainLayout from '../../layouts/main';
-import { useOnScreen } from '@fafty-frontend/usehooks';
+import { useAsync } from '../../api/useAsync';
+import { useEffect, useState } from 'react';
+import { getCollections } from '../../api/callbacks/collections';
+import { GetCollectionsResponse } from '../../api/callbacks/collections/types';
+import { InfinityLoadChecker } from '../../components/common/InfinityLoadChecker';
 
 const mapper = (
-  data: GetCollectionResponse,
-  prev?: GetCollectionResponse
-): GetCollectionResponse => {
+  data: GetCollectionsResponse,
+  prev?: GetCollectionsResponse
+): GetCollectionsResponse => {
   if (prev && Object.keys(prev).length) {
     return { ...prev, ...data, records: [...prev.records, ...data.records] };
   }
@@ -23,27 +23,20 @@ const LIMIT = 10;
 const Collections = () => {
   const [offset, setOffset] = useState(0);
 
-  const loaderAreaRef = useRef<HTMLDivElement | null>(null);
-  const onScreen = useOnScreen<HTMLDivElement>(
-    loaderAreaRef as MutableRefObject<HTMLDivElement>
+  const { data, isLoading, call } = useAsync<GetCollectionsResponse, undefined>(
+    {
+      callback: () => getCollections({ offset, limit: LIMIT }),
+      mapper,
+    }
   );
 
-  const { data, isLoading, call } = useAsync<GetCollectionResponse, undefined>({
-    callback: () => getCollections({ offset, limit: LIMIT }),
-    mapper,
-  });
-
-  const allowLoad = data ? data?.records.length < data?.paginate?.count : true;
+  const allowLoad = data
+    ? !isLoading && data?.records.length < data?.paginate?.count
+    : false;
 
   const loadMore = () => {
     setOffset((prev) => prev + LIMIT);
   };
-
-  useEffect(() => {
-    if (!isLoading && onScreen && allowLoad) {
-      loadMore();
-    }
-  }, [onScreen, isLoading, allowLoad]);
 
   useEffect(() => {
     call();
@@ -58,7 +51,7 @@ const Collections = () => {
             columnWidth={420}
             items={data.records}
             render={({ data }) => (
-              <Link href="#">
+              <Link href={`/collections/${data.slug}`}>
                 <div className="flex cursor-pointer flex-col h-[340px] w-full rounded overflow-hidden items-center shadow shadow-white">
                   <div
                     className="flex w-full h-3/4 bg-neutral-800"
@@ -80,9 +73,11 @@ const Collections = () => {
             )}
           />
         )}
-        <div className="flex relative">
-          <div className="flex absolute b-full h-[300px]" ref={loaderAreaRef} />
-        </div>
+        <InfinityLoadChecker
+          isLoading={isLoading}
+          loadMore={loadMore}
+          allowLoad={allowLoad}
+        />
       </div>
     </MainLayout>
   );

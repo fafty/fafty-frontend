@@ -3,19 +3,18 @@ import { Dispatch, Fragment, useMemo } from 'react';
 import { motion } from 'framer-motion';
 import { getSystemTheme, useTheme } from '@fafty-frontend/theme';
 
-const TABS = [
-  { title: 'Info', value: 'info' },
-  { title: 'Owners', value: 'owners' },
-  { title: 'History', value: 'history' },
-  { title: 'Bids', value: 'bids' },
-];
-
-type Props = {
-  tabIndex: number;
-  setTabIndex: Dispatch<number>;
+type Tab = {
+  title: string;
+  value: string;
 };
 
-export const Tabs = ({ tabIndex, setTabIndex }: Props) => {
+export type TabsProps = {
+  tabIndex: number;
+  setTabIndex: Dispatch<number>;
+  tabs: Tab[];
+};
+
+export const Tabs = ({ tabIndex, setTabIndex, tabs }: TabsProps) => {
   const { theme } = useTheme();
 
   const isDarkMode = useMemo(() => {
@@ -37,8 +36,8 @@ export const Tabs = ({ tabIndex, setTabIndex }: Props) => {
       <div className="flex flex-col space-y-8 items-start justify-start w-full">
         <div className="flex flex-col items-start justify-start w-full p-1 border-2 rounded-full border-gray-200 dark:border-neutral-700">
           <Tab.List>
-            <div className="inline-flex space-x-2 items-start justify-start w-96 transition-[background-color] duration-100 ease-linear">
-              {TABS.map((tab) => (
+            <div className="inline-flex space-x-2 items-start justify-start transition-[background-color] duration-100 ease-linear">
+              {tabs.map((tab) => (
                 <Tab as={Fragment} key={tab.value}>
                   {({ selected }) => (
                     <motion.div

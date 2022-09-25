@@ -1,20 +1,24 @@
 import MainLayout from '../../layouts/main';
 import Image from 'next/future/image';
-import { Tab } from '@headlessui/react';
-import { motion } from 'framer-motion';
 import { useRouter } from 'next/router';
 import api from '../../api';
 import { Fragment, useEffect, useMemo, useState } from 'react';
-import { getSystemTheme } from '@fafty-frontend/theme';
-import { useTheme } from '@fafty-frontend/theme';
 import { Tabs } from '../../components/nft/Tabs';
 import { Info } from '../../components/nft/tabs/Info';
 import { Owners } from '../../components/nft/tabs/Owners';
+
+const TABS = [
+  { title: 'Info', value: 'info' },
+  { title: 'Owners', value: 'owners' },
+  { title: 'History', value: 'history' },
+  { title: 'Bids', value: 'bids' },
+];
 
 interface BreadcrumbProps {
   name: string;
   href?: string;
 }
+
 interface NftProps {
   category: string;
   name: string;
@@ -31,6 +35,7 @@ interface NftProps {
   created_at: string;
   updated_at: string;
 }
+
 interface ResponceProps {
   record: NftProps;
 }
@@ -183,7 +188,7 @@ export default function Nft() {
               </p>
             </div>
             <div className="flex flex-col space-y-2.5">
-              <Tabs tabIndex={tabIndex} setTabIndex={setTabIndex} />
+              <Tabs tabs={TABS} tabIndex={tabIndex} setTabIndex={setTabIndex} />
               {renderTabContent}
             </div>
             <div className="flex flex-col space-y-8 items-start justify-center w-full p-6 bg-white dark:bg-neutral-800 text-slate-900 dark:text-slate-200 border-t border-gray-100 dark:border-neutral-700 rounded-2xl drop-shadow-2xl shadow-md">

@@ -100,7 +100,7 @@ const Header = ({ onAuth, balance, isAuth, onLogOut }: Props): JSX.Element => {
               {!isAuth && (
                 <button
                   className="text-base font-medium text-slate-900 dark:text-slate-50 hover:text-slate-800 dark:hover:text-slate-300"
-                  onClick={() => onAuth('ic')}
+                  onClick={onAuth}
                 >
                   Login
                 </button>

@@ -1,6 +1,7 @@
 import { Header, Footer, Meta } from '@fafty-frontend/shared/ui';
-import { ReactNode, useEffect, useMemo } from 'react';
+import { ReactNode, useEffect, useMemo, useState } from 'react';
 import { useAuth } from '../utils/auth';
+import { AuthModal } from '../components/modals/AuthModal';
 
 type Props = {
   children: ReactNode;
@@ -9,19 +10,12 @@ type Props = {
 };
 
 const MainLayout = ({ children, title, description }: Props) => {
+  const [openedModal, setOpenedModal] = useState(false);
   const auth = useAuth();
 
-  const onAuth = (key: string) => {
-    if (key === 'ic') {
-      auth.useInternetIdentity();
-    }
+  const onAuth = () => {
+    setOpenedModal(true);
   };
-
-  useEffect(() => {
-    if (!auth.principal && auth.wallet) {
-      auth.wallet?.logIn();
-    }
-  }, [auth.wallet]);
 
   const balance = useMemo(() => {
     return Number(auth.balance) / Math.pow(10, 8) || 0;
@@ -38,6 +32,12 @@ const MainLayout = ({ children, title, description }: Props) => {
       />
       <main className="relative container mx-auto px-8">{children}</main>
       <Footer />
+      {openedModal && (
+        <AuthModal
+          onClose={() => setOpenedModal(false)}
+          isOpened={openedModal}
+        />
+      )}
     </>
   );
 };

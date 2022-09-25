@@ -80,10 +80,23 @@ export function useAsync<D, P>({
     return;
   };
 
+  const clearAsyncData = () => {
+    setState({
+      isSuccess: false,
+      isError: false,
+      isLoading: false,
+    });
+
+    setErrorMessage('');
+
+    setData(undefined);
+  };
+
   return {
     data,
     call,
     errorMessage,
+    clearAsyncData,
     ...state,
   };
 }
