@@ -1,5 +1,5 @@
 import { NotificationItemProps } from '../../types';
-import { XIcon } from '@heroicons/react/outline'
+import { XMarkIcon } from '@heroicons/react/24/outline'
 import {FC} from "react";
 
 const NotificationItem: FC<NotificationItemProps> = (props) => {
@@ -31,7 +31,7 @@ const NotificationItem: FC<NotificationItemProps> = (props) => {
           <span className="dismiss">
             <button type="button" onClick={() => onDismiss(id)} className="mb-1 w-full bg-gray-600 text-gray-100 rounded-full hover:bg-gray-500 px-1 py-1 focus:outline-none dark:bg-neutral-700 dark:hover:bg-neutral-600">
               <span className="sr-only">Close menu</span>
-              <XIcon className="h-4 w-4" width={16} height={16} aria-hidden="true" />
+              <XMarkIcon className="h-4 w-4" strokeWidth="2" width={16} height={16} aria-hidden="true" />
             </button>
           </span>
         ))}

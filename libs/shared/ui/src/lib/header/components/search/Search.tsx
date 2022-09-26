@@ -45,10 +45,14 @@ export const Search = () => {
       setIsOpened(false);
 
       switch (item.result_type) {
+        case 'collection':
+          return push(`/collection/${item?.searchable?.slug}`);
+        case 'bundle':
+          return push(`/bundle/${item?.searchable?.slug}`);
         case 'nft':
-          return push('/nft');
+          return push(`/nft/${item?.searchable?.slug}`);
         case 'user':
-          return push('/account');
+          return push(`/account/${item?.searchable?.slug}`);
       }
     }
 
@@ -102,7 +106,7 @@ export const Search = () => {
               className={classNames(
                 {
                   'fill-blue-500': isOpened,
-                  'fill-gray-300': !isOpened,
+                  'fill-gray-300 dark:fill-neutral-700': !isOpened,
                 },
                 'sm:text-sm'
               )}
@@ -123,16 +127,16 @@ export const Search = () => {
             id="search"
             className={classNames(
               !!data?.records?.length && isOpened
-                ? 'border-b-0 rounded-t-md border-blue-500'
-                : 'rounded-md',
-              'border-2 focus:ring-0 focus:ring-offset-0 block w-full bg-transparent border-gray-300 pl-9 pr-3 p-3 focus:border-blue-500 ring-0 focus-within:border-blue-500 sm:text-sm md:text-base'
+                ? 'border-b-0 rounded-t-xl border-blue-500'
+                : 'rounded-xl',
+              'border-2 focus:ring-0 focus:ring-offset-0 block w-full bg-transparent border-gray-200 dark:border-neutral-700 pl-9 pr-3 p-3 focus:border-blue-500 ring-0 dark:focus:border-blue-500 sm:text-sm md:text-base'
             )}
             placeholder="Search for NFTs, Collections, Users, Bundles etc."
           />
         </div>
         {!!data?.records?.length && isOpened && (
-          <div className="flex flex-col absolute backdrop-blur bg-white/95 dark:bg-neutral-800/95 border-x-2 border-b-2 border-blue-500 shadow transition duration-300 right-0 left-0 top-full rounded-b-md">
-            {data.records.map(({ searchable }, index) => {
+          <div className="flex flex-col absolute backdrop-blur bg-white/95 dark:bg-neutral-800/95 border-x-2 border-b-2 border-blue-500 shadow transition duration-300 right-0 left-0 top-full rounded-b-xl">
+            {data.records.map(({ result_type, searchable }, index) => {
               const isActive = index === activeIndex;
 
               return (
@@ -148,15 +152,13 @@ export const Search = () => {
                   onMouseEnter={() => setActiveIndex(index)}
                 >
                   <span
-                    className={classNames(
-                      'mx-3 text-base font-medium',
-                      {
-                        'text-neutral-700 dark:text-neutral-200': isActive,
-                      }
-                    )}
+                    className={classNames('mx-3 text-base font-medium', {
+                      'text-neutral-700 dark:text-neutral-200': isActive,
+                    })}
                   >
                     {searchable.name}
                   </span>
+                  <span className="block">{result_type}</span>
                   {!isObject(searchable.description) && (
                     <span className="text-sm text-bold text-gray-300">
                       {searchable.description}

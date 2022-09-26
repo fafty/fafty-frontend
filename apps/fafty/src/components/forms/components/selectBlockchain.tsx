@@ -1,6 +1,6 @@
 import { useOnScreen } from '@fafty-frontend/usehooks';
 import { Transition, RadioGroup } from '@headlessui/react';
-import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/outline';
+import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/24/outline';
 import { useDebouncedCallback } from 'apps/fafty/src/hooks';
 import isClient from 'apps/fafty/src/utils/isClient';
 import classNames from 'classnames';
@@ -236,9 +236,9 @@ const SelectBlockchain = ({ current, onChange }: Props): JSX.Element => {
             onClick={() => scrollItems(direction)}
           >
             {direction === 'right' ? (
-              <ChevronRightIcon className="h-4 w-4" aria-hidden="true" />
+              <ChevronRightIcon className="h-4 w-4" strokeWidth="2" aria-hidden="true" />
             ) : (
-              <ChevronLeftIcon className="h-4 w-4" aria-hidden="true" />
+              <ChevronLeftIcon className="h-4 w-4" strokeWidth="2" aria-hidden="true" />
             )}
           </div>
         </div>
