@@ -75,7 +75,7 @@ const Nfts = () => {
     mapper,
   });
 
-  const search = asPath.split('?').at(1) || '';
+  const search = asPath.split('?')[1] || '';
   const filters = qs.parse(search) as FiltersValues;
 
   const allowLoad = data
