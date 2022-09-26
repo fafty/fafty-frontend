@@ -4,11 +4,10 @@ import { Fragment } from 'react';
 import { Popover, Transition } from '@headlessui/react';
 import {
   ChartBarIcon,
-  CursorClickIcon,
-  MenuIcon,
-  XIcon,
+  Bars3Icon,
+  XMarkIcon,
   PlusIcon,
-} from '@heroicons/react/outline';
+} from '@heroicons/react/24/outline';
 import { GalleryIcon, ImageAddIcon } from '@remixicons/react/line';
 import ProfileMenu from './components/dropdowns/profile';
 import { Search } from './components/search/Search';
@@ -26,7 +25,7 @@ const pagesLinks = [
     description:
       'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
     href: '/account/assets/create',
-    icon: CursorClickIcon,
+    icon: ChartBarIcon,
   },
 ];
 const createLinks = [
@@ -53,9 +52,11 @@ type Props = {
 
 const Header = ({ onAuth, balance, isAuth, onLogOut }: Props): JSX.Element => {
   return (
-    <header className="header sticky top-0 z-50 backdrop-blur bg-white/95 dark:bg-neutral-800/95 border-b border-gray-100 dark:border-neutral-700 shadow transition duration-300">
+    // border-b border-gray-100 dark:border-neutral-700 
+    <header className="header sticky top-0 z-50 backdrop-blur bg-white/90 dark:bg-neutral-800/90 shadow-md transition duration-300">
       <Popover>
-        <div className="container mx-auto px-8">
+      {/* container  */}
+        <div className="mx-auto px-8">
           <div className="flex justify-between items-center py-4 md:justify-start align-center">
             <div className="flex justify-start mr-auto">
               <Link href={'/'}>
@@ -80,7 +81,7 @@ const Header = ({ onAuth, balance, isAuth, onLogOut }: Props): JSX.Element => {
             <div className="-mr-2 -my-2 md:hidden">
               <Popover.Button className="mb-1 w-full font-medium bg-gray-600 text-gray-100 rounded-full hover:bg-gray-500 px-2 py-2 focus:outline-none dark:bg-neutral-700 dark:hover:bg-neutral-600">
                 <span className="sr-only">Open menu</span>
-                <MenuIcon className="h-6 w-6" aria-hidden="true" />
+                <Bars3Icon className="h-6 w-6" strokeWidth="2" aria-hidden="true" />
               </Popover.Button>
             </div>
             <Popover.Group
@@ -97,15 +98,19 @@ const Header = ({ onAuth, balance, isAuth, onLogOut }: Props): JSX.Element => {
                   Nfts
                 </a>
               </Link>
-              {!isAuth && (
+              
+            </Popover.Group>
+            {!isAuth && (
+              <div className="flex items-center justify-end">
                 <button
+                  type="button"
                   className="text-base font-medium text-slate-900 dark:text-slate-50 hover:text-slate-800 dark:hover:text-slate-300"
                   onClick={onAuth}
                 >
                   Login
                 </button>
-              )}
-            </Popover.Group>
+              </div>
+            )}
             {isAuth && (
               <div className="hidden md:flex items-center justify-end">
                 <Popover className="relative mr-5 flex align-center rounded-full backdrop-blur bg-white/95 dark:bg-neutral-800/95">
@@ -121,6 +126,7 @@ const Header = ({ onAuth, balance, isAuth, onLogOut }: Props): JSX.Element => {
                         } w-10 h-10 rounded-full hover:bg-blue-100  dark:hover:bg-neutral-600 box-border justify-center p-0 m-0 cursor-pointer flex relative dark:text-gray-200 touch-manipulation items-center select-none border-0 list-none outline-none decoration-0 transition duration-250 ease-in-out`}
                       >
                         <PlusIcon
+                          strokeWidth="3"
                           className={`${
                             open ? 'text-blue-500' : 'text-slate-900'
                           } dark:text-slate-50 touch-manipulation select-none border-0 list-none outline-none decoration-0 w-5`}
@@ -205,7 +211,7 @@ const Header = ({ onAuth, balance, isAuth, onLogOut }: Props): JSX.Element => {
                   <div className="-mr-2">
                     <Popover.Button className="mb-1 w-full font-medium bg-gray-600 text-gray-100 rounded-full hover:bg-gray-500 px-2 py-2 focus:outline-none dark:bg-neutral-700 dark:hover:bg-neutral-600">
                       <span className="sr-only">Close menu</span>
-                      <XIcon className="h-6 w-6" aria-hidden="true" />
+                      <XMarkIcon className="h-6 w-6" aria-hidden="true" />
                     </Popover.Button>
                   </div>
                 </div>

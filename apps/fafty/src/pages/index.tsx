@@ -197,41 +197,36 @@ export default function Home(): JSX.Element {
   // ]
 
   const [items, setItems] = useState<ItemProps | null>(null);
-  const [isLoading, setLoading] = useState(false);
-  const [isError, setError] = useState(false);
+  // const [isLoading, setLoading] = useState(false);
+  // const [isError, setError] = useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
-      setLoading(true);
+      // setLoading(true);
       const response = await api.get<ResponceProps>(`nfts`);
       if (response.status === 200 && response.data) {
         const { data } = response;
 
         setItems(data.records);
-        setLoading(false);
+        // setLoading(false);
       } else {
-        setError(true);
+        // setLoading(false);
+        // setError(true);
       }
     };
     fetchData();
-
-    return () => {
-      setLoading(false);
-      setError(false);
-      setItems(null);
-    };
   }, []);
 
-  if (isLoading) {
-    return (
-      <div className="flex justify-center items-center">
-        <div className="spinner" />
-      </div>
-    );
-  }
+  // if (isLoading) {
+  //   return (
+  //     <div className="flex justify-center items-center">
+  //       <div className="spinner" />
+  //     </div>
+  //   );
+  // }
 
-  if (isError) return <div>Failed to load</div>;
-  if (!items) return <p>No data</p>;
+  // if (isError) return <div>Failed to load</div>;
+  // if (!items) return <p>No data</p>;
 
   return (
     <MainLayout title={'undefined'} description={'undefined'}>

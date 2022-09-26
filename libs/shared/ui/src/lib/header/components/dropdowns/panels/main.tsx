@@ -8,16 +8,16 @@ import {
 } from 'react';
 import { Transition, RadioGroup } from '@headlessui/react';
 import {
-  AnnotationIcon,
+  ChatBubbleOvalLeftEllipsisIcon,
   CogIcon,
-  MenuIcon,
+  Bars3Icon,
   MoonIcon,
-  ArrowSmLeftIcon,
+  ArrowSmallLeftIcon,
   ChevronRightIcon,
-  LogoutIcon,
+  ArrowLeftOnRectangleIcon,
   SunIcon,
   QuestionMarkCircleIcon,
-} from '@heroicons/react/outline';
+} from '@heroicons/react/24/outline';
 import { BrushIcon } from '@remixicons/react/line';
 import { useTheme } from '@fafty-frontend/theme';
 import classNames from 'classnames';
@@ -177,8 +177,9 @@ const MainPanel = ({
             className="w-full rounded-full px-1 py-1 focus:outline-none text-neutral-700 bg-neutral-100 hover:bg-neutral-200/80 dark:text-neutral-200 dark:fill-neutral-200 dark:bg-neutral-700 dark:hover:bg-neutral-600"
           >
             <span className="sr-only">Back to main menu</span>
-            <ArrowSmLeftIcon
+            <ArrowSmallLeftIcon
               className="h-6 w-6"
+              strokeWidth="2"
               width={16}
               height={16}
               aria-hidden="true"
@@ -219,13 +220,13 @@ const MainPanel = ({
         onClick={() => (goToMenu ? goTo(goToMenu) : onClick?.())}
       >
         <div className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-full px-1 py-1 focus:outline-none bg-neutral-200 text-neutral-700 dark:text-neutral-200 dark:fill-neutral-200 dark:bg-neutral-700">
-          {LeftIcon && <LeftIcon className="h-6 w-6" aria-hidden="true" />}
+          {LeftIcon && <LeftIcon className="h-6 w-6" strokeWidth="2" aria-hidden="true" />}
         </div>
         <div className="ml-4">
           <p className="text-sm font-medium">{children}</p>
         </div>
         <div className="justify-end ml-auto">
-          {RightIcon && <RightIcon className="h-6 w-6" aria-hidden="true" />}
+          {RightIcon && <RightIcon className="h-6 w-6" strokeWidth="2" aria-hidden="true" />}
         </div>
       </a>
     );
@@ -269,7 +270,7 @@ const MainPanel = ({
               </div>
               <a className="focus:outline-none flex items-center rounded-lg p-2 transition duration-150 ease-in-out text-neutral-700 hover:bg-neutral-100 dark:text-neutral-100 dark:hover:bg-neutral-700">
                 <div className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-full px-1 py-1 focus:outline-none bg-neutral-200 text-neutral-700 dark:text-neutral-200 dark:bg-neutral-700">
-                  <AnnotationIcon className="h-6 w-6" aria-hidden="true" />
+                  <ChatBubbleOvalLeftEllipsisIcon className="h-6 w-6" strokeWidth="2" aria-hidden="true" />
                 </div>
                 <div className="ml-4">
                   <p className="text-sm font-medium">Give Feedback</p>
@@ -302,7 +303,7 @@ const MainPanel = ({
               >
                 Appearance
               </DropdownItem>
-              <DropdownItem onClick={onLogOut} leftIcon={LogoutIcon}>
+              <DropdownItem onClick={onLogOut} leftIcon={ArrowLeftOnRectangleIcon}>
                 Disconnect
               </DropdownItem>
             </div>
@@ -310,10 +311,10 @@ const MainPanel = ({
           {activeMenu === 'settings' && (
             <div className="relative grid gap-1 p-1 grid-cols-1">
               <DropdownBack goToMenu="main">Settings</DropdownBack>
-              <DropdownItem leftIcon={MenuIcon}>HTML</DropdownItem>
-              <DropdownItem leftIcon={MenuIcon}>CSS</DropdownItem>
-              <DropdownItem leftIcon={MenuIcon}>JavaScript</DropdownItem>
-              <DropdownItem leftIcon={MenuIcon}>Awesome!</DropdownItem>
+              <DropdownItem leftIcon={Bars3Icon}>HTML</DropdownItem>
+              <DropdownItem leftIcon={Bars3Icon}>CSS</DropdownItem>
+              <DropdownItem leftIcon={Bars3Icon}>JavaScript</DropdownItem>
+              <DropdownItem leftIcon={Bars3Icon}>Awesome!</DropdownItem>
             </div>
           )}
           {activeMenu === 'help' && (
@@ -321,10 +322,10 @@ const MainPanel = ({
               <DropdownBack goToMenu="main">
                 Display & Accessibility
               </DropdownBack>
-              <DropdownItem leftIcon={MenuIcon}>HTML</DropdownItem>
-              <DropdownItem leftIcon={MenuIcon}>CSS</DropdownItem>
-              <DropdownItem leftIcon={MenuIcon}>JavaScript</DropdownItem>
-              <DropdownItem leftIcon={MenuIcon}>Awesome!</DropdownItem>
+              <DropdownItem leftIcon={Bars3Icon}>HTML</DropdownItem>
+              <DropdownItem leftIcon={Bars3Icon}>CSS</DropdownItem>
+              <DropdownItem leftIcon={Bars3Icon}>JavaScript</DropdownItem>
+              <DropdownItem leftIcon={Bars3Icon}>Awesome!</DropdownItem>
             </div>
           )}
           {activeMenu === 'appearance' && (

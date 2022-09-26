@@ -1,6 +1,6 @@
 import { useOnScreen } from '@fafty-frontend/usehooks';
 import { Transition, RadioGroup } from '@headlessui/react';
-import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/outline';
+import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/24/outline';
 import { ImageIcon } from '@remixicons/react/line';
 import api from '../../../api';
 import { useDebouncedCallback } from 'apps/fafty/src/hooks';
@@ -217,9 +217,9 @@ const SelectCollection = ({ current, onChange }: Props): JSX.Element => {
             onClick={() => scrollItems(direction)}
           >
             {direction === 'right' ? (
-              <ChevronRightIcon className="h-4 w-4" aria-hidden="true" />
+              <ChevronRightIcon className="h-4 w-4" strokeWidth="2" aria-hidden="true" />
             ) : (
-              <ChevronLeftIcon className="h-4 w-4" aria-hidden="true" />
+              <ChevronLeftIcon className="h-4 w-4" strokeWidth="2" aria-hidden="true" />
             )}
           </div>
         </div>
@@ -264,7 +264,7 @@ const SelectCollection = ({ current, onChange }: Props): JSX.Element => {
                     {checked && <CheckIcon className="h-4 w-4" />}
                   </div>
                   <div className="absolute -left-6 w-24 h-24 rounded-full shadow-lg bg-blue-100 flex items-center justify-center">
-                    <ImageIcon className="w-16 h-16" />
+                    <ImageIcon strokeWidth="2" className="w-16 h-16" />
                   </div>
                   <div className="flex flex-col py-4 pl-20 pr-2">
                     <strong className="text-slate-900 text-sm font-medium dark:text-slate-200">

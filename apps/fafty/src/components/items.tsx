@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import ItemProps from '../types/item';
 import Item from '../components/item';
 import isClient from '../utils/isClient';
-import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/outline';
+import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/24/outline';
 import { useNotifications } from '@fafty-frontend/notifications';
 import { useDebouncedCallback } from '../hooks';
 import classNames from 'classnames';
@@ -124,9 +124,9 @@ const Items = ({ items }: Props): JSX.Element => {
             onClick={() => scrollItems(direction)}
           >
             {direction === 'right' ? (
-              <ChevronRightIcon className="h-6 w-6" aria-hidden="true"/>
+              <ChevronRightIcon className="h-6 w-6" strokeWidth="2" aria-hidden="true"/>
             ) : (
-              <ChevronLeftIcon className="h-6 w-6" aria-hidden="true" />
+              <ChevronLeftIcon className="h-6 w-6" strokeWidth="2" aria-hidden="true" />
             )}
           </div>
         </div>

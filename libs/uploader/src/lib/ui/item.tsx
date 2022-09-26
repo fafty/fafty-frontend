@@ -1,6 +1,6 @@
 // create functional component for item  with progress indicator
 
-import { XIcon } from '@heroicons/react/outline'
+import { XMarkIcon } from '@heroicons/react/24/outline'
 import { useEffect, useRef, useState } from 'react'
 import ProgressIndicator from './progressIndicator'
 import { useOnScreen } from '@fafty-frontend/usehooks'
@@ -116,7 +116,7 @@ const Item = ({
             title="Remove"
             onClick={() => onAction({ id: item.id, globalId: item.id, action: 'remove', reason: 'removed-by-user' })}
           >
-            <XIcon className="h-4 w-4" aria-hidden="true" />
+            <XMarkIcon className="h-4 w-4" strokeWidth="2" aria-hidden="true" />
           </button>
           { item.state !== 'complete' && <ProgressIndicator id={ item.id } state={ item.state as string } percentage={ progress.percentage } onAction={ onAction } /> }
 
