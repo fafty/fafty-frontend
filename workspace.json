@@ -6,6 +6,7 @@
     "fafty-creator": "apps/fafty-creator",
     "fafty-creator-e2e": "apps/fafty-creator-e2e",
     "fafty-e2e": "apps/fafty-e2e",
+    "modals": "libs/modals",
     "notifications": "libs/notifications",
     "shared-ui": "libs/shared/ui",
     "theme": "libs/theme",

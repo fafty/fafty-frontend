@@ -101,14 +101,14 @@ export const Search = () => {
     <div className="relative w-full mx-4 max-w-[600px]" ref={containerRef}>
       <div className="flex items-center">
         <div className="w-full h-[50px]">
-          <div className="pointer-events-none absolute p-2 inset-y-0 left-0 flex items-center pl-3 pr-5">
+          <div className=" pointer-events-none absolute p-2 inset-y-0 left-0 flex items-center pl-3 pr-5">
             <span
               className={classNames(
                 {
                   'fill-blue-500': isOpened,
                   'fill-gray-300 dark:fill-neutral-700': !isOpened,
                 },
-                'sm:text-sm'
+                'sm:text-sm transition duration-200'
               )}
             >
               <SearchIcon className="h-5 w-5 mr-2 flex-shrink-0" />
@@ -129,7 +129,7 @@ export const Search = () => {
               !!data?.records?.length && isOpened
                 ? 'border-b-0 rounded-t-xl border-blue-500'
                 : 'rounded-xl',
-              'border-2 focus:ring-0 focus:ring-offset-0 block w-full bg-transparent border-gray-200 dark:border-neutral-700 pl-9 pr-3 p-3 focus:border-blue-500 ring-0 dark:focus:border-blue-500 sm:text-sm md:text-base'
+              'border-2 focus:ring-0 focus:ring-offset-0 block w-full bg-transparent border-gray-200 dark:border-neutral-700 pl-9 pr-3 p-3 focus:border-blue-500 hover:border-blue-300/70 dark:focus:border-blue-500 dark:hover:border-blue-500/70 transition duration-200 ring-0 sm:text-sm md:text-base'
             )}
             placeholder="Search for NFTs, Collections, Users, Bundles etc."
           />
