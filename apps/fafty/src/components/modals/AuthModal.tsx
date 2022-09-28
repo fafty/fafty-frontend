@@ -252,25 +252,6 @@ export const AuthModal = ({ isOpened, onClose }: Props) => {
                       "w-6 h-6"
                     )}
                   />
-                  {/* <Image
-                    src={logo.src}
-                    alt={name}
-                    className={classNames(
-                      logo.fill,
-                      "w-16 h-16"
-                    )}
-                    width="24"
-                    height="24"
-                  /> */}
-                  {/* <svg>
-                    <use
-                      href={logo.src}
-                      className={classNames(
-                      logo.fill,
-                      "w-16 h-16"
-                    )}
-                    ></use>
-                  </svg> */}
                 </div>
                 <div className="ml-4">
                   <p className="text-sm font-medium">{name}</p>
