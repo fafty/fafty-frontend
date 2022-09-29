@@ -104,7 +104,7 @@ const Header = ({ onAuth, balance, isAuth, onLogOut }: Props): JSX.Element => {
               <div className="flex items-center justify-end">
                 <button
                   type="button"
-                  className="z-10 relative inline-block text-center bg-blue-600 border border-transparent rounded-md py-2 px-6 font-medium text-white hover:bg-blue-700"
+                  className="relative inline-block text-center bg-blue-600 border border-transparent rounded-md py-2 px-6 font-medium text-white hover:bg-blue-700"
                   onClick={onAuth}
                 >
                   Login

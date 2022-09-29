@@ -1,6 +1,5 @@
 import { Modal } from '@fafty-frontend/modals';
 import { useAuth } from '../../utils/auth';
-import Image from 'next/image';
 import classNames from 'classnames';
 import { ReactComponent as PlugLogo } from '../../assets/plug.svg';
 import { ReactComponent as InternetIdentityLogo } from '../../assets/internet-identity.svg';
@@ -45,7 +44,7 @@ export const AuthModal = ({ isOpened, onClose }: Props) => {
 
   return (
     <Modal
-      title="Select wallet"
+      title="Connect your wallet"
       open={isOpened}
       onDismiss={onClose}
       options={{ dismissible: true }}

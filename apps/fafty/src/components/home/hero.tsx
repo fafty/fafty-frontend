@@ -5,14 +5,14 @@ export default function Hero() {
   return (
     <div className="relative overflow-hidden">
       <div className="pointer-events-none">
-        <div className="absolute z-0 top-5 left-[12rem] w-72 h-72 bg-purple-300 rounded-full mix-blend-multiply filter blur-xl opacity-80 animate-blob"></div>
-        <div className="absolute z-0 bottom-[8rem] left-[5rem] w-72 h-72 bg-blue-200 rounded-full mix-blend-multiply filter blur-xl opacity-80 animate-blob animation-delay-2000"></div>
-        <div className="absolute z-0 bottom-7 left-[15rem] w-72 h-72 bg-red-300 rounded-full mix-blend-multiply filter blur-xl opacity-50 animate-blob animation-delay-4000"></div>
+        <div className="absolute z-0 top-5 left-[12rem] w-72 h-72 bg-purple-500 dark:mix-blend-lighten rounded-full filter blur-xl opacity-80 animate-blob"></div>
+        <div className="absolute z-0 bottom-[8rem] left-[5rem] w-72 h-72 bg-blue-400 dark:bg-blue-600 dark:mix-blend-lighten rounded-full filter blur-xl opacity-80 animate-blob animation-delay-2000"></div>
+        <div className="absolute z-0 bottom-7 left-[15rem] w-72 h-72 bg-rose-500 dark:bg-rose-500 dark:mix-blend-lighten rounded-full filter blur-xl opacity-70 animate-blob animation-delay-4000"></div>
       </div>
       <div className="pt-16 pb-80 sm:pt-24 sm:pb-40 lg:pt-40 lg:pb-48">
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 sm:static">
           <div className="z-10 relative sm:max-w-lg">
-            <h1 className="text-4xl font font-extrabold tracking-tight text-slate-900  dark:text-slate-50  sm:text-6xl">
+            <h1 className="text-4xl font font-extrabold tracking-tight text-slate-900 dark:text-slate-50  sm:text-6xl">
               The new creative economy.
             </h1>
             <p className="mt-4 text-xl text-slate-900 tracking-tight dark:text-slate-50">
