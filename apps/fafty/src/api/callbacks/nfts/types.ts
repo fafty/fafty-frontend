@@ -27,12 +27,12 @@ export type NftItem = {
   cardUser?: number[];
 };
 
-export type NftsResponse = {
+export type GetNftsResponse = {
   paginate: Paginate;
   records: NftItem[];
 };
 
-export type NftsParams = {
+export type GetNftsParams = {
   limit: number;
   offset: number;
 };

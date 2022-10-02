@@ -67,7 +67,7 @@ const Footer = () => {
     ]
   };
   return (
-    <footer className="relative bg-white dark:bg-neutral-800  text-slate-900  dark:text-slate-50 border-t border-gray-100 dark:border-neutral-700 pt-20 lg:pt-[120px] pb-10 lg:pb-20">
+    <footer className="relative bg-white dark:bg-neutral-800 text-slate-900 dark:text-slate-50 border-t border-gray-100 dark:border-neutral-700 pt-20 lg:pt-[120px] pb-10 lg:pb-20">
       <div className="container mx-auto px-8">
         <div className="flex flex-wrap -mx-4">
           <div className="w-full sm:w-2/3 lg:w-3/12 px-4">

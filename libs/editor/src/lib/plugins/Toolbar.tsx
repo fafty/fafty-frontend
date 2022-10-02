@@ -151,7 +151,7 @@ function BlockOptionsDropdown({
         });
       }
     } else if (['ul', 'ol'].includes(type)) {
-      editor.dispatchCommand(REMOVE_LIST_COMMAND, null);
+      editor.dispatchCommand(REMOVE_LIST_COMMAND, undefined);
     }
   };
 

@@ -82,77 +82,72 @@ const SelectStep2 = ({ Context }: { Context: Context<ContextProps> }) => {
   console.log('values', getValues());
 
   return (
-    <>
-      <div>
-        <motion.div className="mb-5 relative">
-          <label
-            htmlFor="item-supply-units"
-            className="block text-sm font-medium text-gray-700 dark:text-gray-100"
-          >
-            Supply
-          </label>
-          <input
-            type="number"
-            id="item-supply-units"
-            className={`${
-              errors.supply_units
-                ? 'border-red-500'
-                : 'border-gray-200 dark:border-neutral-800'
-            } text-gray-700 dark:text-gray-100 dark:bg-neutral-900/90 mt-1 border focus:outline-none rounded-md shadow-sm focus:border-gray-500 focus:shadow w-full p-3 h-12`}
-            placeholder="Enter of supply units"
-            defaultValue={formFields.supply_units}
-            min="1"
-            {...(errors.supply_units && { 'aria-invalid': true })}
-            {...register('supply_units', {
-              required: true,
-              min: 1,
-            })}
-          />
-          <span className="text-red-500">
-            {errors.supply_units?.type === 'required' && (
-              <span role="alert">Units for supply is required.</span>
-            )}
-            {errors.supply_units?.type === 'min' && (
-              <span role="alert">Minimum 1 unit.</span>
-            )}
-          </span>
-        </motion.div>
+    <div className="flex flex-col">
+      <h4 className="font-bold">Assosiation</h4>
+      <div className="mb-5 mt-1 relative">
+        <label
+          htmlFor="item-supply-units"
+          className="block text-sm font-medium text-gray-700 dark:text-gray-100"
+        >
+          Supply
+        </label>
+        <input
+          type="number"
+          id="item-supply-units"
+          className={`${
+            errors.supply_units
+              ? 'border-red-500'
+              : 'border-gray-200 dark:border-neutral-800'
+          } text-gray-700 dark:text-gray-100 dark:bg-neutral-900/90 mt-1 border focus:outline-none rounded-md shadow-sm focus:border-gray-500 focus:shadow w-full p-3 h-12`}
+          placeholder="Enter of supply units"
+          defaultValue={formFields.supply_units}
+          min="1"
+          {...(errors.supply_units && { 'aria-invalid': true })}
+          {...register('supply_units', {
+            required: true,
+            min: 1,
+          })}
+        />
+        <span className="text-red-500">
+          {errors.supply_units?.type === 'required' && (
+            <span role="alert">Units for supply is required.</span>
+          )}
+          {errors.supply_units?.type === 'min' && (
+            <span role="alert">Minimum 1 unit.</span>
+          )}
+        </span>
+      </div>
+      <div className="my-3">
+        <label
+          htmlFor=""
+          className="text-sm font-medium text-gray-700 dark:text-gray-100"
+        >
+          Choose Blockchain
+        </label>
         <Controller
           name="blockchain"
           control={control}
           defaultValue={formFields.blockchain}
           render={({ field }) => (
-            <Suspense fallback={<div>Loading...</div>}>
-              <SelectBlockchain {...field} current={field.value} />
-            </Suspense>
-          )}
-        />
-        <label
-          htmlFor=""
-          className="text-sm font-medium text-gray-700 dark:text-gray-100"
-        >
-          Collections
-        </label>
-        <Controller
-          name="collection_token"
-          control={control}
-          defaultValue={formFields.collection_token}
-          render={({ field }) => (
-            <Suspense fallback={<div>Loading...</div>}>
-              <SelectCollection {...field} current={field.value} />
-            </Suspense>
+            <SelectBlockchain {...field} current={field.value} />
           )}
         />
       </div>
-
-      {!step2Answered && (
-        <div>
-          <p>
-            When all answers are correct the next step button will be enabled!
-          </p>
-        </div>
-      )}
-    </>
+      <label
+        htmlFor=""
+        className="text-sm font-medium text-gray-700 dark:text-gray-100"
+      >
+        Choose Collection
+      </label>
+      <Controller
+        name="collection_token"
+        control={control}
+        defaultValue={formFields.collection_token}
+        render={({ field }) => (
+            <SelectCollection {...field} current={field.value} />
+        )}
+      />
+    </div>
   );
 };
 

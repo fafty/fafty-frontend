@@ -196,7 +196,7 @@ export default function Home(): JSX.Element {
   //   }
   // ]
 
-  const [items, setItems] = useState<ItemProps | null>(null);
+  const [items, setItems] = useState<ItemProps[] | null>(null);
   // const [isLoading, setLoading] = useState(false);
   // const [isError, setError] = useState(false);
 
@@ -231,7 +231,7 @@ export default function Home(): JSX.Element {
   return (
     <MainLayout title={'undefined'} description={'undefined'}>
       <Hero />
-      <Items items={items} />
+      {items && (<Items items={items} />)}
     </MainLayout>
   )
 }

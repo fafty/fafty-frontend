@@ -1,7 +1,8 @@
 import { Header, Footer, Meta } from '@fafty-frontend/shared/ui';
 import { ReactNode, useEffect, useMemo, useState } from 'react';
 import { useAuth } from '../utils/auth';
-import { AuthModal } from '../components/modals/AuthModal';
+import { AuthModal } from '../components/modals/auth';
+import { CreateNftModal } from '../components/modals/create/nft';
 
 type Props = {
   children: ReactNode;
@@ -10,11 +11,33 @@ type Props = {
 };
 
 const MainLayout = ({ children, title, description }: Props) => {
-  const [openedModal, setOpenedModal] = useState(false);
+  const [openedAuthModal, setOpenedAuthModal] = useState(false);
+  const [openedCreateNftModal, setOpenedCreateNftModal] = useState(false);
+  const [openedCreateCollectionModal, setOpenedCreateCollectionModal] = useState(false);
+  const [openedCreateBundleModal, setOpenedCreateBundleModal] = useState(false);
+
   const auth = useAuth();
 
   const onAuth = () => {
-    setOpenedModal(true);
+    setOpenedAuthModal(true);
+  };
+
+  const onCreate = (key: string) => {
+    switch (key) {
+      case 'nft':
+        setOpenedCreateNftModal(true);
+        break;
+      case 'collection':
+        setOpenedCreateCollectionModal(true);
+        break;
+      case 'bundle':
+        setOpenedCreateBundleModal(true);
+        break;
+      default:
+        break;
+    }
+
+        
   };
 
   const balance = useMemo(() => {
@@ -27,15 +50,22 @@ const MainLayout = ({ children, title, description }: Props) => {
       <Header
         onLogOut={() => auth.wallet?.logOut?.()}
         onAuth={onAuth}
+        onCreate={onCreate}
         balance={balance}
         isAuth={!!auth.principal?.toString()}
       />
       <main className="relative container mx-auto px-8">{children}</main>
       <Footer />
-      {openedModal && (
+      {openedAuthModal && (
         <AuthModal
-          onClose={() => setOpenedModal(false)}
-          isOpened={openedModal}
+          onClose={() => setOpenedAuthModal(false)}
+          isOpened={openedAuthModal}
+        />
+      )}
+      {openedCreateNftModal && (
+        <CreateNftModal
+          onClose={() => setOpenedCreateNftModal(false)}
+          isOpened={openedCreateNftModal}
         />
       )}
     </>

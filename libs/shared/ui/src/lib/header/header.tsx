@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import Image from 'next/image';
+// import Image from 'next/image';
 import { Fragment } from 'react';
 import { Popover, Transition } from '@headlessui/react';
 import {
@@ -31,14 +31,16 @@ const pagesLinks = [
 const createLinks = [
   {
     name: 'Add Bundle',
+    key: 'bundle',
     href: '/account/assets/create',
-    description: 'description Add bundle',
+    description: 'Description Add Bundle',
     icon: GalleryIcon,
   },
   {
     name: 'Add Nft',
+    key: 'nft',
     href: '/account/assets/create',
-    description: 'description Add nft',
+    description: 'Description Add Nft',
     icon: ImageAddIcon,
   },
 ];
@@ -47,10 +49,11 @@ type Props = {
   balance: number;
   isAuth: boolean;
   onAuth: (key: string) => void;
+  onCreate: (key: string) => void;
   onLogOut: () => void;
 };
 
-const Header = ({ onAuth, balance, isAuth, onLogOut }: Props): JSX.Element => {
+const Header = ({ onAuth, onCreate, balance, isAuth, onLogOut }: Props): JSX.Element => {
   return (
     // border-b border-gray-100 dark:border-neutral-700 
     <header className="header sticky top-0 z-50 backdrop-blur bg-white/90 dark:bg-neutral-800/90 shadow-md transition duration-300">
@@ -145,15 +148,19 @@ const Header = ({ onAuth, balance, isAuth, onLogOut }: Props): JSX.Element => {
                           <div className="p-2 rounded-lg drop-shadow-lg shadow-lg ring-1 ring-black ring-opacity-5 bg-white dark:bg-neutral-800 overflow-hidden">
                             <div className="relative grid gap-1 p-1">
                               {createLinks.map((item) => (
-                                <Link key={item.name} href={item.href}>
-                                  <a className="focus:outline-none flex items-center rounded-lg p-2 transition duration-150 ease-in-out text-neutral-700 hover:bg-neutral-100 dark:text-neutral-100 dark:hover:bg-neutral-700">
+                                  <button
+                                    key={item.key}
+                                    type="button"
+                                    className="focus:outline-none flex items-center rounded-lg p-2 transition duration-150 ease-in-out text-neutral-700 hover:bg-neutral-100 dark:text-neutral-100 dark:hover:bg-neutral-700"
+                                    onClick={()=> onCreate(item.key)}
+                                    >
                                     <div className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-full px-1 py-1 focus:outline-none bg-neutral-200 text-neutral-700 dark:text-neutral-200 dark:fill-neutral-200 dark:bg-neutral-700">
                                       <item.icon
                                         className="flex-shrink-0 h-6 w-6 fill-slate-900 dark:fill-slate-50"
                                         aria-hidden="true"
                                       />
                                     </div>
-                                    <div>
+                                    <div className="text-left">
                                       <p className="ml-4 text-base font-medium">
                                         {item.name}
                                       </p>
@@ -161,8 +168,7 @@ const Header = ({ onAuth, balance, isAuth, onLogOut }: Props): JSX.Element => {
                                         {item.description}
                                       </p>
                                     </div>
-                                  </a>
-                                </Link>
+                                  </button>
                               ))}
                             </div>
                           </div>

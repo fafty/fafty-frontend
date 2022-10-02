@@ -14,6 +14,9 @@ import dynamic from 'next/dynamic';
 import { AnimatePresence, motion } from 'framer-motion';
 import classNames from 'classnames';
 import api from '../../../api';
+import { CheckIcon } from '@heroicons/react/24/outline';
+import { ReactComponent as CompleteIlustation } from '../../../assets/complete.svg';
+import Link from 'next/link';
 
 interface ExistingFileProps {
   id: string;
@@ -26,25 +29,6 @@ interface ExistingFileProps {
   mime_type: string;
   src: string;
 }
-
-// interface FileProps {
-//   id: string;
-//   file_id?: string;
-//   type: string;
-//   position: number;
-//   attachment?: {
-//     id: string;
-//     storage: string;
-//     metadata: {
-//       size: number;
-//       filename: string;
-//       mime_type: string;
-//     };
-//   };
-//   meta?: {
-//     existing: boolean;
-//   };
-// }
 
 interface FileProps {
   id: string;
@@ -65,6 +49,7 @@ interface UploaderProps {
   style?: CSSProperties;
   presignEndpoint?: string;
   onChange: (value: FileProps | FileProps[]) => void;
+  OnGenetatedThumbnail: () => void;
 }
 
 const Uploader = dynamic<UploaderProps>(
@@ -114,6 +99,7 @@ const SelectStepper = (): JSX.Element => {
     }
   }, [activeStep, components, setComponent]);
 
+  const [onlyUploader, setOnlyUploader] = useState(true);
   /*
    * Load Dynamic Content
    */
@@ -124,6 +110,7 @@ const SelectStepper = (): JSX.Element => {
   useEffect(() => {
     if (!data?.asset?.id) {
       setActiveStep(0);
+      setOnlyUploader(true);
     }
   }, [data?.asset?.id]);
 
@@ -213,6 +200,93 @@ const SelectStepper = (): JSX.Element => {
     [setStepData]
   );
 
+  interface StepbarProps {
+    name: string;
+    active?: boolean;
+    completed?: boolean;
+    optional?: boolean;
+    skipped?: boolean;
+  }
+
+  const StepsList = [
+    {
+      name: 'Informations',
+      active: activeStep === 0,
+      completed: step1Answered,
+      optional: false,
+      skipped: isStepSkipped(0),
+    },
+    {
+      name: 'Assosiation',
+      active: activeStep === 1,
+      completed: step2Answered,
+      optional: true,
+      skipped: isStepSkipped(1),
+    },
+    {
+      name: 'Add-ons',
+      active: activeStep === 2,
+      completed: step3Answered,
+      optional: false,
+      skipped: isStepSkipped(2),
+    },
+  ];
+
+  const StepsBar = ({ steps }: { steps: StepbarProps[] }) => {
+    return (
+      <div className="w-full pb-4">
+        <div className="flex justify-center w-full">
+          {steps.map((step, index) => (
+            <div className="w-1/4" key={index}>
+              <div
+                className={classNames(
+                  {
+                    'text-blue-600': activeStep === index,
+                  },
+                  'text-xs text-center font-bold'
+                )}
+              >
+                {step.name}
+              </div>
+              <div className="relative mt-2">
+                {index !== 0 && (
+                  <div
+                    className="absolute flex align-center items-center align-middle content-center"
+                    style={{
+                      width: 'calc(100% - 1.5rem - 1rem)',
+                      top: '50%',
+                      transform: 'translate(-50%, -50%)',
+                    }}
+                  >
+                    <div className="w-full bg-gray-200 rounded items-center align-middle align-center flex-1">
+                      <div
+                        className={classNames(
+                          {
+                            'bg-blue-600': activeStep >= index,
+                            'bg-gray-200': activeStep < index,
+                          },
+                          'w-full h-[2px] rounded'
+                        )}
+                      ></div>
+                    </div>
+                  </div>
+                )}
+                <div
+                  onClick={() => setActiveStep(index)}
+                  className="w-4 h-4 mx-auto cursor-pointer bg-blue-700 rounded-full text-lg text-white flex items-center"
+                >
+                  {step.completed && (
+                    <CheckIcon strokeWidth={3} className="w-3 h-3 mx-auto" />
+                  )}
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    );
+  };
+
   const activeStepNumeric = activeStep + 1;
 
   const buttonNextDisabled = useMemo(() => {
@@ -229,49 +303,87 @@ const SelectStepper = (): JSX.Element => {
 
   if (finished) {
     return (
-      <div className="lg-col-3 h-full flex justify-center">
-        <span>Congratulations! Your nft is uploaded!</span>
-      </div>
+      <AnimatePresence exitBeforeEnter={true}>
+        <motion.div
+          variants={{
+            initial: {
+              height: 'auto',
+            },
+            animate: {
+              height: 'auto',
+              transition: {
+                when: 'beforeChildren',
+              },
+            },
+            exit: {
+              height: 'auto',
+              transition: {
+                when: 'afterChildren',
+              },
+            },
+          }}
+          initial="initial"
+          animate="animate"
+          exit="exit"
+          key={activeStep}
+          className="flex flex-1 justify-center"
+        >
+          <motion.div
+            variants={{
+              initial: {
+                opacity: 0,
+              },
+              animate: {
+                opacity: 1,
+              },
+              exit: {
+                opacity: 0,
+              },
+            }}
+            className="flex flex-col justify-center items-center"
+          >
+            <div className="justify-center mb-5">
+              <CompleteIlustation width={300} height={300} />
+            </div>
+            <div className="text-lg font-bold">
+              Congratulations! Your nft is uploaded!
+            </div>
+            <div className="mt-4">
+              <Link href="/nft">
+                <a className="relative inline-block text-center bg-blue-600 border border-transparent rounded-md py-2 px-4 font-medium text-white hover:bg-blue-700 mr-4">
+                  View your nft
+                </a>
+              </Link>
+              <Link href="/nft/create">
+                <a className="relative inline-block text-center bg-blue-600 border border-transparent rounded-md py-2 px-4 font-medium text-white hover:bg-blue-700">
+                  Continue with created Nft for publish
+                </a>
+              </Link>
+            </div>
+          </motion.div>
+        </motion.div>
+      </AnimatePresence>
     );
   }
 
   return (
     <>
-      <div
-        className={classNames('mt-4 lg:mt-0 lg:row-span-3', {
-          'lg:col-[-2_/2]': !data?.asset?.id,
-          'lg:col-1': !!data?.asset?.id,
-        })}
-      >
-        <div className="rounded-lg border border-gray-100 dark:border-neutral-800 bg-white dark:bg-neutral-900/90 shadow ">
-          <div className="sticky top-[80px] mx-auto h-[500px]">
-            <Uploader hasError={false} onChange={onChangeFile} />
+      <div className="flex flex-1 flex-col w-full h-[calc(65vh_-_5px)]">
+        {!onlyUploader && (
+          <div className="flex mx-auto w-full sticky top-0 z-1 bg-slate-50 dark:bg-neutral-800 shadow-[0_10px_5px_-10px_rgba(0,0,0,0.2)]">
+            <StepsBar steps={StepsList} />
           </div>
-        </div>
-      </div>
-
-      {!!data?.asset?.id && (
-        <div className="py-10 lg:pl-4 lg:pt-6 lg:pb-16 lg:col-start-2 lg:col-span-2 lg:border-l lg:border-gray-200 dark:lg:border-neutral-700 lg:pr-8">
-          <div>Create NFT</div>
-          <div className="box mt-1 p-1">
-            <div className="mt-3  mb-10 alignitemscenter">
-              <div className="flex flex-row">
-                <div className="flex uppercase tracking-wide text-xs font-bold text-gray-500 mb-1 leading-tight">
-                  Step: {activeStep + 1} of 3
-                </div>
-                <div className="flex ml-auto items-center md:w-64">
-                  <div className="w-full bg-white rounded-full mr-2">
-                    <div
-                      className="rounded-full bg-green-500 text-xs leading-none h-2 text-center text-white"
-                      style={{ width: `${activeStepNumeric * (100 / 3)}%` }}
-                    ></div>
-                  </div>
-                  <span className="text-xs w-10 text-gray-600 whitespace-nowrap">
-                    {(activeStepNumeric * (100 / 3)).toFixed(2)} %
-                  </span>
-                </div>
-              </div>
-            </div>
+        )}
+        <div
+          className={classNames(
+            {
+              'md:grid grid-cols-[minmax(300px,_1fr)_300px]': !onlyUploader,
+              'relative flex flex-1 flex-row': onlyUploader,
+            },
+            'gap-x-4 h-auto overflow-y-auto'
+          )}
+        >
+          {!onlyUploader && (
             <AnimatePresence exitBeforeEnter={true}>
               <motion.div
                 variants={{
@@ -295,7 +407,7 @@ const SelectStepper = (): JSX.Element => {
                 animate="animate"
                 exit="exit"
                 key={activeStep}
-                className="text-lg font-light"
+                className=""
               >
                 <motion.div
                   variants={{
@@ -309,51 +421,77 @@ const SelectStepper = (): JSX.Element => {
                       opacity: 0,
                     },
                   }}
+                  className=""
                 >
-                  {/* Active Step  */}
-                  {activeStep <= 2 ? (
+                  {activeStep <= 2 && (
                     <Fragment>
-                      <Suspense fallback="Loading Form View..">{view}</Suspense>
-                      <div className="flex pt-2">
-                        {activeStep > 0 && (
-                          <>
-                            <button
-                              disabled={activeStep === 0}
-                              onClick={handleBack}
-                              className="mr-1"
-                            >
-                              Back
-                            </button>
-                          </>
-                        )}
-                        <div />
-                        {isStepOptional(activeStep) && (
-                          <>
-                            {allowSkip && (
-                              <button className="mr-1" onClick={handleSkip}>
-                                Skip
-                              </button>
-                            )}
-                          </>
-                        )}
-                        <button
-                          className="inline-flex items-center px-4 py-2 font-semibold leading-6 text-sm shadow rounded-md text-white bg-blue-500 hover:bg-blue-400"
-                          disabled={buttonNextDisabled}
-                          onClick={() => handleNext(activeStep, 2)}
-                        >
-                          {activeStepNumeric === 3 ? 'Save' : 'Next'}
-                        </button>
+                      <div className="p-2">
+                        <Suspense fallback="Loading Form View..">
+                          {view}
+                        </Suspense>
                       </div>
                     </Fragment>
-                  ) : (
-                    <></>
                   )}
                 </motion.div>
               </motion.div>
             </AnimatePresence>
+          )}
+          <div
+            className={classNames(
+              {
+                'w-full': onlyUploader,
+                'max-w-[20rem] max-h-[20rem]': !onlyUploader,
+              },
+              'flex flex-1 sticky top-5 mx-auto h-full'
+            )}
+          >
+            <Uploader
+              hasError={false}
+              onChange={onChangeFile}
+              OnGenetatedThumbnail={() => {
+                setOnlyUploader(false);
+              }}
+            />
           </div>
         </div>
-      )}
+        {!onlyUploader && (
+          <div className="flex justify-end sticky bottom-0 pt-4 bg-slate-50 dark:bg-neutral-800 border-t border-gray-100 dark:border-neutral-700">
+            <div className="flex gap-x-2">
+              {activeStep > 0 && (
+                <>
+                  <button
+                    disabled={activeStep === 0}
+                    onClick={handleBack}
+                    className="inline-flex items-center px-4 py-2 font-semibold leading-6 text-sm shadow rounded-md text-white bg-gray-500 hover:bg-gray-400"
+                  >
+                    Back
+                  </button>
+                </>
+              )}
+              <div />
+              {isStepOptional(activeStep) && (
+                <>
+                  {allowSkip && (
+                    <button
+                      className="inline-flex items-center px-4 py-2 font-semibold leading-6 text-sm shadow rounded-md text-white bg-blue-600 hover:bg-blue-500"
+                      onClick={handleSkip}
+                    >
+                      Skip
+                    </button>
+                  )}
+                </>
+              )}
+              <button
+                className="inline-flex items-center px-4 py-2 font-semibold leading-6 text-sm shadow rounded-md text-white bg-blue-600 hover:bg-blue-500"
+                disabled={buttonNextDisabled}
+                onClick={() => handleNext(activeStep, 2)}
+              >
+                {activeStepNumeric === 3 ? 'Save' : 'Next'}
+              </button>
+            </div>
+          </div>
+        )}
+      </div>
     </>
   );
 };

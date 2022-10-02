@@ -1,7 +1,7 @@
 import api from '../../index';
-import { NftsParams, NftsResponse } from './types';
+import { GetNftsParams, GetNftsResponse } from './types';
 
-export const getNfts = async (params?: NftsParams): Promise<NftsResponse> => {
+export const getNfts = async (params?: GetNftsParams): Promise<GetNftsResponse> => {
   const { data } = await api.get(`/nfts`, { params });
 
   return data;

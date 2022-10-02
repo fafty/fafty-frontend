@@ -2,7 +2,7 @@ import { useAsync } from '../../api/useAsync';
 import { useRouter } from 'next/router';
 import { useEffect } from 'react';
 import MainLayout from '../../layouts/main';
-import { NftsParams, NftsResponse } from '../../api/callbacks/nfts/types';
+import { GetNftsParams, GetNftsResponse } from '../../api/callbacks/nfts/types';
 import { getNfts } from '../../api/callbacks/nfts';
 import { Masonry } from 'masonic';
 import Item from '../../components/item';
@@ -21,7 +21,7 @@ const Collection = () => {
   });
 
   //todo add filters
-  const { data: nftsData } = useAsync<NftsResponse, NftsParams>({
+  const { data: nftsData } = useAsync<GetNftsResponse, GetNftsParams>({
     callback: getNfts,
     withMount: true,
   });

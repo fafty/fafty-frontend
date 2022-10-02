@@ -86,6 +86,7 @@ interface Props {
   style?: CSSProperties;
   presignEndpoint?: string;
   onChange: (value: AttachmentProps | AttachmentProps[]) => void;
+  OnGenetatedThumbnail: () => void;
 }
 // interface UploaderProps {
 //   hasError?: boolean;
@@ -123,6 +124,7 @@ const Uploader = ({
   style = {},
   presignEndpoint = 'assets/presign',
   onChange,
+  OnGenetatedThumbnail
 }: Props): JSX.Element => {
   const [files, setFiles] = useState<FileProps[]>([]);
   const [thumbnails, setThumbnails] = useState<ThumbnailProps[]>([]);
@@ -352,6 +354,7 @@ const Uploader = ({
               // src: preview
             },
           ]);
+          OnGenetatedThumbnail();
         })
         .on('file-added', (file: UppyFile) => {
           if (file.type && file.type.includes('video')) {

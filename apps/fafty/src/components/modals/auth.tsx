@@ -48,9 +48,10 @@ export const AuthModal = ({ isOpened, onClose }: Props) => {
       open={isOpened}
       onDismiss={onClose}
       options={{ dismissible: true }}
+      className="w-[700px]"
     >
       <div className="flex flex-row h-full w-full p-5">
-        <div className="pr-5">
+        <div className="hidden lg:block pr-5 border-r pl-5 border-gray-100 dark:border-neutral-700">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             width="250"
@@ -237,7 +238,7 @@ export const AuthModal = ({ isOpened, onClose }: Props) => {
             />
           </svg>
         </div>
-        <div className="flex flex-col mt-2.5 w-full border-l pl-5 border-gray-100 dark:border-neutral-700">
+        <div className="flex flex-col mt-2.5 w-full lg:ml-2">
           <div className="relative grid gap-1 p-1 grid-cols-1">
             {List.map(({ name, value, logo }) => (
               <div

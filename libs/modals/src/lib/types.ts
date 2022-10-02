@@ -22,5 +22,6 @@ export interface ModalProps {
   actions?: ActionsProps;
   options?: OptionsProps;
   open: boolean;
+  className?: string;
   onDismiss: () => void;
 }

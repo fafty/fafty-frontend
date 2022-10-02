@@ -1,7 +1,7 @@
 import MainLayout from '../../layouts/main';
 import { useAsync } from '../../api/useAsync';
 import { getNfts } from '../../api/callbacks/nfts';
-import { NftsParams, NftsResponse } from '../../api/callbacks/nfts/types';
+import { GetNftsParams, GetNftsResponse } from '../../api/callbacks/nfts/types';
 import { Masonry } from 'masonic';
 import Item from '../../components/item';
 import {
@@ -53,7 +53,7 @@ const Price = dynamic<PriceFilterProps>(
   }
 );
 
-const mapper = (data: NftsResponse, prev?: NftsResponse): NftsResponse => {
+const mapper = (data: GetNftsResponse, prev?: GetNftsResponse): GetNftsResponse => {
   if (prev && Object.keys(prev).length) {
     return { ...prev, ...data, records: [...prev.records, ...data.records] };
   }
@@ -68,8 +68,8 @@ const Nfts = () => {
   const [offset, setOffset] = useState(0);
 
   const { data, call, isLoading, clearAsyncData } = useAsync<
-    NftsResponse,
-    NftsParams
+    GetNftsResponse,
+    GetNftsParams
   >({
     callback: getNfts,
     mapper,

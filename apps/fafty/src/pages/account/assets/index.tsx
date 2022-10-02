@@ -3,14 +3,14 @@ import Image from 'next/future/image';
 import { MutableRefObject, useEffect, useRef, useState } from 'react';
 import { useAsync } from '../../../api/useAsync';
 import { getNfts } from '../../../api/callbacks/nfts';
-import { GetNftResponse } from '../../../api/callbacks/nfts/types';
+import { GetNftsResponse } from '../../../api/callbacks/nfts/types';
 import { Masonry } from 'masonic';
 import AccountLayout from '../../../layouts/account';
 import { useOnScreen } from '@fafty-frontend/usehooks';
 const mapper = (
-  data: GetNftResponse,
-  prev?: GetNftResponse
-): GetNftResponse => {
+  data: GetNftsResponse,
+  prev?: GetNftsResponse
+): GetNftsResponse => {
   if (prev && Object.keys(prev).length) {
     return { ...prev, ...data, records: [...prev.records, ...data.records] };
   }
@@ -28,7 +28,7 @@ const Nfts = () => {
     loaderAreaRef as MutableRefObject<HTMLDivElement>
   );
 
-  const { data, isLoading, call } = useAsync<GetNftResponse, undefined>({
+  const { data, isLoading, call } = useAsync<GetNftsResponse, undefined>({
     callback: () => getNfts({ offset, limit: LIMIT }),
     mapper,
   });
@@ -70,7 +70,7 @@ const Nfts = () => {
                         style={{backgroundColor: data.asset?.dominant_color}}
                         loading="eager"
                         alt={data.name}
-                        layout="raw"
+                        // layout="raw"
                         width={100}
                         height={100}
                       />
