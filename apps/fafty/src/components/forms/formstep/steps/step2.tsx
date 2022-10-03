@@ -17,6 +17,10 @@ const SelectCollection = lazy(
   () => import('../../components/selectCollection')
 );
 
+const CounterInput = lazy(
+  () => import('../../components/counterInput')
+);
+
 const SelectStep2 = ({ Context }: { Context: Context<ContextProps> }) => {
   /**
    * Context Store
@@ -85,29 +89,25 @@ const SelectStep2 = ({ Context }: { Context: Context<ContextProps> }) => {
     <div className="flex flex-col">
       <h4 className="font-bold">Assosiation</h4>
       <div className="mb-5 mt-1 relative">
-        <label
-          htmlFor="item-supply-units"
-          className="block text-sm font-medium text-gray-700 dark:text-gray-100"
-        >
-          Supply
-        </label>
-        <input
-          type="number"
-          id="item-supply-units"
-          className={`${
-            errors.supply_units
-              ? 'border-red-500'
-              : 'border-gray-200 dark:border-neutral-800'
-          } text-gray-700 dark:text-gray-100 dark:bg-neutral-900/90 mt-1 border focus:outline-none rounded-md shadow-sm focus:border-gray-500 focus:shadow w-full p-3 h-12`}
-          placeholder="Enter of supply units"
-          defaultValue={formFields.supply_units}
-          min="1"
-          {...(errors.supply_units && { 'aria-invalid': true })}
-          {...register('supply_units', {
-            required: true,
-            min: 1,
-          })}
-        />
+        
+        <div className="flex justify-center">
+          <div className="flex flex-col">
+            <label
+              htmlFor="item-supply-units"
+              className="block text-sm font-medium"
+            >
+              Supply
+            </label>
+            <Controller
+              name="supply_units"
+              control={control}
+              defaultValue={formFields.supply_units}
+              render={({ field }) => (
+                <CounterInput {...field} current={field.value} />
+              )}
+            />
+          </div>
+        </div>
         <span className="text-red-500">
           {errors.supply_units?.type === 'required' && (
             <span role="alert">Units for supply is required.</span>
@@ -120,10 +120,13 @@ const SelectStep2 = ({ Context }: { Context: Context<ContextProps> }) => {
       <div className="my-3">
         <label
           htmlFor=""
-          className="text-sm font-medium text-gray-700 dark:text-gray-100"
+          className="text-sm font-medium"
         >
           Choose Blockchain
         </label>
+        <p className="text-xs font-medium">
+          This is the collection where your item will appear.
+        </p>
         <Controller
           name="blockchain"
           control={control}
@@ -135,10 +138,13 @@ const SelectStep2 = ({ Context }: { Context: Context<ContextProps> }) => {
       </div>
       <label
         htmlFor=""
-        className="text-sm font-medium text-gray-700 dark:text-gray-100"
+        className="text-sm font-bold"
       >
         Choose Collection
       </label>
+      <p className="text-xs font-medium">
+        This is the collection where your item will appear.
+      </p>
       <Controller
         name="collection_token"
         control={control}
