@@ -1,6 +1,5 @@
 
 import { MinusIcon, PlusIcon } from '@heroicons/react/24/outline';
-import classNames from 'classnames';
 import { useEffect, useState } from 'react';
 
 interface Props {
@@ -19,7 +18,7 @@ const CounterInput = ({ current, onChange }: Props): JSX.Element => {
     <div className="custom-number-input h-20 w-32">
       <div className="flex flex-row h-12 w-full item my-2 focus:outline-none cursor-pointer rounded overflow-hidden relative shadow ring-2 ring-blue-600 bg-white  bg-opacity-75 text-slate-900 dark:text-slate-50 dark:bg-neutral-700">
         <button
-          onClick={() => setValue(value - 1)}
+          onClick={() => setValue(value > 1 ? value - 1 : 1)}
           type="button"
           title="Decrement"
           className="flex items-center justify-center text-blue-600 hover:text-white hover:bg-blue-600 h-full w-20 rounded-l cursor-pointer decoration-none"
