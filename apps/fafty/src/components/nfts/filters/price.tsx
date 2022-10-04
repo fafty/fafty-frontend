@@ -17,7 +17,7 @@ export type PriceFiltersValue = {
 };
 
 export type PriceFilterProps = {
-  value: PriceFiltersValue;
+  value?: PriceFiltersValue;
   onChange: (value: PriceFiltersValue) => void;
 };
 

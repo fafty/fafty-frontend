@@ -1,4 +1,5 @@
 import { useRouter } from 'next/router';
+import { ItemPlaceholder } from '@fafty-frontend/shared/ui';
 import qs from 'qs';
 import MainLayout from '../../layouts/main';
 import { useAsync } from '../../api/useAsync';
@@ -14,14 +15,13 @@ import { useEffect, useMemo, useState } from 'react';
 import dynamic from 'next/dynamic';
 import { TabsProps } from '../../components/nft/Tabs';
 import { InfinityLoadChecker } from '../../components/common/InfinityLoadChecker';
-import { ItemPlaceholder } from '@fafty-frontend/shared/ui';
 import { Panel } from '../../components/common/panel';
 import { Pills } from '../../components/nfts/pills';
 import { NftItem } from '../../api/callbacks/nfts/types';
 
 export type FiltersValues = {
-  price: PriceFiltersValue;
-  sort: string;
+  price?: PriceFiltersValue;
+  sort?: string;
 };
 
 const TABS = [
@@ -70,9 +70,25 @@ const mapper = (
 
 const LIMIT = 10;
 
+type QueryFiltersType = {
+  paginate: {
+    limit: number;
+    offset: number;
+  };
+  filters?: FiltersValues;
+};
+
 const Nfts = () => {
-  const { asPath, replace } = useRouter();
-  const [offset, setOffset] = useState({ value: 0 });
+  const { replace, asPath } = useRouter();
+  const search = asPath.split('?')[1];
+
+  const [localFiltersState, setLocalFiltersState] = useState<QueryFiltersType>({
+    paginate: {
+      limit: LIMIT,
+      offset: 0,
+    },
+    filters: { ...(qs.parse(search) as FiltersValues) },
+  });
 
   const { data, call, isLoading, isSuccess, clearAsyncData } = useAsync<
     GetNftsResponse,
@@ -82,9 +98,6 @@ const Nfts = () => {
     mapper,
   });
 
-  const search = asPath.split('?')[1] || '';
-  const filters = qs.parse(search) as FiltersValues;
-
   const allowLoad = data
     ? !isLoading && data?.records.length < data?.paginate?.count
     : false;
@@ -93,21 +106,19 @@ const Nfts = () => {
     (key: string) => (value: PriceFiltersValue | string) => {
       clearAsyncData();
 
-      setOffset({ value: 0 });
-
-      replace(
-        `/nfts${qs.stringify(
-          { ...filters, [key]: value },
-          { addQueryPrefix: true }
-        )}`
-      );
+      setLocalFiltersState((prev) => ({
+        paginate: { ...prev.paginate, offset: 0 },
+        filters: { ...prev.filters, [key]: value },
+      }));
     };
 
   const tabIndex = useMemo(() => {
-    const index = TABS.findIndex((tab) => tab.value === filters.sort);
+    const index = TABS.findIndex(
+      (tab) => tab.value === localFiltersState?.filters?.sort
+    );
 
     return index >= 0 ? index : 0;
-  }, [filters.sort]);
+  }, [localFiltersState?.filters?.sort]);
 
   const onChangeTab = (index: number) => {
     const tab = TABS[index];
@@ -116,46 +127,63 @@ const Nfts = () => {
   };
 
   const loadMore = () => {
-    setOffset((prev) => ({ value: prev.value + LIMIT }));
+    setLocalFiltersState((prev) => ({
+      ...prev,
+      paginate: {
+        ...prev.paginate,
+        offset: prev.paginate.offset + LIMIT,
+      },
+    }));
   };
 
   const onClosePill = (key: keyof FiltersValues) => {
-    const { [key]: ommited, ...rest } = filters;
+    const { [key]: ommited, ...rest } = localFiltersState.filters || {};
     clearAsyncData();
 
-    setOffset({ value: 0 });
-
-    replace(`/nfts${qs.stringify(rest, { addQueryPrefix: true })}`);
+    setLocalFiltersState((prev) => ({
+      paginate: { ...prev.paginate },
+      filters: { ...rest },
+    }));
   };
 
   const onClearFilters = () => {
     clearAsyncData();
 
-    setOffset({ value: 0 });
-
-    replace('/nfts');
+    setLocalFiltersState((prev) => ({
+      paginate: { ...prev.paginate, offset: 0 },
+    }));
   };
 
   useEffect(() => {
+    const { filters, paginate } = localFiltersState;
+    const nextQuery = qs.stringify(filters);
+
+    if (nextQuery !== search) {
+      replace(`/nfts?${nextQuery}`);
+    }
+
     call({
       limit: LIMIT,
-      offset: offset.value,
+      offset: paginate.offset,
       filters: {
         currency: filters?.price?.currency,
         price: { lg: filters?.price?.from, ge: filters?.price?.to },
       },
-      sort: TABS[tabIndex]?.value,
+      sort: TABS[tabIndex]?.value || TABS[0].value,
     });
-  }, [offset, search]);
+  }, [localFiltersState]);
 
   const items = useMemo(() => {
-    const count = Math.min(offset.value + LIMIT, data?.paginate?.count ?? 0);
+    const count = Math.min(
+      localFiltersState.paginate.offset + LIMIT,
+      data?.paginate?.count ?? 0
+    );
 
     return Array.from(
       { length: count },
       (_, index) => data?.records[index] ?? {}
     );
-  }, [data?.paginate?.count, data?.records, offset]);
+  }, [data?.paginate?.count, data?.records, localFiltersState.paginate.offset]);
 
   const renderMasonry = useMemo(() => {
     if (!isSuccess && !data?.paginate?.count) {
@@ -181,16 +209,19 @@ const Nfts = () => {
         }}
       />
     );
-  }, [isSuccess, items]);
+  }, [data?.paginate?.count, isSuccess, items]);
 
   return (
-    <MainLayout title={'undefined'} description={'undefined'}>
+    <MainLayout title={'Nfts | Marketplace'} description={'Nfts | Marketplace'}>
       <div className="flex items-start py-10 relative">
         <div className="flex w-[340px]  items-start flex-shrink-0 sticky top-[120px] pr-5">
           <div className="flex flex-col bg-white dark:bg-neutral-800 p-2.5  rounded w-full">
-            <Panel title="Price" initialState={!!filters.price}>
+            <Panel
+              title="Price"
+              initialState={!!localFiltersState?.filters?.price}
+            >
               <Price
-                value={filters.price}
+                value={localFiltersState?.filters?.price}
                 onChange={onChangeFiltersByKey('price')}
               />
             </Panel>
