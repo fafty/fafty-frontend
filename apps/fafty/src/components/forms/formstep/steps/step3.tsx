@@ -129,7 +129,7 @@ const SelectStep3 = ({ Context }: { Context: Context<ContextProps> }) => {
       <div className="mb-5 mt-1 relative">
         <label
           htmlFor="item-name"
-          className="block text-sm font-medium text-gray-700 dark:text-gray-100 mb-3"
+          className="block text-sm font-medium mb-3"
         >
           Comments moderation
         </label>
@@ -147,7 +147,7 @@ const SelectStep3 = ({ Context }: { Context: Context<ContextProps> }) => {
                     <div className="flex mb-2.5 items-center cursor-pointer">
                       <div
                         className={classNames(
-                          'rounded-full w-4 h-4 mr-2.5 border border-white',
+                          'rounded-full w-4 h-4 mr-2.5 border border-stone-700 dark:border-gray-200',
                           {
                             'flex items-center justify-center': checked,
                           }
@@ -156,14 +156,14 @@ const SelectStep3 = ({ Context }: { Context: Context<ContextProps> }) => {
                         <AnimatePresence>
                           {checked && (
                             <motion.div
-                              className="flex rounded w-2 h-2 bg-white"
+                              className="flex rounded w-2 h-2 bg-stone-700 dark:bg-gray-200"
                               initial={{ opacity: 0 }}
                               animate={{ opacity: 1 }}
                             />
                           )}
                         </AnimatePresence>
                       </div>
-                      <span className="text-sm w-10 text-gray-200 whitespace-nowrap">
+                      <span className="text-sm w-10 whitespace-nowrap">
                         {commentsOption.title}
                       </span>
                     </div>
@@ -178,7 +178,7 @@ const SelectStep3 = ({ Context }: { Context: Context<ContextProps> }) => {
       <div className="mb-5 relative">
         <label
           htmlFor="item-name"
-          className="block text-sm font-medium text-gray-700 dark:text-gray-100 mb-3"
+          className="block text-sm font-medium mb-3"
         >
           Order by
         </label>
@@ -187,16 +187,16 @@ const SelectStep3 = ({ Context }: { Context: Context<ContextProps> }) => {
           control={control}
           render={({ field }) => (
             <Listbox {...field} as="div">
-              <div className="relative mt-1">
-                <Listbox.Button className="flex w-40 px-5 py-2.5 items-center border text-sm border-gray-200 rounded-xl justify-between">
+              <div className="relative inline-block mt-1">
+                <Listbox.Button className="flex w-40 px-5 py-2.5 items-center border text-sm border-stone-700 dark:border-gray-200 rounded-lg justify-between">
                   {selectedOrderComments?.title}
-                  <ArrowDownSIcon className="h-4 w-4 fill-gray-200 flex-shrink-0" />
+                  <ArrowDownSIcon className="h-4 w-4 fill-stone-700 dark:fill-gray-200 flex-shrink-0" />
                 </Listbox.Button>
-                <Listbox.Options className="absolute mt-2 z-10 w-32 overflow-hidden p-2 rounded-lg text-gray-500 dark:text-gray-500 bg-white dark:bg-neutral-800 ">
+                <Listbox.Options className="absolute  z-10 p-2 w-full right-0 origin-top-right rounded-lg text-gray-500 dark:text-gray-500 bg-white dark:bg-neutral-800 overflow-hidden shadow-lg">
                   {COMMENTS_ORDER_OPTIONS.map((option) => (
                     <Listbox.Option
                       key={option.value}
-                      className="w-32"
+                      className=""
                       value={option.value}
                     >
                       {({ active, selected }) => (
