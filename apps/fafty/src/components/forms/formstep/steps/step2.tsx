@@ -100,7 +100,7 @@ const SelectStep2 = ({ Context }: { Context: Context<ContextProps> }) => {
     <div className="flex flex-col">
       <h4 className="font-bold">Assosiation</h4>
       <div className="mb-5 mt-1 relative">
-        <div className="flex justify-center">
+        <div className="flex justify-left">
           <div className="flex flex-col">
             <label
               htmlFor="item-supply-units"

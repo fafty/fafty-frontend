@@ -22,7 +22,12 @@ import { BrushIcon } from '@remixicons/react/line';
 import { useTheme } from '@fafty-frontend/theme';
 import classNames from 'classnames';
 import Link from 'next/link';
-import { AnimatePresence, AnimateSharedLayout, motion } from 'framer-motion';
+import {
+  AnimatePresence,
+  AnimateSharedLayout,
+  LayoutGroup,
+  motion,
+} from 'framer-motion';
 
 const themeOptions = [
   {
@@ -47,79 +52,79 @@ const themeOptions = [
   },
 ];
 
-const variants = {
-  enter: ({ direction, menu }: { direction: number; menu: string }) => {
-    console.log('enter', direction);
-    return {
-      zIndex: 0,
-      x: direction > 0 && menu !== 'main' ? '120%' : '-120%',
-      opacity: 0,
-      height: 'auto',
-      transition: {
-        duration: 0.2,
-        ease: 'easeInOut',
-        delay: 0.1,
-      },
-      transitionBegin: {
-        position: 'absolute',
-        top: 0,
-        left: 0,
-        right: 0,
-        bottom: 0,
-        zIndex: -1,
-        backgroundColor: 'rgba(0, 0, 0, 0.5)',
-        opacity: 0,
-        overflow: 'hidden',
-      },
-      transitionEnd: {
-        // after animation has finished, reset the position to relative
-        position: 'relative',
-        overflow: 'hidden',
-      },
-    };
-  },
-  center: ({ direction, menu }: { direction: number; menu: string }) => {
-    return {
-      zIndex: 1,
-      x: 0,
-      opacity: 1,
-      height: 'auto',
+// const variants = {
+//   visible: (custom) => ({
+//     opacity: 1,
+//     transition: { delay: custom * 0.2 }
+//   })
+// }
 
-      transition: {
-        duration: 0.3,
-        ease: 'easeInOut',
-        // delay: 0.1,
-        height: {
-          duration: 0.5,
-          delay: 0.1,
-        },
-      },
-    };
-  },
-  exit: ({ direction, menu }: { direction: number; menu: string }) => {
-    return {
-      zIndex: 1,
-      x: direction > 0 && menu !== 'main' ? '-120%' : '120%',
-      opacity: 0,
-      height: 'auto',
+const variants = {
+  enter: ({ direction, menu }: { direction: number; menu: string }) => ({
+    zIndex: 0,
+    x: direction > 0 && menu !== 'main' ? '120%' : '-120%',
+    opacity: 0,
+    height: 'auto',
+    transition: {
+      duration: 0.2,
+      ease: 'easeInOut',
+      delay: 0.1,
+    },
+    transitionBegin: {
       position: 'absolute',
       top: 0,
-      right: 0,
       left: 0,
+      right: 0,
       bottom: 0,
+      zIndex: -1,
+      backgroundColor: 'rgba(0, 0, 0, 0.5)',
+      opacity: 0,
       overflow: 'hidden',
+    },
+    transitionEnd: {
+      // after animation has finished, reset the position to relative
+      position: 'relative',
+      overflow: 'hidden',
+    },
+  }),
+  center: ({ direction, menu }: { direction: number; menu: string }) => ({
+    zIndex: 1,
+    x: 0,
+    opacity: 1,
+    height: 'auto',
 
-      transition: {
-        duration: 0.2,
-        ease: 'easeInOut',
-        // delay: 0.1,
-        height: {
-          duration: 0.5,
-          delay: 0.1,
-        },
+    transition: {
+      duration: 0.3,
+      ease: 'easeInOut',
+      // delay: 0.1,
+      height: {
+        duration: 0.5,
+        delay: 0.1,
       },
-    };
-  },
+    }
+  }),
+  exit: ({ direction, menu }: { direction: number; menu: string }) => ({
+    zIndex: 1,
+    x: direction > 0 && menu !== 'main' ? '-120%' : '120%',
+    opacity: 0,
+    height: 'auto',
+    position: 'absolute',
+    top: 0,
+    right: 0,
+    left: 0,
+    bottom: 0,
+    overflow: 'hidden',
+
+    transition: {
+      duration: 0.2,
+      ease: 'easeInOut',
+      // delay: 0.1,
+      height: {
+        duration: 0.5,
+        delay: 0.1,
+      },
+    }
+  }),
 };
 
 function CheckIcon(props: JSX.IntrinsicAttributes & SVGProps<SVGSVGElement>) {
@@ -220,176 +225,213 @@ const MainPanel = ({
         onClick={() => (goToMenu ? goTo(goToMenu) : onClick?.())}
       >
         <div className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-full px-1 py-1 focus:outline-none bg-neutral-200 text-neutral-700 dark:text-neutral-200 dark:fill-neutral-200 dark:bg-neutral-700">
-          {LeftIcon && <LeftIcon className="h-6 w-6" strokeWidth="2" aria-hidden="true" />}
+          {LeftIcon && (
+            <LeftIcon className="h-6 w-6" strokeWidth="2" aria-hidden="true" />
+          )}
         </div>
         <div className="ml-4">
           <p className="text-sm font-medium">{children}</p>
         </div>
         <div className="justify-end ml-auto">
-          {RightIcon && <RightIcon className="h-6 w-6" strokeWidth="2" aria-hidden="true" />}
+          {RightIcon && (
+            <RightIcon className="h-6 w-6" strokeWidth="2" aria-hidden="true" />
+          )}
         </div>
       </a>
     );
   };
   return (
-    <div className="p-2 relative rounded-lg text-gray-500 dark:text-gray-500 bg-white dark:bg-neutral-800 overflow-hidden">
+    <AnimateSharedLayout>
+      <motion.div layout={true} animate={{height: 'auto'}} className="relative p-2 rounded-lg text-gray-500 dark:text-gray-500 bg-white dark:bg-neutral-800 overflow-hidden">
       <AnimatePresence
         initial={false}
         exitBeforeEnter={false}
         custom={{ direction: direction, activeMenu: activeMenu }}
       >
-        <motion.div
-          layoutTransition
-          layout
-          key={activeMenu}
-          custom={{ direction: direction, menu: activeMenu }}
-          variants={variants}
-          initial="enter"
-          animate="center"
-          exit="exit"
-        >
-          {activeMenu === 'main' && (
-            <div className="relative grid gap-1 p-1 grid-cols-1">
-              <Link href={'/profile'}>
+          <motion.div
+            layoutTransition
+            // layout={false}
+            key={activeMenu}
+            custom={{ direction: direction, menu: activeMenu }}
+            // @ts-ignore
+            variants={variants}
+            initial="enter"
+            animate="center"
+            exit="exit"
+          >
+            {activeMenu === 'main' && (
+              <motion.div
+                layout
+                layoutId="main"
+                className="relative grid gap-1 p-1 grid-cols-1"
+              >
+                <Link href={'/profile'}>
+                  <a className="focus:outline-none flex items-center rounded-lg p-2 transition duration-150 ease-in-out text-neutral-700 hover:bg-neutral-100 dark:text-neutral-100 dark:hover:bg-neutral-700">
+                    <div className="flex h-14 w-14 flex-shrink-0 items-center justify-center bg-blue-600 rounded-full hover:bg-blue-500 px-1 py-1 focus:outline-none dark:bg-neutral-700 dark:hover:bg-neutral-600">
+                      <img
+                        className="inline-block h-12 w-12 rounded-full ring-2 ring-white m-1"
+                        src="https://avatars.githubusercontent.com/u/3300389?v=4"
+                        alt=""
+                      />
+                    </div>
+                    <div className="ml-4">
+                      <p className="text-sm font-medium">Andrew Zhuk</p>
+                      <p className="text-xs text-neutral-400">
+                        See your profile
+                      </p>
+                    </div>
+                  </a>
+                </Link>
+                <div className="py-2">
+                  <div className="w-full border-t border-gray-100 dark:border-neutral-700"></div>
+                </div>
                 <a className="focus:outline-none flex items-center rounded-lg p-2 transition duration-150 ease-in-out text-neutral-700 hover:bg-neutral-100 dark:text-neutral-100 dark:hover:bg-neutral-700">
-                  <div className="flex h-14 w-14 flex-shrink-0 items-center justify-center bg-blue-600 rounded-full hover:bg-blue-500 px-1 py-1 focus:outline-none dark:bg-neutral-700 dark:hover:bg-neutral-600">
-                    <img
-                      className="inline-block h-12 w-12 rounded-full ring-2 ring-white m-1"
-                      src="https://avatars.githubusercontent.com/u/3300389?v=4"
-                      alt=""
+                  <div className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-full px-1 py-1 focus:outline-none bg-neutral-200 text-neutral-700 dark:text-neutral-200 dark:bg-neutral-700">
+                    <ChatBubbleOvalLeftEllipsisIcon
+                      className="h-6 w-6"
+                      strokeWidth="2"
+                      aria-hidden="true"
                     />
                   </div>
                   <div className="ml-4">
-                    <p className="text-sm font-medium">Andrew Zhuk</p>
-                    <p className="text-xs text-neutral-400">See your profile</p>
+                    <p className="text-sm font-medium">Give Feedback</p>
+                    <p className="text-xs text-neutral-400">
+                      Help us improve Fafty.
+                    </p>
                   </div>
                 </a>
-              </Link>
-              <div className="py-2">
-                <div className="w-full border-t border-gray-100 dark:border-neutral-700"></div>
-              </div>
-              <a className="focus:outline-none flex items-center rounded-lg p-2 transition duration-150 ease-in-out text-neutral-700 hover:bg-neutral-100 dark:text-neutral-100 dark:hover:bg-neutral-700">
-                <div className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-full px-1 py-1 focus:outline-none bg-neutral-200 text-neutral-700 dark:text-neutral-200 dark:bg-neutral-700">
-                  <ChatBubbleOvalLeftEllipsisIcon className="h-6 w-6" strokeWidth="2" aria-hidden="true" />
+                <div className="py-2">
+                  <div className="w-full border-t border-gray-100 dark:border-neutral-700"></div>
                 </div>
-                <div className="ml-4">
-                  <p className="text-sm font-medium">Give Feedback</p>
-                  <p className="text-xs text-neutral-400">
-                    Help us improve Fafty.
-                  </p>
-                </div>
-              </a>
-              <div className="py-2">
-                <div className="w-full border-t border-gray-100 dark:border-neutral-700"></div>
+                <DropdownItem
+                  leftIcon={QuestionMarkCircleIcon}
+                  rightIcon={ChevronRightIcon}
+                  goToMenu="help"
+                >
+                  Help & Support
+                </DropdownItem>
+                <DropdownItem
+                  leftIcon={CogIcon}
+                  rightIcon={ChevronRightIcon}
+                  goToMenu="settings"
+                >
+                  Settings
+                </DropdownItem>
+                <DropdownItem
+                  leftIcon={BrushIcon}
+                  rightIcon={ChevronRightIcon}
+                  goToMenu="appearance"
+                >
+                  Appearance
+                </DropdownItem>
+                <DropdownItem
+                  onClick={onLogOut}
+                  leftIcon={ArrowLeftOnRectangleIcon}
+                >
+                  Disconnect
+                </DropdownItem>
+              </motion.div>
+            )}
+            {activeMenu === 'settings' && (
+              <motion.div
+                layoutId="settings"
+                layout
+                className="relative grid gap-1 p-1 grid-cols-1"
+              >
+                <DropdownBack goToMenu="main">Settings</DropdownBack>
+                <DropdownItem leftIcon={Bars3Icon}>HTML</DropdownItem>
+                <DropdownItem leftIcon={Bars3Icon}>CSS</DropdownItem>
+                <DropdownItem leftIcon={Bars3Icon}>JavaScript</DropdownItem>
+                <DropdownItem leftIcon={Bars3Icon}>Awesome!</DropdownItem>
+              </motion.div>
+            )}
+            {activeMenu === 'help' && (
+              <div
+                // layoutId="help"
+                // layout
+                className=" grid gap-1 p-1 grid-cols-1"
+              >
+                <DropdownBack goToMenu="main">
+                  Display & Accessibility
+                </DropdownBack>
+                <DropdownItem leftIcon={Bars3Icon}>HTML</DropdownItem>
+                <DropdownItem leftIcon={Bars3Icon}>CSS</DropdownItem>
+                <DropdownItem leftIcon={Bars3Icon}>JavaScript</DropdownItem>
+                <DropdownItem leftIcon={Bars3Icon}>Awesome!</DropdownItem>
               </div>
-              <DropdownItem
-                leftIcon={QuestionMarkCircleIcon}
-                rightIcon={ChevronRightIcon}
-                goToMenu="help"
+            )}
+            {activeMenu === 'appearance' && (
+              <div
+                // custom={{ direction: direction, menu: activeMenu }}
+                // variants={variants}
+                // initial="enter"
+                // animate="center"
+                // exit="exit"
+                // layoutId={activeMenu}
+                // layout
+                className=" grid gap-1 p-1 grid-cols-1"
               >
-                Help & Support
-              </DropdownItem>
-              <DropdownItem
-                leftIcon={CogIcon}
-                rightIcon={ChevronRightIcon}
-                goToMenu="settings"
-              >
-                Settings
-              </DropdownItem>
-              <DropdownItem
-                leftIcon={BrushIcon}
-                rightIcon={ChevronRightIcon}
-                goToMenu="appearance"
-              >
-                Appearance
-              </DropdownItem>
-              <DropdownItem onClick={onLogOut} leftIcon={ArrowLeftOnRectangleIcon}>
-                Disconnect
-              </DropdownItem>
-            </div>
-          )}
-          {activeMenu === 'settings' && (
-            <div className="relative grid gap-1 p-1 grid-cols-1">
-              <DropdownBack goToMenu="main">Settings</DropdownBack>
-              <DropdownItem leftIcon={Bars3Icon}>HTML</DropdownItem>
-              <DropdownItem leftIcon={Bars3Icon}>CSS</DropdownItem>
-              <DropdownItem leftIcon={Bars3Icon}>JavaScript</DropdownItem>
-              <DropdownItem leftIcon={Bars3Icon}>Awesome!</DropdownItem>
-            </div>
-          )}
-          {activeMenu === 'help' && (
-            <div className="relative grid gap-1 p-1 grid-cols-1">
-              <DropdownBack goToMenu="main">
-                Display & Accessibility
-              </DropdownBack>
-              <DropdownItem leftIcon={Bars3Icon}>HTML</DropdownItem>
-              <DropdownItem leftIcon={Bars3Icon}>CSS</DropdownItem>
-              <DropdownItem leftIcon={Bars3Icon}>JavaScript</DropdownItem>
-              <DropdownItem leftIcon={Bars3Icon}>Awesome!</DropdownItem>
-            </div>
-          )}
-          {activeMenu === 'appearance' && (
-            <div className="relative grid gap-1 p-1 grid-cols-1">
-              <DropdownBack goToMenu="main">Appearance</DropdownBack>
-              <RadioGroup value={theme} onChange={setTheme}>
-                <RadioGroup.Label className="sr-only">
-                  Theme mode
-                </RadioGroup.Label>
-                <div className="space-y-2">
-                  {themeOptions.map((theme) => (
-                    <RadioGroup.Option
-                      key={theme.name}
-                      value={theme.theme}
-                      className={({ active, checked }) =>
-                        classNames(
-                          'focus:outline-none relative flex cursor-pointer rounded-lg px-2 py-2 text-neutral-700 hover:bg-neutral-100 dark:text-neutral-100 dark:hover:bg-neutral-700',
-                          {
-                            'ring-2': active,
-                            'bg-white bg-opacity-75 text-slate-900 dark:text-slate-50 dark:bg-neutral-700':
-                              checked,
-                          }
-                        )
-                      }
-                    >
-                      {({ checked }) => (
-                        <div className="flex w-full items-center justify-between">
-                          <div className="flex items-center">
-                            <div className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-full focus:outline-none bg-neutral-200 fill-neutral-700 dark:fill-neutral-200 dark:bg-neutral-700">
-                              <theme.icon
-                                className="flex-shrink-0 h-6 w-6"
-                                aria-hidden="true"
-                              />
+                <DropdownBack goToMenu="main">Appearance</DropdownBack>
+                <RadioGroup value={theme} onChange={setTheme}>
+                  <RadioGroup.Label className="sr-only">
+                    Theme mode
+                  </RadioGroup.Label>
+                  <div className="space-y-2">
+                    {themeOptions.map((theme) => (
+                      <RadioGroup.Option
+                        key={theme.name}
+                        value={theme.theme}
+                        className={({ active, checked }) =>
+                          classNames(
+                            'focus:outline-none relative flex cursor-pointer rounded-lg px-2 py-2 text-neutral-700 hover:bg-neutral-100 dark:text-neutral-100 dark:hover:bg-neutral-700',
+                            {
+                              'ring-2': active,
+                              'bg-white bg-opacity-75 text-slate-900 dark:text-slate-50 dark:bg-neutral-700':
+                                checked,
+                            }
+                          )
+                        }
+                      >
+                        {({ checked }) => (
+                          <div className="flex w-full items-center justify-between">
+                            <div className="flex items-center">
+                              <div className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-full focus:outline-none bg-neutral-200 fill-neutral-700 dark:fill-neutral-200 dark:bg-neutral-700">
+                                <theme.icon
+                                  className="flex-shrink-0 h-6 w-6"
+                                  aria-hidden="true"
+                                />
+                              </div>
+                              <div className="ml-4">
+                                <RadioGroup.Label
+                                  as="p"
+                                  className={`font-medium`}
+                                >
+                                  {theme.name}
+                                </RadioGroup.Label>
+                                <p className={`text-xs text-neutral-400`}>
+                                  {theme.description}
+                                </p>
+                              </div>
                             </div>
-                            <div className="ml-4">
-                              <RadioGroup.Label
-                                as="p"
-                                className={`font-medium`}
-                              >
-                                {theme.name}
-                              </RadioGroup.Label>
-                              <p className={`text-xs text-neutral-400`}>
-                                {theme.description}
-                              </p>
+                            <div className="flex-shrink-0 text-white">
+                              {checked ? (
+                                <CheckIcon className="h-6 w-6" />
+                              ) : (
+                                <div className="h-6 w-6" />
+                              )}
                             </div>
                           </div>
-                          <div className="flex-shrink-0 text-white">
-                            {checked ? (
-                              <CheckIcon className="h-6 w-6" />
-                            ) : (
-                              <div className="h-6 w-6" />
-                            )}
-                          </div>
-                        </div>
-                      )}
-                    </RadioGroup.Option>
-                  ))}
-                </div>
-              </RadioGroup>
-            </div>
-          )}
-        </motion.div>
-      </AnimatePresence>
-    </div>
+                        )}
+                      </RadioGroup.Option>
+                    ))}
+                  </div>
+                </RadioGroup>
+              </div>
+            )}
+          </motion.div>
+    </AnimatePresence>
+      </motion.div>
+      </AnimateSharedLayout>
   );
 };
 

@@ -281,6 +281,7 @@ function AlignOptionsDropdown({
     },
   ];
   const action = (value: string) => {
+    // @ts-ignore Correct types, but since they're dynamic TS doesn't like it.
     editor?.dispatchCommand(FORMAT_ELEMENT_COMMAND, value);
   };
 
@@ -366,8 +367,7 @@ export default function ToolbarPlugin(): JSX.Element {
         if ($isListNode(element)) {
           const parentList = $getNearestNodeOfType(anchorNode, ListNode);
           const type = parentList
-            ? // @ts-expect-error Property 'getTag' does not exist on type 'LexicalNode'.
-              parentList.getTag()
+            ? parentList.getTag()
             : element.getTag();
           setBlockType(type);
         } else {
@@ -555,6 +555,7 @@ export default function ToolbarPlugin(): JSX.Element {
           } disabled:opacity-75 h-7 w-7 md:h-8 md:w-8 rounded-lg box-border justify-center p-0 m-0 cursor-pointer flex   dark:text-gray-200 touch-manipulation items-center select-none border-0 list-none outline-none decoration-0 transition duration-250 ease-in-out`}
           key={button.type}
           onClick={() => {
+            // @ts-ignore Correct types, but since they're dynamic TS doesn't like it.
             activeEditor.dispatchCommand(button.command, null);
           }}
         >
@@ -590,6 +591,7 @@ export default function ToolbarPlugin(): JSX.Element {
               } h-7 w-7 md:h-8 md:w-8 rounded-md lg:rounded-lg hover:bg-blue-100 dark:hover:bg-neutral-600 box-border justify-center p-0 m-0 cursor-pointer flex   dark:text-gray-200 touch-manipulation items-center select-none border-0 list-none outline-none decoration-0 transition duration-250 ease-in-out`}
               key={button.type}
               onClick={() => {
+                // @ts-ignore Correct types, but since they're dynamic TS doesn't like it.
                 activeEditor.dispatchCommand(FORMAT_TEXT_COMMAND, button.type);
               }}
             >
@@ -613,6 +615,7 @@ export default function ToolbarPlugin(): JSX.Element {
               className="h-7 w-7 md:h-8 md:w-8 rounded-md lg:rounded-lg hover:bg-blue-100 dark:hover:bg-neutral-600 box-border justify-center p-0 m-0 cursor-pointer flex   dark:text-gray-200 touch-manipulation items-center select-none border-0 list-none outline-none decoration-0 transition duration-250 ease-in-out"
               key={button.type}
               onClick={() => {
+                // @ts-ignore Correct types, but since they're dynamic TS doesn't like it.
                 activeEditor.dispatchCommand(button.command, null);
               }}
             >
