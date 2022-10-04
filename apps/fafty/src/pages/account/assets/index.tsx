@@ -3,7 +3,10 @@ import Image from 'next/future/image';
 import { MutableRefObject, useEffect, useRef, useState } from 'react';
 import { useAsync } from '../../../api/useAsync';
 import { getNfts } from '../../../api/callbacks/nfts';
-import { GetNftsResponse } from '../../../api/callbacks/nfts/types';
+import {
+  GetNftsParams,
+  GetNftsResponse,
+} from '../../../api/callbacks/nfts/types';
 import { Masonry } from 'masonic';
 import AccountLayout from '../../../layouts/account';
 import { useOnScreen } from '@fafty-frontend/usehooks';
@@ -28,7 +31,7 @@ const Nfts = () => {
     loaderAreaRef as MutableRefObject<HTMLDivElement>
   );
 
-  const { data, isLoading, call } = useAsync<GetNftsResponse, undefined>({
+  const { data, isLoading, call } = useAsync<GetNftsResponse, GetNftsParams>({
     callback: () => getNfts({ offset, limit: LIMIT }),
     mapper,
   });
@@ -67,7 +70,7 @@ const Nfts = () => {
                     <div className="w-10 h-10 flex-none image-fit rounded-lg overflow-hidden">
                       <Image
                         src={data.asset.src}
-                        style={{backgroundColor: data.asset?.dominant_color}}
+                        style={{ backgroundColor: data.asset?.dominant_color }}
                         loading="eager"
                         alt={data.name}
                         // layout="raw"
@@ -94,11 +97,14 @@ const Nfts = () => {
             />
           )}
           <div className="flex relative">
-            <div className="flex absolute b-full h-[300px]" ref={loaderAreaRef} />
+            <div
+              className="flex absolute b-full h-[300px]"
+              ref={loaderAreaRef}
+            />
           </div>
         </div>
       </div>
-      
+
       {/* <div className="py-10">
         {!!data?.records.length && (
           <Masonry

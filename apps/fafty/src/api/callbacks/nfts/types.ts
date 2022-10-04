@@ -35,7 +35,7 @@ export type GetNftsResponse = {
 export type GetNftsParams = {
   limit: number;
   offset: number;
-  filters: {
+  filters?: {
     currency?: string;
     price?: {
       lg?: number | string;
