@@ -1,5 +1,4 @@
 import {
-  useState,
   useEffect,
   useContext,
   ChangeEventHandler,
@@ -11,6 +10,9 @@ import { Controller, useForm } from 'react-hook-form';
 import { EditorPlaceholder } from '@fafty-frontend/shared/ui';
 import dynamic from 'next/dynamic';
 import { ContextProps, Step1Props } from '../context';
+import { motion } from 'framer-motion';
+import { childVariants, variants } from '../constants';
+import classNames from 'classnames';
 interface EditorProps {
   isAutocomplete?: boolean;
   maxCharacters?: null | number;
@@ -24,7 +26,6 @@ interface EditorProps {
   namespace: string;
   loading?: boolean;
 }
-// const Editor = lazy<EditorProps>(() => import('@fafty-frontend/editor').then((mod) => mod.Editor));
 
 const Editor = dynamic<EditorProps>(
   () => import('@fafty-frontend/editor').then((mod) => mod.Editor),
@@ -34,50 +35,11 @@ const Editor = dynamic<EditorProps>(
   }
 );
 
-const variants = {
-  visible: {
-    height: 'auto',
-    transition: {
-      duration: 0.2,
-      delay: 0.1,
-      when: 'beforeChildren',
-      staggerChildren: 0.1,
-    },
-  },
-  hidden: {
-    height: 0,
-    transition: {
-      duration: 0.2,
-      delay: 0.1,
-      staggerChildren: 0.1,
-      when: 'afterChildren',
-      staggerDirection: -1,
-    },
-  },
-};
-
-const childVariants = {
-  visible: {
-    opacity: 1,
-    transition: {
-      duration: 0.2,
-      delay: 0.1,
-    },
-  },
-  hidden: {
-    opacity: 0,
-    transition: {
-      duration: 0.2,
-      delay: 0.1,
-    },
-  },
-};
-
 const SelectStep1 = ({ Context }: { Context: Context<ContextProps> }) => {
   /**
    * Context Store
    */
-  const { step1Answered, setStep1Answered, stepData, setStepData } =
+  const { step1Answered, setStep1Answered, step1Errored, setStep1Errored, stepData, setStepData } =
     useContext<ContextProps>(Context);
 
   /**
@@ -88,11 +50,13 @@ const SelectStep1 = ({ Context }: { Context: Context<ContextProps> }) => {
     register,
     watch,
     reset,
+    trigger,
     getValues,
     formState: { errors, isValid },
   } = useForm({
     mode: 'onChange',
     reValidateMode: 'onChange',
+    shouldFocusError: true,
   });
 
   /**
@@ -100,12 +64,11 @@ const SelectStep1 = ({ Context }: { Context: Context<ContextProps> }) => {
    */
   const formFields = watch();
 
-  const [hasUnlockableContent, setHasUnlockableContent] = useState(false);
-
   /**
    * Load data from context store on component mount and save data to context store on component unmount
    */
   useLayoutEffect(() => {
+    const result = trigger("name", { shouldFocus: true });
     return () => {
       storeData();
     };
@@ -123,16 +86,23 @@ const SelectStep1 = ({ Context }: { Context: Context<ContextProps> }) => {
   useEffect(() => {
     if (isValid) {
       setStep1Answered(true);
+      setStep1Errored(false);
+    } else {
+      setStep1Answered(false);
+      setStep1Errored(true);
     }
   }, [formFields, isValid, setStep1Answered]);
 
-  const storeData = () => {
+  const  storeData = async () => {
+    const result = await trigger("name", { shouldFocus: true });
     setStepData({
       step1: {
-        solved: true,
         state: getValues() as Step1Props,
+        solved: isValid,
+        error: result,
       },
     });
+    console.log('errors', result);
   };
 
   return (
@@ -148,31 +118,41 @@ const SelectStep1 = ({ Context }: { Context: Context<ContextProps> }) => {
         <input
           type="text"
           id="item-name"
-          className={`${
-            errors.name
-              ? 'border-red-500'
-              : 'border-gray-200 dark:border-neutral-800'
-          } text-gray-700 dark:text-gray-100 dark:bg-neutral-900/90 mt-1 border focus:outline-none rounded-md shadow-sm focus:border-gray-500 focus:shadow w-full p-3 h-12`}
+          className={classNames(
+            {
+              'border-red-500': errors.name,
+              'border-gray-200 dark:border-neutral-800': !errors.name,
+            },
+            "text-gray-700 dark:text-gray-100 dark:bg-neutral-900/90 mt-1 border focus:outline-none rounded-md shadow-sm focus:border-gray-500 focus:shadow w-full p-3 h-12"
+          )}
           placeholder="Enter name of Nft"
           autoComplete="off"
           {...(errors.name && { 'aria-invalid': true })}
           {...register('name', {
             required: true,
-            minLength: 5,
+            minLength: 3,
             maxLength: 30,
           })}
         />
-        <span className="text-red-500">
-          {errors.name?.type === 'required' && (
-            <span role="alert">Name is required.</span>
-          )}
-          {errors.name?.type === 'minLength' && (
-            <span role="alert">Min length of name is 5 characters.</span>
-          )}
-          {errors.name?.type === 'maxLength' && (
-            <span role="alert">Max length of name is 30 characters.</span>
-          )}
-        </span>
+        <motion.div
+          initial={'hidden'}
+          variants={variants}
+          animate={errors.name ? `visible` : `hidden`}
+        >
+          <motion.div variants={childVariants} className="min-h-[24px]">
+            <span className="text-red-500">
+              {errors.name?.type === 'required' && (
+                <motion.div variants={childVariants} role="alert">Name is required.</motion.div>
+              )}
+              {errors.name?.type === 'minLength' && (
+                <motion.div variants={childVariants} role="alert">Min length of name is 3 characters.</motion.div>
+              )}
+              {errors.name?.type === 'maxLength' && (
+                <motion.div variants={childVariants} role="alert">Max length of name is 30 characters.</motion.div>
+              )}
+            </span>
+          </motion.div>
+        </motion.div>
       </div>
       <div className="my-3">
         <label className="text-sm font-medium text-gray-700 dark:text-gray-100">
@@ -196,11 +176,6 @@ const SelectStep1 = ({ Context }: { Context: Context<ContextProps> }) => {
             )}
           />
         </Suspense>
-        <span className="text-red-500">
-          {errors.description?.type === 'required' && (
-            <span role="alert">Description is required.</span>
-          )}
-        </span>
       </div>
       <div className="my-3">
         <div className="flex-row mb-2">
@@ -212,13 +187,11 @@ const SelectStep1 = ({ Context }: { Context: Context<ContextProps> }) => {
             of the item.
           </div>
         </div>
-        
         <Controller
           name="unlockable_content"
           control={control}
           defaultValue={formFields.unlockable_content}
           render={({ field }) => (
-            // <Suspense fallback={<EditorPlaceholder header={false} />}>
             <Editor
               {...field}
               {...(errors.unlockable_content && {
@@ -232,15 +205,9 @@ const SelectStep1 = ({ Context }: { Context: Context<ContextProps> }) => {
               hasError={errors.unlockable_content as unknown as boolean}
               loading={false}
             />
-            // </Suspense>
           )}
         />
       </div>
-      <span className="text-red-500">
-        {errors.unlockable_content?.type === 'required' && (
-          <span role="alert">Content is required.</span>
-        )}
-      </span>
     </div>
   );
 };

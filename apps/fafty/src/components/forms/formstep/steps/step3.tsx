@@ -14,8 +14,10 @@ import { EditorPlaceholder } from '@fafty-frontend/shared/ui';
 import dynamic from 'next/dynamic';
 import { Switch, RadioGroup, Listbox } from '@headlessui/react';
 import {
+  childVariants,
   COMMENTS_MODERATION_OPTIONS,
   COMMENTS_ORDER_OPTIONS,
+  variants,
 } from '../constants';
 import classNames from 'classnames';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -50,7 +52,7 @@ const SelectStep3 = ({ Context }: { Context: Context<ContextProps> }) => {
   /**
    * Context Store
    */
-  const { step3Answered, setStep3Answered, stepData, setStepData } =
+  const { step3Answered, setStep3Answered, step3Errored, setStep3Errored, stepData, setStepData } =
     useContext<ContextProps>(Context);
 
   /**
@@ -64,11 +66,12 @@ const SelectStep3 = ({ Context }: { Context: Context<ContextProps> }) => {
     getValues,
     formState: { errors, isValid },
   } = useForm({
-    mode: 'onChange',
-    reValidateMode: 'onChange',
     defaultValues: {
       ...stepData?.step3?.state,
     },
+    mode: 'onChange',
+    reValidateMode: 'onChange',
+    shouldFocusError: true
   });
 
   /**
@@ -105,14 +108,19 @@ const SelectStep3 = ({ Context }: { Context: Context<ContextProps> }) => {
   useEffect(() => {
     if (isValid) {
       setStep3Answered(true);
+      setStep3Errored(false);
+    } else {
+      setStep3Answered(false);
+      setStep3Errored(true);
     }
   }, [formFields, isValid, setStep3Answered]);
 
   const storeData = () => {
     setStepData({
       step3: {
-        solved: true,
+        solved: isValid,
         state: getValues(),
+        error: errors !== null
       },
     });
   };
@@ -136,6 +144,7 @@ const SelectStep3 = ({ Context }: { Context: Context<ContextProps> }) => {
         <Controller
           name="comments_moderation"
           control={control}
+          rules={{ required: true }}
           render={({ field }) => (
             <RadioGroup {...field}>
               {COMMENTS_MODERATION_OPTIONS.map((commentsOption) => (
@@ -147,16 +156,16 @@ const SelectStep3 = ({ Context }: { Context: Context<ContextProps> }) => {
                     <div className="flex mb-2.5 items-center cursor-pointer">
                       <div
                         className={classNames(
-                          'rounded-full w-4 h-4 mr-2.5 border border-stone-700 dark:border-gray-200',
                           {
                             'flex items-center justify-center': checked,
-                          }
+                          },
+                          "rounded-full w-4 h-4 mr-2.5 border border-blue-700 dark:border-gray-200",
                         )}
                       >
                         <AnimatePresence>
                           {checked && (
                             <motion.div
-                              className="flex rounded w-2 h-2 bg-stone-700 dark:bg-gray-200"
+                              className="flex rounded w-2 h-2 bg-blue-700 dark:bg-gray-200"
                               initial={{ opacity: 0 }}
                               animate={{ opacity: 1 }}
                             />
@@ -173,8 +182,20 @@ const SelectStep3 = ({ Context }: { Context: Context<ContextProps> }) => {
             </RadioGroup>
           )}
         />
+        <motion.div
+          initial={'hidden'}
+          variants={variants}
+          animate={errors.comments_moderation ? `visible` : `hidden`}
+        >
+          <motion.div variants={childVariants} className="min-h-[24px]">
+            <span className="text-red-500">
+              {errors.comments_moderation?.type === 'required' && (
+                <motion.div variants={childVariants} role="alert">Comments moderation is required.</motion.div>
+              )}
+            </span>
+          </motion.div>
+        </motion.div>
       </div>
-
       <div className="mb-5 relative">
         <label
           htmlFor="item-name"
@@ -192,7 +213,7 @@ const SelectStep3 = ({ Context }: { Context: Context<ContextProps> }) => {
                   {selectedOrderComments?.title}
                   <ArrowDownSIcon className="h-4 w-4 fill-stone-700 dark:fill-gray-200 flex-shrink-0" />
                 </Listbox.Button>
-                <Listbox.Options className="absolute  z-10 p-2 w-full right-0 origin-top-right rounded-lg text-gray-500 dark:text-gray-500 bg-white dark:bg-neutral-800 overflow-hidden shadow-lg">
+                <Listbox.Options className="absolute z-10 p-2 w-full right-0 origin-top-right rounded-lg text-gray-500 dark:text-gray-500 bg-white dark:bg-neutral-800 overflow-hidden shadow-lg">
                   {COMMENTS_ORDER_OPTIONS.map((option) => (
                     <Listbox.Option
                       key={option.value}
@@ -200,7 +221,14 @@ const SelectStep3 = ({ Context }: { Context: Context<ContextProps> }) => {
                       value={option.value}
                     >
                       {({ active, selected }) => (
-                        <li className="cursor-pointer focus:outline-none text-sm flex items-center p-2 transition duration-150 ease-in-out text-neutral-700 hover:bg-neutral-100 dark:text-neutral-100 dark:hover:bg-neutral-700">
+                        <li
+                          className={classNames(
+                            {
+                              'bg-neutral-200 dark:bg-neutral-800': selected || active
+                            },
+                            "cursor-pointer focus:outline-none text-sm flex items-center p-2 transition duration-150 ease-in-out text-neutral-700 hover:bg-neutral-100 dark:text-neutral-100 dark:hover:bg-neutral-700"
+                          )}
+                        >
                           {option.title}
                         </li>
                       )}
@@ -212,7 +240,6 @@ const SelectStep3 = ({ Context }: { Context: Context<ContextProps> }) => {
           )}
         />
       </div>
-
       <div className="mb-5 relative">
         <label
           htmlFor="item-name"
@@ -231,14 +258,22 @@ const SelectStep3 = ({ Context }: { Context: Context<ContextProps> }) => {
               onBlur={field.onBlur}
               checked={field.value}
               onChange={(value: boolean) => setValue('allow_ratings', value)}
-              className={`${
-                formFields.allow_ratings ? 'bg-blue-600' : 'bg-gray-600'
-              } relative inline-flex h-6 w-11 items-center rounded-full`}
+              className={classNames(
+                {
+                  'bg-blue-600': formFields.allow_ratings,
+                  'bg-gray-600': !formFields.allow_ratings,
+                },
+                "relative inline-flex h-6 w-11 items-center rounded-full"
+              )}
             >
               <span
-                className={`${
-                  formFields.allow_ratings ? 'translate-x-6' : 'translate-x-1'
-                } inline-block h-4 w-4 transform rounded-full bg-white`}
+                className={classNames(
+                  {
+                    'translate-x-6': formFields.allow_ratings,
+                    'translate-x-1': !formFields.allow_ratings,
+                  },
+                  "inline-block h-4 w-4 transform rounded-full bg-white"
+                )}
               />
             </Switch>
           )}
@@ -255,8 +290,22 @@ const SelectStep3 = ({ Context }: { Context: Context<ContextProps> }) => {
           name="tags"
           control={control}
           defaultValue={formFields.tags}
+          rules={{ required: true }}
           render={({ field }) => <TagsSelect {...field} />}
         />
+        <motion.div
+          initial={'hidden'}
+          variants={variants}
+          animate={errors.tags ? `visible` : `hidden`}
+        >
+          <motion.div variants={childVariants} className="min-h-[24px]">
+            <span className="text-red-500 ">
+              {errors.tags?.type === 'required' && (
+                <motion.div variants={childVariants} role="alert">At least one tag is required.</motion.div>
+              )}
+            </span>
+          </motion.div>
+        </motion.div>
       </div>
     </div>
   );

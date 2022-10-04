@@ -1,13 +1,8 @@
-import {
-  useEffect,
-  useContext,
-  Suspense,
-  lazy,
-  useLayoutEffect,
-  Context,
-} from 'react';
-import { Controller, useForm } from 'react-hook-form';
 import { motion } from 'framer-motion';
+import { useEffect, useContext, lazy, useLayoutEffect, Context } from 'react';
+import { Controller, useForm } from 'react-hook-form';
+import { childVariants, variants } from '../constants';
+// import { motion } from 'framer-motion';
 import { ContextProps } from '../context';
 
 const SelectBlockchain = lazy(
@@ -17,16 +12,20 @@ const SelectCollection = lazy(
   () => import('../../components/selectCollection')
 );
 
-const CounterInput = lazy(
-  () => import('../../components/counterInput')
-);
+const CounterInput = lazy(() => import('../../components/counterInput'));
 
 const SelectStep2 = ({ Context }: { Context: Context<ContextProps> }) => {
   /**
    * Context Store
    */
-  const { step2Answered, setStep2Answered, stepData, setStepData } =
-    useContext<ContextProps>(Context);
+  const {
+    step2Answered,
+    setStep2Answered,
+    step2Errored,
+    setStep2Errored,
+    stepData,
+    setStepData,
+  } = useContext<ContextProps>(Context);
 
   /**
    * React-Hook-Form hook
@@ -40,11 +39,12 @@ const SelectStep2 = ({ Context }: { Context: Context<ContextProps> }) => {
   } = useForm({
     defaultValues: {
       blockchain: stepData?.step2?.state?.blockchain || 'dfinity',
-      collection_token: stepData?.step2?.state?.collection_token || 'none',
+      collection_token: stepData?.step2?.state?.collection_token,
       supply_units: stepData?.step2?.state?.supply_units || 1,
     },
     mode: 'onChange',
     reValidateMode: 'onChange',
+    shouldFocusError: true,
   });
 
   const formFields = watch();
@@ -52,6 +52,12 @@ const SelectStep2 = ({ Context }: { Context: Context<ContextProps> }) => {
   /**
    * Load data from context store on component mount and save data to context store on component unmount
    */
+  useLayoutEffect(() => {
+    return () => {
+      storeData();
+    };
+  }, []);
+
   useEffect(() => {
     if (isValid) {
       setStep2Answered(true);
@@ -65,19 +71,24 @@ const SelectStep2 = ({ Context }: { Context: Context<ContextProps> }) => {
   /**
    * Monitor User Input
    */
-  // useEffect(() => {
-  //   console.log(isValid);
-  //   if (isValid) {
-  //     setStep2Answered(true);
-  //   }
-  // }, [formFields, isValid, setStep2Answered]);
+  useEffect(() => {
+    console.log(isValid);
+    if (isValid) {
+      setStep2Answered(true);
+      setStep2Errored(false);
+    } else {
+      setStep2Answered(false);
+      setStep2Errored(true);
+    }
+  }, [formFields, isValid, setStep2Answered]);
 
   const storeData = () => {
     if (isValid) {
       setStepData({
         step2: {
-          solved: true,
+          solved: isValid,
           state: getValues(),
+          error: errors !== null,
         },
       });
     }
@@ -89,7 +100,6 @@ const SelectStep2 = ({ Context }: { Context: Context<ContextProps> }) => {
     <div className="flex flex-col">
       <h4 className="font-bold">Assosiation</h4>
       <div className="mb-5 mt-1 relative">
-        
         <div className="flex justify-center">
           <div className="flex flex-col">
             <label
@@ -102,26 +112,39 @@ const SelectStep2 = ({ Context }: { Context: Context<ContextProps> }) => {
               name="supply_units"
               control={control}
               defaultValue={formFields.supply_units}
+              rules={{ required: true, min: 1, max: 100 }}
               render={({ field }) => (
-                <CounterInput {...field} current={field.value} />
+                <CounterInput
+                  {...field}
+                  current={field.value}
+                  hasError={errors.supply_units as unknown as boolean}
+                />
               )}
             />
           </div>
         </div>
-        <span className="text-red-500">
-          {errors.supply_units?.type === 'required' && (
-            <span role="alert">Units for supply is required.</span>
-          )}
-          {errors.supply_units?.type === 'min' && (
-            <span role="alert">Minimum 1 unit.</span>
-          )}
-        </span>
+        <motion.div
+          initial={'hidden'}
+          variants={variants}
+          animate={errors.supply_units ? `visible` : `hidden`}
+        >
+          <motion.div variants={childVariants} className="min-h-[24px]">
+            <span className="text-red-500 ">
+              {errors.supply_units?.type === 'required' && (
+                <motion.div variants={childVariants} role="alert">Name is required.</motion.div>
+              )}
+              {errors.supply_units?.type === 'min' && (
+                <motion.div variants={childVariants} role="alert">Minimum 1 unit.</motion.div>
+              )}
+              {errors.supply_units?.type === 'max' && (
+                <motion.div variants={childVariants} role="alert">Maximum 100 unit.</motion.div>
+              )}
+            </span>
+          </motion.div>
+        </motion.div>
       </div>
       <div className="my-3">
-        <label
-          htmlFor=""
-          className="text-sm font-medium"
-        >
+        <label htmlFor="" className="text-sm font-medium">
           Choose Blockchain
         </label>
         <p className="text-xs font-medium">
@@ -136,10 +159,7 @@ const SelectStep2 = ({ Context }: { Context: Context<ContextProps> }) => {
           )}
         />
       </div>
-      <label
-        htmlFor=""
-        className="text-sm font-bold"
-      >
+      <label htmlFor="" className="text-sm font-bold">
         Choose Collection
       </label>
       <p className="text-xs font-medium">
@@ -149,10 +169,24 @@ const SelectStep2 = ({ Context }: { Context: Context<ContextProps> }) => {
         name="collection_token"
         control={control}
         defaultValue={formFields.collection_token}
+        rules={{ required: true }}
         render={({ field }) => (
-            <SelectCollection {...field} current={field.value} />
+          <SelectCollection {...field} current={field.value} />
         )}
       />
+      <motion.div
+        initial={'hidden'}
+        variants={variants}
+        animate={errors.collection_token ? `visible` : `hidden`}
+      >
+        <motion.div variants={childVariants} className="min-h-[24px]">
+          <span className="text-red-500">
+            {errors.collection_token?.type === 'required' && (
+              <motion.div variants={childVariants} role="alert">Collection choose is required.</motion.div>
+            )}
+          </span>
+        </motion.div>
+      </motion.div>
     </div>
   );
 };

@@ -30,8 +30,9 @@ export interface Step3Props {
 }
 
 export interface StepData<T> {
-  solved: boolean;
   state: T;
+  solved: boolean;
+  error: boolean;
 }
 
 export interface AssetProps {
@@ -79,6 +80,12 @@ export interface ContextProps {
   step1Answered: boolean;
   step2Answered: boolean;
   step3Answered: boolean;
+  setStep1Errored: (step1Errored: boolean) => void;
+  setStep2Errored: (step2Errored: boolean) => void;
+  setStep3Errored: (step3Errored: boolean) => void;
+  step1Errored: boolean;
+  step2Errored: boolean;
+  step3Errored: boolean;
   finished: boolean;
   setFinished: (finished: boolean) => void;
 }

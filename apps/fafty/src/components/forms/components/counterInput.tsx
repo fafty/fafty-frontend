@@ -4,9 +4,10 @@ import { useEffect, useState } from 'react';
 
 interface Props {
   current: number;
+  hasError?: boolean;
   onChange: (value: number) => void;
 }
-const CounterInput = ({ current, onChange }: Props): JSX.Element => {
+const CounterInput = ({ current, onChange, hasError }: Props): JSX.Element => {
 
   const [value, setValue] = useState(current);
 
@@ -24,7 +25,7 @@ const CounterInput = ({ current, onChange }: Props): JSX.Element => {
           className="flex items-center justify-center text-blue-600 hover:text-white hover:bg-blue-600 h-full w-20 rounded-l cursor-pointer decoration-none"
         >
           <div className="m-auto text-2xl align-center justify-center font-bold">
-            <MinusIcon className="h6 w-6" />
+            <MinusIcon className="h6 w-6" strokeWidth={2} />
           </div>
         </button>
         <input
@@ -33,8 +34,9 @@ const CounterInput = ({ current, onChange }: Props): JSX.Element => {
           className="border-transparent focus:border-transparent focus:ring-0 focus:ring-offset-0 outline-none text-blue-600 focus:outline-none text-center w-full font-semibold text-xl  dark:bg-neutral-900/90 focus:text-blue-800 md:text-basecursor-default flex items-center decoration-none"
           name="custom-input-number"
           value={value}
+          {...(hasError && { 'aria-invalid': true })}
           onChange={(e) => setValue(parseInt(e.target.value))}
-          min="0"
+          min="1"
         />
         <button
           onClick={() => setValue(value + 1)}
@@ -43,7 +45,7 @@ const CounterInput = ({ current, onChange }: Props): JSX.Element => {
           className="flex items-center justify-center text-blue-600 hover:text-white hover:bg-blue-600 h-full w-20 rounded-r cursor-pointer decoration-none"
         >
           <div className="text-2xl font-blod">
-            <PlusIcon className="h-6 w-6" />
+            <PlusIcon className="h-6 w-6" strokeWidth={2} />
           </div>
         </button>
       </div>

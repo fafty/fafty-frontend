@@ -14,7 +14,7 @@ import dynamic from 'next/dynamic';
 import { AnimatePresence, motion } from 'framer-motion';
 import classNames from 'classnames';
 import api from '../../../api';
-import { CheckIcon } from '@heroicons/react/24/outline';
+import { CheckIcon, ExclamationCircleIcon } from '@heroicons/react/24/outline';
 import { ReactComponent as CompleteIlustation } from '../../../assets/complete.svg';
 import Link from 'next/link';
 
@@ -68,6 +68,9 @@ const SelectStepper = (): JSX.Element => {
     step1Answered,
     step2Answered,
     step3Answered,
+    step1Errored,
+    step2Errored,
+    step3Errored,
     finished,
     stepData: data,
     setStepData,
@@ -186,13 +189,14 @@ const SelectStepper = (): JSX.Element => {
         setStepData({
           asset: currentFile,
           step1: {
-            solved: false,
             state: {
               name: formattedFileName,
               description: null,
               unlockable_content: null,
               adult_content: false,
             },
+            solved: false,
+            error: false,
           },
         });
       }
@@ -206,35 +210,40 @@ const SelectStepper = (): JSX.Element => {
     completed?: boolean;
     optional?: boolean;
     skipped?: boolean;
+    error?: boolean;
   }
 
   const StepsList = [
     {
       name: 'Informations',
       active: activeStep === 0,
-      completed: step1Answered,
+      completed: data?.step1.solved,
       optional: false,
       skipped: isStepSkipped(0),
+      error: data?.step1.error,
     },
     {
       name: 'Assosiation',
       active: activeStep === 1,
-      completed: step2Answered,
+      completed: data?.step1.solved,
       optional: true,
       skipped: isStepSkipped(1),
+      error: data?.step2.error,
     },
     {
       name: 'Add-ons',
       active: activeStep === 2,
-      completed: step3Answered,
+      completed: data?.step1.solved,
       optional: false,
       skipped: isStepSkipped(2),
+      error: data?.step3.error,
     },
   ];
 
   const StepsBar = ({ steps }: { steps: StepbarProps[] }) => {
     return (
       <div className="w-full pb-4">
+        {/* {JSON.stringify(data)} */}
         <div className="flex justify-center w-full">
           {steps.map((step, index) => (
             <div className="w-1/4" key={index}>
@@ -265,7 +274,7 @@ const SelectStepper = (): JSX.Element => {
                             'bg-blue-600': activeStep >= index,
                             'bg-gray-200': activeStep < index,
                           },
-                          'w-full h-[2px] rounded'
+                          "w-full h-[2px] rounded"
                         )}
                       ></div>
                     </div>
@@ -273,10 +282,22 @@ const SelectStepper = (): JSX.Element => {
                 )}
                 <div
                   onClick={() => setActiveStep(index)}
-                  className="w-4 h-4 mx-auto cursor-pointer bg-blue-700 rounded-full text-lg text-white flex items-center"
+                  className={classNames(
+                    {
+                      'bg-blue-700': !step.error,
+                      'bg-red-600': step.error
+                    },
+                    "w-6 h-6 mx-auto cursor-pointer text-white rounded-full text-lg  flex items-center"
+                  )}
                 >
                   {step.completed && (
-                    <CheckIcon strokeWidth={3} className="w-3 h-3 mx-auto" />
+                    <CheckIcon strokeWidth={2} className="w-4 h-4 mx-auto" />
+                  )}
+                  {step.error && (
+                    <ExclamationCircleIcon
+                      strokeWidth={2}
+                      className="w-5 h-5 mx-auto"
+                    />
                   )}
                 </div>
               </div>

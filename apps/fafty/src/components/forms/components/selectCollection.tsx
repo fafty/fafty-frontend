@@ -52,7 +52,7 @@ const SelectCollection = ({ current, onChange }: Props): JSX.Element => {
   const [loading, setLoading] = useState(false);
   const [isError, setError] = useState(false);
   const defaultSelected = data && data.find((b) => b.token === current);
-  const [selected, setSelected] = useState(defaultSelected?.token || 'none');
+  const [selected, setSelected] = useState(defaultSelected?.token || '');
   const [previousSelected, setPreviousSelected] = useState(
     defaultSelected?.token || null
   );
@@ -81,7 +81,6 @@ const SelectCollection = ({ current, onChange }: Props): JSX.Element => {
   }, 100);
 
   useEffect(() => {
-    console.log('fire useeefect');
     // Make sure element supports addEventListener
     // On
     const element = isClient ? window : undefined;
@@ -137,7 +136,7 @@ const SelectCollection = ({ current, onChange }: Props): JSX.Element => {
   useEffect(() => {
     // console.log('data', data);
     const defaultSelected = data && data.find((b) => b.token === current);
-    setSelected(defaultSelected?.token || 'none');
+    setSelected(defaultSelected?.token || '');
     // console.log('selected', selected);
   }, [current, loading]);
 
