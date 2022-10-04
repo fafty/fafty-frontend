@@ -1,5 +1,7 @@
 import api from '../../index';
 import {
+  GetCollectionNftsBySlugParams,
+  GetCollectionNftsBySlugResponse,
   GetCollectionParams,
   GetCollectionResponse,
   GetCollectionsResponse,
@@ -21,6 +23,14 @@ export const getCollection = async (
   params?: GetCollectionParams
 ): Promise<GetCollectionResponse> => {
   const { data } = await api.get(`/collection/${params?.slug}`);
+
+  return data;
+};
+
+export const getCollectionNftsBySlug = async (
+  params?: GetCollectionNftsBySlugParams
+): Promise<GetCollectionNftsBySlugResponse> => {
+  const { data } = await api.get(`/collection/${params?.slug}/nfts`);
 
   return data;
 };

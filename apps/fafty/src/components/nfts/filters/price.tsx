@@ -1,7 +1,7 @@
 import { Listbox } from '@headlessui/react';
 import { ArrowDownSIcon } from '@remixicons/react/line';
 import { Field } from 'react-hook-form';
-import { ChangeEvent, useState } from 'react';
+import { ChangeEvent, useEffect, useState } from 'react';
 
 const CURRENCY_OPTIONS = [
   {
@@ -23,11 +23,19 @@ export type PriceFilterProps = {
 
 export const Price = ({ value, onChange }: PriceFilterProps) => {
   const [priceLocalValue, setPriceLocalValue] = useState<PriceFiltersValue>({
-    currency: '',
     from: '',
     to: '',
     ...value,
+    currency: 'icp',
   });
+
+  useEffect(() => {
+    setPriceLocalValue((prev) => ({
+      ...prev,
+      from: value?.from ?? '',
+      to: value?.to ?? '',
+    }));
+  }, [value?.from, value?.to]);
 
   const onChangePriceLocalValue =
     (key: string) => (changeValue: ChangeEvent<HTMLInputElement>) => {
@@ -54,6 +62,7 @@ export const Price = ({ value, onChange }: PriceFilterProps) => {
       <Listbox
         value={priceLocalValue.currency}
         onChange={onChangeCurrency}
+        disabled
         as="div"
       >
         <div className="relative mt-1 w-full flex">

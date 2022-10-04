@@ -1,10 +1,12 @@
 import { Header, Meta } from '@fafty-frontend/shared/ui';
-import { ReactNode, SVGProps, useEffect, useMemo, useState } from 'react';
+import { ReactNode, SVGProps, useMemo, useState } from 'react';
 import { useAuth } from '../utils/auth';
-import { useRouter } from 'next/router';
 import Link from 'next/link';
-import classNames from 'classnames';
-import { HeartIcon, QuestionMarkCircleIcon, BarsArrowUpIcon } from '@heroicons/react/24/outline';
+import {
+  HeartIcon,
+  QuestionMarkCircleIcon,
+  BarsArrowUpIcon,
+} from '@heroicons/react/24/outline';
 type Props = {
   children: ReactNode;
   title: string;
@@ -13,20 +15,7 @@ type Props = {
 
 const AccountLayout = ({ children, title, description }: Props) => {
   const [collapseShow, setCollapseShow] = useState('hidden');
-  const router = useRouter();
   const auth = useAuth();
-
-  const onAuth = (key: string) => {
-    if (key === 'ic') {
-      auth.useInternetIdentity();
-    }
-  };
-
-  useEffect(() => {
-    if (!auth.principal && auth.wallet) {
-      auth.wallet?.logIn();
-    }
-  }, [auth.wallet]);
 
   const balance = useMemo(() => {
     return Number(auth.balance) / Math.pow(10, 8) || 0;
@@ -39,19 +28,15 @@ const AccountLayout = ({ children, title, description }: Props) => {
   }
 
   const MenuItem = (props: MenuItemProps): JSX.Element => {
-    const {
-      children,
-      path,
-      icon: Icon,
-    } = props;
+    const { children, path, icon: Icon } = props;
 
     return (
       <Link href={path}>
-        <a
-          className="cursor-pointer focus:outline-none flex items-center rounded-lg p-2 transition duration-150 ease-in-out text-neutral-700 hover:bg-neutral-100 dark:text-neutral-100 dark:hover:bg-neutral-700"
-        >
+        <a className="cursor-pointer focus:outline-none flex items-center rounded-lg p-2 transition duration-150 ease-in-out text-neutral-700 hover:bg-neutral-100 dark:text-neutral-100 dark:hover:bg-neutral-700">
           <div className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-full px-1 py-1 focus:outline-none bg-neutral-200 text-neutral-700 dark:text-neutral-200 dark:fill-neutral-200 dark:bg-neutral-700">
-            {Icon && <Icon className="h-6 w-6" strokeWidth="2" aria-hidden="true" />}
+            {Icon && (
+              <Icon className="h-6 w-6" strokeWidth="2" aria-hidden="true" />
+            )}
           </div>
           <div className="ml-4">
             <p className="text-sm font-medium">{children}</p>
@@ -88,7 +73,6 @@ const AccountLayout = ({ children, title, description }: Props) => {
       <Meta title={title} description={description} />
       <Header
         onLogOut={() => auth.wallet?.logOut?.()}
-        onAuth={onAuth}
         balance={balance}
         isAuth={!!auth.principal?.toString()}
       />
@@ -185,10 +169,7 @@ const AccountLayout = ({ children, title, description }: Props) => {
                     </a>
                   </Link>
                 </li> */}
-                <MenuItem
-                  path="/account/assets"
-                  icon={QuestionMarkCircleIcon}
-                >
+                <MenuItem path="/account/assets" icon={QuestionMarkCircleIcon}>
                   Assets
                 </MenuItem>
                 <MenuItem
@@ -197,28 +178,16 @@ const AccountLayout = ({ children, title, description }: Props) => {
                 >
                   Collections
                 </MenuItem>
-                <MenuItem
-                  path="/account/bundles"
-                  icon={QuestionMarkCircleIcon}
-                >
+                <MenuItem path="/account/bundles" icon={QuestionMarkCircleIcon}>
                   Bundles
                 </MenuItem>
-                <MenuItem
-                  path="/account/Bids"
-                  icon={BarsArrowUpIcon}
-                >
+                <MenuItem path="/account/Bids" icon={BarsArrowUpIcon}>
                   Bids
                 </MenuItem>
-                <MenuItem
-                  path="/account/offers"
-                  icon={QuestionMarkCircleIcon}
-                >
+                <MenuItem path="/account/offers" icon={QuestionMarkCircleIcon}>
                   Offers
                 </MenuItem>
-                <MenuItem
-                  path="/account/favorites"
-                  icon={HeartIcon}
-                >
+                <MenuItem path="/account/favorites" icon={HeartIcon}>
                   Favorites
                 </MenuItem>
                 {/* <LinkTo name="Collections" path="/account/collections" /> */}

@@ -1,3 +1,5 @@
+import { GetNftsResponse } from '../nfts/types';
+
 type Paginate = {
   count: number;
   limit: number;
@@ -29,6 +31,16 @@ export type GetCollectionsResponse = {
 
 export type GetCollectionParams = {
   slug: string;
+};
+
+export type GetCollectionNftsBySlugParams = {
+  slug: string;
+};
+
+export type GetCollectionNftsBySlugResponse = {
+  nfts: GetNftsResponse;
+  slug: string;
+  token: string;
 };
 
 export type GetCollectionResponse = {

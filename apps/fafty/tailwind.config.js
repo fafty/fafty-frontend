@@ -19,7 +19,10 @@ module.exports = {
         7: '1.75rem',
       },
       zIndex: {
-        1: 1
+        1: 1,
+      },
+      gridTemplateColumns: {
+        placeholders_nfts_desktop: 'repeat(auto-fill, minmax(207px, 1fr))',
       },
       keyframes: {
         'notification-enter': {

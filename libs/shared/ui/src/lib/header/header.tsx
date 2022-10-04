@@ -48,17 +48,23 @@ const createLinks = [
 type Props = {
   balance: number;
   isAuth: boolean;
-  onAuth: (key: string) => void;
-  onCreate: (key: string) => void;
+  onAuth?: () => void;
+  onCreate?: (key: string) => void;
   onLogOut: () => void;
 };
 
-const Header = ({ onAuth, onCreate, balance, isAuth, onLogOut }: Props): JSX.Element => {
+const Header = ({
+  onAuth,
+  onCreate,
+  balance,
+  isAuth,
+  onLogOut,
+}: Props): JSX.Element => {
   return (
-    // border-b border-gray-100 dark:border-neutral-700 
+    // border-b border-gray-100 dark:border-neutral-700
     <header className="header sticky top-0 z-50 backdrop-blur bg-white/90 dark:bg-neutral-800/90 shadow-md transition duration-300">
       <Popover>
-      {/* container  */}
+        {/* container  */}
         <div className="mx-auto px-8">
           <div className="flex justify-between items-center py-4 md:justify-start align-center">
             <div className="flex justify-start mr-auto">
@@ -84,7 +90,11 @@ const Header = ({ onAuth, onCreate, balance, isAuth, onLogOut }: Props): JSX.Ele
             <div className="-mr-2 -my-2 md:hidden">
               <Popover.Button className="mb-1 w-full font-medium bg-gray-600 text-gray-100 rounded-full hover:bg-gray-500 px-2 py-2 focus:outline-none dark:bg-neutral-700 dark:hover:bg-neutral-600">
                 <span className="sr-only">Open menu</span>
-                <Bars3Icon className="h-6 w-6" strokeWidth="2" aria-hidden="true" />
+                <Bars3Icon
+                  className="h-6 w-6"
+                  strokeWidth="2"
+                  aria-hidden="true"
+                />
               </Popover.Button>
             </div>
             <Popover.Group
@@ -101,14 +111,13 @@ const Header = ({ onAuth, onCreate, balance, isAuth, onLogOut }: Props): JSX.Ele
                   Nfts
                 </a>
               </Link>
-              
             </Popover.Group>
             {!isAuth && (
               <div className="flex items-center justify-end">
                 <button
                   type="button"
                   className="relative inline-block text-center bg-blue-600 border border-transparent rounded-md py-2 px-6 font-medium text-white hover:bg-blue-700"
-                  onClick={onAuth}
+                  onClick={() => onAuth?.()}
                 >
                   Login
                 </button>
@@ -148,27 +157,27 @@ const Header = ({ onAuth, onCreate, balance, isAuth, onLogOut }: Props): JSX.Ele
                           <div className="p-2 rounded-lg drop-shadow-lg shadow-lg ring-1 ring-black ring-opacity-5 bg-white dark:bg-neutral-800 overflow-hidden">
                             <div className="relative grid gap-1 p-1">
                               {createLinks.map((item) => (
-                                  <button
-                                    key={item.key}
-                                    type="button"
-                                    className="focus:outline-none flex items-center rounded-lg p-2 transition duration-150 ease-in-out text-neutral-700 hover:bg-neutral-100 dark:text-neutral-100 dark:hover:bg-neutral-700"
-                                    onClick={()=> onCreate(item.key)}
-                                    >
-                                    <div className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-full px-1 py-1 focus:outline-none bg-neutral-200 text-neutral-700 dark:text-neutral-200 dark:fill-neutral-200 dark:bg-neutral-700">
-                                      <item.icon
-                                        className="flex-shrink-0 h-6 w-6 fill-slate-900 dark:fill-slate-50"
-                                        aria-hidden="true"
-                                      />
-                                    </div>
-                                    <div className="text-left">
-                                      <p className="ml-4 text-base font-medium">
-                                        {item.name}
-                                      </p>
-                                      <p className="ml-4 text-sm text-gray-400">
-                                        {item.description}
-                                      </p>
-                                    </div>
-                                  </button>
+                                <button
+                                  key={item.key}
+                                  type="button"
+                                  className="focus:outline-none flex items-center rounded-lg p-2 transition duration-150 ease-in-out text-neutral-700 hover:bg-neutral-100 dark:text-neutral-100 dark:hover:bg-neutral-700"
+                                  onClick={() => onCreate?.(item.key)}
+                                >
+                                  <div className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-full px-1 py-1 focus:outline-none bg-neutral-200 text-neutral-700 dark:text-neutral-200 dark:fill-neutral-200 dark:bg-neutral-700">
+                                    <item.icon
+                                      className="flex-shrink-0 h-6 w-6 fill-slate-900 dark:fill-slate-50"
+                                      aria-hidden="true"
+                                    />
+                                  </div>
+                                  <div className="text-left">
+                                    <p className="ml-4 text-base font-medium">
+                                      {item.name}
+                                    </p>
+                                    <p className="ml-4 text-sm text-gray-400">
+                                      {item.description}
+                                    </p>
+                                  </div>
+                                </button>
                               ))}
                             </div>
                           </div>

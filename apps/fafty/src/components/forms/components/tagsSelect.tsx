@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { useAsync } from '../../../api/useAsync';
 import { getPopularTags, getTagsBySearch } from '../../../api/callbacks/tags';
 import { GetSearchTagsResponse, Tag } from '../../../api/callbacks/tags/types';
@@ -11,7 +11,7 @@ type Props = {
 };
 
 export const TagsSelect = ({ value, onChange }: Props) => {
-  const inputRef = useRef(null);
+  const inputRef = useRef<HTMLInputElement>(null);
   const [inputValue, setInputValue] = useState('');
   const [isFocused, setIsFocused] = useState(false);
   const debouncedValue = useDebounce(inputValue, 300);
@@ -52,6 +52,14 @@ export const TagsSelect = ({ value, onChange }: Props) => {
     setIsFocused(false);
   });
 
+  const filteredPopularTags = useMemo(() => {
+    return (
+      popularData?.records?.filter(
+        ({ slug }) => !value?.find((valueTag) => valueTag.slug === slug)
+      ) || []
+    );
+  }, [popularData, value]);
+
   return (
     <div className="flex flex-col">
       <div
@@ -62,32 +70,29 @@ export const TagsSelect = ({ value, onChange }: Props) => {
           }
         )}
       >
-        {!!value.length && (
-          <div className="flex -mb-2.5 flex-wrap">
-            {value.map((tag) => (
+        <div
+          onClick={() => inputRef?.current?.focus?.()}
+          className="flex w-[350px] p-1.5 rounded-md gap-2.5 flex-wrap border border-gray-200 dark:border-neutral-700 cursor-pointer"
+        >
+          {!!value.length &&
+            value.map((tag) => (
               <div
                 onClick={() => onChangeTag(tag)}
                 key={tag.slug}
-                className="bg-blue-600 text-xs px-1 py-1 cursor-pointer flex mt-2.5 mr-2.5"
+                className="bg-blue-600 text-white dark:text-slate-50 text-xs px-1 py-1 cursor-pointer flex"
               >
                 {tag.name}
               </div>
             ))}
-          </div>
-        )}
-        <input
-          ref={inputRef}
-          className={classNames(
-            'border-0 outline-0 w-full bg-transparent text-sm',
-            {
-              'mt-4': !!value.length,
-            }
-          )}
-          value={inputValue}
-          onKeyDown={onKeyDown}
-          onFocus={() => setIsFocused(true)}
-          onChange={(e) => setInputValue(e.target.value)}
-        />
+          <input
+            ref={inputRef}
+            className={classNames('border-0 outline-0 bg-transparent text-sm')}
+            value={inputValue}
+            onKeyDown={onKeyDown}
+            onFocus={() => setIsFocused(true)}
+            onChange={(e) => setInputValue(e.target.value)}
+          />
+        </div>
         {!!searchResult?.records?.length && isFocused && (
           <div className="flex flex-col absolute top-full left-0 right-0 bg-white">
             {searchResult?.records.map((searchRecord) => (
@@ -106,17 +111,17 @@ export const TagsSelect = ({ value, onChange }: Props) => {
           </div>
         )}
       </div>
-      {!!popularData?.records?.length && (
+      {!!filteredPopularTags.length && (
         <div className="flex flex-col">
           <span className="block text-sm font-medium text-gray-700 dark:text-gray-100 mb-3">
             Popular tags
           </span>
-          <div className="flex flex-wrap col-auto -mt-2.5">
-            {popularData?.records?.map((record) => (
+          <div className="flex flex-wrap gap-2.5 col-auto -mt-2.5">
+            {filteredPopularTags?.map((record) => (
               <div
                 key={record.slug}
                 onClick={() => onChangeTag(record)}
-                className="bg-blue-600 text-sm px-4 py-2 cursor-pointer flex mt-2.5 mr-2.5"
+                className="bg-blue-600 text-sm px-4 py-2 cursor-pointer flex text-white dark:text-slate-50"
               >
                 {record.name}
               </div>

@@ -1,16 +1,20 @@
-import { useAsync } from '../../api/useAsync';
 import { useRouter } from 'next/router';
 import { useEffect } from 'react';
+import { useAsync } from '../../api/useAsync';
 import MainLayout from '../../layouts/main';
-import { GetNftsParams, GetNftsResponse } from '../../api/callbacks/nfts/types';
-import { getNfts } from '../../api/callbacks/nfts';
 import { Masonry } from 'masonic';
 import Item from '../../components/item';
-import { getCollection } from '../../api/callbacks/collections';
 import {
+  getCollection,
+  getCollectionNftsBySlug,
+} from '../../api/callbacks/collections';
+import {
+  GetCollectionNftsBySlugParams,
+  GetCollectionNftsBySlugResponse,
   GetCollectionParams,
   GetCollectionResponse,
 } from '../../api/callbacks/collections/types';
+import { NftItem } from '../../api/callbacks/nfts/types';
 
 const Collection = () => {
   const { query, isReady } = useRouter();
@@ -21,14 +25,17 @@ const Collection = () => {
   });
 
   //todo add filters
-  const { data: nftsData } = useAsync<GetNftsResponse, GetNftsParams>({
-    callback: getNfts,
-    withMount: true,
+  const { data: nftsData, call: callNfts } = useAsync<
+    GetCollectionNftsBySlugResponse,
+    GetCollectionNftsBySlugParams
+  >({
+    callback: getCollectionNftsBySlug,
   });
 
   useEffect(() => {
     if (isReady) {
       call({ slug });
+      callNfts({ slug });
     }
   }, [isReady]);
 
@@ -51,11 +58,11 @@ const Collection = () => {
         </div>
         <div className="flex mt-10">
           <div className="items-slider masonic">
-            {nftsData?.records && (
+            {nftsData?.nfts?.records && (
               <Masonry
                 columnGutter={24}
-                items={nftsData.records}
-                render={({ data }) => <Item item={data} />}
+                items={nftsData?.nfts?.records}
+                render={({ data }) => <Item item={data as NftItem} />}
               />
             )}
           </div>
