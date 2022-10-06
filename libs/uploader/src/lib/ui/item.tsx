@@ -1,74 +1,94 @@
 // create functional component for item  with progress indicator
 
-import { XMarkIcon } from '@heroicons/react/24/outline'
-import { useEffect, useRef, useState } from 'react'
-import ProgressIndicator from './progressIndicator'
-import { useOnScreen } from '@fafty-frontend/usehooks'
-import { ProgressProps, ThumbnailProps } from '../uploader'
-import classNames from 'classnames'
-import { FileRemoveReason } from '@uppy/core'
-const Label = ({ item, progress }: { item: any, progress: any }): JSX.Element => {
-
-  const size = (value: number) =>{
-    if (value === 0) return (0 + ' B')
-    const units: string[] = ['B', 'kB', 'MB', 'GB', 'TB']
-    const exponent: number = Math.min(Math.floor(Math.log(value) / Math.log(1000)), units.length - 1)
-    const unit = units[exponent]
-    return (Number(value / Math.pow(1000, exponent)) * 1).toFixed(1) + ' ' + unit
-  }
+import { XMarkIcon } from '@heroicons/react/24/outline';
+import { useEffect, useRef, useState } from 'react';
+import ProgressIndicator from './progressIndicator';
+import { useOnScreen } from '@fafty-frontend/usehooks';
+import { ProgressProps, ThumbnailProps } from '../uploader';
+import classNames from 'classnames';
+import { FileRemoveReason } from '@uppy/core';
+const Label = ({
+  item,
+  progress,
+}: {
+  item: any;
+  progress: any;
+}): JSX.Element => {
+  const size = (value: number) => {
+    if (value === 0) return 0 + ' B';
+    const units: string[] = ['B', 'kB', 'MB', 'GB', 'TB'];
+    const exponent: number = Math.min(
+      Math.floor(Math.log(value) / Math.log(1000)),
+      units.length - 1
+    );
+    const unit = units[exponent];
+    return (
+      (Number(value / Math.pow(1000, exponent)) * 1).toFixed(1) + ' ' + unit
+    );
+  };
 
   const calculateProgress = () => {
-    const { bytesUploaded, bytesTotal } = progress
-    console.log('calculateProgress', progress)
-    return size(bytesUploaded) + '/' + size(bytesTotal)
-  }
+    const { bytesUploaded, bytesTotal } = progress;
+    console.log('calculateProgress', progress);
+    return size(bytesUploaded) + '/' + size(bytesTotal);
+  };
 
   const Define = () => {
     if (item.state === 'uploading') {
-      return calculateProgress()
+      return calculateProgress();
     } else if (item.state === 'complete' && item.type === 'video') {
-      return 'Video'
+      return 'Video';
     } else {
-      return item.state
+      return item.state;
     }
-  }
+  };
 
   return (
     <>
-      { item.state !== 'complete' && (
-          <span className="action">
-            <Define />
-          </span>
-        )
-      }
+      {item.state !== 'complete' && (
+        <span className="action">
+          <Define />
+        </span>
+      )}
     </>
-  )
-}
+  );
+};
 
 const Item = ({
   engine,
   item,
   // previewHeight,
-  onAction
+  onAction,
 }: {
-  engine: any,
-  item: ThumbnailProps,
+  engine: any;
+  item: ThumbnailProps;
   // previewHeight: number,
-  onAction: ({ id, globalId, action }: { id: string, globalId?: string, action: string,  reason: FileRemoveReason }) => void
+  onAction: ({
+    id,
+    globalId,
+    action,
+  }: {
+    id: string;
+    globalId?: string;
+    action: string;
+    reason: FileRemoveReason;
+  }) => void;
 }) => {
-
   const [progress, setProgress] = useState<ProgressProps>({
     percentage: 0,
     bytesUploaded: 0,
-    bytesTotal: 0
-  })
-  const [src, setSrc] = useState<string>()
-  engine.on('upload-progress', (file: { id: string }, progress: ProgressProps) => {
-    item.id === file.id
-    console.log('progress', file.id, progress)
-    setProgress(progress)
-    console.log('item', progress)
-  })
+    bytesTotal: 0,
+  });
+  const [src, setSrc] = useState<string>();
+  engine.on(
+    'upload-progress',
+    (file: { id: string }, progress: ProgressProps) => {
+      item.id === file.id;
+      console.log('progress', file.id, progress);
+      setProgress(progress);
+      console.log('item', progress);
+    }
+  );
 
   const assetsVideoRef: any = useRef<HTMLVideoElement>();
   // const onScreen: boolean = useOnScreen<HTMLVideoElement>(assetsVideoRef, '-10px');
@@ -88,57 +108,69 @@ const Item = ({
   // }, [])
 
   useEffect(() => {
-    const file = engine.getFile(item.id)
-    setSrc(file.preview)
-  }, [])
-
+    const file = engine.getFile(item.id);
+    setSrc(file.preview);
+  }, []);
 
   return (
-    <>
-      <div
-        className={
-          classNames(
-            'attachment-preview image',
-            {
-              // 'uppy-DashboardItem is-inprogress': item.progress.percentage > 0,
-              'error': item.state === 'error',
-              'complete': item.state === 'complete'
-            }
-          )
-        }
-        // style={`height: ${previewHeight}px;`}
-      >
-        <div className="attachment-wrap">
-          <Label item={item} progress={progress} />
-          <button
-            type="button"
-            className="delete"
-            title="Remove"
-            onClick={() => onAction({ id: item.id, globalId: item.id, action: 'remove', reason: 'removed-by-user' })}
-          >
-            <XMarkIcon className="h-4 w-4" strokeWidth="2" aria-hidden="true" />
-          </button>
-          { item.state !== 'complete' && <ProgressIndicator id={ item.id } state={ item.state as string } percentage={ progress.percentage } onAction={ onAction } /> }
+    <div
+      className={classNames(
+        {
+          error: item.state === 'error',
+          complete: item.state === 'complete',
+        },
+        'attachment-preview image'
+      )}
+    >
+      <div className="attachment-wrap">
+        <Label item={item} progress={progress} />
+        <button
+          type="button"
+          title="Remove"
+          onClick={() =>
+            onAction({
+              id: item.id,
+              globalId: item.id,
+              action: 'remove',
+              reason: 'removed-by-user',
+            })
+          }
+          className="delete hidden absolute z-1 top-2 right-2 p-1 m-1 bg-gray-600 text-gray-100 rounded-full hover:bg-gray-500 focus:outline-none dark:bg-neutral-700 dark:hover:bg-neutral-600"
+        >
+          <span className="sr-only">Close menu</span>
+          <XMarkIcon
+            className="h-4 w-4"
+            strokeWidth="2"
+            width={16}
+            height={16}
+            aria-hidden="true"
+          />
+        </button>
+        {item.state !== 'complete' && (
+          <ProgressIndicator
+            id={item.id}
+            state={item.state as string}
+            percentage={progress.percentage}
+            onAction={onAction}
+          />
+        )}
 
-          { item.type ==='image' && (
-            <img src={src} alt="" />
-          )}
-          { item.type ==='video' && (
-            <video
-              id={item.id}
-              src={src}
-              height="260"
-              autoPlay
-              loop
-              muted
-              playsInline
-              ref={assetsVideoRef}
-            />
-          )}
-        </div>
+        {item.type === 'image' && <img src={src} alt="" />}
+        {item.type === 'video' && (
+          <video
+            id={item.id}
+            src={src}
+            height="260"
+            autoPlay
+            loop
+            muted
+            playsInline
+            ref={assetsVideoRef}
+          />
+        )}
       </div>
-    </>
-  )
-}
+    </div>
+  );
+};
 
 export default Item;

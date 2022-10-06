@@ -1,11 +1,12 @@
 import { createContext } from 'react';
 import { Tag } from '../../../api/callbacks/tags/types';
+import { CommentsModerationType, CommentsOrderType, FileProps } from './types';
 
 export interface Step1Props {
   name: string;
   description: null | object;
   unlockable_content: null | object;
-  adult_content: boolean;
+  sensitive_content: boolean;
 }
 
 export interface Step2Props {
@@ -13,14 +14,6 @@ export interface Step2Props {
   supply_units: number;
   collection_token: string;
 }
-
-export type CommentsModerationType =
-  | 'allow_all'
-  | 'automoderation'
-  | 'hold_all'
-  | 'disabled';
-
-export type CommentsOrderType = 'interesting' | 'newest';
 
 export interface Step3Props {
   allow_ratings: boolean;
@@ -35,18 +28,8 @@ export interface StepData<T> {
   error: boolean;
 }
 
-export interface AssetProps {
-  id: string;
-  storage?: string;
-  metadata?: {
-    size: number;
-    filename: string;
-    mime_type: string;
-  };
-}
-
 export interface StepsProps {
-  asset: AssetProps;
+  asset: FileProps;
   step1: StepData<Step1Props>;
   step2: StepData<Step2Props>;
   step3: StepData<Step3Props>;
@@ -57,7 +40,7 @@ export type SetStepDataProps = Record<
   | StepData<Step1Props>
   | StepData<Step2Props>
   | StepData<Step3Props>
-  | AssetProps
+  | FileProps
 >;
 
 export interface ContextProps {
@@ -80,12 +63,6 @@ export interface ContextProps {
   step1Answered: boolean;
   step2Answered: boolean;
   step3Answered: boolean;
-  setStep1Errored: (step1Errored: boolean) => void;
-  setStep2Errored: (step2Errored: boolean) => void;
-  setStep3Errored: (step3Errored: boolean) => void;
-  step1Errored: boolean;
-  step2Errored: boolean;
-  step3Errored: boolean;
   finished: boolean;
   setFinished: (finished: boolean) => void;
 }

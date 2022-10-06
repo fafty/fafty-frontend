@@ -1,11 +1,9 @@
 import React, {
-  Fragment,
   useEffect,
   useState,
   useContext,
   useCallback,
   Suspense,
-  CSSProperties,
   useMemo,
 } from 'react';
 import Context from './context';
@@ -13,54 +11,17 @@ import { UploaderPlaceholder } from '@fafty-frontend/shared/ui';
 import dynamic from 'next/dynamic';
 import { AnimatePresence, motion } from 'framer-motion';
 import classNames from 'classnames';
-import api from '../../../api';
-import { CheckIcon, ExclamationCircleIcon } from '@heroicons/react/24/outline';
 import { ReactComponent as CompleteIlustation } from '../../../assets/complete.svg';
 import Link from 'next/link';
-
-interface ExistingFileProps {
-  id: string;
-  file_id: string;
-  type: string;
-  storage: string;
-  position: number;
-  size: number;
-  filename: string;
-  mime_type: string;
-  src: string;
-}
-
-interface FileProps {
-  id: string;
-  storage: string;
-  metadata: {
-    size: number;
-    filename: string;
-    mime_type: string;
-  };
-}
-
-interface UploaderProps {
-  hasError?: boolean;
-  loading?: boolean;
-  type?: string;
-  existingFiles?: ExistingFileProps[];
-  allowedFileTypes?: string[];
-  style?: CSSProperties;
-  presignEndpoint?: string;
-  onChange: (value: FileProps | FileProps[]) => void;
-  OnGenetatedThumbnail: () => void;
-}
+import { FileProps, Props, UploaderProps } from './types';
+import StepsBar from '../common/stepsBar';
 
 const Uploader = dynamic<UploaderProps>(
   () => import('@fafty-frontend/uploader').then((mod) => mod.Uploader),
-  {
-    ssr: false,
-    loading: () => <UploaderPlaceholder />,
-  }
+  { ssr: false, loading: () => <UploaderPlaceholder /> }
 );
 
-const SelectStepper = (): JSX.Element => {
+const FormAsset = ({ baseData, onSubmit, submiting }: Props): JSX.Element => {
   /*
    * Form Store
    */
@@ -68,9 +29,6 @@ const SelectStepper = (): JSX.Element => {
     step1Answered,
     step2Answered,
     step3Answered,
-    step1Errored,
-    step2Errored,
-    step3Errored,
     finished,
     stepData: data,
     setStepData,
@@ -95,7 +53,6 @@ const SelectStepper = (): JSX.Element => {
       const Component = <View Context={Context} />;
 
       setComponent({ ...components, [StepView]: Component });
-
       setView(Component);
     } else {
       setView(components[StepView as keyof typeof components]);
@@ -128,21 +85,17 @@ const SelectStepper = (): JSX.Element => {
     return skipped.has(step);
   };
 
-  const submitData = useCallback(async () => {
-    try {
-      await api.post('nft', {
-        nft: {
-          asset: data?.asset,
-          ...data?.step1.state,
-          ...data?.step2.state,
-          ...data?.step3.state,
-        },
-      });
-
-      setFinished?.(true);
-    } catch (e) {
-      console.log(e);
-    }
+  const submitData = useCallback(() => {
+    data &&
+      onSubmit({
+        asset: data.asset,
+        ...data.step1.state,
+        ...data.step2.state,
+        ...data.step3.state,
+      }).then((e) => {
+        setFinished?.(true);
+      }
+    );
   }, [data]);
 
   const handleNext = (activeStep: number, steps: number | any[]) => {
@@ -193,25 +146,16 @@ const SelectStepper = (): JSX.Element => {
               name: formattedFileName,
               description: null,
               unlockable_content: null,
-              adult_content: false,
+              sensitive_content: false,
             },
             solved: false,
             error: false,
-          },
+          }
         });
       }
     },
     [setStepData]
   );
-
-  interface StepbarProps {
-    name: string;
-    active?: boolean;
-    completed?: boolean;
-    optional?: boolean;
-    skipped?: boolean;
-    error?: boolean;
-  }
 
   const StepsList = [
     {
@@ -240,73 +184,6 @@ const SelectStepper = (): JSX.Element => {
     },
   ];
 
-  const StepsBar = ({ steps }: { steps: StepbarProps[] }) => {
-    return (
-      <div className="w-full pb-4">
-        {/* {JSON.stringify(data)} */}
-        <div className="flex justify-center w-full">
-          {steps.map((step, index) => (
-            <div className="w-1/4" key={index}>
-              <div
-                className={classNames(
-                  {
-                    'text-blue-600': activeStep === index,
-                  },
-                  'text-xs text-center font-bold'
-                )}
-              >
-                {step.name}
-              </div>
-              <div className="relative mt-2">
-                {index !== 0 && (
-                  <div
-                    className="absolute flex align-center items-center align-middle content-center"
-                    style={{
-                      width: 'calc(100% - 1.5rem - 1rem)',
-                      top: '50%',
-                      transform: 'translate(-50%, -50%)',
-                    }}
-                  >
-                    <div className="w-full bg-gray-200 rounded items-center align-middle align-center flex-1">
-                      <div
-                        className={classNames(
-                          {
-                            'bg-blue-600': activeStep >= index,
-                            'bg-gray-200': activeStep < index,
-                          },
-                          "w-full h-[2px] rounded"
-                        )}
-                      ></div>
-                    </div>
-                  </div>
-                )}
-                <div
-                  onClick={() => setActiveStep(index)}
-                  className={classNames(
-                    {
-                      'bg-blue-700': !step.error,
-                      'bg-red-600': step.error
-                    },
-                    "w-6 h-6 mx-auto cursor-pointer text-white rounded-full text-lg  flex items-center"
-                  )}
-                >
-                  {step.completed && (
-                    <CheckIcon strokeWidth={2} className="w-4 h-4 mx-auto" />
-                  )}
-                  {step.error && (
-                    <ExclamationCircleIcon
-                      strokeWidth={2}
-                      className="w-5 h-5 mx-auto"
-                    />
-                  )}
-                </div>
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
-    );
-  };
 
   const activeStepNumeric = activeStep + 1;
 
@@ -367,17 +244,17 @@ const SelectStepper = (): JSX.Element => {
               <CompleteIlustation width={300} height={300} />
             </div>
             <div className="text-lg font-bold">
-              Congratulations! Your nft is uploaded!
+              Congratulations! Your asset is uploaded!
             </div>
             <div className="mt-4">
               <Link href="/nft">
                 <a className="relative inline-block text-center bg-blue-600 border border-transparent rounded-md py-2 px-4 font-medium text-white hover:bg-blue-700 mr-4">
-                  View your nft
+                  View your asset
                 </a>
               </Link>
               <Link href="/nft/create">
                 <a className="relative inline-block text-center bg-blue-600 border border-transparent rounded-md py-2 px-4 font-medium text-white hover:bg-blue-700">
-                  Continue with created Nft for publish
+                  Continue with created asset for publish Nft
                 </a>
               </Link>
             </div>
@@ -392,7 +269,7 @@ const SelectStepper = (): JSX.Element => {
       <div className="flex flex-1 flex-col w-full h-[calc(65vh_-_5px)]">
         {!onlyUploader && (
           <div className="flex mx-auto w-full sticky top-0 z-1 bg-slate-50 dark:bg-neutral-800 shadow-[0_10px_5px_-10px_rgba(0,0,0,0.2)]">
-            <StepsBar steps={StepsList} />
+            <StepsBar active={activeStep} steps={StepsList} setActive={setActiveStep} />
           </div>
         )}
         <div
@@ -445,13 +322,9 @@ const SelectStepper = (): JSX.Element => {
                   className=""
                 >
                   {activeStep <= 2 && (
-                    <Fragment>
-                      <div className="p-2">
-                        <Suspense fallback="Loading Form View..">
-                          {view}
-                        </Suspense>
-                      </div>
-                    </Fragment>
+                    <div className="p-2">
+                      <Suspense fallback="Loading Form View..">{view}</Suspense>
+                    </div>
                   )}
                 </motion.div>
               </motion.div>
@@ -463,7 +336,7 @@ const SelectStepper = (): JSX.Element => {
                 'w-full': onlyUploader,
                 'max-w-[20rem] max-h-[20rem]': !onlyUploader,
               },
-              'flex flex-1 sticky top-5 mx-auto h-full'
+              "flex flex-1 sticky top-5 mx-auto h-full"
             )}
           >
             <Uploader
@@ -478,7 +351,7 @@ const SelectStepper = (): JSX.Element => {
         {!onlyUploader && (
           <div className="flex justify-end sticky bottom-0 pt-4 bg-slate-50 dark:bg-neutral-800 border-t border-gray-100 dark:border-neutral-700">
             <div className="flex gap-x-2">
-              {activeStep > 0 && (
+              { !submiting && activeStep > 0 && (
                 <>
                   <button
                     disabled={activeStep === 0}
@@ -490,7 +363,7 @@ const SelectStepper = (): JSX.Element => {
                 </>
               )}
               <div />
-              {isStepOptional(activeStep) && (
+              { !submiting && isStepOptional(activeStep) && (
                 <>
                   {allowSkip && (
                     <button
@@ -502,13 +375,44 @@ const SelectStepper = (): JSX.Element => {
                   )}
                 </>
               )}
-              <button
-                className="inline-flex items-center px-4 py-2 font-semibold leading-6 text-sm shadow rounded-md text-white bg-blue-600 hover:bg-blue-500"
-                disabled={buttonNextDisabled}
-                onClick={() => handleNext(activeStep, 2)}
-              >
-                {activeStepNumeric === 3 ? 'Save' : 'Next'}
-              </button>
+              { submiting ? ( 
+                <button
+                  type="button"
+                  className="inline-flex items-center px-4 py-2 font-semibold leading-6 text-sm shadow rounded-md text-white bg-blue-600 hover:bg-blue-500 transition ease-in-out duration-150 cursor-not-allowed"
+                  disabled
+                >
+                  <svg
+                    className="animate-spin -ml-1 mr-3 h-5 w-5 text-white"
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                  >
+                    <circle
+                      className="opacity-25"
+                      cx="12"
+                      cy="12"
+                      r="10"
+                      stroke="currentColor"
+                      strokeWidth="3"
+                    ></circle>
+                    <path
+                      className="opacity-75"
+                      fill="currentColor"
+                      d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                    ></path>
+                  </svg>
+                  Processing...
+                </button>
+              ) : (
+                <button
+                  type="button"
+                  className="inline-flex items-center px-4 py-2 font-semibold leading-6 text-sm shadow rounded-md text-white bg-blue-600 hover:bg-blue-500"
+                  disabled={buttonNextDisabled}
+                  onClick={() => handleNext(activeStep, 2)}
+                >
+                  {activeStepNumeric === 3 ? 'Save' : 'Next'}
+                </button>
+              )}
             </div>
           </div>
         )}
@@ -517,4 +421,4 @@ const SelectStepper = (): JSX.Element => {
   );
 };
 
-export default SelectStepper;
+export default FormAsset;

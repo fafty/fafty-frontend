@@ -23,7 +23,7 @@ import classNames from 'classnames';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ArrowDownSIcon } from '@remixicons/react/line';
 import { ContextProps } from '../context';
-import { TagsSelect } from '../../components/tagsSelect';
+import { TagsSelect } from '../../common/tagsSelect';
 import { useComponentDidUpdate } from '@fafty-frontend/usehooks';
 
 interface EditorProps {
@@ -52,7 +52,7 @@ const SelectStep3 = ({ Context }: { Context: Context<ContextProps> }) => {
   /**
    * Context Store
    */
-  const { step3Answered, setStep3Answered, step3Errored, setStep3Errored, stepData, setStepData } =
+  const { step3Answered, setStep3Answered, stepData, setStepData } =
     useContext<ContextProps>(Context);
 
   /**
@@ -108,10 +108,8 @@ const SelectStep3 = ({ Context }: { Context: Context<ContextProps> }) => {
   useEffect(() => {
     if (isValid) {
       setStep3Answered(true);
-      setStep3Errored(false);
     } else {
       setStep3Answered(false);
-      setStep3Errored(true);
     }
   }, [formFields, isValid, setStep3Answered]);
 

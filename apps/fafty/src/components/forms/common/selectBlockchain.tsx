@@ -155,7 +155,6 @@ const SelectBlockchain = ({ current, onChange }: Props): JSX.Element => {
 
   const onScreen: boolean = useOnScreen<HTMLDivElement>(itemsContainerRef as MutableRefObject<HTMLDivElement>, "0px");
   useEffect(() => {
-    // console.log('onScreen', onScreen);
     if (onScreen) {
       scrollItemsToCenterSelected(selected, 0);
     }
@@ -172,7 +171,6 @@ const SelectBlockchain = ({ current, onChange }: Props): JSX.Element => {
   useEffect(() => {
     const defaultSelected = collections.find((b) => b.id === current);
     setSelected(defaultSelected?.id || 'dfinity');
-    // console.log('selected', selected);
   }, [current]);
 
   /**

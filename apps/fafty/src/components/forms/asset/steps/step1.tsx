@@ -39,7 +39,7 @@ const SelectStep1 = ({ Context }: { Context: Context<ContextProps> }) => {
   /**
    * Context Store
    */
-  const { step1Answered, setStep1Answered, step1Errored, setStep1Errored, stepData, setStepData } =
+  const { step1Answered, setStep1Answered, stepData, setStepData } =
     useContext<ContextProps>(Context);
 
   /**
@@ -86,14 +86,12 @@ const SelectStep1 = ({ Context }: { Context: Context<ContextProps> }) => {
   useEffect(() => {
     if (isValid) {
       setStep1Answered(true);
-      setStep1Errored(false);
     } else {
       setStep1Answered(false);
-      setStep1Errored(true);
     }
   }, [formFields, isValid, setStep1Answered]);
 
-  const  storeData = async () => {
+  const storeData = async () => {
     const result = await trigger("name", { shouldFocus: true });
     setStepData({
       step1: {
@@ -102,7 +100,6 @@ const SelectStep1 = ({ Context }: { Context: Context<ContextProps> }) => {
         error: result,
       },
     });
-    console.log('errors', result);
   };
 
   return (

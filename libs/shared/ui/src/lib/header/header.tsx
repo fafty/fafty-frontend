@@ -1,5 +1,4 @@
 import Link from 'next/link';
-// import Image from 'next/image';
 import { Fragment } from 'react';
 import { Popover, Transition } from '@headlessui/react';
 import {
@@ -17,14 +16,14 @@ const pagesLinks = [
     name: 'Bundles',
     description:
       'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
-    href: '/account/assets/create',
+    href: '/account/assets',
     icon: ChartBarIcon,
   },
   {
     name: 'Nfts',
     description:
       'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
-    href: '/account/assets/create',
+    href: '/account/assets',
     icon: ChartBarIcon,
   },
 ];
@@ -32,14 +31,14 @@ const createLinks = [
   {
     name: 'Add Bundle',
     key: 'bundle',
-    href: '/account/assets/create',
+    href: '/account/assets',
     description: 'Description Add Bundle',
     icon: GalleryIcon,
   },
   {
     name: 'Add Nft',
     key: 'nft',
-    href: '/account/assets/create',
+    href: '/account/assets',
     description: 'Description Add Nft',
     icon: ImageAddIcon,
   },

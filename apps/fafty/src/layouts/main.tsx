@@ -1,8 +1,8 @@
 import { Header, Footer, Meta } from '@fafty-frontend/shared/ui';
-import { ReactNode, useEffect, useMemo, useState } from 'react';
+import { ReactNode, useMemo, useState } from 'react';
 import { useAuth } from '../utils/auth';
 import { AuthModal } from '../components/modals/auth';
-import { CreateNftModal } from '../components/modals/create/nft';
+import FormAssetModal from '../components/modals/forms/asset';
 
 type Props = {
   children: ReactNode;
@@ -12,32 +12,29 @@ type Props = {
 
 const MainLayout = ({ children, title, description }: Props) => {
   const [openedAuthModal, setOpenedAuthModal] = useState(false);
-  const [openedCreateNftModal, setOpenedCreateNftModal] = useState(false);
-  const [openedCreateCollectionModal, setOpenedCreateCollectionModal] = useState(false);
-  const [openedCreateBundleModal, setOpenedCreateBundleModal] = useState(false);
-
+  const [openedFormAssetModal, setOpenedFormAssetModal] = useState(false);
+  const [openedFormCollectionModal, setOpenedFormCollectionModal] = useState(false);
+  const [openedFormBundleModal, setOpenedFormBundleModal] = useState(false);
   const auth = useAuth();
 
   const onAuth = () => {
     setOpenedAuthModal(true);
   };
 
-  const onCreate = (key: string) => {
+  const onForm = (key: string) => {
     switch (key) {
       case 'nft':
-        setOpenedCreateNftModal(true);
+        setOpenedFormAssetModal(true);
         break;
       case 'collection':
-        setOpenedCreateCollectionModal(true);
+        setOpenedFormCollectionModal(true);
         break;
       case 'bundle':
-        setOpenedCreateBundleModal(true);
+        setOpenedFormBundleModal(true);
         break;
       default:
         break;
-    }
-
-        
+    }   
   };
 
   const balance = useMemo(() => {
@@ -50,7 +47,7 @@ const MainLayout = ({ children, title, description }: Props) => {
       <Header
         onLogOut={() => auth.wallet?.logOut?.()}
         onAuth={onAuth}
-        onCreate={onCreate}
+        onCreate={onForm}
         balance={balance}
         isAuth={!!auth.principal?.toString()}
       />
@@ -62,10 +59,10 @@ const MainLayout = ({ children, title, description }: Props) => {
           isOpened={openedAuthModal}
         />
       )}
-      {openedCreateNftModal && (
-        <CreateNftModal
-          onClose={() => setOpenedCreateNftModal(false)}
-          isOpened={openedCreateNftModal}
+      {openedFormAssetModal && (
+        <FormAssetModal
+          onClose={() => setOpenedFormAssetModal(false)}
+          isOpened={openedFormAssetModal}
         />
       )}
     </>

@@ -1,5 +1,5 @@
 import { useOnScreen } from '@fafty-frontend/usehooks';
-import { Transition, RadioGroup } from '@headlessui/react';
+import { RadioGroup } from '@headlessui/react';
 import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/24/outline';
 import { ImageIcon } from '@remixicons/react/line';
 import api from '../../../api';
@@ -119,7 +119,6 @@ const SelectCollection = ({ current, onChange }: Props): JSX.Element => {
     '0px'
   );
   useEffect(() => {
-    // console.log('onScreen', onScreen);
     if (onScreen) {
       scrollItemsToCenterSelected(selected, 0);
     }
@@ -134,10 +133,8 @@ const SelectCollection = ({ current, onChange }: Props): JSX.Element => {
   }, [selected]);
 
   useEffect(() => {
-    // console.log('data', data);
     const defaultSelected = data && data.find((b) => b.token === current);
     setSelected(defaultSelected?.token || '');
-    // console.log('selected', selected);
   }, [current, loading]);
 
   const fetchData = async () => {
@@ -180,7 +177,6 @@ const SelectCollection = ({ current, onChange }: Props): JSX.Element => {
    * @param {String} id The id of item to scroll to
    */
   const scrollItemsToCenterSelected = (id: string, delay: number): void => {
-    // console.log('current id', id);
     const item = document.getElementById(id);
     if (item === null || item === undefined) return;
     setTimeout(function () {

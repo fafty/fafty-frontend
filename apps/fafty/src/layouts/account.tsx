@@ -81,6 +81,7 @@ const AccountLayout = ({ children, title, description }: Props) => {
           <div className="md:flex-col md:items-stretch md:min-h-full md:flex-nowrap px-0 flex flex-wrap items-center justify-between w-full mx-auto">
             {/* Toggler */}
             <button
+              title="Toggle Menu"
               className="cursor-pointer text-black opacity-50 md:hidden px-3 py-1 text-xl leading-none bg-transparent rounded border border-solid border-transparent"
               type="button"
               onClick={() => setCollapseShow('bg-white m-2 py-3 px-6')}
@@ -113,12 +114,13 @@ const AccountLayout = ({ children, title, description }: Props) => {
                         href="#pablo"
                         className="md:block text-left md:pb-2 text-blueGray-600 mr-0 inline-block whitespace-nowrap text-sm uppercase font-bold p-4 px-0"
                       >
-                        Notus NextJS
+                        Fafty
                       </a>
                     </Link>
                   </div>
                   <div className="w-6/12 flex justify-end">
                     <button
+                      title="Close Sidebar"
                       type="button"
                       className="cursor-pointer text-black opacity-50 md:hidden px-3 py-1 text-xl leading-none bg-transparent rounded border border-solid border-transparent"
                       onClick={() => setCollapseShow('hidden')}

@@ -85,6 +85,7 @@ export const TagsSelect = ({ value, onChange }: Props) => {
               </div>
             ))}
           <input
+            placeholder="Type to search tags"
             ref={inputRef}
             className={classNames('border-0 outline-0 bg-transparent text-sm')}
             value={inputValue}

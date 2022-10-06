@@ -1,11 +1,10 @@
-import { useState, ReactNode, useEffect, useCallback } from 'react';
+import { useState, ReactNode, useCallback } from 'react';
 import Context, {
-  CommentsModerationType,
-  CommentsOrderType,
   SetStepDataProps,
 } from './context';
+import { CommentsModerationType, CommentsOrderType } from './types';
 
-export const StepperContextProvider = ({
+export const FormAssetContextProvider = ({
   children,
 }: {
   children: ReactNode;
@@ -13,22 +12,23 @@ export const StepperContextProvider = ({
   const [step1Answered, setStep1Answered] = useState(false);
   const [step2Answered, setStep2Answered] = useState(false);
   const [step3Answered, setStep3Answered] = useState(false);
-
-  const [step1Errored, setStep1Errored] = useState(false);
-  const [step2Errored, setStep2Errored] = useState(false);
-  const [step3Errored, setStep3Errored] = useState(false);
-
   const [finished, setFinished] = useState<boolean>(false);
   const [stepData, setStepData] = useState({
     asset: {
       id: '',
+      storage: '',
+      metadata: {
+        size: 0,
+        filename: '',
+        mime_type: ''
+      }
     },
     step1: {
       state: {
         name: '',
         description: null,
         unlockable_content: null,
-        adult_content: false,
+        sensitive_content: false,
       },
       solved: false,
       error: false
@@ -54,10 +54,6 @@ export const StepperContextProvider = ({
     },
   });
 
-  useEffect(() => {
-    console.log('stepData in provider', stepData);
-  }, [stepData]);
-
   const onSetStepData = useCallback(
     (data: SetStepDataProps) => {
       setStepData((prev) => ({ ...prev, ...data }));
@@ -68,16 +64,10 @@ export const StepperContextProvider = ({
   const contextValues = {
     step1Answered,
     setStep1Answered,
-    step1Errored,
-    setStep1Errored,
     step2Answered,
     setStep2Answered,
-    step2Errored,
-    setStep2Errored,
     step3Answered,
     setStep3Answered,
-    step3Errored,
-    setStep3Errored,
     finished,
     setFinished,
     stepData,

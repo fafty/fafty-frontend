@@ -2,10 +2,12 @@ import MainLayout from '../../layouts/main';
 import Image from 'next/future/image';
 import { useRouter } from 'next/router';
 import api from '../../api';
-import { Fragment, useEffect, useMemo, useState } from 'react';
+import { Fragment, SVGProps, useEffect, useMemo, useState } from 'react';
 import { Tabs } from '../../components/nft/Tabs';
 import { Info } from '../../components/nft/tabs/Info';
 import { Owners } from '../../components/nft/tabs/Owners';
+import { ChevronRightIcon, HomeIcon } from '@heroicons/react/24/outline';
+import Link from 'next/link';
 
 const TABS = [
   { title: 'Info', value: 'info' },
@@ -15,6 +17,7 @@ const TABS = [
 ];
 
 interface BreadcrumbProps {
+  icon?: (props: SVGProps<SVGSVGElement>) => JSX.Element;
   name: string;
   href?: string;
 }
@@ -32,6 +35,7 @@ interface NftProps {
   ticker: string;
   owner: string;
   token: string;
+  available_supply_units: number
   created_at: string;
   updated_at: string;
 }
@@ -70,15 +74,17 @@ export default function Nft() {
         if (response.status === 200 && response.data) {
           const { data } = response;
           breadcrumb.push({
+            icon: HomeIcon,
             name: 'Fafty',
             href: `/`,
-          });
-          breadcrumb.push({
-            name: data.record.category,
-            href: `/assets/${data.record.slug}`,
-          });
-          breadcrumb.push({
+          }, {
+            icon: ChevronRightIcon,
+            name: 'Nfts',
+            href: `/nfts`,
+          }, {
+            icon: ChevronRightIcon,
             name: data.record.name,
+            href: `/nft/${data.record.slug}`,
           });
           setDetail(data.record);
           setLoading(false);
@@ -129,27 +135,45 @@ export default function Nft() {
   // }
 
   if (isError) return <div>Failed to load</div>;
-  if (!detail) return <p>No data</p>;
+  // if (!detail) return <p>No data</p>;
 
   return (
-    <MainLayout title={detail.name} description={detail.description}>
-      <div className="grid sm:grid-cols-1 md:grid-cols-[1fr,350px] lg:grid-cols-[1fr,400px] grid-rows-3 gap-y-16 sm:gap-x-2 md:gap-x-4 lg:gap-x-8 xl:gap-x-10 2xl:gap-x-13  py-24 px-4">
-        <div className="row-start-1 row-span-2 lg:mr-10 ">
+    <MainLayout title={detail?.name || '...'} description={detail?.description || '...'}>
+      <div className="grid sm:grid-cols-1 md:grid-cols-[1fr,350px] lg:grid-cols-[1fr,400px] gap-y-16 sm:gap-x-2 md:gap-x-4 lg:gap-x-8 xl:gap-x-10 2xl:gap-x-13  py-24 px-4">
+        <div className="row-start-1 col-span-full">
+          <nav className="flex px-5 py-5 border dark:bg-neutral-800 text-slate-900 border-t border-gray-100 dark:border-neutral-700 rounded-lg shadow-md" aria-label="Breadcrumb">
+            <ol className="inline-flex items-center space-x-1 md:space-x-3">
+              {breadcrumb && breadcrumb.map((item) => (
+                <li className="inline-flex items-center">
+                  <Link href={item.href || ''}>
+                    <a className="inline-flex items-center text-sm font-medium text-gray-700 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white">
+                      {item.icon && <item.icon className="w-5 h-5 mr-2 " aria-hidden="true" />}
+                      {item.name}
+                    </a>
+                  </Link>
+                </li>
+              ))}
+            </ol>
+          </nav>
+        </div>
+        <div className="row-start-2 row-span-2 lg:mr-10">
           <div className="bg-gray-200 flex rounded-2xl overflow-hidden w-full h-full group">
             <div className="flex items-center justify-center bg-gray-50" />
-            <Image
-              src={detail.asset.src}
-              style={{
-                backgroundColor: detail.asset?.dominant_color,
-              }}
-              alt={detail.name}
-              // layout="raw"
-              width={400}
-              height={400}
-              className="w-full h-full object-center object-cover"
-            />
+            { detail?.asset?.src && (
+              <Image
+                src={detail.asset.src}
+                style={{
+                  backgroundColor: detail?.asset?.dominant_color,
+                }}
+                alt={detail.name}
+                // layout="raw"
+                width={400}
+                height={400}
+                className="w-full h-full object-center object-cover"
+              />
+            )}
             <div className="absolute ml-5 mt-5 transition motion-reduce:hover:translate-y-0 motion-reduce:transition-none duration-750 delay-300 group-hover:opacity-0 group-hover:delay-1 ease-in-out">
-              <div className=" inline-flex space-x-2 items-start justify-start ">
+              <div className="inline-flex space-x-2 items-start justify-start">
                 <div className="flex items-center justify-center px-2 pt-2 pb-1.5 bg-gray-800 rounded drop-shadow shadow hover:opacity-100">
                   <p className="text-xs font-bold leading-3 text-gray-50 uppercase">
                     Art
@@ -164,11 +188,11 @@ export default function Nft() {
             </div>
           </div>
         </div>
-        <div className="row-start-1 row-end-4">
+        <div className="row-start-2 row-end-4">
           <div className="grid grid-cols-1 gap-y-7">
             <div className="flex flex-col space-y-2 items-start justify-center w-full">
               <p className="w-full text-4xl font-bold leading-10 text-slate-900 dark:text-slate-50">
-                {detail.name}
+                { detail?.name}
               </p>
               <div className="inline-flex space-x-2 items-center justify-start">
                 <div className="flex items-center justify-center ml-auto text-sm font-bold text-green-500 border-2 border-green-500 rounded px-1 py-1">
@@ -178,13 +202,13 @@ export default function Nft() {
                   <span>$4,429.87</span>
                 </div>
                 <p className="text-sm font-bold leading-none text-gray-500">
-                  10 in stock
+                  {detail?.available_supply_units} in stock
                 </p>
               </div>
             </div>
             <div>
               <p className="text-base leading-normal text-slate-900 dark:text-slate-50">
-                {/* { detail.description } */}
+                {/* { detail?.description } */}
               </p>
             </div>
             <div className="flex flex-col space-y-2.5">

@@ -2,17 +2,16 @@ import { motion } from 'framer-motion';
 import { useEffect, useContext, lazy, useLayoutEffect, Context } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { childVariants, variants } from '../constants';
-// import { motion } from 'framer-motion';
 import { ContextProps } from '../context';
 
 const SelectBlockchain = lazy(
-  () => import('../../components/selectBlockchain')
+  () => import('../../common/selectBlockchain')
 );
 const SelectCollection = lazy(
-  () => import('../../components/selectCollection')
+  () => import('../../common/selectCollection')
 );
 
-const CounterInput = lazy(() => import('../../components/counterInput'));
+const CounterInput = lazy(() => import('../../common/counterInput'));
 
 const SelectStep2 = ({ Context }: { Context: Context<ContextProps> }) => {
   /**
@@ -21,8 +20,6 @@ const SelectStep2 = ({ Context }: { Context: Context<ContextProps> }) => {
   const {
     step2Answered,
     setStep2Answered,
-    step2Errored,
-    setStep2Errored,
     stepData,
     setStepData,
   } = useContext<ContextProps>(Context);
@@ -72,13 +69,10 @@ const SelectStep2 = ({ Context }: { Context: Context<ContextProps> }) => {
    * Monitor User Input
    */
   useEffect(() => {
-    console.log(isValid);
     if (isValid) {
       setStep2Answered(true);
-      setStep2Errored(false);
     } else {
       setStep2Answered(false);
-      setStep2Errored(true);
     }
   }, [formFields, isValid, setStep2Answered]);
 
@@ -93,8 +87,6 @@ const SelectStep2 = ({ Context }: { Context: Context<ContextProps> }) => {
       });
     }
   };
-
-  console.log('values', getValues());
 
   return (
     <div className="flex flex-col">
