@@ -45,6 +45,10 @@ const FormAsset = ({ baseData, onSubmit, submiting }: Props): JSX.Element => {
   const [components, setComponent] = useState({});
   const [view, setView] = useState<JSX.Element | null>(null);
 
+  const isDisabledNextStep = useMemo(() => {
+    return data?.step1.error || data?.step2.error || data?.step3.error;
+  }, [data]);
+
   const loadComponent = useCallback(async () => {
     const StepView = `step${activeStep + 1}`;
     if (!components[StepView as keyof typeof components]) {
@@ -94,8 +98,7 @@ const FormAsset = ({ baseData, onSubmit, submiting }: Props): JSX.Element => {
         ...data.step3.state,
       }).then((e) => {
         setFinished?.(true);
-      }
-    );
+      });
   }, [data]);
 
   const handleNext = (activeStep: number, steps: number | any[]) => {
@@ -150,12 +153,14 @@ const FormAsset = ({ baseData, onSubmit, submiting }: Props): JSX.Element => {
             },
             solved: false,
             error: false,
-          }
+          },
         });
       }
     },
     [setStepData]
   );
+
+  console.log(data?.step1.error);
 
   const StepsList = [
     {
@@ -183,7 +188,6 @@ const FormAsset = ({ baseData, onSubmit, submiting }: Props): JSX.Element => {
       error: data?.step3.error,
     },
   ];
-
 
   const activeStepNumeric = activeStep + 1;
 
@@ -269,7 +273,12 @@ const FormAsset = ({ baseData, onSubmit, submiting }: Props): JSX.Element => {
       <div className="flex flex-1 flex-col w-full h-[calc(65vh_-_5px)]">
         {!onlyUploader && (
           <div className="flex mx-auto w-full sticky top-0 z-1 bg-slate-50 dark:bg-neutral-800 shadow-[0_10px_5px_-10px_rgba(0,0,0,0.2)]">
-            <StepsBar active={activeStep} steps={StepsList} setActive={setActiveStep} />
+            <StepsBar
+              active={activeStep}
+              steps={StepsList}
+              setActive={setActiveStep}
+              disabled={!!isDisabledNextStep}
+            />
           </div>
         )}
         <div
@@ -336,7 +345,7 @@ const FormAsset = ({ baseData, onSubmit, submiting }: Props): JSX.Element => {
                 'w-full': onlyUploader,
                 'max-w-[20rem] max-h-[20rem]': !onlyUploader,
               },
-              "flex flex-1 sticky top-5 mx-auto h-full"
+              'flex flex-1 sticky top-5 mx-auto h-full'
             )}
           >
             <Uploader
@@ -351,10 +360,10 @@ const FormAsset = ({ baseData, onSubmit, submiting }: Props): JSX.Element => {
         {!onlyUploader && (
           <div className="flex justify-end sticky bottom-0 pt-4 bg-slate-50 dark:bg-neutral-800 border-t border-gray-100 dark:border-neutral-700">
             <div className="flex gap-x-2">
-              { !submiting && activeStep > 0 && (
+              {!submiting && activeStep > 0 && (
                 <>
                   <button
-                    disabled={activeStep === 0}
+                    disabled={activeStep === 0 || isDisabledNextStep}
                     onClick={handleBack}
                     className="inline-flex items-center px-4 py-2 font-semibold leading-6 text-sm shadow rounded-md text-white bg-gray-500 hover:bg-gray-400"
                   >
@@ -363,7 +372,7 @@ const FormAsset = ({ baseData, onSubmit, submiting }: Props): JSX.Element => {
                 </>
               )}
               <div />
-              { !submiting && isStepOptional(activeStep) && (
+              {!submiting && isStepOptional(activeStep) && (
                 <>
                   {allowSkip && (
                     <button
@@ -375,7 +384,7 @@ const FormAsset = ({ baseData, onSubmit, submiting }: Props): JSX.Element => {
                   )}
                 </>
               )}
-              { submiting ? ( 
+              {submiting ? (
                 <button
                   type="button"
                   className="inline-flex items-center px-4 py-2 font-semibold leading-6 text-sm shadow rounded-md text-white bg-blue-600 hover:bg-blue-500 transition ease-in-out duration-150 cursor-not-allowed"
@@ -407,7 +416,7 @@ const FormAsset = ({ baseData, onSubmit, submiting }: Props): JSX.Element => {
                 <button
                   type="button"
                   className="inline-flex items-center px-4 py-2 font-semibold leading-6 text-sm shadow rounded-md text-white bg-blue-600 hover:bg-blue-500"
-                  disabled={buttonNextDisabled}
+                  disabled={buttonNextDisabled || isDisabledNextStep}
                   onClick={() => handleNext(activeStep, 2)}
                 >
                   {activeStepNumeric === 3 ? 'Save' : 'Next'}

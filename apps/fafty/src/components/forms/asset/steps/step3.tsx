@@ -64,6 +64,7 @@ const SelectStep3 = ({ Context }: { Context: Context<ContextProps> }) => {
     watch,
     setValue,
     getValues,
+    trigger,
     formState: { errors, isValid },
   } = useForm({
     defaultValues: {
@@ -71,7 +72,7 @@ const SelectStep3 = ({ Context }: { Context: Context<ContextProps> }) => {
     },
     mode: 'onChange',
     reValidateMode: 'onChange',
-    shouldFocusError: true
+    shouldFocusError: true,
   });
 
   /**
@@ -113,12 +114,18 @@ const SelectStep3 = ({ Context }: { Context: Context<ContextProps> }) => {
     }
   }, [formFields, isValid, setStep3Answered]);
 
-  const storeData = () => {
+  useEffect(() => {
+    storeData();
+  }, [isValid]);
+
+  const storeData = async () => {
+    const isValidStore = await trigger();
+
     setStepData({
       step3: {
-        solved: isValid,
+        solved: isValidStore,
         state: getValues(),
-        error: errors !== null
+        error: !isValidStore,
       },
     });
   };
@@ -133,10 +140,7 @@ const SelectStep3 = ({ Context }: { Context: Context<ContextProps> }) => {
     <div className="flex flex-col">
       <h4 className="font-bold">Add-ons</h4>
       <div className="mb-5 mt-1 relative">
-        <label
-          htmlFor="item-name"
-          className="block text-sm font-medium mb-3"
-        >
+        <label htmlFor="item-name" className="block text-sm font-medium mb-3">
           Comments moderation
         </label>
         <Controller
@@ -157,7 +161,7 @@ const SelectStep3 = ({ Context }: { Context: Context<ContextProps> }) => {
                           {
                             'flex items-center justify-center': checked,
                           },
-                          "rounded-full w-4 h-4 mr-2.5 border border-blue-700 dark:border-gray-200",
+                          'rounded-full w-4 h-4 mr-2.5 border border-blue-700 dark:border-gray-200'
                         )}
                       >
                         <AnimatePresence>
@@ -188,17 +192,16 @@ const SelectStep3 = ({ Context }: { Context: Context<ContextProps> }) => {
           <motion.div variants={childVariants} className="min-h-[24px]">
             <span className="text-red-500">
               {errors.comments_moderation?.type === 'required' && (
-                <motion.div variants={childVariants} role="alert">Comments moderation is required.</motion.div>
+                <motion.div variants={childVariants} role="alert">
+                  Comments moderation is required.
+                </motion.div>
               )}
             </span>
           </motion.div>
         </motion.div>
       </div>
       <div className="mb-5 relative">
-        <label
-          htmlFor="item-name"
-          className="block text-sm font-medium mb-3"
-        >
+        <label htmlFor="item-name" className="block text-sm font-medium mb-3">
           Order by
         </label>
         <Controller
@@ -222,9 +225,10 @@ const SelectStep3 = ({ Context }: { Context: Context<ContextProps> }) => {
                         <li
                           className={classNames(
                             {
-                              'bg-neutral-200 dark:bg-neutral-800': selected || active
+                              'bg-neutral-200 dark:bg-neutral-800':
+                                selected || active,
                             },
-                            "cursor-pointer focus:outline-none text-sm flex items-center p-2 transition duration-150 ease-in-out text-neutral-700 hover:bg-neutral-100 dark:text-neutral-100 dark:hover:bg-neutral-700"
+                            'cursor-pointer focus:outline-none text-sm flex items-center p-2 transition duration-150 ease-in-out text-neutral-700 hover:bg-neutral-100 dark:text-neutral-100 dark:hover:bg-neutral-700'
                           )}
                         >
                           {option.title}
@@ -261,7 +265,7 @@ const SelectStep3 = ({ Context }: { Context: Context<ContextProps> }) => {
                   'bg-blue-600': formFields.allow_ratings,
                   'bg-gray-600': !formFields.allow_ratings,
                 },
-                "relative inline-flex h-6 w-11 items-center rounded-full"
+                'relative inline-flex h-6 w-11 items-center rounded-full'
               )}
             >
               <span
@@ -270,7 +274,7 @@ const SelectStep3 = ({ Context }: { Context: Context<ContextProps> }) => {
                     'translate-x-6': formFields.allow_ratings,
                     'translate-x-1': !formFields.allow_ratings,
                   },
-                  "inline-block h-4 w-4 transform rounded-full bg-white"
+                  'inline-block h-4 w-4 transform rounded-full bg-white'
                 )}
               />
             </Switch>
@@ -299,7 +303,9 @@ const SelectStep3 = ({ Context }: { Context: Context<ContextProps> }) => {
           <motion.div variants={childVariants} className="min-h-[24px]">
             <span className="text-red-500 ">
               {errors.tags?.type === 'required' && (
-                <motion.div variants={childVariants} role="alert">At least one tag is required.</motion.div>
+                <motion.div variants={childVariants} role="alert">
+                  At least one tag is required.
+                </motion.div>
               )}
             </span>
           </motion.div>

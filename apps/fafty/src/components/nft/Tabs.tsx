@@ -1,9 +1,9 @@
 import { Tab } from '@headlessui/react';
-import { Dispatch, Fragment, useMemo } from 'react';
+import { Dispatch, Fragment, useMemo, useState } from 'react';
 import { motion } from 'framer-motion';
 import { getSystemTheme, useTheme } from '@fafty-frontend/theme';
 
-type Tab = {
+type TabType = {
   title: string;
   value: string;
 };
@@ -11,11 +11,15 @@ type Tab = {
 export type TabsProps = {
   tabIndex: number;
   setTabIndex: Dispatch<number>;
-  tabs: Tab[];
+  tabs: TabType[];
 };
 
 export const Tabs = ({ tabIndex, setTabIndex, tabs }: TabsProps) => {
   const { theme } = useTheme();
+
+  const tabsTitlesId = useMemo(() => {
+    return tabs.map(({ title }) => title).join('_');
+  }, [tabs]);
 
   const isDarkMode = useMemo(() => {
     // FIXME Module '"@fafty-frontend/theme"' has no exported member 'getSystemTheme'.
@@ -36,7 +40,7 @@ export const Tabs = ({ tabIndex, setTabIndex, tabs }: TabsProps) => {
       <div className="flex flex-col space-y-8 items-start justify-start w-full">
         <div className="flex flex-col items-start justify-start w-full p-1 border-2 rounded-full border-gray-200 dark:border-neutral-700">
           <Tab.List>
-            <div className="inline-flex space-x-2 items-start justify-start transition-[background-color] duration-100 ease-linear">
+            <div className="inline-flex space-x-2 items-start justify-start overflow-hidden">
               {tabs.map((tab) => (
                 <Tab as={Fragment} key={tab.value}>
                   {({ selected }) => (
@@ -56,14 +60,16 @@ export const Tabs = ({ tabIndex, setTabIndex, tabs }: TabsProps) => {
                       {selected && (
                         <motion.div
                           className="absolute w-full h-full rounded-full top-0 left-0 outline-none"
-                          layoutId="selected"
+                          layoutId={tabsTitlesId}
                           initial={{
-                            backgroundColor: tabStyles.background,
+                            opacity: 0,
+                            backgroundColor: 'transparent',
                           }}
                           animate={{
+                            opacity: 1,
                             backgroundColor: tabStyles.background,
                           }}
-                          transition={{ duration: 0.3 }}
+                          transition={{ duration: 0.3, staggerDirection: -1 }}
                         />
                       )}
                     </motion.div>

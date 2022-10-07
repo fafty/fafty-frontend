@@ -1,5 +1,6 @@
 import { Tag } from 'apps/fafty/src/api/callbacks/tags/types';
 import { CSSProperties } from 'react';
+import { EditorState } from 'lexical';
 
 interface ExistingFileProps {
   id: string;
@@ -46,8 +47,8 @@ export type CommentsOrderType = 'interesting' | 'newest';
 export interface FormProps {
   asset: FileProps | null;
   name: string | null;
-  description: object | null;
-  unlockable_content: object | null;
+  description: string | EditorState | null;
+  unlockable_content: string | EditorState | null;
   sensitive_content: boolean;
   supply_units: number | null;
   blockchain: string;

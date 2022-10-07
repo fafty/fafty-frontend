@@ -13,12 +13,14 @@ import { ContextProps, Step1Props } from '../context';
 import { motion } from 'framer-motion';
 import { childVariants, variants } from '../constants';
 import classNames from 'classnames';
+import { EditorState } from 'lexical';
+
 interface EditorProps {
   isAutocomplete?: boolean;
   maxCharacters?: null | number;
   isRichText?: boolean;
   showTreeView?: boolean;
-  initialEditorState: null | string;
+  initialEditorState: null | string | EditorState;
   placeholder?: string;
   name: string;
   hasError: boolean;
@@ -57,6 +59,9 @@ const SelectStep1 = ({ Context }: { Context: Context<ContextProps> }) => {
     mode: 'onChange',
     reValidateMode: 'onChange',
     shouldFocusError: true,
+    defaultValues: {
+      ...stepData?.step1?.state,
+    },
   });
 
   /**
@@ -64,21 +69,24 @@ const SelectStep1 = ({ Context }: { Context: Context<ContextProps> }) => {
    */
   const formFields = watch();
 
+  useEffect(() => {
+    if (stepData.asset) {
+      reset({
+        name: stepData.step1.state.name,
+      });
+    }
+  }, [stepData.asset]);
+
   /**
    * Load data from context store on component mount and save data to context store on component unmount
    */
   useLayoutEffect(() => {
-    const result = trigger("name", { shouldFocus: true });
+    trigger();
+
     return () => {
       storeData();
     };
   }, []);
-
-  useEffect(() => {
-    reset({
-      ...stepData?.step1?.state,
-    });
-  }, [stepData?.step1?.state]);
 
   /**
    * Monitor User Input
@@ -92,16 +100,28 @@ const SelectStep1 = ({ Context }: { Context: Context<ContextProps> }) => {
   }, [formFields, isValid, setStep1Answered]);
 
   const storeData = async () => {
-    const result = await trigger("name", { shouldFocus: true });
+    const isValidForm = await trigger();
+
     setStepData({
       step1: {
         state: getValues() as Step1Props,
-        solved: isValid,
-        error: result,
+        solved: isValidForm,
+        error: !isValidForm,
       },
     });
   };
 
+  useEffect(() => {
+    setStepData({
+      step1: {
+        state: getValues() as Step1Props,
+        solved: isValid,
+        error: !isValid,
+      },
+    });
+  }, [isValid]);
+
+  // @ts-ignore
   return (
     <div className="flex flex-col">
       <h4 className="font-bold">Infomation</h4>
@@ -120,7 +140,7 @@ const SelectStep1 = ({ Context }: { Context: Context<ContextProps> }) => {
               'border-red-500': errors.name,
               'border-gray-200 dark:border-neutral-800': !errors.name,
             },
-            "text-gray-700 dark:text-gray-100 dark:bg-neutral-900/90 mt-1 border focus:outline-none rounded-md shadow-sm focus:border-gray-500 focus:shadow w-full p-3 h-12"
+            'text-gray-700 dark:text-gray-100 dark:bg-neutral-900/90 mt-1 border focus:outline-none rounded-md shadow-sm focus:border-gray-500 focus:shadow w-full p-3 h-12'
           )}
           placeholder="Enter name of Nft"
           autoComplete="off"
@@ -139,13 +159,19 @@ const SelectStep1 = ({ Context }: { Context: Context<ContextProps> }) => {
           <motion.div variants={childVariants} className="min-h-[24px]">
             <span className="text-red-500">
               {errors.name?.type === 'required' && (
-                <motion.div variants={childVariants} role="alert">Name is required.</motion.div>
+                <motion.div variants={childVariants} role="alert">
+                  Name is required.
+                </motion.div>
               )}
               {errors.name?.type === 'minLength' && (
-                <motion.div variants={childVariants} role="alert">Min length of name is 3 characters.</motion.div>
+                <motion.div variants={childVariants} role="alert">
+                  Min length of name is 3 characters.
+                </motion.div>
               )}
               {errors.name?.type === 'maxLength' && (
-                <motion.div variants={childVariants} role="alert">Max length of name is 30 characters.</motion.div>
+                <motion.div variants={childVariants} role="alert">
+                  Max length of name is 30 characters.
+                </motion.div>
               )}
             </span>
           </motion.div>
@@ -180,8 +206,8 @@ const SelectStep1 = ({ Context }: { Context: Context<ContextProps> }) => {
             Unlockable Content
           </div>
           <div className="text-xs block truncate text-gray-400">
-            Include unlockable content that can only be revealed by the owner
-            of the item.
+            Include unlockable content that can only be revealed by the owner of
+            the item.
           </div>
         </div>
         <Controller

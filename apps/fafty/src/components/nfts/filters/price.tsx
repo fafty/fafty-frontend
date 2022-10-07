@@ -8,6 +8,10 @@ const CURRENCY_OPTIONS = [
     title: 'ICP',
     value: 'icp',
   },
+  {
+    title: 'XTC',
+    value: 'xtc',
+  },
 ];
 
 export type PriceFiltersValue = {
@@ -25,8 +29,8 @@ export const Price = ({ value, onChange }: PriceFilterProps) => {
   const [priceLocalValue, setPriceLocalValue] = useState<PriceFiltersValue>({
     from: '',
     to: '',
+    currency: '',
     ...value,
-    currency: 'icp',
   });
 
   useEffect(() => {
@@ -62,12 +66,11 @@ export const Price = ({ value, onChange }: PriceFilterProps) => {
       <Listbox
         value={priceLocalValue.currency}
         onChange={onChangeCurrency}
-        disabled
         as="div"
       >
         <div className="relative mt-1 w-full flex">
           <Listbox.Button className="flex w-full px-5 py-2.5 items-center border text-sm border-gray-200 rounded-xl justify-between">
-            {title}
+            {title || 'Select currency'}
             <ArrowDownSIcon className="h-4 w-4 fill-gray-200 flex-shrink-0" />
           </Listbox.Button>
           <Listbox.Options className="absolute top-full right-0 left-0 z-10 overflow-hidden p-2 rounded-lg text-gray-500 dark:text-gray-500 bg-white dark:bg-neutral-800 ">

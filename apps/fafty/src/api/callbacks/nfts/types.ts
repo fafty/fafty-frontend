@@ -1,3 +1,8 @@
+import {
+  BillingTypeValue,
+  PriceFiltersValue,
+} from '../../../components/nfts/filters';
+
 type Paginate = {
   count: number;
   limit: number;
@@ -41,6 +46,7 @@ export type GetNftsParams = {
       lg?: number | string;
       ge?: number | string;
     };
+    billing_type?: BillingTypeValue;
   };
   sort?: string;
 };

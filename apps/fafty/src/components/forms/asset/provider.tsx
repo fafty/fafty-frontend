@@ -1,7 +1,5 @@
 import { useState, ReactNode, useCallback } from 'react';
-import Context, {
-  SetStepDataProps,
-} from './context';
+import Context, { SetStepDataProps } from './context';
 import { CommentsModerationType, CommentsOrderType } from './types';
 
 export const FormAssetContextProvider = ({
@@ -20,8 +18,8 @@ export const FormAssetContextProvider = ({
       metadata: {
         size: 0,
         filename: '',
-        mime_type: ''
-      }
+        mime_type: '',
+      },
     },
     step1: {
       state: {
@@ -31,7 +29,7 @@ export const FormAssetContextProvider = ({
         sensitive_content: false,
       },
       solved: false,
-      error: false
+      error: false,
     },
     step2: {
       state: {
@@ -40,7 +38,7 @@ export const FormAssetContextProvider = ({
         collection_token: '',
       },
       solved: false,
-      error: false
+      error: false,
     },
     step3: {
       state: {
@@ -50,7 +48,7 @@ export const FormAssetContextProvider = ({
         tags: [],
       },
       solved: false,
-      error: false
+      error: false,
     },
   });
 

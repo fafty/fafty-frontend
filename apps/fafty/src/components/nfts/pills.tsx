@@ -1,7 +1,11 @@
 import { useRouter } from 'next/router';
 import qs from 'qs';
 import { useMemo } from 'react';
-import { PriceFiltersValue } from './filters';
+import {
+  BILLING_TYPE_OPTIONS,
+  BillingTypeValue,
+  PriceFiltersValue,
+} from './filters';
 import { CloseIcon } from '@remixicons/react/fill';
 import { FiltersValues } from '../../pages/nfts';
 
@@ -40,6 +44,20 @@ export const Pills = ({ onClosePill, onClearFilters }: Props) => {
           total.push({
             title,
             value: 'price',
+          });
+        }
+      }
+
+      if (currentKey === 'billing_type') {
+        const value = params[currentKey] as BillingTypeValue;
+        if (value) {
+          const optionTitle = BILLING_TYPE_OPTIONS.find(
+            (option) => option.value === value
+          )?.title;
+
+          total.push({
+            title: `Billing type: ${optionTitle?.toLowerCase()}`,
+            value: 'billing_type',
           });
         }
       }

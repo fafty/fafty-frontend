@@ -4,12 +4,8 @@ import { Controller, useForm } from 'react-hook-form';
 import { childVariants, variants } from '../constants';
 import { ContextProps } from '../context';
 
-const SelectBlockchain = lazy(
-  () => import('../../common/selectBlockchain')
-);
-const SelectCollection = lazy(
-  () => import('../../common/selectCollection')
-);
+const SelectBlockchain = lazy(() => import('../../common/selectBlockchain'));
+const SelectCollection = lazy(() => import('../../common/selectCollection'));
 
 const CounterInput = lazy(() => import('../../common/counterInput'));
 
@@ -17,12 +13,8 @@ const SelectStep2 = ({ Context }: { Context: Context<ContextProps> }) => {
   /**
    * Context Store
    */
-  const {
-    step2Answered,
-    setStep2Answered,
-    stepData,
-    setStepData,
-  } = useContext<ContextProps>(Context);
+  const { step2Answered, setStep2Answered, stepData, setStepData } =
+    useContext<ContextProps>(Context);
 
   /**
    * React-Hook-Form hook
@@ -32,6 +24,7 @@ const SelectStep2 = ({ Context }: { Context: Context<ContextProps> }) => {
     register,
     watch,
     getValues,
+    trigger,
     formState: { errors, isValid },
   } = useForm({
     defaultValues: {
@@ -56,6 +49,8 @@ const SelectStep2 = ({ Context }: { Context: Context<ContextProps> }) => {
   }, []);
 
   useEffect(() => {
+    storeData();
+
     if (isValid) {
       setStep2Answered(true);
 
@@ -76,17 +71,19 @@ const SelectStep2 = ({ Context }: { Context: Context<ContextProps> }) => {
     }
   }, [formFields, isValid, setStep2Answered]);
 
-  const storeData = () => {
-    if (isValid) {
-      setStepData({
-        step2: {
-          solved: isValid,
-          state: getValues(),
-          error: errors !== null,
-        },
-      });
-    }
+  const storeData = async () => {
+    const isValidStore = await trigger();
+
+    setStepData({
+      step2: {
+        solved: isValidStore,
+        state: getValues(),
+        error: !isValidStore,
+      },
+    });
   };
+
+  console.log(errors);
 
   return (
     <div className="flex flex-col">
@@ -123,13 +120,19 @@ const SelectStep2 = ({ Context }: { Context: Context<ContextProps> }) => {
           <motion.div variants={childVariants} className="min-h-[24px]">
             <span className="text-red-500 ">
               {errors.supply_units?.type === 'required' && (
-                <motion.div variants={childVariants} role="alert">Name is required.</motion.div>
+                <motion.div variants={childVariants} role="alert">
+                  Name is required.
+                </motion.div>
               )}
               {errors.supply_units?.type === 'min' && (
-                <motion.div variants={childVariants} role="alert">Minimum 1 unit.</motion.div>
+                <motion.div variants={childVariants} role="alert">
+                  Minimum 1 unit.
+                </motion.div>
               )}
               {errors.supply_units?.type === 'max' && (
-                <motion.div variants={childVariants} role="alert">Maximum 100 unit.</motion.div>
+                <motion.div variants={childVariants} role="alert">
+                  Maximum 100 unit.
+                </motion.div>
               )}
             </span>
           </motion.div>
@@ -174,7 +177,9 @@ const SelectStep2 = ({ Context }: { Context: Context<ContextProps> }) => {
         <motion.div variants={childVariants} className="min-h-[24px]">
           <span className="text-red-500">
             {errors.collection_token?.type === 'required' && (
-              <motion.div variants={childVariants} role="alert">Collection choose is required.</motion.div>
+              <motion.div variants={childVariants} role="alert">
+                Collection choose is required.
+              </motion.div>
             )}
           </span>
         </motion.div>

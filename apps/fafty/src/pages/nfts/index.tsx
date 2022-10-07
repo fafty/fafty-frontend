@@ -8,6 +8,8 @@ import { GetNftsParams, GetNftsResponse } from '../../api/callbacks/nfts/types';
 import { Masonry } from 'masonic';
 import Item from '../../components/item';
 import {
+  BillingType,
+  BillingTypeValue,
   PriceFilterProps,
   PriceFiltersValue,
 } from '../../components/nfts/filters';
@@ -18,10 +20,12 @@ import { InfinityLoadChecker } from '../../components/common/InfinityLoadChecker
 import { Panel } from '../../components/common/panel';
 import { Pills } from '../../components/nfts/pills';
 import { NftItem } from '../../api/callbacks/nfts/types';
+import { useComponentDidUpdate } from '@fafty-frontend/usehooks';
 
 export type FiltersValues = {
   price?: PriceFiltersValue;
   sort?: string;
+  billing_type?: BillingTypeValue;
 };
 
 const TABS = [
@@ -76,6 +80,7 @@ type QueryFiltersType = {
     offset: number;
   };
   filters?: FiltersValues;
+  sort?: string;
 };
 
 const Nfts = () => {
@@ -103,7 +108,7 @@ const Nfts = () => {
     : false;
 
   const onChangeFiltersByKey =
-    (key: string) => (value: PriceFiltersValue | string) => {
+    (key: string) => (value: PriceFiltersValue | string | BillingTypeValue) => {
       clearAsyncData();
 
       setLocalFiltersState((prev) => ({
@@ -168,10 +173,24 @@ const Nfts = () => {
       filters: {
         currency: filters?.price?.currency,
         price: { lg: filters?.price?.from, ge: filters?.price?.to },
+        billing_type: filters?.billing_type,
       },
       sort: TABS[tabIndex]?.value || TABS[0].value,
     });
   }, [localFiltersState]);
+
+  useComponentDidUpdate(
+    (prev) => {
+      if (!!prev.search && !search) {
+        clearAsyncData();
+
+        setLocalFiltersState((prev) => ({
+          paginate: { ...prev.paginate, offset: 0 },
+        }));
+      }
+    },
+    { search }
+  );
 
   const items = useMemo(() => {
     const count = Math.min(
@@ -223,6 +242,15 @@ const Nfts = () => {
               <Price
                 value={localFiltersState?.filters?.price}
                 onChange={onChangeFiltersByKey('price')}
+              />
+            </Panel>
+            <Panel
+              title="Billing type"
+              initialState={!!localFiltersState?.filters?.billing_type}
+            >
+              <BillingType
+                value={localFiltersState?.filters?.billing_type}
+                onChange={onChangeFiltersByKey('billing_type')}
               />
             </Panel>
           </div>

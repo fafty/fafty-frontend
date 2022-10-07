@@ -1,11 +1,12 @@
 import { createContext } from 'react';
 import { Tag } from '../../../api/callbacks/tags/types';
 import { CommentsModerationType, CommentsOrderType, FileProps } from './types';
+import { EditorState } from 'lexical';
 
 export interface Step1Props {
   name: string;
-  description: null | object;
-  unlockable_content: null | object;
+  description: null | EditorState | string;
+  unlockable_content: null | EditorState | string;
   sensitive_content: boolean;
 }
 
@@ -37,10 +38,7 @@ export interface StepsProps {
 
 export type SetStepDataProps = Record<
   string,
-  | StepData<Step1Props>
-  | StepData<Step2Props>
-  | StepData<Step3Props>
-  | FileProps
+  StepData<Step1Props> | StepData<Step2Props> | StepData<Step3Props> | FileProps
 >;
 
 export interface ContextProps {
