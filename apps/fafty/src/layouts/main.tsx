@@ -13,8 +13,8 @@ type Props = {
 const MainLayout = ({ children, title, description }: Props) => {
   const [openedAuthModal, setOpenedAuthModal] = useState(false);
   const [openedFormAssetModal, setOpenedFormAssetModal] = useState(false);
-  const [openedFormCollectionModal, setOpenedFormCollectionModal] = useState(false);
-  const [openedFormBundleModal, setOpenedFormBundleModal] = useState(false);
+  // const [openedFormCollectionModal, setOpenedFormCollectionModal] = useState(false);
+  // const [openedFormBundleModal, setOpenedFormBundleModal] = useState(false);
   const auth = useAuth();
 
   const onAuth = () => {
@@ -26,12 +26,12 @@ const MainLayout = ({ children, title, description }: Props) => {
       case 'nft':
         setOpenedFormAssetModal(true);
         break;
-      case 'collection':
-        setOpenedFormCollectionModal(true);
-        break;
-      case 'bundle':
-        setOpenedFormBundleModal(true);
-        break;
+      // case 'collection':
+      //   setOpenedFormCollectionModal(true);
+      //   break;
+      // case 'bundle':
+      //   setOpenedFormBundleModal(true);
+      //   break;
       default:
         break;
     }   
@@ -61,6 +61,7 @@ const MainLayout = ({ children, title, description }: Props) => {
       )}
       {openedFormAssetModal && (
         <FormAssetModal
+          title="Create Your Asset"
           onClose={() => setOpenedFormAssetModal(false)}
           isOpened={openedFormAssetModal}
         />

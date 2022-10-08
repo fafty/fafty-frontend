@@ -1,10 +1,18 @@
-import { useState, ReactNode, useCallback } from 'react';
-import Context, { SetStepDataProps } from './context';
-import { CommentsModerationType, CommentsOrderType } from './types';
+import { useState, ReactNode, useCallback, useEffect } from 'react';
+import Context from './context';
+import { CommentsModerationType, CommentsOrderType, FormProps, SetStepDataProps } from './types';
 
 export const FormAssetContextProvider = ({
-  children,
+  onChangeDismiss,
+  rawDataCallback,
+  onRawDataCallback,
+  onFinished,
+  children
 }: {
+  onChangeDismiss: (data: { title: string, disabled: boolean }) => void;
+  rawDataCallback: boolean;
+  onRawDataCallback: (data: FormProps) => void;
+  onFinished: () => void;
   children: ReactNode;
 }) => {
   const [step1Answered, setStep1Answered] = useState(false);
@@ -51,6 +59,48 @@ export const FormAssetContextProvider = ({
       error: false,
     },
   });
+
+  useEffect(() => {
+    if (rawDataCallback) {
+      onRawDataCallback(
+        {
+          asset: stepData.asset,
+          ...stepData.step1.state,
+          ...stepData.step2.state,
+          ...stepData.step3.state,
+        }
+      );
+    }
+    finished && onFinished();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [rawDataCallback]);
+
+  useEffect(() => {
+    if (step1Answered && stepData.asset) {
+      onChangeDismiss(
+        {
+          title: 'Close and save as draft',
+          disabled: false,
+        }
+      );
+    }
+    if (!step1Answered && stepData.asset) {
+      onChangeDismiss(
+        {
+          title: 'The button is not active because there are errors in some fields',
+          disabled: true,
+        }
+      );
+    }
+    if (!step1Answered && !stepData.asset || finished) {
+      onChangeDismiss(
+        {
+          title: 'Close',
+          disabled: false,
+        }
+      );
+    }
+  }, [finished, step1Answered, stepData.asset]);
 
   const onSetStepData = useCallback(
     (data: SetStepDataProps) => {

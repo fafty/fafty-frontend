@@ -9,7 +9,7 @@ import {
 } from '@heroicons/react/24/outline';
 import { GalleryIcon, ImageAddIcon } from '@remixicons/react/line';
 import ProfileMenu from './components/dropdowns/profile';
-import { Search } from './components/search/Search';
+import { Search } from './components/search/main';
 
 const pagesLinks = [
   {

@@ -3,10 +3,8 @@ import {
   useEffect,
   SVGProps,
   ReactNode,
-  ComponentProps,
-  Fragment,
 } from 'react';
-import { Transition, RadioGroup } from '@headlessui/react';
+import { RadioGroup } from '@headlessui/react';
 import {
   ChatBubbleOvalLeftEllipsisIcon,
   CogIcon,
@@ -25,7 +23,6 @@ import Link from 'next/link';
 import {
   AnimatePresence,
   AnimateSharedLayout,
-  LayoutGroup,
   motion,
 } from 'framer-motion';
 
@@ -51,13 +48,6 @@ const themeOptions = [
     theme: 'system',
   },
 ];
-
-// const variants = {
-//   visible: (custom) => ({
-//     opacity: 1,
-//     transition: { delay: custom * 0.2 }
-//   })
-// }
 
 const variants = {
   enter: ({ direction, menu }: { direction: number; menu: string }) => ({

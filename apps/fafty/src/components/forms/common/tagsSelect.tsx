@@ -1,13 +1,13 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
-import { useAsync } from '../../../api/useAsync';
-import { getPopularTags, getTagsBySearch } from '../../../api/callbacks/tags';
-import { GetSearchTagsResponse, Tag } from '../../../api/callbacks/tags/types';
+import { useAsync } from '@fafty-frontend/shared/api';
+import { getPopularTags, getTagsBySearch } from '@fafty-frontend/shared/api';
+import { GetSearchTagsResponseProps, TagProps } from '@fafty-frontend/shared/api';
 import classNames from 'classnames';
-import { useDebounce, useOnClickOutside } from '../../../hooks';
+import { useDebounce, useOnClickOutside } from '@fafty-frontend/usehooks';
 
 type Props = {
-  onChange: (value: Tag[]) => void;
-  value: Tag[];
+  onChange: (value: TagProps[]) => void;
+  value: TagProps[];
 };
 
 export const TagsSelect = ({ value, onChange }: Props) => {
@@ -22,13 +22,13 @@ export const TagsSelect = ({ value, onChange }: Props) => {
   });
 
   const { data: searchResult, call: callSearchTags } = useAsync<
-    GetSearchTagsResponse,
+    GetSearchTagsResponseProps,
     string
   >({
     callback: (query?: string) => getTagsBySearch(query),
   });
 
-  const onChangeTag = (tag: Tag) => {
+  const onChangeTag = (tag: TagProps) => {
     const isIncludes = value.find((valueTag) => valueTag.slug === tag.slug);
 
     if (isIncludes) {

@@ -1,17 +1,11 @@
 import {
-  useState,
   useEffect,
   useContext,
-  ChangeEventHandler,
-  Suspense,
   useLayoutEffect,
   useMemo,
-  Fragment,
   Context,
 } from 'react';
 import { Controller, useForm } from 'react-hook-form';
-import { EditorPlaceholder } from '@fafty-frontend/shared/ui';
-import dynamic from 'next/dynamic';
 import { Switch, RadioGroup, Listbox } from '@headlessui/react';
 import {
   childVariants,
@@ -22,37 +16,15 @@ import {
 import classNames from 'classnames';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ArrowDownSIcon } from '@remixicons/react/line';
-import { ContextProps } from '../context';
 import { TagsSelect } from '../../common/tagsSelect';
 import { useComponentDidUpdate } from '@fafty-frontend/usehooks';
-
-interface EditorProps {
-  isAutocomplete?: boolean;
-  maxCharacters?: null | number;
-  isRichText?: boolean;
-  showTreeView?: boolean;
-  initialEditorState: null | string;
-  placeholder?: string;
-  name: string;
-  hasError: boolean;
-  onChange: ChangeEventHandler;
-  namespace: string;
-  loading?: boolean;
-}
-
-const Editor = dynamic<EditorProps>(
-  () => import('@fafty-frontend/editor').then((mod) => mod.Editor),
-  {
-    ssr: false,
-    loading: () => <EditorPlaceholder header={true} />,
-  }
-);
+import { ContextProps } from '../types';
 
 const SelectStep3 = ({ Context }: { Context: Context<ContextProps> }) => {
   /**
    * Context Store
    */
-  const { step3Answered, setStep3Answered, stepData, setStepData } =
+  const { setStep3Answered, stepData, setStepData } =
     useContext<ContextProps>(Context);
 
   /**

@@ -1,4 +1,4 @@
-import { Tag } from 'apps/fafty/src/api/callbacks/tags/types';
+import { TagProps } from '@fafty-frontend/shared/api';
 import { CSSProperties } from 'react';
 import { EditorState } from 'lexical';
 
@@ -56,11 +56,73 @@ export interface FormProps {
   allow_ratings: boolean;
   comments_moderation: CommentsModerationType;
   comments_order: CommentsOrderType;
-  tags: Tag[] | null;
+  tags: TagProps[] | null;
 }
 
 export interface Props {
   baseData: FormProps;
   onSubmit: (data: FormProps) => Promise<void>;
   submiting: boolean;
+}
+
+export interface Step1Props {
+  name: string;
+  description: null | EditorState | string;
+  unlockable_content: null | EditorState | string;
+  sensitive_content: boolean;
+}
+
+export interface Step2Props {
+  blockchain: string;
+  supply_units: number;
+  collection_token: string;
+}
+
+export interface Step3Props {
+  allow_ratings: boolean;
+  comments_moderation: CommentsModerationType;
+  comments_order: CommentsOrderType;
+  tags: Tag[];
+}
+
+export interface StepData<T> {
+  state: T;
+  solved: boolean;
+  error: boolean;
+}
+
+export interface StepsProps {
+  asset: FileProps;
+  step1: StepData<Step1Props>;
+  step2: StepData<Step2Props>;
+  step3: StepData<Step3Props>;
+}
+
+export type SetStepDataProps = Record<
+  string,
+  StepData<Step1Props> | StepData<Step2Props> | StepData<Step3Props> | FileProps
+>;
+
+export interface ContextProps {
+  activeStep: number;
+  setActiveStep: (step: number) => void;
+  skipped: Set<number>;
+  setSkipped: (skipped: Set<number>) => void;
+  allowSkip: boolean;
+  components: { [key: string]: JSX.Element };
+  setComponent: (components: { [key: string]: any }) => void;
+  view: null | JSX.Element;
+  stepData: StepsProps;
+  setStepData: (stepData: SetStepDataProps) => void;
+  setView: (view: JSX.Element) => void;
+  solutionProvided: boolean;
+  setSolutionProvided: (solutionProvided: boolean) => void;
+  setStep1Answered: (step1Answered: boolean) => void;
+  setStep2Answered: (step2Answered: boolean) => void;
+  setStep3Answered: (step3Answered: boolean) => void;
+  step1Answered: boolean;
+  step2Answered: boolean;
+  step3Answered: boolean;
+  finished: boolean;
+  setFinished: (finished: boolean) => void;
 }

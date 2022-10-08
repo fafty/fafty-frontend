@@ -1,5 +1,5 @@
 import { Tab } from '@headlessui/react';
-import { Dispatch, Fragment, useMemo, useState } from 'react';
+import { Dispatch, Fragment, useMemo } from 'react';
 import { motion } from 'framer-motion';
 import { getSystemTheme, useTheme } from '@fafty-frontend/theme';
 

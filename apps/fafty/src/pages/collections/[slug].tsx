@@ -1,33 +1,31 @@
 import { useRouter } from 'next/router';
 import { useEffect } from 'react';
-import { useAsync } from '../../api/useAsync';
 import MainLayout from '../../layouts/main';
 import { Masonry } from 'masonic';
 import Item from '../../components/item';
 import {
+  useAsync,
   getCollection,
   getCollectionNftsBySlug,
-} from '../../api/callbacks/collections';
-import {
-  GetCollectionNftsBySlugParams,
-  GetCollectionNftsBySlugResponse,
-  GetCollectionParams,
-  GetCollectionResponse,
-} from '../../api/callbacks/collections/types';
-import { NftItem } from '../../api/callbacks/nfts/types';
+  GetCollectionNftsBySlugParamsProps,
+  GetCollectionNftsBySlugResponseProps,
+  GetCollectionParamsProps,
+  GetCollectionResponseProps,
+  NftProps,
+} from '@fafty-frontend/shared/api';
 
 const Collection = () => {
   const { query, isReady } = useRouter();
   const slug = query.slug as string;
 
-  const { data, call } = useAsync<GetCollectionResponse, GetCollectionParams>({
+  const { data, call } = useAsync<GetCollectionResponseProps, GetCollectionParamsProps>({
     callback: getCollection,
   });
 
   //todo add filters
   const { data: nftsData, call: callNfts } = useAsync<
-    GetCollectionNftsBySlugResponse,
-    GetCollectionNftsBySlugParams
+    GetCollectionNftsBySlugResponseProps,
+    GetCollectionNftsBySlugParamsProps
   >({
     callback: getCollectionNftsBySlug,
   });
@@ -62,7 +60,7 @@ const Collection = () => {
               <Masonry
                 columnGutter={24}
                 items={nftsData?.nfts?.records}
-                render={({ data }) => <Item item={data as NftItem} />}
+                render={({ data }) => <Item item={data as NftProps} />}
               />
             )}
           </div>

@@ -3,7 +3,7 @@ import type { AppProps } from 'next/app';
 import { ThemeProvider } from '@fafty-frontend/theme';
 import { NotificationProvider } from '@fafty-frontend/notifications';
 import { ProvideAuth } from '../utils/auth';
-import { Listeners } from '../layouts/Listeners';
+import { Listeners } from '../layouts/listeners';
 
 function FaftyApp({ Component, pageProps }: AppProps) {
   return (

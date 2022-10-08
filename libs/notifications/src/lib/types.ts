@@ -24,16 +24,19 @@ interface OptionsProps {
   countdown?: number;
   persist?: boolean;
   dismissible?: boolean;
+  playSound?: boolean;
   customIcon?: SVGElement;
   customStyle?: CustomStyleProps;
 }
 
+// export type NotificationPositionType = 'bottom-left' | 'bottom-center';
 export interface QueueableNotificationProps {
+  title?: string;
   message: string;
   actions?: ActionsProps;
   options?: OptionsProps;
+  position: string;
 }
-
 export interface NotificationProps extends QueueableNotificationProps {
   id: number;
   open: boolean;

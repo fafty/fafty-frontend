@@ -56,7 +56,10 @@ const NotificationProvider = ({
         return state;
       });
       // playSound('/assets/notifications/sounds/pop-up.mp3');
-      playSound();
+      if (notification?.options?.playSound) {
+        playSound();
+      }
+      // playSound();
       setNotifications((state) => [{ ...notification }].concat(state));
       if (!notification.options?.persist) {
         enqueueForDismiss(notification.id, notification.options?.countdown);
@@ -100,24 +103,48 @@ const NotificationProvider = ({
   return (
     <Context.Provider value={contextValue}>
       {children}
-      {!!notifications.length && (
-        <div className="fixed bottom-2 left-2 z-40">
-          {notifications.map((notification) => {
-            const { options, ...rest } = notification;
-            return (
-              <NotificationItem
-                {...rest}
-                key={notification.id}
-                onDismiss={() => {
-                  dismiss(notification.id);
-                }}
-                options={{
-                  customStyle,
-                  ...options,
-                }}
-              />
-            );
-          })}
+      {!!notifications.filter((notification) => notification.position === 'bottom-left' as NotificationPositionType).length && (
+        <div className="fixed bottom-2 left-2 z-40 ">
+          {notifications
+            .filter((notification) => notification.position === 'bottom-left' as NotificationPositionType)
+            .map((notification) => {
+              const { options, ...rest } = notification;
+              return (
+                <NotificationItem
+                  {...rest}
+                  key={notification.id}
+                  onDismiss={() => {
+                    dismiss(notification.id);
+                  }}
+                  options={{
+                    customStyle,
+                    ...options,
+                  }}
+                />
+              );
+            })}
+        </div>
+      )}
+      {!!notifications.filter((notification) => notification.position === 'bottom-center' as NotificationPositionType).length && (
+        <div className="fixed bottom-2 inset-x-0 flex items-center justify-center z-40 ">
+          {notifications
+            .filter((notification) => notification.position === 'bottom-center' as NotificationPositionType)
+            .map((notification) => {
+              const { options, ...rest } = notification;
+              return (
+                <NotificationItem
+                  {...rest}
+                  key={notification.id}
+                  onDismiss={() => {
+                    dismiss(notification.id);
+                  }}
+                  options={{
+                    customStyle,
+                    ...options,
+                  }}
+                />
+              );
+            })}
         </div>
       )}
     </Context.Provider>

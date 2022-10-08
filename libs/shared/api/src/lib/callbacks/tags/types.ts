@@ -1,4 +1,4 @@
-export type Tag = {
+export type TagProps = {
   active: boolean;
   name: string;
   slug: string;
@@ -10,8 +10,8 @@ export type Tag = {
   created_at: string;
 };
 
-export type GetPopularResponse = {
-  records: Tag[];
+export type GetPopularTagsResponseProps = {
+  records: TagProps[];
 };
 
-export type GetSearchTagsResponse = GetPopularResponse;
+export type GetSearchTagsResponseProps = GetPopularTagsResponseProps;

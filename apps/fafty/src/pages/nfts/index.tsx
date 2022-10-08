@@ -2,9 +2,7 @@ import { useRouter } from 'next/router';
 import { ItemPlaceholder } from '@fafty-frontend/shared/ui';
 import qs from 'qs';
 import MainLayout from '../../layouts/main';
-import { useAsync } from '../../api/useAsync';
-import { getNfts } from '../../api/callbacks/nfts';
-import { GetNftsParams, GetNftsResponse } from '../../api/callbacks/nfts/types';
+import { useAsync, getNfts, GetNftsParamsProps, GetNftsResponseProps, NftProps } from '@fafty-frontend/shared/api';
 import { Masonry } from 'masonic';
 import Item from '../../components/item';
 import {
@@ -15,11 +13,10 @@ import {
 } from '../../components/nfts/filters';
 import { useEffect, useMemo, useState } from 'react';
 import dynamic from 'next/dynamic';
-import { TabsProps } from '../../components/nft/Tabs';
-import { InfinityLoadChecker } from '../../components/common/InfinityLoadChecker';
+import { TabsProps } from '../../components/nft/tabs';
+import { InfinityLoadChecker } from '../../components/common/infinityLoadChecker';
 import { Panel } from '../../components/common/panel';
 import { Pills } from '../../components/nfts/pills';
-import { NftItem } from '../../api/callbacks/nfts/types';
 import { useComponentDidUpdate } from '@fafty-frontend/usehooks';
 
 export type FiltersValues = {
@@ -48,7 +45,7 @@ const TABS = [
 ];
 
 const Tabs = dynamic<TabsProps>(
-  () => import('../../components/nft/Tabs').then((mod) => mod.Tabs),
+  () => import('../../components/nft/tabs').then((mod) => mod.Tabs),
   {
     ssr: false,
   }
@@ -62,9 +59,9 @@ const Price = dynamic<PriceFilterProps>(
 );
 
 const mapper = (
-  data: GetNftsResponse,
-  prev?: GetNftsResponse
-): GetNftsResponse => {
+  data: GetNftsResponseProps,
+  prev?: GetNftsResponseProps
+): GetNftsResponseProps => {
   if (prev && Object.keys(prev).length) {
     return { ...prev, ...data, records: [...prev.records, ...data.records] };
   }
@@ -74,7 +71,7 @@ const mapper = (
 
 const LIMIT = 10;
 
-type QueryFiltersType = {
+type QueryFiltersProps = {
   paginate: {
     limit: number;
     offset: number;
@@ -87,7 +84,7 @@ const Nfts = () => {
   const { replace, asPath } = useRouter();
   const search = asPath.split('?')[1];
 
-  const [localFiltersState, setLocalFiltersState] = useState<QueryFiltersType>({
+  const [localFiltersState, setLocalFiltersState] = useState<QueryFiltersProps>({
     paginate: {
       limit: LIMIT,
       offset: 0,
@@ -96,8 +93,8 @@ const Nfts = () => {
   });
 
   const { data, call, isLoading, isSuccess, clearAsyncData } = useAsync<
-    GetNftsResponse,
-    GetNftsParams
+    GetNftsResponseProps,
+    GetNftsParamsProps
   >({
     callback: getNfts,
     mapper,
@@ -224,7 +221,7 @@ const Nfts = () => {
             return <ItemPlaceholder />;
           }
 
-          return <Item item={data as NftItem} />;
+          return <Item item={data as NftProps} />;
         }}
       />
     );

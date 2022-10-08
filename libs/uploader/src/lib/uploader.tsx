@@ -368,7 +368,7 @@ const Uploader = ({
         .on('preprocess-complete', (file) => {
           changeThumbnailState(file.id, 'in-upload-queue');
         })
-        // @ts-ignore
+        // @ts-ignore 
         .on('upload-started', (file: UppyFile) => {
           changeThumbnailState(file.id, 'uploading');
         })

@@ -1,4 +1,4 @@
-import React, {
+import {
   ChangeEvent,
   useCallback,
   useEffect,
@@ -6,13 +6,11 @@ import React, {
   useState,
 } from 'react';
 import { SearchIcon } from '@remixicons/react/line';
-import { useAsync } from 'apps/fafty/src/api/useAsync';
-import { useDebounce, useOnClickOutside } from 'apps/fafty/src/hooks';
-import { SearchResultResponse } from 'apps/fafty/src/api/callbacks/search/types';
-import { getSearchResult } from 'apps/fafty/src/api/callbacks/search';
-import { isObject } from 'apps/fafty/src/utils/isObject';
+import { useDebounce, useOnClickOutside } from '@fafty-frontend/usehooks';
+import { useAsync, SearchResultResponseProps, getSearchResult } from '@fafty-frontend/shared/api';
 import classNames from 'classnames';
 import { useRouter } from 'next/router';
+const isObject = (value: any) => typeof value === 'object';
 
 export const Search = () => {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -22,7 +20,7 @@ export const Search = () => {
   const [activeIndex, setActiveIndex] = useState(-1);
   const { push } = useRouter();
 
-  const { data, call } = useAsync<SearchResultResponse, string>({
+  const { data, call } = useAsync<SearchResultResponseProps, string>({
     withMount: false,
     callback: getSearchResult,
   });

@@ -6,7 +6,6 @@ import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/24/outline';
 import { useNotifications } from '@fafty-frontend/notifications';
 import { useDebouncedCallback } from '../hooks';
 import classNames from 'classnames';
-import api from '../api';
 
 type Props = {
   items: ItemProps[];
@@ -72,8 +71,10 @@ const Items = ({ items }: Props): JSX.Element => {
   const handleClick = (): void => {
     // create notification demo
     const id = enqueueNotification({
+      title: 'Notification title',
       message: 'This is an awesome Notification! and other more data here',
-      options: { dismissible: true },
+      options: { dismissible: true, playSound: true },
+      position: 'bottom-left',
     });
     setNotificationId(id);
   };

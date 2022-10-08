@@ -1,16 +1,14 @@
 import Link from 'next/link';
 import { Masonry } from 'masonic';
 import MainLayout from '../../layouts/main';
-import { useAsync } from '../../api/useAsync';
 import { useEffect, useState } from 'react';
-import { getCollections } from '../../api/callbacks/collections';
-import { GetCollectionsResponse } from '../../api/callbacks/collections/types';
-import { InfinityLoadChecker } from '../../components/common/InfinityLoadChecker';
+import { useAsync, getCollections, GetCollectionsResponseProps } from '@fafty-frontend/shared/api';
+import { InfinityLoadChecker } from '../../components/common/infinityLoadChecker';
 
 const mapper = (
-  data: GetCollectionsResponse,
-  prev?: GetCollectionsResponse
-): GetCollectionsResponse => {
+  data: GetCollectionsResponseProps,
+  prev?: GetCollectionsResponseProps
+): GetCollectionsResponseProps => {
   if (prev && Object.keys(prev).length) {
     return { ...prev, ...data, records: [...prev.records, ...data.records] };
   }
@@ -23,7 +21,7 @@ const LIMIT = 10;
 const Collections = () => {
   const [offset, setOffset] = useState(0);
 
-  const { data, isLoading, call } = useAsync<GetCollectionsResponse, undefined>(
+  const { data, isLoading, call } = useAsync<GetCollectionsResponseProps, undefined>(
     {
       callback: () => getCollections({ offset, limit: LIMIT }),
       mapper,

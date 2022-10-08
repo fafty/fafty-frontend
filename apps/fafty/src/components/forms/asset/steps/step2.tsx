@@ -2,7 +2,7 @@ import { motion } from 'framer-motion';
 import { useEffect, useContext, lazy, useLayoutEffect, Context } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { childVariants, variants } from '../constants';
-import { ContextProps } from '../context';
+import { ContextProps } from '../types';
 
 const SelectBlockchain = lazy(() => import('../../common/selectBlockchain'));
 const SelectCollection = lazy(() => import('../../common/selectCollection'));
@@ -13,7 +13,7 @@ const SelectStep2 = ({ Context }: { Context: Context<ContextProps> }) => {
   /**
    * Context Store
    */
-  const { step2Answered, setStep2Answered, stepData, setStepData } =
+  const { setStep2Answered, stepData, setStepData } =
     useContext<ContextProps>(Context);
 
   /**

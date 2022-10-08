@@ -1,8 +1,8 @@
 import { useOnScreen } from '@fafty-frontend/usehooks';
-import { Transition, RadioGroup } from '@headlessui/react';
+import { RadioGroup } from '@headlessui/react';
 import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/24/outline';
-import { useDebouncedCallback } from 'apps/fafty/src/hooks';
-import isClient from 'apps/fafty/src/utils/isClient';
+import { useDebouncedCallback } from '../../../hooks';
+import isClient from '../../../utils/isClient';
 import classNames from 'classnames';
 import Image from 'next/future/image';
 import { MutableRefObject, SVGProps, useEffect, useRef, useState } from 'react';
@@ -15,9 +15,9 @@ interface CollectionProps {
   popularity: string;
   fees: string;
 }
-interface ResponceProps {
-  record: CollectionProps;
-}
+// interface ResponceProps {
+//   record: CollectionProps;
+// }
 
 interface Props {
   current: string;
@@ -285,7 +285,6 @@ const SelectBlockchain = ({ current, onChange }: Props): JSX.Element => {
                           src={collection.logo}
                           alt={collection.name}
                           className="w-16 h-16"
-                          // layout="raw"
                           width="24"
                           height="24"
                         />

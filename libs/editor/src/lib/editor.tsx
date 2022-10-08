@@ -11,7 +11,7 @@ import { OnChangePlugin } from '@lexical/react/LexicalOnChangePlugin';
 import { EditorPlaceholder } from '@fafty-frontend/shared/ui';
 import BaseTheme from './themes/base';
 import AutoLinkPlugin from './plugins/AutoLink';
-import AutocompletePlugin from './plugins/Autocomplete';
+// import AutocompletePlugin from './plugins/Autocomplete';
 import TreeViewPlugin from './plugins/TreeView';
 import ToolbarPlugin from './plugins/Toolbar';
 import ListMaxIndentLevelPlugin from './plugins/ListMaxIndentLevel';
@@ -47,7 +47,6 @@ interface Props {
   loading?: boolean;
 }
 
-// let renderCount = 0;
 const Editor = ({
   isAutocomplete = true,
   maxCharacters = null,
@@ -92,7 +91,6 @@ const Editor = ({
     namespace: namespace,
     editorState: JSON.stringify(initialEditorState || baseState),
   };
-  // renderCount += 1;
 
   return (
     <LexicalComposer initialConfig={initialConfig}>
@@ -106,7 +104,6 @@ const Editor = ({
           showTreeView ? 'tree-view' : ''
         } ${!isRichText ? 'plain-text' : ''}`}
       >
-        {/* {renderCount} */}
         {isRichText && <ToolbarPlugin />}
         <AutoFocusPlugin />
         <AutoLinkPlugin />

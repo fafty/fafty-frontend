@@ -9,7 +9,7 @@ const ItemPlaceholder = () => {
               <div className=" w-full h-[0.60rem] bg-neutral-300 dark:bg-neutral-700 rounded col-span-1 animate-pulse" />
               <div className=" w-full mt-1.5 h-[0.60rem] bg-neutral-300 dark:bg-neutral-700 rounded col-span-1 animate-pulse" />
             </div>
-            <div className=" w-full h-[40px] mt-1.5 h-[0.60rem] bg-neutral-300 dark:bg-neutral-700 rounded col-span-1 animate-pulse" />
+            <div className="w-full h-[40px] mt-1.5 bg-neutral-300 dark:bg-neutral-700 rounded col-span-1 animate-pulse" />
           </div>
         </div>
       </div>

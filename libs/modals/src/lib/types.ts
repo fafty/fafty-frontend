@@ -9,10 +9,15 @@ interface ActionsProps {
   first: ActionProps;
   second?: ActionProps;
 }
+interface DismissibleProps {
+  active: boolean;
+  disabled: boolean;
+  title: string;
+}
 
 interface OptionsProps {
   persist?: boolean;
-  dismissible?: boolean;
+  dismissible?: DismissibleProps;
   customIcon?: SVGElement;
 }
 

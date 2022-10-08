@@ -9,11 +9,11 @@ import {
 import { Controller, useForm } from 'react-hook-form';
 import { EditorPlaceholder } from '@fafty-frontend/shared/ui';
 import dynamic from 'next/dynamic';
-import { ContextProps, Step1Props } from '../context';
 import { motion } from 'framer-motion';
 import { childVariants, variants } from '../constants';
 import classNames from 'classnames';
 import { EditorState } from 'lexical';
+import { ContextProps, Step1Props } from '../types';
 
 interface EditorProps {
   isAutocomplete?: boolean;
@@ -41,7 +41,7 @@ const SelectStep1 = ({ Context }: { Context: Context<ContextProps> }) => {
   /**
    * Context Store
    */
-  const { step1Answered, setStep1Answered, stepData, setStepData } =
+  const { setStep1Answered, stepData, setStepData } =
     useContext<ContextProps>(Context);
 
   /**
@@ -121,7 +121,6 @@ const SelectStep1 = ({ Context }: { Context: Context<ContextProps> }) => {
     });
   }, [isValid]);
 
-  // @ts-ignore
   return (
     <div className="flex flex-col">
       <h4 className="font-bold">Infomation</h4>
@@ -143,8 +142,8 @@ const SelectStep1 = ({ Context }: { Context: Context<ContextProps> }) => {
             'text-gray-700 dark:text-gray-100 dark:bg-neutral-900/90 mt-1 border focus:outline-none rounded-md shadow-sm focus:border-gray-500 focus:shadow w-full p-3 h-12'
           )}
           placeholder="Enter name of Nft"
-          autoComplete="off"
           {...(errors.name && { 'aria-invalid': true })}
+          autoComplete="off"
           {...register('name', {
             required: true,
             minLength: 3,

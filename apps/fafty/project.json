@@ -75,7 +75,7 @@
       "executor": "@nrwl/linter:eslint",
       "outputs": ["{options.outputFile}"],
       "options": {
-        "lintFilePatterns": ["apps/fafty/**/*.{ts,tsx,js,jsx}"]
+        "lintFilePatterns": ["apps/fafty/src/**/*.{ts,tsx,js,jsx}"]
       }
     }
   },

@@ -1,6 +1,6 @@
 import { RefObject, useEffect, useRef } from 'react';
 
-import { useIsomorphicLayoutEffect } from '@fafty-frontend/usehooks';
+import useIsomorphicLayoutEffect from './useIsomorphicLayoutEffect';
 
 function useEventListener<K extends keyof WindowEventMap>(
   eventName: K,

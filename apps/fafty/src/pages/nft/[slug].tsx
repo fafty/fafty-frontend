@@ -1,11 +1,11 @@
 import MainLayout from '../../layouts/main';
 import Image from 'next/future/image';
 import { useRouter } from 'next/router';
-import api from '../../api';
-import { Fragment, SVGProps, useEffect, useMemo, useState } from 'react';
-import { Tabs } from '../../components/nft/Tabs';
-import { Info } from '../../components/nft/tabs/Info';
-import { Owners } from '../../components/nft/tabs/Owners';
+import { api } from '@fafty-frontend/shared/api';
+import { SVGProps, useEffect, useMemo, useState } from 'react';
+import { Tabs } from '../../components/nft/tabs';
+import { Info } from '../../components/nft/tabs/info';
+import { Owners } from '../../components/nft/tabs/owners';
 import { ChevronRightIcon, HomeIcon } from '@heroicons/react/24/outline';
 import Link from 'next/link';
 

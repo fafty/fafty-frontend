@@ -1,15 +1,15 @@
 import { useState, useEffect, useCallback } from 'react';
 import axios, { AxiosError } from 'axios';
 
-export type useAsyncParams<D, P> = (params?: P) => Promise<D>;
+type useAsyncParams<D, P> = (params?: P) => Promise<D>;
 
-export type RequestParams<D, P> = {
+type RequestParams<D, P> = {
   callback: useAsyncParams<D, P>;
   mapper?: (data: D, prev?: D) => D;
   withMount?: boolean;
 };
 
-export function useAsync<D, P>({
+function useAsync<D, P>({
   callback,
   mapper,
   withMount = false,
@@ -100,3 +100,5 @@ export function useAsync<D, P>({
     ...state,
   };
 }
+
+export default useAsync;

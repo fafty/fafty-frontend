@@ -76,10 +76,12 @@ const Modal: FC<ModalProps> = (props) => {
             >
               <div className="flex justify-between items-start">
                 {title && (<div className="text-base font-bold">{title}</div>)}
-                {options?.dismissible && (
+                {options?.dismissible?.active && (
                   <span className="dismiss">
                     <button
+                      title={options?.dismissible?.title}
                       type="button"
+                      disabled={options?.dismissible?.disabled}
                       onClick={() => onDismiss()}
                       className="mb-1 w-full bg-gray-600 text-gray-100 rounded-full hover:bg-gray-500 px-1 py-1 focus:outline-none dark:bg-neutral-700 dark:hover:bg-neutral-600"
                     >

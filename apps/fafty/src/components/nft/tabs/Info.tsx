@@ -1,8 +1,5 @@
 import { useRouter } from 'next/router';
-
-import { useAsync } from '../../../api/useAsync';
-import { getNftInfo } from '../../../api/callbacks/nft';
-import { InfoResponse } from '../../../api/callbacks/nft/types';
+import { useAsync, getNftInfo, NftInfoResponseProps } from '@fafty-frontend/shared/api';
 
 export const Info = () => {
   const param = useRouter();
@@ -10,7 +7,7 @@ export const Info = () => {
 
   console.log('hello', slug);
 
-  const { isLoading, data } = useAsync<InfoResponse, string>({
+  const { isLoading, data } = useAsync<NftInfoResponseProps, string>({
     callback: () => getNftInfo(slug as string),
     withMount: true,
   });
