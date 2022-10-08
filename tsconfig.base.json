@@ -19,6 +19,7 @@
       "@fafty-frontend/modals": ["libs/modals/src/index.ts"],
       "@fafty-frontend/notifications": ["libs/notifications/src/index.ts"],
       "@fafty-frontend/shared/ui": ["libs/shared/ui/src/index.ts"],
+      "@fafty-frontend/shared/api": ["libs/shared/api/src/index.ts"],
       "@fafty-frontend/theme": ["libs/theme/src/index.ts"],
       "@fafty-frontend/uploader": ["libs/uploader/src/index.ts"],
       "@fafty-frontend/usehooks": ["libs/usehooks/src/index.ts"]

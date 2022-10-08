@@ -9,6 +9,7 @@
     "modals": "libs/modals",
     "notifications": "libs/notifications",
     "shared-ui": "libs/shared/ui",
+    "shared-api": "libs/shared/api",
     "theme": "libs/theme",
     "uploader": "libs/uploader",
     "usehooks": "libs/usehooks"
