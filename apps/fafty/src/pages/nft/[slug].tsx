@@ -144,7 +144,7 @@ export default function Nft() {
           <nav className="flex px-5 py-5 border dark:bg-neutral-800 text-slate-900 border-t border-gray-100 dark:border-neutral-700 rounded-lg shadow-md" aria-label="Breadcrumb">
             <ol className="inline-flex items-center space-x-1 md:space-x-3">
               {breadcrumb && breadcrumb.map((item) => (
-                <li className="inline-flex items-center">
+                <li key={item.name} className="inline-flex items-center">
                   <Link href={item.href || ''}>
                     <a className="inline-flex items-center text-sm font-medium text-gray-700 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white">
                       {item.icon && <item.icon className="w-5 h-5 mr-2 " aria-hidden="true" />}

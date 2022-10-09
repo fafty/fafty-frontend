@@ -4,8 +4,9 @@ import Item from '../components/item';
 import isClient from '../utils/isClient';
 import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/24/outline';
 import { useNotifications } from '@fafty-frontend/notifications';
-import { useDebouncedCallback } from '../hooks';
 import classNames from 'classnames';
+import { useDebouncedCallback } from '@fafty-frontend/usehooks';
+
 
 type Props = {
   items: ItemProps[];

@@ -17,7 +17,7 @@ class AuthClientWrapper {
   }
 
   async login(): Promise<Identity | undefined> {
-    return new Promise(async (resolve) => {
+    return new Promise(() => async (resolve) => {
       await this.authClient?.login({
         identityProvider: IDENTITY_URL,
         onSuccess: async () => {

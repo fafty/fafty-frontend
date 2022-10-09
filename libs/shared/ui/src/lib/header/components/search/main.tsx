@@ -10,6 +10,7 @@ import { useDebounce, useOnClickOutside } from '@fafty-frontend/usehooks';
 import { useAsync, SearchResultResponseProps, getSearchResult } from '@fafty-frontend/shared/api';
 import classNames from 'classnames';
 import { useRouter } from 'next/router';
+import Image from 'next/future/image';
 const isObject = (value: any) => typeof value === 'object';
 
 export const Search = () => {
@@ -133,7 +134,7 @@ export const Search = () => {
           />
         </div>
         {!!data?.records?.length && isOpened && (
-          <div className="flex flex-col absolute backdrop-blur bg-white/95 dark:bg-neutral-800/95 border-x-2 border-b-2 border-blue-500 shadow transition duration-300 right-0 left-0 top-full rounded-b-xl">
+          <div className="flex flex-col absolute backdrop-blur bg-white/95 dark:bg-neutral-800/95 border-x-2 border-b-2 border-blue-500 shadow transition duration-300 right-0 left-0 top-full rounded-b-xl overflow-hidden">
             {data.records.map(({ result_type, searchable }, index) => {
               const isActive = index === activeIndex;
 
@@ -141,7 +142,7 @@ export const Search = () => {
                 <div
                   onClick={onClickItem}
                   className={classNames(
-                    'flex flex-col p-2 w-full cursor-pointer focus:outline-none transition duration-150 ease-in-out text-neutral-700 hover:bg-neutral-100/95 dark:text-neutral-100 dark:hover:bg-neutral-700/95',
+                    'flex flex-row p-2 w-full cursor-pointer focus:outline-none transition duration-150 ease-in-out text-neutral-700 hover:bg-neutral-100/95 dark:text-neutral-100 dark:hover:bg-neutral-700/95',
                     {
                       'bg-neutral-100/95 dark:bg-neutral-700/95': isActive,
                     }
@@ -149,19 +150,22 @@ export const Search = () => {
                   key={index}
                   onMouseEnter={() => setActiveIndex(index)}
                 >
-                  <span
-                    className={classNames('mx-3 text-base font-medium', {
-                      'text-neutral-700 dark:text-neutral-200': isActive,
-                    })}
-                  >
-                    {searchable.name}
-                  </span>
-                  <span className="block">{result_type}</span>
-                  {!isObject(searchable.description) && (
-                    <span className="text-sm text-bold text-gray-300">
-                      {searchable.description}
-                    </span>
-                  )}
+                  <div className="relative flex h-10 w-10 flex-shrink-0 items-center justify-center bg-blue-600 rounded-full hover:bg-blue-500 focus:outline-none dark:bg-neutral-700 dark:hover:bg-neutral-600">
+                    <Image
+                      className="relative inline-block h-9 w-9 rounded-full ring-1 ring-white"
+                      src={searchable?.image}
+                      alt=""
+                      width={32}
+                      height={32}
+                    />
+                  </div>
+                  <div className="ml-4">
+                    <p className="text-sm font-medium">{searchable.name}</p>
+                    <p className="text-xs font-medium opacity-50">{result_type}</p>
+                    {!isObject(searchable.description) && (
+                      <p className="text-xs font-medium opacity-50">{searchable.description}</p>
+                    )}
+                  </div>
                 </div>
               );
             })}

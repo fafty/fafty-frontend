@@ -1,7 +1,6 @@
-import { useOnScreen } from '@fafty-frontend/usehooks';
+import { useDebouncedCallback, useOnScreen } from '@fafty-frontend/usehooks';
 import { RadioGroup } from '@headlessui/react';
 import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/24/outline';
-import { useDebouncedCallback } from '../../../hooks';
 import isClient from '../../../utils/isClient';
 import classNames from 'classnames';
 import Image from 'next/future/image';
@@ -15,9 +14,6 @@ interface CollectionProps {
   popularity: string;
   fees: string;
 }
-// interface ResponceProps {
-//   record: CollectionProps;
-// }
 
 interface Props {
   current: string;

@@ -32,7 +32,6 @@ const SelectStep3 = ({ Context }: { Context: Context<ContextProps> }) => {
    */
   const {
     control,
-    register,
     watch,
     setValue,
     getValues,

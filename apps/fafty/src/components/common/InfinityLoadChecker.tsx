@@ -1,5 +1,4 @@
 import { MutableRefObject, useEffect, useRef } from 'react';
-
 import { useOnScreen } from '@fafty-frontend/usehooks';
 
 type Props = {
