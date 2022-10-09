@@ -45,6 +45,7 @@ const createLinks = [
 ];
 
 type Props = {
+  address: string | undefined;
   balance: number;
   isAuth: boolean;
   onAuth?: () => void;
@@ -56,6 +57,7 @@ const Header = ({
   onAuth,
   onCreate,
   balance,
+  address,
   isAuth,
   onLogOut,
 }: Props): JSX.Element => {
@@ -186,7 +188,7 @@ const Header = ({
                   )}
                 </Popover>
                 <div className="flex items-center">
-                  <ProfileMenu balance={balance} onLogOut={onLogOut} />
+                  <ProfileMenu address={address} balance={balance} onLogOut={onLogOut} />
                 </div>
               </div>
             )}

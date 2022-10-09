@@ -4,6 +4,7 @@ import {
   SVGProps,
   ReactNode,
 } from 'react';
+import Image from 'next/future/image';
 import { RadioGroup } from '@headlessui/react';
 import {
   ChatBubbleOvalLeftEllipsisIcon,
@@ -139,10 +140,12 @@ function CheckIcon(props: JSX.IntrinsicAttributes & SVGProps<SVGSVGElement>) {
 }
 
 const MainPanel = ({
+  address,
   open,
   close,
   onLogOut,
 }: {
+  address: string | undefined;
   open: boolean;
   close: boolean;
   onLogOut: () => void;
@@ -256,16 +259,20 @@ const MainPanel = ({
                 className="relative grid gap-1 p-1 grid-cols-1"
               >
                 <Link href={'/profile'}>
-                  <a className="focus:outline-none flex items-center rounded-lg p-2 transition duration-150 ease-in-out text-neutral-700 hover:bg-neutral-100 dark:text-neutral-100 dark:hover:bg-neutral-700">
+                  <a
+                    className="focus:outline-none flex items-center rounded-lg p-2 transition duration-150 ease-in-out text-neutral-700 hover:bg-neutral-100 dark:text-neutral-100 dark:hover:bg-neutral-700"
+                  >
                     <div className="flex h-14 w-14 flex-shrink-0 items-center justify-center bg-blue-600 rounded-full hover:bg-blue-500 px-1 py-1 focus:outline-none dark:bg-neutral-700 dark:hover:bg-neutral-600">
-                      <img
+                      <Image
                         className="inline-block h-12 w-12 rounded-full ring-2 ring-white m-1"
-                        src="https://avatars.githubusercontent.com/u/3300389?v=4"
-                        alt=""
+                        src={`https://avatars.dicebear.com/api/pixel-art/${address || 'nouser'}.svg`}
+                        alt={address}
+                        width={32}
+                        height={32}
                       />
                     </div>
-                    <div className="ml-4">
-                      <p className="text-sm font-medium">Andrew Zhuk</p>
+                    <div className="ml-4 grid">
+                      <p className="relative text-sm font-medium truncate">{address}</p>
                       <p className="text-xs text-neutral-400">
                         See your profile
                       </p>

@@ -45,6 +45,7 @@ const MainLayout = ({ children, title, description }: Props) => {
     <>
       <Meta title={title} description={description} />
       <Header
+        address={auth.principal?.toString()}
         onLogOut={() => auth.wallet?.logOut?.()}
         onAuth={onAuth}
         onCreate={onForm}
