@@ -153,7 +153,7 @@ export const Search = () => {
                   <div className="relative flex h-10 w-10 flex-shrink-0 items-center justify-center bg-blue-600 rounded-full hover:bg-blue-500 focus:outline-none dark:bg-neutral-700 dark:hover:bg-neutral-600">
                     <Image
                       className="relative inline-block h-9 w-9 rounded-full ring-1 ring-white"
-                      src={searchable?.image}
+                      src={searchable?.image || ''}
                       alt=""
                       width={32}
                       height={32}
@@ -162,9 +162,9 @@ export const Search = () => {
                   <div className="ml-4">
                     <p className="text-sm font-medium">{searchable.name}</p>
                     <p className="text-xs font-medium opacity-50">{result_type}</p>
-                    {!isObject(searchable.description) && (
+                    {/* {!isObject(searchable.description) && (
                       <p className="text-xs font-medium opacity-50">{searchable.description}</p>
-                    )}
+                    )} */}
                   </div>
                 </div>
               );
