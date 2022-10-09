@@ -6,9 +6,11 @@ import classNames from 'classnames';
 const MainPanel = lazy(() => import('./panels/main'));
 
 const ProfileMenu = ({
+  address,
   balance,
   onLogOut,
 }: {
+  address: string | undefined;
   balance: number;
   onLogOut: () => void;
 }): JSX.Element => {
@@ -28,7 +30,7 @@ const ProfileMenu = ({
               )}
             >
               <ProfileButton
-                avatarUrl={'/images/demo-avatar.jpeg'}
+                avatarUrl={`https://avatars.dicebear.com/api/pixel-art/${address || 'nouser'}.svg`}
                 balance={balance}
                 ticker={'ICP'}
               />
@@ -44,7 +46,7 @@ const ProfileMenu = ({
             >
               <Popover.Panel className="absolute z-10 right-0 origin-top-right mt-4 px-2 w-screen max-w-xs max-h-[calc(100vh_-_60px)] sm:px-0 drop-shadow-lg">
                 <Suspense fallback={<MainPanelPlaceholder />}>
-                  <MainPanel onLogOut={onLogOut} open close />
+                  <MainPanel address={address} onLogOut={onLogOut} open close />
                 </Suspense>
               </Popover.Panel>
             </Transition>

@@ -1,9 +1,9 @@
-import { useOnScreen } from '@fafty-frontend/usehooks';
+import { useDebouncedCallback, useOnScreen } from '@fafty-frontend/usehooks';
 import { RadioGroup } from '@headlessui/react';
 import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/24/outline';
 import { ImageIcon } from '@remixicons/react/line';
 import { api } from '@fafty-frontend/shared/api';
-import { useDebouncedCallback } from '../../../hooks';
+// import { useDebouncedCallback } from '../../../hooks';
 import isClient from '../../../utils/isClient';
 import classNames from 'classnames';
 import Image from 'next/future/image';
@@ -322,7 +322,6 @@ const SelectCollection = ({ current, onChange }: Props): JSX.Element => {
                             src={collection.cover?.src || ''}
                             alt={collection.name}
                             className="w-16 h-16"
-                            // layout="raw"
                             width="24"
                             height="24"
                           />
@@ -339,7 +338,7 @@ const SelectCollection = ({ current, onChange }: Props): JSX.Element => {
                                 {collection.total_nfts_count}
                               </span>
                               <span className="ml-1 text-slate-800 dark:text-slate-700">
-                                NFT's
+                                NFT&apos;s
                               </span>
                             </span>
                           </div>

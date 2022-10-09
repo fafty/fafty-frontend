@@ -49,7 +49,6 @@ const SelectStep1 = ({ Context }: { Context: Context<ContextProps> }) => {
    */
   const {
     control,
-    register,
     watch,
     reset,
     trigger,
@@ -75,6 +74,7 @@ const SelectStep1 = ({ Context }: { Context: Context<ContextProps> }) => {
         name: stepData.step1.state.name,
       });
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [stepData.asset]);
 
   /**
@@ -86,6 +86,7 @@ const SelectStep1 = ({ Context }: { Context: Context<ContextProps> }) => {
     return () => {
       storeData();
     };
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   /**
@@ -119,6 +120,7 @@ const SelectStep1 = ({ Context }: { Context: Context<ContextProps> }) => {
         error: !isValid,
       },
     });
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isValid]);
 
   return (
@@ -131,24 +133,28 @@ const SelectStep1 = ({ Context }: { Context: Context<ContextProps> }) => {
         >
           Name
         </label>
-        <input
-          type="text"
-          id="item-name"
-          className={classNames(
-            {
-              'border-red-500': errors.name,
-              'border-gray-200 dark:border-neutral-800': !errors.name,
-            },
-            'text-gray-700 dark:text-gray-100 dark:bg-neutral-900/90 mt-1 border focus:outline-none rounded-md shadow-sm focus:border-gray-500 focus:shadow w-full p-3 h-12'
+        <Controller
+          name="name"
+          control={control}
+          defaultValue={formFields.name}
+          rules={{ required: true, minLength: 3, maxLength: 30 }}
+          render={({ field }) => (
+            <input
+              type="text"
+              id="item-name"
+              className={classNames(
+                {
+                  'border-red-500': errors.name,
+                  'border-gray-200 dark:border-neutral-800': !errors.name,
+                },
+                'text-gray-700 dark:text-gray-100 dark:bg-neutral-900/90 mt-1 border focus:outline-none rounded-md shadow-sm focus:border-gray-500 focus:shadow w-full p-3 h-12'
+              )}
+              placeholder="Enter name of Nft"
+              // {...(errors.name && { 'aria-invalid': true })}
+              autoComplete="off"
+              {...field}
+            />
           )}
-          placeholder="Enter name of Nft"
-          {...(errors.name && { 'aria-invalid': true })}
-          autoComplete="off"
-          {...register('name', {
-            required: true,
-            minLength: 3,
-            maxLength: 30,
-          })}
         />
         <motion.div
           initial={'hidden'}

@@ -21,7 +21,6 @@ const SelectStep2 = ({ Context }: { Context: Context<ContextProps> }) => {
    */
   const {
     control,
-    register,
     watch,
     getValues,
     trigger,
