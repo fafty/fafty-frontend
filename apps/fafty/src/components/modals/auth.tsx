@@ -4,7 +4,6 @@ import classNames from 'classnames';
 import { ReactComponent as PlugLogo } from '../../assets/plug.svg';
 import { ReactComponent as InternetIdentityLogo } from '../../assets/internet-identity.svg';
 
-
 type Props = {
   onClose: () => void;
   isOpened: boolean;
@@ -24,7 +23,7 @@ const List = [
     value: 'ii',
     logo: {
       src: InternetIdentityLogo,
-      fill: 'fill-[#23262F] dark:fill-[#F4F5F6]'
+      fill: 'fill-[#23262F] dark:fill-[#F4F5F6]',
     },
   },
 ];
@@ -33,6 +32,7 @@ export const AuthModal = ({ isOpened, onClose }: Props) => {
   const auth = useAuth();
 
   const onClickAuth = (key: string) => () => {
+    console.log('onClickAuth');
     if (key === 'ii') {
       auth.useInternetIdentity();
     } else if (key === 'plug') {
@@ -47,7 +47,6 @@ export const AuthModal = ({ isOpened, onClose }: Props) => {
       title="Connect your wallet"
       open={isOpened}
       onDismiss={onClose}
-      options={{ dismissible: true }}
       className="w-[700px]"
     >
       <div className="flex flex-row h-full w-full p-5">
@@ -247,11 +246,7 @@ export const AuthModal = ({ isOpened, onClose }: Props) => {
                 key={value}
               >
                 <div className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-full px-1 py-1 focus:outline-none bg-neutral-200 text-neutral-700 dark:text-neutral-200 dark:fill-neutral-200 dark:bg-neutral-700">
-                  <logo.src className={classNames(
-                      logo.fill,
-                      "w-6 h-6"
-                    )}
-                  />
+                  <logo.src className={classNames(logo.fill, 'w-6 h-6')} />
                 </div>
                 <div className="ml-4">
                   <p className="text-sm font-medium">{name}</p>

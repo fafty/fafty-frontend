@@ -34,7 +34,7 @@ const MainLayout = ({ children, title, description }: Props) => {
       //   break;
       default:
         break;
-    }   
+    }
   };
 
   const balance = useMemo(() => {

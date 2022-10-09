@@ -125,7 +125,7 @@ const Header = ({
             {isAuth && (
               <div className="hidden md:flex items-center justify-end">
                 <Popover className="relative mr-5 flex align-center rounded-full backdrop-blur bg-white/95 dark:bg-neutral-800/95">
-                  {({ open }) => (
+                  {({ open, close }) => (
                     <>
                       <Popover.Button
                         title="Add items"
@@ -160,7 +160,10 @@ const Header = ({
                                   key={item.key}
                                   type="button"
                                   className="focus:outline-none flex items-center rounded-lg p-2 transition duration-150 ease-in-out text-neutral-700 hover:bg-neutral-100 dark:text-neutral-100 dark:hover:bg-neutral-700"
-                                  onClick={() => onCreate?.(item.key)}
+                                  onClick={() => {
+                                    onCreate?.(item.key);
+                                    close();
+                                  }}
                                 >
                                   <div className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-full px-1 py-1 focus:outline-none bg-neutral-200 text-neutral-700 dark:text-neutral-200 dark:fill-neutral-200 dark:bg-neutral-700">
                                     <item.icon

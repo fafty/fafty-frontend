@@ -43,6 +43,7 @@ export function useProvideAuth(): AuthContext {
   };
 
   const useInternetIdentity = function () {
+    console.log('hello ii');
     const wlt = internetIdentity();
     setWallet(wlt);
     setDisplay(false);

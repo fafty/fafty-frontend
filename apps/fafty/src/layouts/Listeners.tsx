@@ -12,7 +12,7 @@ export const Listeners = ({ children }: Props) => {
     if (!auth.principal && auth.wallet) {
       auth.wallet?.logIn();
     }
-  }, [auth.principal, auth.wallet]);
+  }, [auth.wallet]);
 
   return children;
 };

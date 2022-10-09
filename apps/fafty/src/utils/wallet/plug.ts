@@ -66,6 +66,7 @@ export default function plugWallet(): WalletInterface {
   }
 
   function logOut() {
+    console.log('hello logout');
     auth.setAgent(undefined);
     auth.setPrincipal(undefined);
   }

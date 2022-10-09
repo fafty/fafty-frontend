@@ -38,7 +38,6 @@ const SelectStep2 = ({ Context }: { Context: Context<ContextProps> }) => {
   });
 
   const formFields = watch();
-
   /**
    * Load data from context store on component mount and save data to context store on component unmount
    */
@@ -83,7 +82,7 @@ const SelectStep2 = ({ Context }: { Context: Context<ContextProps> }) => {
     });
   };
 
-  console.log(errors);
+  console.log(formFields.collection_token);
 
   return (
     <div className="flex flex-col">

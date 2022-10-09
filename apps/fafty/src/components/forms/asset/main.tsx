@@ -174,7 +174,7 @@ const FormAsset = ({ baseData, onSubmit, submiting }: Props): JSX.Element => {
     {
       name: 'Assosiation',
       active: activeStep === 1,
-      completed: data?.step1.solved,
+      completed: data?.step2.solved,
       optional: true,
       skipped: isStepSkipped(1),
       error: data?.step2.error,
@@ -182,7 +182,7 @@ const FormAsset = ({ baseData, onSubmit, submiting }: Props): JSX.Element => {
     {
       name: 'Add-ons',
       active: activeStep === 2,
-      completed: data?.step1.solved,
+      completed: data?.step3.solved,
       optional: false,
       skipped: isStepSkipped(2),
       error: data?.step3.error,

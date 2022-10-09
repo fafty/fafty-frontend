@@ -51,7 +51,10 @@ const SelectCollection = ({ current, onChange }: Props): JSX.Element => {
   const [data, setData] = useState<CollectionProps[] | null>(null);
   const [loading, setLoading] = useState(false);
   const [isError, setError] = useState(false);
-  const defaultSelected = data && data.find((b) => b.token === current);
+  const defaultSelected =
+    current === 'none'
+      ? { token: current }
+      : data && data.find((b) => b.token === current);
   const [selected, setSelected] = useState(defaultSelected?.token || '');
   const [previousSelected, setPreviousSelected] = useState(
     defaultSelected?.token || null
@@ -133,8 +136,10 @@ const SelectCollection = ({ current, onChange }: Props): JSX.Element => {
   }, [selected]);
 
   useEffect(() => {
-    const defaultSelected = data && data.find((b) => b.token === current);
-    setSelected(defaultSelected?.token || '');
+    if (current !== 'none') {
+      const defaultSelected = data && data.find((b) => b.token === current);
+      setSelected(defaultSelected?.token || '');
+    }
   }, [current, loading]);
 
   const fetchData = async () => {
@@ -212,9 +217,17 @@ const SelectCollection = ({ current, onChange }: Props): JSX.Element => {
             onClick={() => scrollItems(direction)}
           >
             {direction === 'right' ? (
-              <ChevronRightIcon className="h-4 w-4" strokeWidth="2" aria-hidden="true" />
+              <ChevronRightIcon
+                className="h-4 w-4"
+                strokeWidth="2"
+                aria-hidden="true"
+              />
             ) : (
-              <ChevronLeftIcon className="h-4 w-4" strokeWidth="2" aria-hidden="true" />
+              <ChevronLeftIcon
+                className="h-4 w-4"
+                strokeWidth="2"
+                aria-hidden="true"
+              />
             )}
           </div>
         </div>
