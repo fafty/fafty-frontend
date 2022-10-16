@@ -3,6 +3,7 @@ import { ReactNode, useMemo, useState } from 'react';
 import { useAuth } from '../utils/auth';
 import { AuthModal } from '../components/modals/auth';
 import FormAssetModal from '../components/modals/forms/asset';
+import { getAccountId } from '../utils/account';
 
 type Props = {
   children: ReactNode;
@@ -45,7 +46,7 @@ const MainLayout = ({ children, title, description }: Props) => {
     <>
       <Meta title={title} description={description} />
       <Header
-        address={auth.principal?.toString()}
+        address={auth.principal && getAccountId(auth.principal?.toString(), 0)}
         onLogOut={() => auth.wallet?.logOut?.()}
         onAuth={onAuth}
         onCreate={onForm}

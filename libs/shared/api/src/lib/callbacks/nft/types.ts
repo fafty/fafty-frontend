@@ -17,6 +17,8 @@ export type NftProps = {
   token_id?: number;
   token_standart?: string;
   blockchain?: string;
+  restrictions?: string
+  visibility: string;
   cardCounter?: number;
   cardUser?: number[];
 };

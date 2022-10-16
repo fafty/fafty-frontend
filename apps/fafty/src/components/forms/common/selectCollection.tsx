@@ -321,9 +321,9 @@ const SelectCollection = ({ current, onChange }: Props): JSX.Element => {
                           <Image
                             src={collection.cover?.src || ''}
                             alt={collection.name}
-                            className="w-16 h-16"
-                            width="24"
-                            height="24"
+                            className="w-24 h-24 inline-block rounded-full"
+                            width="96"
+                            height="96"
                           />
                         )}
                       </div>

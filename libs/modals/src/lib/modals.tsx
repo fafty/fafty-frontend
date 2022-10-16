@@ -51,7 +51,7 @@ const Modal: FC<ModalProps> = (props) => {
   return (
     <AnimatePresence>
       {open && (
-        <div className="relative z-10">
+        <div className="relative z-50">
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}

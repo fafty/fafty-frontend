@@ -186,6 +186,7 @@ function useTypeahead(editor: LexicalEditor): void {
         root.removeEventListener('keydown', handleEvent);
       };
     } else {
+      // eslint-disable-next-line @typescript-eslint/no-empty-function
       return () => {};
     }
   }, [editor, getTypeaheadTextNode]);
@@ -193,7 +194,8 @@ function useTypeahead(editor: LexicalEditor): void {
   useEffect(() => {
     const handleEvent = () => {
       const selection = window.getSelection();
-      // @ts-ignore
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore - Selection is not null
       $setSelectionCollapsed(selection.isCollapsed);
     };
     document.addEventListener('selectionchange', handleEvent);
@@ -279,7 +281,8 @@ class TypeaheadServer {
 
     return {
       cancel,
-      // @ts-ignore
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore - Promise is not null
       promise,
     };
   };
@@ -288,6 +291,7 @@ class TypeaheadServer {
 export default function AutocompletePlugin(): JSX.Element {
   const [editor] = useLexicalComposerContext();
   useTypeahead(editor);
-  // @ts-ignore
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // @ts-ignore Type 'null' is not assignable to type 'Element'
   return null;
 }

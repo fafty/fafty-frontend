@@ -4,9 +4,17 @@ import { useAuth } from '../utils/auth';
 import Link from 'next/link';
 import {
   HeartIcon,
-  QuestionMarkCircleIcon,
   BarsArrowUpIcon,
+  Squares2X2Icon,
+  RectangleStackIcon,
+  TagIcon,
 } from '@heroicons/react/24/outline';
+import { getAccountId } from '../utils/account';
+import FormAssetModal from '../components/modals/forms/asset';
+import { GalleryIcon } from '@remixicons/react/line';
+import classNames from 'classnames';
+import { useRouter } from 'next/router'
+
 type Props = {
   children: ReactNode;
   title: string;
@@ -15,11 +23,32 @@ type Props = {
 
 const AccountLayout = ({ children, title, description }: Props) => {
   const [collapseShow, setCollapseShow] = useState('hidden');
+  const [openedFormAssetModal, setOpenedFormAssetModal] = useState(false);
+  const router = useRouter()
+
+  // const [openedFormCollectionModal, setOpenedFormCollectionModal] = useState(false);
+  // const [openedFormBundleModal, setOpenedFormBundleModal] = useState(false);
   const auth = useAuth();
 
   const balance = useMemo(() => {
     return Number(auth.balance) / Math.pow(10, 8) || 0;
   }, [auth.balance]);
+
+  const onForm = (key: string) => {
+    switch (key) {
+      case 'nft':
+        setOpenedFormAssetModal(true);
+        break;
+      // case 'collection':
+      //   setOpenedFormCollectionModal(true);
+      //   break;
+      // case 'bundle':
+      //   setOpenedFormBundleModal(true);
+      //   break;
+      default:
+        break;
+    }
+  };
 
   interface MenuItemProps {
     children: ReactNode;
@@ -32,7 +61,15 @@ const AccountLayout = ({ children, title, description }: Props) => {
 
     return (
       <Link href={path}>
-        <a className="cursor-pointer focus:outline-none flex items-center rounded-lg p-2 transition duration-150 ease-in-out text-neutral-700 hover:bg-neutral-100 dark:text-neutral-100 dark:hover:bg-neutral-700">
+        <a
+          className={classNames(
+            'cursor-pointer focus:outline-none flex items-center rounded-lg p-2 transition duration-150 ease-in-out text-neutral-700 hover:bg-neutral-100 dark:text-neutral-100 dark:hover:bg-neutral-700',
+            {
+              'text-neutral-700 hover:bg-neutral-100 dark:text-neutral-100 dark:hover:bg-neutral-700 bg-white bg-opacity-75 dark:bg-neutral-700':
+                router.pathname === path,
+            }
+          )}
+        >
           <div className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-full px-1 py-1 focus:outline-none bg-neutral-200 text-neutral-700 dark:text-neutral-200 dark:fill-neutral-200 dark:bg-neutral-700">
             {Icon && (
               <Icon className="h-6 w-6" strokeWidth="2" aria-hidden="true" />
@@ -45,35 +82,14 @@ const AccountLayout = ({ children, title, description }: Props) => {
       </Link>
     );
   };
-  // const menuItem = ({
-  //   name = null,
-  //   path = null,
-  // }: { name: string; path: string }): JSX.Element => {
-  //   return (
-  //     <li className="items-center">
-  //       <Link href="/account/assets/create">
-  //         <a
-  //           className={classNames(
-  //             'cursor-pointer focus:outline-none flex items-center rounded-lg p-2 transition duration-150 ease-in-out text-neutral-700 hover:bg-neutral-100 dark:text-neutral-100 dark:hover:bg-neutral-700',
-  //             {
-  //               'text-neutral-700 hover:bg-neutral-100 dark:text-neutral-100 dark:hover:bg-neutral-700 bg-white bg-opacity-75 dark:bg-neutral-700':
-  //                 router.pathname === path,
-  //             }
-  //           )}
-  //         >
-  //           <p className="text-sm font-medium">{name}</p>
-  //         </a>
-  //       </Link>
-  //     </li>
-  //   );
-  // };
 
   return (
     <>
       <Meta title={title} description={description} />
       <Header
-        address={auth.principal?.toString()}
+        address={auth.principal && getAccountId(auth.principal?.toString(), 0)}
         onLogOut={() => auth.wallet?.logOut?.()}
+        onCreate={onForm}
         balance={balance}
         isAuth={!!auth.principal?.toString()}
       />
@@ -133,151 +149,47 @@ const AccountLayout = ({ children, title, description }: Props) => {
               </div>
               {/* Navigation */}
 
-              <ul className="md:flex-col md:min-w-full flex flex-col list-none  relative grid gap-1 p-1 grid-cols-1">
-                {/* <li className="items-center">
-                  <Link href="/account/assets/create">
-                    <a
-                      className={classNames(
-                        'cursor-pointer focus:outline-none flex items-center rounded-lg p-2 transition duration-150 ease-in-out text-neutral-700 hover:bg-neutral-100 dark:text-neutral-100 dark:hover:bg-neutral-700',
-                        {
-                          'text-neutral-700 hover:bg-neutral-100 dark:text-neutral-100 dark:hover:bg-neutral-700 bg-white bg-opacity-75 text-slate-900 dark:text-slate-50 dark:bg-neutral-700':
-                            router.pathname === '/account/assets/create',
-                        }
-                      )}
-                    >
-                      <p className="text-sm font-medium">Dashboard</p>
-                    </a>
-                  </Link>
-                </li> */}
+              <ul className="md:flex-col md:min-w-full list-none  relative grid gap-2 p-1 grid-cols-1">
                 <MenuItem
-                  path="/account/assets/create"
-                  icon={QuestionMarkCircleIcon}
+                  path="/account/dashboard"
+                  icon={Squares2X2Icon}
                 >
                   Dashboard
                 </MenuItem>
-                {/* <LinkTo name="Assets" path="/account/assets" /> */}
-
-                {/* <li className="items-center">
-                  <Link href="/account/assets">
-                    <a
-                      className={classNames(
-                        'text-xs uppercase py-3 font-bold block',
-                        {
-                          'text-blue-500 hover:text-blue-600':
-                            router.pathname === '/account/assets',
-                        }
-                      )}
-                    >
-                      Assets
-                    </a>
-                  </Link>
-                </li> */}
-                <MenuItem path="/account/assets" icon={QuestionMarkCircleIcon}>
+                <MenuItem path="/account/assets" icon={GalleryIcon}>
                   Assets
                 </MenuItem>
                 <MenuItem
                   path="/account/collections"
-                  icon={QuestionMarkCircleIcon}
+                  icon={GalleryIcon}
                 >
                   Collections
                 </MenuItem>
-                <MenuItem path="/account/bundles" icon={QuestionMarkCircleIcon}>
+                <MenuItem path="/account/bundles" icon={RectangleStackIcon}>
                   Bundles
                 </MenuItem>
-                <MenuItem path="/account/Bids" icon={BarsArrowUpIcon}>
+                <MenuItem path="/account/bids" icon={BarsArrowUpIcon}>
                   Bids
                 </MenuItem>
-                <MenuItem path="/account/offers" icon={QuestionMarkCircleIcon}>
+                <MenuItem path="/account/offers" icon={TagIcon}>
                   Offers
                 </MenuItem>
                 <MenuItem path="/account/favorites" icon={HeartIcon}>
                   Favorites
                 </MenuItem>
-                {/* <LinkTo name="Collections" path="/account/collections" /> */}
-                {/* <li className="items-center">
-                  <Link href="/account/collections">
-                    <a
-                      className={classNames(
-                        'text-xs uppercase py-3 font-bold block',
-                        {
-                          'text-blue-500 hover:text-blue-600':
-                            router.pathname === '/account/collections',
-                        }
-                      )}
-                    >
-                      Collections
-                    </a>
-                  </Link>
-                </li> */}
-                {/* <li className="items-center">
-                  <Link href="/account/bundles">
-                    <a
-                      className={classNames(
-                        'text-xs uppercase py-3 font-bold block',
-                        {
-                          'text-blue-500 hover:text-blue-600':
-                            router.pathname === '/account/bundles',
-                        }
-                      )}
-                    >
-                      Bundles
-                    </a>
-                  </Link>
-                </li> */}
-                {/* <LinkTo name="Bundles" path="/account/bundles" /> */}
-                {/* <li className="items-center">
-                  <Link href="/account/bids">
-                    <a
-                      className={classNames(
-                        'text-xs uppercase py-3 font-bold block',
-                        {
-                          'text-blue-500 hover:text-blue-600':
-                            router.pathname === '/account/bids',
-                        }
-                      )}
-                    >
-                      Bids
-                    </a>
-                  </Link>
-                </li> */}
-                {/* <LinkTo name="Bids" path="/account/bids" /> */}
-                {/* <li className="items-center">
-                  <Link href="/account/offers">
-                    <a
-                      className={classNames(
-                        'text-xs uppercase py-3 font-bold block',
-                        {
-                          'text-blue-500 hover:text-blue-600':
-                            router.pathname === '/account/offers',
-                        }
-                      )}
-                    >
-                      Offers
-                    </a>
-                  </Link>
-                </li> */}
-                {/* <LinkTo name="Favorites" path="/account/favorites" /> */}
-                {/* <li className="items-center">
-                  <Link href="/account/favorites/">
-                    <a
-                      className={classNames(
-                        'text-xs uppercase py-3 font-bold block',
-                        {
-                          'text-blue-500 hover:text-blue-600':
-                            router.pathname === '/account/favorites',
-                        }
-                      )}
-                    >
-                      Favorites
-                    </a>
-                  </Link>
-                </li> */}
               </ul>
             </div>
           </div>
         </nav>
       </>
-      <main className="relative md:ml-64 px-8">{children}</main>
+      <main className="relative md:ml-[15.5rem]">{children}</main>
+      {openedFormAssetModal && (
+        <FormAssetModal
+          title="Create Your Asset"
+          onClose={() => setOpenedFormAssetModal(false)}
+          isOpened={openedFormAssetModal}
+        />
+      )}
     </>
   );
 };

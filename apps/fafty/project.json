@@ -65,7 +65,7 @@
     },
     "test": {
       "executor": "@nrwl/jest:jest",
-      "outputs": ["coverage/apps/fafty"],
+      "outputs": ["{workspaceRoot}/coverage/apps/fafty"],
       "options": {
         "jestConfig": "apps/fafty/jest.config.ts",
         "passWithNoTests": true

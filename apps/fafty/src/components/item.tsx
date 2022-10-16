@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import Image from 'next/image';
+import Image from 'next/future/image';
 import ItemProps from '../types/item';
 
 type Props = {
@@ -23,9 +23,9 @@ const Item = ({ item }: Props) => {
                       style={{
                         backgroundColor: item.asset?.dominant_color,
                       }}
-                      loading="eager"
+                      width="300"
+                      height="300"
                       alt={item.name}
-                      layout="fill"
                     />
                   </div>
                 </div>

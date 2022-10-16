@@ -13,7 +13,7 @@
     },
     "test": {
       "executor": "@nrwl/jest:jest",
-      "outputs": ["coverage/libs/modals"],
+      "outputs": ["{workspaceRoot}/coverage/libs/modals"],
       "options": {
         "jestConfig": "libs/modals/jest.config.ts",
         "passWithNoTests": true

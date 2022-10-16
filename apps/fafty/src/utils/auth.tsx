@@ -61,15 +61,12 @@ export function useProvideAuth(): AuthContext {
       setPrincipal,
       principal: principal,
       setAgent,
-
       agent: agent,
+      setBalance,
       balance,
-
       wallet,
-
       usePlug,
       useInternetIdentity,
-      setBalance,
     };
   }
 

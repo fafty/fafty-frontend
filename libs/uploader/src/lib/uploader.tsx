@@ -1,4 +1,4 @@
-import { CSSProperties, useEffect, useMemo, useRef, useState } from 'react';
+import { ChangeEvent, CSSProperties, useEffect, useMemo, useRef, useState } from 'react';
 import { FileRemoveReason, SuccessResponse, Uppy, UppyFile } from '@uppy/core';
 import Compressor from '@uppy/compressor';
 import AwsS3 from '@uppy/aws-s3';
@@ -120,15 +120,20 @@ const Uploader = ({
     '.webm',
     '.ogg',
     '.avi',
+    '.wmv',
+    '.mpg',
+    '.mpeg',
+    '.m4v',
+    '.mkv',
   ],
   style = {},
   presignEndpoint = 'assets/presign',
   onChange,
-  OnGenetatedThumbnail
+  OnGenetatedThumbnail,
 }: Props): JSX.Element => {
   const [files, setFiles] = useState<FileProps[]>([]);
   const [thumbnails, setThumbnails] = useState<ThumbnailProps[]>([]);
-  const [notifications, setNotifications] = useState<any[]>([]);
+  // const [notifications, setNotifications] = useState<any[]>([]);
   const [isSorting, setIsSorting] = useState(false);
   const [isDraggingOver, setIsDraggingOver] = useState(false);
   const [isDragging, setIsDragging] = useState(false);
@@ -136,7 +141,7 @@ const Uploader = ({
   // const removeDragOverClassTimeout = useRef<setTimeout | undefined>(undefined)
   const [isLoading, setIsLoading] = useState(true);
   const inputFilesRef: any = useRef<HTMLInputElement>();
-  const { enqueueNotification, closeNotification } = useNotifications();
+  // const { enqueueNotification, closeNotification } = useNotifications();
 
   const mainTextRef = useRef<HTMLDivElement>(null);
   const tipTextRef = useRef<HTMLDivElement>(null);
@@ -368,7 +373,7 @@ const Uploader = ({
         .on('preprocess-complete', (file) => {
           changeThumbnailState(file.id, 'in-upload-queue');
         })
-        // @ts-ignore 
+        // @ts-ignore
         .on('upload-started', (file: UppyFile) => {
           changeThumbnailState(file.id, 'uploading');
         })
@@ -428,17 +433,17 @@ const Uploader = ({
           if (info && info.message !== '') {
             console.log('info', info);
             // notifications.push(info)
-            if (info.type === 'error' && !info.isHidden) {
-              const id = enqueueNotification({
-                message: `${info.message}, ${info.details}`,
-                options: { dismissible: true },
-              });
-            }
-            setNotifications((notifications) => [...notifications, info]);
+            // if (info.type === 'error' && !info.isHidden) {
+            //   const id = enqueueNotification({
+            //     message: `${info.message}, ${info.details}`,
+            //     options: { dismissible: true },
+            //   });
+            // }
+            // setNotifications((notifications) => [...notifications, info]);
           }
         })
         .on('info-hidden', () => {
-          setNotifications([]);
+          // setNotifications([]);
         })
     );
   }, []);
@@ -531,6 +536,7 @@ const Uploader = ({
     }));
 
     try {
+      console.log('addFiles', descriptors);
       engine.addFiles(descriptors);
     } catch (err) {
       // eslint-disable-next-line no-console
@@ -557,9 +563,12 @@ const Uploader = ({
   };
 
   // Ui function to add a file to the uploader
-  const onInputChange = (event: any): void => {
+  const onInputChange = (event: ChangeEvent<HTMLInputElement>): void => {
     const files = toArray(event.target.files);
-    addFiles(files);
+    console.log('onInputChange', files);
+    if (files.length > 0) {
+      addFiles(files);
+    }
 
     // We clear the input after a file is selected, because otherwise
     // change event is not fired in Chrome and Safari when a file
@@ -567,10 +576,10 @@ const Uploader = ({
     // ___Why not use value="" on <input/> instead?
     //    Because if we use that method of clearing the input,
     //    Chrome will not trigger change if we drop the same file twice (Issue #768).
-    event.target.value = null;
+    event.target.value = '';
   };
 
-  const handleDrop = (event: any): void => {
+  const handleDrop = async (event: any): Promise<void> => {
     event.preventDefault();
     event.stopPropagation();
 
@@ -584,12 +593,16 @@ const Uploader = ({
       // eslint-disable-next-line no-console
       console.log(error, 'error');
     };
-    getDroppedFiles(event.dataTransfer, { logDropError }).then((files) =>
+    // getDroppedFiles(event.dataTransfer, { logDropError }).then((files) =>
+    //   addFiles(files)
+    // );
+    const files = await getDroppedFiles(event.dataTransfer, { logDropError })
+    if (files.length > 0) {
       addFiles(files)
-    );
+    }
   };
 
-  const handleDragOver = (event: any) => {
+  const handleDragOver = (event: { preventDefault: () => void; stopPropagation: () => void; dataTransfer: { dropEffect?: any; types?: any; }; }) => {
     if (isSorting) {
       return;
     }
@@ -599,6 +612,17 @@ const Uploader = ({
     event.preventDefault();
     event.stopPropagation();
 
+    // Check if the "type" of the datatransfer object includes files. If not, deny drop.
+    const { types } = event.dataTransfer
+    const hasFiles = types.some(type => type === 'Files')
+    const { allowNewUpload } = engine.getState()
+    if (!hasFiles || !allowNewUpload) {
+      // eslint-disable-next-line no-param-reassign
+      event.dataTransfer.dropEffect = 'none'
+      // clearTimeout(this.removeDragOverClassTimeout)
+      return
+    }
+
     // 1. Add a small (+) icon on drop
     // (and prevent browsers from interpreting this as files being _moved_ into the browser, https://github.com/transloadit/uppy/issues/1978)
     event.dataTransfer.dropEffect = 'copy';
@@ -606,13 +630,13 @@ const Uploader = ({
     setIsDraggingOver(true);
   };
 
-  const handleDragLeave = (event: any) => {
+  const handleDragLeave = (event: { preventDefault: () => void; stopPropagation: () => void; }) => {
     event.preventDefault();
     event.stopPropagation();
     setIsDraggingOver(false);
   };
 
-  const handleDragEnd = (event: any) => {
+  const handleDragEnd = (event: { preventDefault: () => void; stopPropagation: () => void; }) => {
     event.preventDefault();
     event.stopPropagation();
     setIsDragging(false);

@@ -16,6 +16,7 @@ import {
   ArrowLeftOnRectangleIcon,
   SunIcon,
   QuestionMarkCircleIcon,
+  Squares2X2Icon,
 } from '@heroicons/react/24/outline';
 import { BrushIcon } from '@remixicons/react/line';
 import { useTheme } from '@fafty-frontend/theme';
@@ -234,7 +235,6 @@ const MainPanel = ({
     );
   };
   return (
-    <AnimateSharedLayout>
       <motion.div layout={true} animate={{height: 'auto'}} className="relative p-2 rounded-lg text-gray-500 dark:text-gray-500 bg-white dark:bg-neutral-800 overflow-hidden">
       <AnimatePresence
         initial={false}
@@ -266,7 +266,7 @@ const MainPanel = ({
                       <Image
                         className="inline-block h-12 w-12 rounded-full ring-2 ring-white m-1"
                         src={`https://avatars.dicebear.com/api/pixel-art/${address || 'nouser'}.svg`}
-                        alt={address}
+                        alt={address as string}
                         width={32}
                         height={32}
                       />
@@ -275,6 +275,26 @@ const MainPanel = ({
                       <p className="relative text-sm font-medium truncate">{address}</p>
                       <p className="text-xs text-neutral-400">
                         See your profile
+                      </p>
+                    </div>
+                  </a>
+                </Link>
+                <div className="py-2">
+                  <div className="w-full border-t border-gray-100 dark:border-neutral-700"></div>
+                </div>
+                <Link href={'/account/dashboard'}>
+                  <a className="focus:outline-none flex items-center rounded-lg p-2 transition duration-150 ease-in-out text-neutral-700 hover:bg-neutral-100 dark:text-neutral-100 dark:hover:bg-neutral-700">
+                    <div className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-full px-1 py-1 focus:outline-none bg-neutral-200 text-neutral-700 dark:text-neutral-200 dark:bg-neutral-700">
+                      <Squares2X2Icon
+                        className="h-6 w-6"
+                        strokeWidth="2"
+                        aria-hidden="true"
+                      />
+                    </div>
+                    <div className="ml-4">
+                      <p className="text-sm font-medium">Account Management</p>
+                      <p className="text-xs text-neutral-400">
+                        Account Manage Panel
                       </p>
                     </div>
                   </a>
@@ -297,6 +317,7 @@ const MainPanel = ({
                     </p>
                   </div>
                 </a>
+                
                 <div className="py-2">
                   <div className="w-full border-t border-gray-100 dark:border-neutral-700"></div>
                 </div>
@@ -428,7 +449,6 @@ const MainPanel = ({
           </motion.div>
     </AnimatePresence>
       </motion.div>
-      </AnimateSharedLayout>
   );
 };
 

@@ -8,8 +8,8 @@
     "fafty-e2e": "apps/fafty-e2e",
     "modals": "libs/modals",
     "notifications": "libs/notifications",
-    "shared-ui": "libs/shared/ui",
     "shared-api": "libs/shared/api",
+    "shared-ui": "libs/shared/ui",
     "theme": "libs/theme",
     "uploader": "libs/uploader",
     "usehooks": "libs/usehooks"

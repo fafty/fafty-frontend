@@ -4,7 +4,7 @@ import { useOnScreen } from '@fafty-frontend/usehooks';
 type Props = {
   allowLoad: boolean;
   isLoading: boolean;
-  loadMore: VoidFunction;
+  loadMore: () => void;
 };
 
 export const InfinityLoadChecker = ({

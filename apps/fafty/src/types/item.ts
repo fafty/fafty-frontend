@@ -1,7 +1,7 @@
 export default interface ItemProps {
   token: number
   name: string
-  description?: string
+  description?: object
   price?: number
   ticker?: string
   edit_count?: number
@@ -17,6 +17,11 @@ export default interface ItemProps {
   token_id?: number
   token_standart?: string
   blockchain?: string
+  restrictions?: string
+  visibility?: string
+  created_at?: string
+  updated_at?: string
+  published_at?: string
   cardCounter?: number
   cardUser?: number[]
 }
