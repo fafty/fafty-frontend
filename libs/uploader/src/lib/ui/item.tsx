@@ -109,7 +109,11 @@ const Item = ({
 
   useEffect(() => {
     const file = engine.getFile(item.id);
-    setSrc(file.preview);
+    if (file) {
+      setSrc(file?.preview);
+    } else if (item.src) {
+      setSrc(item.src);
+    }
   }, []);
 
   return (

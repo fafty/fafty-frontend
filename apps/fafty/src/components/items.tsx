@@ -1,15 +1,14 @@
 import React, { useState, useRef, useEffect } from 'react';
-import ItemProps from '../types/item';
 import Item from '../components/item';
 import isClient from '../utils/isClient';
 import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/24/outline';
 import { useNotifications } from '@fafty-frontend/notifications';
 import classNames from 'classnames';
 import { useDebouncedCallback } from '@fafty-frontend/usehooks';
-
+import { NftProps } from '@fafty-frontend/shared/api';
 
 type Props = {
-  items: ItemProps[];
+  items: NftProps[];
 };
 
 const Items = ({ items }: Props): JSX.Element => {
@@ -39,7 +38,6 @@ const Items = ({ items }: Props): JSX.Element => {
     toggleArrow();
   }, 100);
 
-
   useEffect(() => {
     // Make sure element supports addEventListener
     // On
@@ -48,11 +46,11 @@ const Items = ({ items }: Props): JSX.Element => {
     if (!isSupported) return;
     // Set first arrows
     toggleArrow();
-    const refCurrent = itemsContainerRef.current
+    const refCurrent = itemsContainerRef.current;
     // Add event listener
     const events = [
-      {event: 'resize', callback: debouncedtoggleArrow},
-      {event: 'scroll', callback: debouncedtoggleArrow}
+      { event: 'resize', callback: debouncedtoggleArrow },
+      { event: 'scroll', callback: debouncedtoggleArrow },
     ];
     if (refCurrent) {
       events.forEach(({ event, callback }) => {
@@ -92,7 +90,9 @@ const Items = ({ items }: Props): JSX.Element => {
     if (items === null || items === undefined) return;
 
     const operator = direction === 'right' ? '+' : '-';
-    const scrollLeft = eval('items.scrollLeft' + operator + 'itemsContainerRef.current?.clientWidth');
+    const scrollLeft = eval(
+      'items.scrollLeft' + operator + 'itemsContainerRef.current?.clientWidth'
+    );
     items &&
       items.scroll({
         left: scrollLeft,
@@ -104,37 +104,43 @@ const Items = ({ items }: Props): JSX.Element => {
     const isVisible = direction === 'right' ? arrows.right : arrows.left;
     return (
       <div
-        className={
-          classNames(
-            'navigation-wrapper',
-            {
-              left: direction === 'left',
-              right: direction === 'right',
-              'opacity-0': !isVisible,
-              'opacity-100': isVisible,
-            }
-          )
-        }
+        className={classNames('navigation-wrapper', {
+          left: direction === 'left',
+          right: direction === 'right',
+          'opacity-0': !isVisible,
+          'opacity-100': isVisible,
+        })}
       >
         <div className="navigation">
           <div
             className="button"
-            {...{ 'aria-label': direction === 'rught' ? 'Next Items' : 'Previous Items' }}
+            {...{
+              'aria-label':
+                direction === 'rught' ? 'Next Items' : 'Previous Items',
+            }}
             role="button"
             {...(!isVisible && { 'aria-hidden': true, 'aria-disabled': true })}
             tabIndex={isVisible ? 0 : -1}
             onClick={() => scrollItems(direction)}
           >
             {direction === 'right' ? (
-              <ChevronRightIcon className="h-6 w-6" strokeWidth="2" aria-hidden="true"/>
+              <ChevronRightIcon
+                className="h-6 w-6"
+                strokeWidth="2"
+                aria-hidden="true"
+              />
             ) : (
-              <ChevronLeftIcon className="h-6 w-6" strokeWidth="2" aria-hidden="true" />
+              <ChevronLeftIcon
+                className="h-6 w-6"
+                strokeWidth="2"
+                aria-hidden="true"
+              />
             )}
           </div>
         </div>
       </div>
     );
-  }
+  };
 
   return (
     <div>
