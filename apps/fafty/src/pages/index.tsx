@@ -1,18 +1,17 @@
-import MainLayout  from '../layouts/main'
-import Hero from '../components/home/hero'
-import Items from '../components/items'
+import MainLayout from '../layouts/main';
+import Hero from '../components/home/hero';
+import Items from '../components/items';
 
-import ItemProps from '../types/item'
+import { NftProps } from '@fafty-frontend/shared/api';
 import { useEffect, useState } from 'react';
 import { api } from '@fafty-frontend/shared/api';
 
 type ResponceProps = {
-  records: ItemProps[];
+  records: NftProps[];
 };
-export default function Home(): JSX.Element {
-  
 
-  const [items, setItems] = useState<ItemProps[] | null>(null);
+export default function Home(): JSX.Element {
+  const [items, setItems] = useState<NftProps[] | null>(null);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -34,7 +33,7 @@ export default function Home(): JSX.Element {
   return (
     <MainLayout title={'undefined'} description={'undefined'}>
       <Hero />
-      {items && (<Items items={items} />)}
+      {items && <Items items={items} />}
     </MainLayout>
-  )
+  );
 }

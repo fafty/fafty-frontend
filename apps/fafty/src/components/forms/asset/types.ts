@@ -1,4 +1,9 @@
-import { TagProps } from '@fafty-frontend/shared/api';
+import {
+  CommentsModerationType,
+  CommentsOrderType,
+  NftAsset,
+  TagProps,
+} from '@fafty-frontend/shared/api';
 import { CSSProperties } from 'react';
 import { EditorState } from 'lexical';
 
@@ -36,14 +41,6 @@ export interface UploaderProps {
   OnGenetatedThumbnail: () => void;
 }
 
-export type CommentsModerationType =
-  | 'allow_all'
-  | 'automoderation'
-  | 'hold_all'
-  | 'disabled';
-
-export type CommentsOrderType = 'interesting' | 'newest';
-
 export interface FormProps {
   asset: FileProps | null;
   name: string | null;
@@ -60,9 +57,9 @@ export interface FormProps {
 }
 
 export interface Props {
-  baseData: FormProps;
   onSubmit: (data: FormProps) => Promise<void>;
   submiting: boolean;
+  defaultAsset?: NftAsset;
 }
 
 export interface Step1Props {
@@ -82,7 +79,7 @@ export interface Step3Props {
   allow_ratings: boolean;
   comments_moderation: CommentsModerationType;
   comments_order: CommentsOrderType;
-  tags: Tag[];
+  tags: TagProps[];
 }
 
 export interface StepData<T> {

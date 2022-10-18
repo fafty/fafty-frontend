@@ -1,10 +1,11 @@
 import Link from 'next/link';
 import Image from 'next/future/image';
-import ItemProps from '../types/item';
+import { NftProps } from '@fafty-frontend/shared/api';
 
 type Props = {
-  item: ItemProps;
+  item: NftProps;
 };
+
 const Item = ({ item }: Props) => {
   return (
     <div className="item">
@@ -21,7 +22,8 @@ const Item = ({ item }: Props) => {
                     <Image
                       src={item.asset.src}
                       style={{
-                        backgroundColor: item.asset?.dominant_color,
+                        backgroundColor:
+                          item.asset?.dominant_color || undefined,
                       }}
                       width="300"
                       height="300"

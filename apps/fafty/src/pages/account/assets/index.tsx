@@ -13,8 +13,7 @@ import { List } from 'masonic';
 
 import { useEffect, useMemo, useState } from 'react';
 import { useComponentDidUpdate } from '@fafty-frontend/usehooks';
-import { InfinityLoadChecker } from '../../../components/common/infinityLoadChecker';
-import ItemProps from '../../../types/item';
+import { InfinityLoadChecker } from '../../../components/common/InfinityLoadChecker';
 import {
   EyeIcon,
   FunnelIcon,
@@ -28,7 +27,8 @@ import {
   childVariants,
   variants,
 } from '../../../components/forms/asset/constants';
-const isObjectEmpty = (value: object) =>
+
+const isObjectEmpty = (value: object | string) =>
   Object.keys(value).length === 0 && value?.constructor === Object;
 
 const mapper = (
@@ -134,39 +134,38 @@ const AccountAssets = () => {
         return null;
     }
   };
-  
-  const Restrictions = ({ restrictions }: { restrictions: string | undefined }) => {
+
+  const Restrictions = ({
+    restrictions,
+  }: {
+    restrictions: string | undefined;
+  }) => {
     switch (restrictions) {
       case 'none':
-        return (
-            <span>None</span>
-        );
+        return <span>None</span>;
       case 'sensitive':
         return (
-            <span>
-              Sensitive content
-              {/* (set by you) */}
-            </span>
+          <span>
+            Sensitive content
+            {/* (set by you) */}
+          </span>
         );
       case 'sensitive_auto':
         return (
-            <span>
-              Sensitive content
-              {/* (set automatically) */}
-            </span> 
+          <span>
+            Sensitive content
+            {/* (set automatically) */}
+          </span>
         );
       case 'complaint_copyright':
-        return (
-            <span className="text-red-500">Complaint (copyright)</span>
-        );
+        return <span className="text-red-500">Complaint (copyright)</span>;
       default:
         return null;
     }
   };
 
-
   type Props = {
-    item: ItemProps;
+    item: NftProps;
   };
 
   const Item = ({ item }: Props) => {
@@ -264,12 +263,12 @@ const AccountAssets = () => {
         <div className="flex items-center justify-center">
           {item.visibility === 'public' ? (
             <span className="flex flex-col text-xs font-medium ">
-              <span>{item.published_at}</span>
+              <span>{item?.published_at}</span>
               <span className="opacity-50">Published</span>
             </span>
           ) : (
             <span className="flex flex-col text-xs font-medium">
-              <span>{item.created_at}</span>
+              <span>{item?.created_at}</span>
               <span className="opacity-50">Uploaded</span>
             </span>
           )}

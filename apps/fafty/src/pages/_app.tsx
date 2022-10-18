@@ -2,8 +2,8 @@ import '../styles/globals.sass';
 import type { AppProps } from 'next/app';
 import { ThemeProvider } from '@fafty-frontend/theme';
 import { NotificationProvider } from '@fafty-frontend/notifications';
+import { Listeners } from '../layouts/Listeners';
 import { ProvideAuth } from '../utils/auth';
-import { Listeners } from '../layouts/listeners';
 
 function FaftyApp({ Component, pageProps }: AppProps) {
   return (

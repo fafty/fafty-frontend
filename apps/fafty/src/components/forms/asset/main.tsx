@@ -21,7 +21,11 @@ const Uploader = dynamic<UploaderProps>(
   { ssr: false, loading: () => <UploaderPlaceholder /> }
 );
 
-const FormAsset = ({ baseData, onSubmit, submiting }: Props): JSX.Element => {
+const FormAsset = ({
+  onSubmit,
+  submiting,
+  defaultAsset,
+}: Props): JSX.Element => {
   /*
    * Form Store
    */
@@ -63,7 +67,7 @@ const FormAsset = ({ baseData, onSubmit, submiting }: Props): JSX.Element => {
     }
   }, [activeStep, components, setComponent]);
 
-  const [onlyUploader, setOnlyUploader] = useState(true);
+  const [onlyUploader, setOnlyUploader] = useState(!data?.asset?.id);
   /*
    * Load Dynamic Content
    */
@@ -96,10 +100,10 @@ const FormAsset = ({ baseData, onSubmit, submiting }: Props): JSX.Element => {
         ...data.step1.state,
         ...data.step2.state,
         ...data.step3.state,
-      }).then((e) => {
+      }).finally(() => {
         setFinished?.(true);
       });
-  }, [data]);
+  }, [data, setFinished]);
 
   const handleNext = (activeStep: number, steps: number | any[]) => {
     if (activeStepNumeric === 3 && step3Answered) {
@@ -135,32 +139,33 @@ const FormAsset = ({ baseData, onSubmit, submiting }: Props): JSX.Element => {
 
   const onChangeFile = useCallback(
     (values: FileProps | FileProps[]) => {
-      const currentFile = Array.isArray(values) ? values[0] : values;
-      const formattedFileName = (currentFile?.metadata?.filename || '')
-        .replace(/[-_%]/g, '')
-        .replace(/(.*)\.(.*?)$/, '$1')
-        .replace(/^ +| +$|( ) +/g, '$1');
+      if (!data?.asset?.id) {
+        const currentFile = Array.isArray(values) ? values[0] : values;
+        const formattedFileName = (currentFile?.metadata?.filename || '')
+          .replace(/[-_%]/g, '')
+          .replace(/(.*)\.(.*?)$/, '$1')
+          .replace(/^ +| +$|( ) +/g, '$1');
 
-      if (setStepData) {
-        setStepData({
-          asset: currentFile,
-          step1: {
-            state: {
-              name: formattedFileName,
-              description: null,
-              unlockable_content: null,
-              sensitive_content: false,
+        console.log('onCange?');
+        if (setStepData) {
+          setStepData({
+            asset: currentFile,
+            step1: {
+              state: {
+                name: formattedFileName,
+                description: null,
+                unlockable_content: null,
+                sensitive_content: false,
+              },
+              solved: false,
+              error: false,
             },
-            solved: false,
-            error: false,
-          },
-        });
+          });
+        }
       }
     },
-    [setStepData]
+    [data, setStepData]
   );
-
-  console.log(data?.step1.error);
 
   const StepsList = [
     {
@@ -248,7 +253,8 @@ const FormAsset = ({ baseData, onSubmit, submiting }: Props): JSX.Element => {
               <CompleteIlustation width={300} height={300} />
             </div>
             <div className="text-lg font-bold">
-              Congratulations! Your asset is uploaded!
+              Congratulations! Your asset is{' '}
+              {defaultAsset?.file_id ? 'updated!' : 'uploaded!'}
             </div>
             <div className="mt-4">
               <Link href="/nft">
@@ -256,11 +262,13 @@ const FormAsset = ({ baseData, onSubmit, submiting }: Props): JSX.Element => {
                   View your asset
                 </a>
               </Link>
-              <Link href="/nft/create">
-                <a className="relative inline-block text-center bg-blue-600 border border-transparent rounded-md py-2 px-4 font-medium text-white hover:bg-blue-700">
-                  Continue with created asset for publish Nft
-                </a>
-              </Link>
+              {!defaultAsset?.file_id && (
+                <Link href="/nft/create">
+                  <a className="relative inline-block text-center bg-blue-600 border border-transparent rounded-md py-2 px-4 font-medium text-white hover:bg-blue-700">
+                    Continue with created asset for publish Nft
+                  </a>
+                </Link>
+              )}
             </div>
           </motion.div>
         </motion.div>
@@ -349,6 +357,23 @@ const FormAsset = ({ baseData, onSubmit, submiting }: Props): JSX.Element => {
             )}
           >
             <Uploader
+              existingFiles={
+                defaultAsset
+                  ? [
+                      {
+                        id: defaultAsset.file_id,
+                        file_id: defaultAsset.file_id,
+                        src: defaultAsset.src,
+                        mime_type: defaultAsset.mime_type,
+                        type: defaultAsset.type,
+                        filename: defaultAsset.filename,
+                        storage: defaultAsset.storage,
+                        size: defaultAsset.size,
+                        position: 0,
+                      },
+                    ]
+                  : undefined
+              }
               hasError={false}
               onChange={onChangeFile}
               OnGenetatedThumbnail={() => {
