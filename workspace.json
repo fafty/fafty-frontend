@@ -1,7 +1,6 @@
 {
   "version": 2,
   "projects": {
-    "editor": "libs/editor",
     "fafty": "apps/fafty",
     "fafty-creator": "apps/fafty-creator",
     "fafty-creator-e2e": "apps/fafty-creator-e2e",
@@ -10,6 +9,8 @@
     "notifications": "libs/notifications",
     "shared-api": "libs/shared/api",
     "shared-ui": "libs/shared/ui",
+    "text-editor": "libs/text/editor",
+    "text-viewer": "libs/text/viewer",
     "theme": "libs/theme",
     "uploader": "libs/uploader",
     "usehooks": "libs/usehooks"

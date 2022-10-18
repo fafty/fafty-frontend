@@ -3,12 +3,15 @@ import Image from 'next/future/image';
 import { useRouter } from 'next/router';
 import { api } from '@fafty-frontend/shared/api';
 import { SVGProps, useEffect, useMemo, useState } from 'react';
-import { Tabs } from '../../components/nft/Tabs';
-import { Info } from '../../components/nft/tabs/Info';
-import { Owners } from '../../components/nft/tabs/Owners';
+import { Tabs } from '../../components/nft/tabs';
+import { Info } from '../../components/nft/tabs/info';
+import { Owners } from '../../components/nft/tabs/owners';
 import { ChevronRightIcon, HomeIcon } from '@heroicons/react/24/outline';
 import Link from 'next/link';
-import FormAssetModal from '../../components/modals/forms/asset';
+import { Viewer } from '@fafty-frontend/text/viewer';
+
+const isObjectEmpty = (value: object | string) =>
+  typeof value === 'object' ? Object.keys(value).length === 0 : !value;
 
 const TABS = [
   { title: 'Info', value: 'info' },
@@ -49,7 +52,6 @@ export default function Nft() {
   const param = useRouter();
   const { slug } = param.query;
   const breadcrumb: BreadcrumbProps[] = useMemo(() => [], []);
-  const [openedFormAssetModal, setOpenedFormAssetModal] = useState(false);
 
   const [detail, setDetail] = useState<NftProps | null>(null);
   const [isLoading, setLoading] = useState(false);
@@ -214,12 +216,7 @@ export default function Nft() {
                   <p className="w-full text-4xl font-bold leading-10 text-slate-900 dark:text-slate-50">
                     {detail?.name}
                   </p>
-                  <button
-                    onClick={() => setOpenedFormAssetModal(true)}
-                    className="z-10 relative inline-block text-center bg-blue-600 border border-transparent rounded-md py-1.5 px-4 font-medium text-white hover:bg-blue-700"
-                  >
-                    Edit
-                  </button>
+                  
                 </div>
                 <div className="inline-flex space-x-2 items-center justify-start">
                   <div className="flex items-center justify-center ml-auto text-sm font-bold text-green-500 border-2 border-green-500 rounded px-1 py-1">
@@ -233,10 +230,16 @@ export default function Nft() {
                   </p>
                 </div>
               </div>
-              <div>
-                <p className="text-base leading-normal text-slate-900 dark:text-slate-50">
-                  {/* { detail?.description } */}
-                </p>
+              <div className="text-base leading-normal text-slate-900 dark:text-slate-50">
+                {detail?.description && isObjectEmpty(detail.description) ? (
+                  <span className="text-xs font-medium opacity-50">
+                    No description
+                  </span>
+                ) : (
+                  detail?.description && <Viewer namespace={'description'} editorState={detail.description as string} />
+                )}
+
+               
               </div>
               <div className="flex flex-col space-y-2.5">
                 <Tabs
@@ -290,14 +293,6 @@ export default function Nft() {
           </div>
         </div>
       </MainLayout>
-      {openedFormAssetModal && detail?.slug && (
-        <FormAssetModal
-          title="Edit asset"
-          tokenSlug={detail.slug}
-          onClose={() => setOpenedFormAssetModal(false)}
-          isOpened={openedFormAssetModal}
-        />
-      )}
     </>
   );
 }

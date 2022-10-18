@@ -15,11 +15,12 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
-      "@fafty-frontend/editor": ["libs/editor/src/index.ts"],
       "@fafty-frontend/modals": ["libs/modals/src/index.ts"],
       "@fafty-frontend/notifications": ["libs/notifications/src/index.ts"],
       "@fafty-frontend/shared/api": ["libs/shared/api/src/index.ts"],
       "@fafty-frontend/shared/ui": ["libs/shared/ui/src/index.ts"],
+      "@fafty-frontend/text/editor": ["libs/text/editor/src/index.ts"],
+      "@fafty-frontend/text/viewer": ["libs/text/viewer/src/index.ts"],
       "@fafty-frontend/theme": ["libs/theme/src/index.ts"],
       "@fafty-frontend/uploader": ["libs/uploader/src/index.ts"],
       "@fafty-frontend/usehooks": ["libs/usehooks/src/index.ts"]

@@ -22,8 +22,8 @@
           },
           {
             "glob": "**/*",
-            "input": "libs/editor/src/assets",
-            "output": "assets/editor"
+            "input": "libs/text/editor/src/assets",
+            "output": "assets/text/editor"
           }
         ]
       },

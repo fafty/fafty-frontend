@@ -17,12 +17,12 @@ import { FormProps } from '../../forms/asset/types';
 
 type Props = {
   title: string;
-  tokenSlug?: string;
+  slug?: string;
   onClose: () => void;
   isOpened: boolean;
 };
 
-const FormAssetModal = ({ title, isOpened, onClose, tokenSlug }: Props) => {
+const FormAssetModal = ({ title, isOpened, onClose, slug }: Props) => {
   const {
     data: preloadedNft,
     call: callPreloadNft,
@@ -62,8 +62,8 @@ const FormAssetModal = ({ title, isOpened, onClose, tokenSlug }: Props) => {
     setSubmiting(true);
 
     try {
-      if (tokenSlug) {
-        await putNftData({ slug: tokenSlug, nft: data });
+      if (slug) {
+        await putNftData({ slug: slug, nft: data });
       } else {
         await api.post('/nft', { nft: data });
       }
@@ -72,7 +72,7 @@ const FormAssetModal = ({ title, isOpened, onClose, tokenSlug }: Props) => {
       throw err;
     } finally {
       setSubmiting(false);
-      if (drafted && !tokenSlug) {
+      if (drafted && !slug) {
         onClose();
         setDrafted(false);
         enqueueNotification({
@@ -96,16 +96,16 @@ const FormAssetModal = ({ title, isOpened, onClose, tokenSlug }: Props) => {
       onClose();
     }
 
-    if (!finished && tokenSlug) {
+    if (!finished && slug) {
       onClose();
     }
   };
 
   useEffect(() => {
-    if (tokenSlug) {
-      callPreloadNft(tokenSlug);
+    if (slug) {
+      callPreloadNft(slug);
     }
-  }, [tokenSlug]);
+  }, [slug]);
 
   return (
     <Modal
@@ -122,7 +122,7 @@ const FormAssetModal = ({ title, isOpened, onClose, tokenSlug }: Props) => {
       className="w-[calc(95vw_-_5px)]"
     >
       <div className="flex flex-row w-full h-full p-2">
-        {((isSuccess && !!tokenSlug) || !tokenSlug) && (
+        {((isSuccess && !!slug) || !slug) && (
           <FormAssetContextProvider
             defaultData={defaultData as NftProps}
             onChangeDismiss={onChangeDismiss}

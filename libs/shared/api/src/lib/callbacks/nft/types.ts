@@ -1,6 +1,6 @@
 import { TagProps } from '../tags/types';
 import { EditorState } from 'lexical';
-import { CSSProperties } from 'react';
+// import { CSSProperties } from 'react';
 
 export type NftAsset = {
   dominant_color: string | null;

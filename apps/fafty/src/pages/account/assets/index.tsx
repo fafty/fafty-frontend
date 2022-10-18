@@ -1,7 +1,7 @@
 import AccountLayout from '../../../layouts/account';
 import Image from 'next/future/image';
 import { useRouter } from 'next/router';
-// import classNames from 'classnames';
+import { Viewer } from '@fafty-frontend/text/viewer';
 import {
   useAsync,
   getNfts,
@@ -13,7 +13,7 @@ import { List } from 'masonic';
 
 import { useEffect, useMemo, useState } from 'react';
 import { useComponentDidUpdate } from '@fafty-frontend/usehooks';
-import { InfinityLoadChecker } from '../../../components/common/InfinityLoadChecker';
+import { InfinityLoadChecker } from '../../../components/common/infinityLoadChecker';
 import {
   EyeIcon,
   FunnelIcon,
@@ -27,9 +27,11 @@ import {
   childVariants,
   variants,
 } from '../../../components/forms/asset/constants';
+import FormAssetModal from '../../../components/modals/forms/asset';
 
 const isObjectEmpty = (value: object | string) =>
-  Object.keys(value).length === 0 && value?.constructor === Object;
+  typeof value === 'object' ? Object.keys(value).length === 0 : !value;
+  // Object.keys(JSON.parse(value as string)).length === 0 // && value?.constructor === Object;
 
 const mapper = (
   data: GetNftsResponseProps,
@@ -53,6 +55,11 @@ type QueryFiltersProps = {
 
 const AccountAssets = () => {
   const { replace, asPath } = useRouter();
+  const [openedFormAssetModal, setOpenedFormAssetModal] = useState({
+    open: false,
+    slug: '',
+    title: '',
+  });
   const search = asPath.split('?')[1];
   const [localFiltersState, setLocalFiltersState] = useState<QueryFiltersProps>(
     {
@@ -189,15 +196,44 @@ const AccountAssets = () => {
           </div>
           <div className="ml-4">
             <p className="text-sm font-medium">{item.name}</p>
-            <p className="text-xs font-medium opacity-50">
+            <motion.div className="text-xs font-medium opacity-50 w-[150px] truncate"
+              initial={'visible'}
+              variants={{
+                visible: {
+                height: '30px',
+                // opacity: 1,
+                transition: {
+                  duration: 0.2,
+                  delay: 0.1,
+                  when: 'beforeChildren',
+                  staggerChildren: 0.1,
+                },
+              },
+              hidden: {
+                height: '20px',
+                // opacity: 0,
+                
+                transition: {
+                  duration: 0.2,
+                  delay: 0.1
+                },
+              }}}
+              animate={isHovered ? 'hidden' : 'visible'}
+              exit={'visible'}
+            >
               {item.description && isObjectEmpty(item.description) ? (
                 <span className="text-xs font-medium opacity-50">
                   Add description
                 </span>
               ) : (
-                JSON.stringify(item.description)
+                <Viewer namespace={'description'} editorState={item.description} />
+                // <span>
+                //   {/* {JSON.stringify(item.description)}
+                //   { item.description?.toString()} */}
+                // </span>
+
               )}
-            </p>
+            </motion.div>
             <motion.div
               initial={'hidden'}
               variants={variants}
@@ -210,7 +246,7 @@ const AccountAssets = () => {
                     type="button"
                     title="Edit"
                     className="w-8 h-8 rounded-full hover:bg-blue-100 dark:hover:bg-neutral-600 box-border justify-center p-0 m-0 cursor-pointer flex relative dark:text-gray-200 touch-manipulation items-center select-none border-0 list-none outline-none decoration-0 transition duration-250 ease-in-out bg-neutral-200 dark:bg-neutral-700"
-                    onClick={() => void console.log('open modal for edit')}
+                    onClick={() => setOpenedFormAssetModal({open: true, slug: item.slug, title: item.name})}
                   >
                     <PencilSquareIcon
                       strokeWidth="2"
@@ -360,69 +396,79 @@ const AccountAssets = () => {
   }, [data?.paginate?.count, isSuccess, items]);
 
   return (
-    <AccountLayout
-      title={'Assets on your profile'}
-      description={'Assets on your profile'}
-    >
-      <div className="flex flex-1 flex-col w-full">
-        <div className="flex p-8">
-          <h1 className="text-2xl">Your Assets</h1>
-          {/* {hoveredItem} */}
-        </div>
-        <div
-          aria-label="Assets list"
-          className="relative flex flex-col mx-auto w-full mb-10"
-        >
-          <div className="flex flex-col mx-auto w-full sticky top-[82px] z-1 bg-white dark:bg-neutral-800 shadow-[0_10px_5px_-10px_rgba(0,0,0,0.2)]">
-            <div className="relative flex flex-col ml-8">
-              <div>
-                <div className="relative w-full h-[50px] flex flex-row">
-                  <div className="pointer-events-none absolute py-2 inset-0 left-0 flex items-center pr-5">
-                    <div className="w-8 h-8 rounded-full hover:bg-blue-100 dark:hover:bg-neutral-600 box-border justify-center p-0 m-0 cursor-pointer flex relative dark:text-gray-200 touch-manipulation items-center select-none border-0 list-none outline-none decoration-0 transition duration-250 ease-in-out bg-neutral-200 dark:bg-neutral-700">
-                      <FunnelIcon
-                        strokeWidth="2"
-                        className="touch-manipulation select-none w-5 h-5"
-                      />
+    <>
+      <AccountLayout
+        title={'Assets on your profile'}
+        description={'Assets on your profile'}
+      >
+        <div className="flex flex-1 flex-col w-full">
+          <div className="flex p-8">
+            <h1 className="text-2xl">Your Assets</h1>
+            {/* {hoveredItem} */}
+          </div>
+          <div
+            aria-label="Assets list"
+            className="relative flex flex-col mx-auto w-full mb-10"
+          >
+            <div className="flex flex-col mx-auto w-full sticky top-[82px] z-1 bg-white dark:bg-neutral-800 shadow-[0_10px_5px_-10px_rgba(0,0,0,0.2)]">
+              <div className="relative flex flex-col ml-8">
+                <div>
+                  <div className="relative w-full h-[50px] flex flex-row">
+                    <div className="pointer-events-none absolute py-2 inset-0 left-0 flex items-center pr-5">
+                      <div className="w-8 h-8 rounded-full hover:bg-blue-100 dark:hover:bg-neutral-600 box-border justify-center p-0 m-0 cursor-pointer flex relative dark:text-gray-200 touch-manipulation items-center select-none border-0 list-none outline-none decoration-0 transition duration-250 ease-in-out bg-neutral-200 dark:bg-neutral-700">
+                        <FunnelIcon
+                          strokeWidth="2"
+                          className="touch-manipulation select-none w-5 h-5"
+                        />
+                      </div>
                     </div>
+                    <input
+                      autoComplete="off"
+                      spellCheck="false"
+                      type="search"
+                      autoCorrect="off"
+                      autoCapitalize="off"
+                      name="search"
+                      id="search"
+                      className="border-2 focus:ring-0 focus:ring-offset-0 block w-full bg-transparent border-transparent dark:border-transparent pl-[2.5rem] pr-3 p-3 focus:border-transparent hover:border-transparent dark:focus:border-transparent dark:hover:border-transparent transition duration-200 ring-0 sm:text-sm md:text-base"
+                      placeholder="Filter"
+                    />
                   </div>
-                  <input
-                    autoComplete="off"
-                    spellCheck="false"
-                    type="search"
-                    autoCorrect="off"
-                    autoCapitalize="off"
-                    name="search"
-                    id="search"
-                    className="border-2 focus:ring-0 focus:ring-offset-0 block w-full bg-transparent border-transparent dark:border-transparent pl-[2.5rem] pr-3 p-3 focus:border-transparent hover:border-transparent dark:focus:border-transparent dark:hover:border-transparent transition duration-200 ring-0 sm:text-sm md:text-base"
-                    placeholder="Filter"
-                  />
                 </div>
               </div>
-            </div>
-            <div
-              role="row"
-              className="left-0 sticky grid grid-cols-[minmax(300px,_1fr)_minmax(70px,_100px)_minmax(100px,_120px)_minmax(100px,_120px)_minmax(100px,_120px)_minmax(100px,_120px)_minmax(100px,_120px)_minmax(100px,_120px)] gap-x-1 mx-auto h-[2rem] w-full"
-            >
-              <div role="columnheader" className="ml-8 left-0 sticky">
-                Asset
+              <div
+                role="row"
+                className="left-0 sticky grid grid-cols-[minmax(300px,_1fr)_minmax(70px,_100px)_minmax(100px,_120px)_minmax(100px,_120px)_minmax(100px,_120px)_minmax(100px,_120px)_minmax(100px,_120px)_minmax(100px,_120px)] gap-x-1 mx-auto h-[2rem] w-full"
+              >
+                <div role="columnheader" className="ml-8 left-0 sticky">
+                  Asset
+                </div>
+                <div className="truncate">Access Options</div>
+                <div className="truncate">Restrictions</div>
+                <div className="truncate">Views</div>
+                <div className="truncate">Comments</div>
+                <div className="truncate">Likes</div>
+                <div className="truncate">Date</div>
               </div>
-              <div className="truncate">Access Options</div>
-              <div className="truncate">Restrictions</div>
-              <div className="truncate">Views</div>
-              <div className="truncate">Comments</div>
-              <div className="truncate">Likes</div>
-              <div className="truncate">Date</div>
             </div>
+            {renderMasonry}
+            <InfinityLoadChecker
+              allowLoad={allowLoad}
+              isLoading={isLoading}
+              loadMore={loadMore}
+            />
           </div>
-          {renderMasonry}
-          <InfinityLoadChecker
-            allowLoad={allowLoad}
-            isLoading={isLoading}
-            loadMore={loadMore}
-          />
         </div>
-      </div>
-    </AccountLayout>
+      </AccountLayout>
+      {openedFormAssetModal && (
+        <FormAssetModal
+          title={openedFormAssetModal.title}
+          slug={openedFormAssetModal.slug}
+          onClose={() => setOpenedFormAssetModal({open: false, title: '', slug: ''})}
+          isOpened={openedFormAssetModal.open}
+        />
+      )}
+    </>
   );
 };
 

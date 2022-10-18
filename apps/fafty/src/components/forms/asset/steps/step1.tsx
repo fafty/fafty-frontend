@@ -30,7 +30,7 @@ interface EditorProps {
 }
 
 const Editor = dynamic<EditorProps>(
-  () => import('@fafty-frontend/editor').then((mod) => mod.Editor),
+  () => import('@fafty-frontend/text/editor').then((mod) => mod.Editor),
   {
     ssr: false,
     loading: () => <EditorPlaceholder header={true} />,
@@ -74,7 +74,7 @@ const SelectStep1 = ({ Context }: { Context: Context<ContextProps> }) => {
         name: stepData.step1.state.name,
       });
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [stepData.asset]);
 
   /**
@@ -86,7 +86,7 @@ const SelectStep1 = ({ Context }: { Context: Context<ContextProps> }) => {
     return () => {
       storeData();
     };
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   /**
@@ -120,7 +120,7 @@ const SelectStep1 = ({ Context }: { Context: Context<ContextProps> }) => {
         error: !isValid,
       },
     });
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isValid]);
 
   return (
