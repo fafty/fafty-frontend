@@ -5,7 +5,12 @@ import NextHead from 'next/head';
 import React, { useCallback, useEffect, useState, memo } from 'react';
 import Context from './context';
 import { ThemeProviderProps, ProviderContextProps } from './types';
-import { disableAnimation, encodeBase64, getSystemTheme, getTheme } from './utils';
+import {
+  disableAnimation,
+  encodeBase64,
+  getSystemTheme,
+  getTheme,
+} from './utils';
 
 const colorSchemes = ['light', 'dark'];
 
@@ -62,17 +67,14 @@ const ThemeProvider: React.FC<ThemeProviderProps> = ({
     enable?.();
   }, []);
 
-  const setTheme = useCallback(
-    (theme: string) => {
-      setThemeState(theme);
-      try {
-        localStorage.setItem(storageKey, theme);
-      } catch (e) {
-        // Unsupported
-      }
-    },
-    []
-  );
+  const setTheme = useCallback((theme: string) => {
+    setThemeState(theme);
+    try {
+      localStorage.setItem(storageKey, theme);
+    } catch (e) {
+      // Unsupported
+    }
+  }, []);
 
   const handleMediaQuery = useCallback(
     (e: MediaQueryListEvent | MediaQueryList) => {

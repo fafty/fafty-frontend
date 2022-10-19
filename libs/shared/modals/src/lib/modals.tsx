@@ -24,18 +24,19 @@ const useOnEscape = (
 };
 
 const Modal: FC<ModalProps> = (props) => {
-  const { title, open, children, actions, options, onDismiss, className } = props;
+  const { title, open, children, actions, options, onDismiss, className } =
+    props;
   // const [isOpen, setIsOpen] = useState(true);
 
   useOnEscape(onDismiss, options?.persist);
-  
+
   const showInModalVarians = {
     hidden: {
-      y: "20px",
+      y: '20px',
       opacity: 0,
     },
     visible: {
-      y: "0px",
+      y: '0px',
       opacity: 1,
       transition: {
         duration: 0.2,
@@ -44,7 +45,7 @@ const Modal: FC<ModalProps> = (props) => {
       },
     },
     exit: {
-      y: "20px",
+      y: '20px',
       opacity: 0,
     },
   };
@@ -71,11 +72,11 @@ const Modal: FC<ModalProps> = (props) => {
               exit="exit"
               className={classNames(
                 className,
-                "relative flex flex-col antialiased m-3 p-3 h-auto text-stone-700 dark:text-gray-200 focus:outline-none bg-slate-50 dark:bg-neutral-800 border-1 border-gray-100 dark:border-neutral-700 shadow rounded-lg max-w-screen-lg"
+                'relative flex flex-col antialiased m-3 p-3 h-auto text-stone-700 dark:text-gray-200 focus:outline-none bg-slate-50 dark:bg-neutral-800 border-1 border-gray-100 dark:border-neutral-700 shadow rounded-lg max-w-screen-lg'
               )}
             >
               <div className="flex justify-between items-start">
-                {title && (<div className="text-base font-bold">{title}</div>)}
+                {title && <div className="text-base font-bold">{title}</div>}
                 {options?.dismissible?.active && (
                   <span className="dismiss">
                     <button
@@ -99,9 +100,7 @@ const Modal: FC<ModalProps> = (props) => {
               </div>
               {/* h-[calc(70vh)] overflow-y-hidden */}
               <div className="flex flex-1 flex-col">
-                <div className="mt-2">
-                  {children}
-                </div>
+                <div className="mt-2">{children}</div>
                 {actions && (
                   <div className="actions-area">
                     <button

@@ -74,7 +74,6 @@ const SelectStep1 = ({ Context }: { Context: Context<ContextProps> }) => {
         name: stepData.step1.state.name,
       });
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [stepData.asset]);
 
   /**
@@ -120,7 +119,6 @@ const SelectStep1 = ({ Context }: { Context: Context<ContextProps> }) => {
         error: !isValid,
       },
     });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isValid]);
 
   return (
@@ -150,7 +148,7 @@ const SelectStep1 = ({ Context }: { Context: Context<ContextProps> }) => {
                 'text-gray-700 dark:text-gray-100 dark:bg-neutral-900/90 mt-1 border focus:outline-none rounded-md shadow-sm focus:border-gray-500 focus:shadow w-full p-3 h-12'
               )}
               placeholder="Enter name of Nft"
-              // {...(errors.name && { 'aria-invalid': true })}
+              {...(errors.name && { 'aria-invalid': true })}
               autoComplete="off"
               {...field}
             />

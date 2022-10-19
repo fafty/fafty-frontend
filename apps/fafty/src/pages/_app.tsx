@@ -1,6 +1,6 @@
 import '../styles/globals.sass';
 import type { AppProps } from 'next/app';
-import { ThemeProvider } from '@fafty-frontend/theme';
+import { ThemeProvider } from '@fafty-frontend/shared/theme';
 import { NotificationProvider } from '@fafty-frontend/notifications';
 import { Listeners } from '../layouts/Listeners';
 import { ProvideAuth } from '../utils/auth';

@@ -1,4 +1,4 @@
-import { Modal } from '@fafty-frontend/modals';
+import { Modal } from '@fafty-frontend/shared/modals';
 import { useAuth } from '../../utils/auth';
 import classNames from 'classnames';
 import { ReactComponent as PlugLogo } from '../../assets/plug.svg';

@@ -1,4 +1,4 @@
-import { Modal } from '@fafty-frontend/modals';
+import { Modal } from '@fafty-frontend/shared/modals';
 import FormAsset from '../../forms/asset/main';
 import { FormAssetContextProvider } from '../../forms/asset/provider';
 import { useEffect, useState } from 'react';

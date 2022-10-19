@@ -328,7 +328,7 @@ const SelectCollection = ({ current, onChange }: Props): JSX.Element => {
                         )}
                       </div>
                       <div className="flex flex-col py-4 pl-20 pr-2 inset-0">
-                        <strong className="text-slate-900 text-sm font-medium dark:text-slate-200">
+                        <strong className="text-sm font-medium text-slate-900 dark:text-slate-200">
                           {collection.name}
                         </strong>
                         <div className="flex">
@@ -337,7 +337,7 @@ const SelectCollection = ({ current, onChange }: Props): JSX.Element => {
                               <span className="font-medium">
                                 {collection.total_nfts_count}
                               </span>
-                              <span className="ml-1 text-slate-800 dark:text-slate-700">
+                              <span className="ml-1">
                                 NFT&apos;s
                               </span>
                             </span>

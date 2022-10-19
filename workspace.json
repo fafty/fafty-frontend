@@ -5,13 +5,13 @@
     "fafty-creator": "apps/fafty-creator",
     "fafty-creator-e2e": "apps/fafty-creator-e2e",
     "fafty-e2e": "apps/fafty-e2e",
-    "modals": "libs/modals",
     "notifications": "libs/notifications",
     "shared-api": "libs/shared/api",
+    "shared-modals": "libs/shared/modals",
+    "shared-theme": "libs/shared/theme",
     "shared-ui": "libs/shared/ui",
     "text-editor": "libs/text/editor",
     "text-viewer": "libs/text/viewer",
-    "theme": "libs/theme",
     "uploader": "libs/uploader",
     "usehooks": "libs/usehooks"
   }

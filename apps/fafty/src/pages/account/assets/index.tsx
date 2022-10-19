@@ -29,8 +29,10 @@ import {
 } from '../../../components/forms/asset/constants';
 import FormAssetModal from '../../../components/modals/forms/asset';
 
-const isObjectEmpty = (value: object | string) =>
-  typeof value === 'object' ? Object.keys(value).length === 0 : !value;
+const isObjectEmpty = (value: object | string | null) => {
+  return !value && value == null || value === undefined || value === '' || value === 'null'|| (typeof value === 'object' && Object.keys(value).length === 0 && Object.getPrototypeOf(value) === Object.prototype);
+}
+  // typeof value === 'object' ? Object.keys(value).length === 0 : !value;
   // Object.keys(JSON.parse(value as string)).length === 0 // && value?.constructor === Object;
 
 const mapper = (
@@ -221,17 +223,12 @@ const AccountAssets = () => {
               animate={isHovered ? 'hidden' : 'visible'}
               exit={'visible'}
             >
-              {item.description && isObjectEmpty(item.description) ? (
+              {isObjectEmpty(item.description) ? (
                 <span className="text-xs font-medium opacity-50">
                   Add description
                 </span>
               ) : (
                 <Viewer namespace={'description'} editorState={item.description} />
-                // <span>
-                //   {/* {JSON.stringify(item.description)}
-                //   { item.description?.toString()} */}
-                // </span>
-
               )}
             </motion.div>
             <motion.div

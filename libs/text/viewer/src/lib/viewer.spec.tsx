@@ -6,8 +6,7 @@ describe('Viewer', () => {
   it('should render successfully', () => {
     const { baseElement } = render(
       <Viewer
-        initialEditorState={null}
-      />
+        editorState={null} namespace={''}      />
     );
     expect(baseElement).toBeTruthy();
   });
