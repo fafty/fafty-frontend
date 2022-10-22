@@ -14,6 +14,7 @@ export const Panel = ({ children, initialState, title }: Props) => {
   return (
     <div className="flex flex-col">
       <div
+        onClick={() => setIsOpened(!isOpened)}
         className={classNames(
           'flex justify-between items-center cursor-pointer rounded dark:hover:bg-neutral-700',
           {
@@ -21,10 +22,7 @@ export const Panel = ({ children, initialState, title }: Props) => {
           }
         )}
       >
-        <span
-          onClick={() => setIsOpened(!isOpened)}
-          className="dark:text-white text-slate-900 text-lg font-bold w-full p-2.5"
-        >
+        <span className="dark:text-white text-slate-900 text-lg font-bold w-full p-2.5">
           {title}
         </span>
         {!isOpened ? (

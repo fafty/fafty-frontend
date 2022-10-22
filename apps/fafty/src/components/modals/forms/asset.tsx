@@ -46,14 +46,12 @@ const FormAssetModal = ({ title, isOpened, onClose, slug }: Props) => {
   const [drafted, setDrafted] = useState(false);
   const { enqueueNotification } = useNotifications();
 
-  console.log('finished', finished);
-
   const onSubmit = async (data: FormProps) => {
     if (submiting) {
       return;
     }
 
-    if (drafted && !data.asset) {
+    if (drafted && !data.asset?.id) {
       setDrafted(false);
       onClose();
       return;

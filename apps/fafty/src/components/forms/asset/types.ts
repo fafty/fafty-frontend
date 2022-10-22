@@ -22,6 +22,7 @@ interface ExistingFileProps {
 export interface FileProps {
   id: string;
   storage: string;
+  src?: string;
   metadata: {
     size: number;
     filename: string;
@@ -122,4 +123,5 @@ export interface ContextProps {
   step3Answered: boolean;
   finished: boolean;
   setFinished: (finished: boolean) => void;
+  clearState: VoidFunction;
 }

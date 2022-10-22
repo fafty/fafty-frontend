@@ -13,7 +13,7 @@ import { List } from 'masonic';
 
 import { useEffect, useMemo, useState } from 'react';
 import { useComponentDidUpdate } from '@fafty-frontend/usehooks';
-import { InfinityLoadChecker } from '../../../components/common/infinityLoadChecker';
+import { InfinityLoadChecker } from '../../../components/common/InfinityLoadChecker';
 import {
   EyeIcon,
   FunnelIcon,
@@ -30,10 +30,18 @@ import {
 import FormAssetModal from '../../../components/modals/forms/asset';
 
 const isObjectEmpty = (value: object | string | null) => {
-  return !value && value == null || value === undefined || value === '' || value === 'null'|| (typeof value === 'object' && Object.keys(value).length === 0 && Object.getPrototypeOf(value) === Object.prototype);
-}
-  // typeof value === 'object' ? Object.keys(value).length === 0 : !value;
-  // Object.keys(JSON.parse(value as string)).length === 0 // && value?.constructor === Object;
+  return (
+    (!value && value == null) ||
+    value === undefined ||
+    value === '' ||
+    value === 'null' ||
+    (typeof value === 'object' &&
+      Object.keys(value).length === 0 &&
+      Object.getPrototypeOf(value) === Object.prototype)
+  );
+};
+// typeof value === 'object' ? Object.keys(value).length === 0 : !value;
+// Object.keys(JSON.parse(value as string)).length === 0 // && value?.constructor === Object;
 
 const mapper = (
   data: GetNftsResponseProps,
@@ -62,6 +70,7 @@ const AccountAssets = () => {
     slug: '',
     title: '',
   });
+
   const search = asPath.split('?')[1];
   const [localFiltersState, setLocalFiltersState] = useState<QueryFiltersProps>(
     {
@@ -198,28 +207,30 @@ const AccountAssets = () => {
           </div>
           <div className="ml-4">
             <p className="text-sm font-medium">{item.name}</p>
-            <motion.div className="text-xs font-medium opacity-50 w-[150px] truncate"
+            <motion.div
+              className="text-xs font-medium opacity-50 w-[150px] truncate"
               initial={'visible'}
               variants={{
                 visible: {
-                height: '30px',
-                // opacity: 1,
-                transition: {
-                  duration: 0.2,
-                  delay: 0.1,
-                  when: 'beforeChildren',
-                  staggerChildren: 0.1,
+                  height: '30px',
+                  // opacity: 1,
+                  transition: {
+                    duration: 0.2,
+                    delay: 0.1,
+                    when: 'beforeChildren',
+                    staggerChildren: 0.1,
+                  },
                 },
-              },
-              hidden: {
-                height: '20px',
-                // opacity: 0,
-                
-                transition: {
-                  duration: 0.2,
-                  delay: 0.1
+                hidden: {
+                  height: '20px',
+                  // opacity: 0,
+
+                  transition: {
+                    duration: 0.2,
+                    delay: 0.1,
+                  },
                 },
-              }}}
+              }}
               animate={isHovered ? 'hidden' : 'visible'}
               exit={'visible'}
             >
@@ -228,7 +239,10 @@ const AccountAssets = () => {
                   Add description
                 </span>
               ) : (
-                <Viewer namespace={'description'} editorState={item.description} />
+                <Viewer
+                  namespace={'description'}
+                  editorState={item.description}
+                />
               )}
             </motion.div>
             <motion.div
@@ -243,7 +257,13 @@ const AccountAssets = () => {
                     type="button"
                     title="Edit"
                     className="w-8 h-8 rounded-full hover:bg-blue-100 dark:hover:bg-neutral-600 box-border justify-center p-0 m-0 cursor-pointer flex relative dark:text-gray-200 touch-manipulation items-center select-none border-0 list-none outline-none decoration-0 transition duration-250 ease-in-out bg-neutral-200 dark:bg-neutral-700"
-                    onClick={() => setOpenedFormAssetModal({open: true, slug: item.slug, title: item.name})}
+                    onClick={() =>
+                      setOpenedFormAssetModal({
+                        open: true,
+                        slug: item.slug,
+                        title: item.name,
+                      })
+                    }
                   >
                     <PencilSquareIcon
                       strokeWidth="2"
@@ -457,11 +477,13 @@ const AccountAssets = () => {
           </div>
         </div>
       </AccountLayout>
-      {openedFormAssetModal && (
+      {openedFormAssetModal.open && (
         <FormAssetModal
           title={openedFormAssetModal.title}
           slug={openedFormAssetModal.slug}
-          onClose={() => setOpenedFormAssetModal({open: false, title: '', slug: ''})}
+          onClose={() =>
+            setOpenedFormAssetModal({ open: false, title: '', slug: '' })
+          }
           isOpened={openedFormAssetModal.open}
         />
       )}

@@ -5,7 +5,49 @@ import {
   CommentsModerationType,
 } from '@fafty-frontend/shared/api';
 import Context from './context';
-import { FormProps, SetStepDataProps } from './types';
+import { FormProps, SetStepDataProps, StepsProps } from './types';
+
+const defaultStepsData: StepsProps = {
+  asset: {
+    id: '',
+    storage: '',
+    src: undefined,
+    metadata: {
+      size: 0,
+      filename: '',
+      mime_type: '',
+    },
+  },
+  step1: {
+    state: {
+      name: '',
+      description: null,
+      unlockable_content: null,
+      sensitive_content: false,
+    },
+    solved: false,
+    error: false,
+  },
+  step2: {
+    state: {
+      blockchain: 'dfinity',
+      supply_units: 1,
+      collection_token: '',
+    },
+    solved: false,
+    error: false,
+  },
+  step3: {
+    state: {
+      allow_ratings: true,
+      comments_moderation: '' as CommentsModerationType,
+      comments_order: 'newest' as CommentsOrderType,
+      tags: [],
+    },
+    solved: false,
+    error: false,
+  },
+};
 
 export const FormAssetContextProvider = ({
   onChangeDismiss,
@@ -27,7 +69,7 @@ export const FormAssetContextProvider = ({
   const [step3Answered, setStep3Answered] = useState(false);
   const [finished, setFinished] = useState<boolean>(false);
 
-  const [stepData, setStepData] = useState({
+  const [stepData, setStepData] = useState<StepsProps>({
     asset: {
       id: defaultData?.asset?.file_id || '',
       storage: defaultData?.asset?.storage || '',
@@ -49,28 +91,34 @@ export const FormAssetContextProvider = ({
         unlockable_content: null,
         sensitive_content: !!defaultData?.sensitive_content,
       },
-      solved: !!defaultData,
+      solved: !!defaultData?.description,
       error: false,
     },
     step2: {
       state: {
-        blockchain: 'dfinity',
+        blockchain: defaultData?.blockchain || 'dfinity',
         supply_units: defaultData?.available_supply_units || 1,
-        collection_token: '',
+        collection_token: defaultData?.collection_token || '',
       },
       solved:
         !!defaultData?.available_supply_units &&
-        !!defaultData?.collection_token,
+        !!defaultData?.collection_token &&
+        !!defaultData?.blockchain,
       error: false,
     },
     step3: {
       state: {
-        allow_ratings: true,
-        comments_moderation: '' as CommentsModerationType,
-        comments_order: 'newest' as CommentsOrderType,
-        tags: [],
+        allow_ratings: !!defaultData?.allow_ratings,
+        comments_moderation:
+          defaultData?.comments_moderation || ('' as CommentsModerationType),
+        comments_order:
+          defaultData?.comments_order || ('newest' as CommentsOrderType),
+        tags: defaultData?.tags || [],
       },
-      solved: !!defaultData?.tags?.length && !!defaultData?.comments_moderation,
+      solved:
+        !!defaultData?.tags?.length &&
+        !!defaultData?.comments_moderation &&
+        !!defaultData?.comments_order,
       error: false,
     },
   });
@@ -120,6 +168,13 @@ export const FormAssetContextProvider = ({
     [setStepData]
   );
 
+  const clearState = () => {
+    setStepData(defaultStepsData);
+    setStep1Answered(false);
+    setStep2Answered(false);
+    setStep3Answered(false);
+  };
+
   const contextValues = {
     step1Answered,
     setStep1Answered,
@@ -131,6 +186,7 @@ export const FormAssetContextProvider = ({
     setFinished,
     stepData,
     setStepData: onSetStepData,
+    clearState,
   };
 
   return <Context.Provider value={contextValues}>{children}</Context.Provider>;

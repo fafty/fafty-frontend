@@ -24,6 +24,7 @@ export type NftProps = {
   edit_count?: number;
   slug: string;
   type?: string;
+  allow_ratings?: boolean;
   available_supply_units: 1;
   created_at: string;
   published_at: string | null;
@@ -38,6 +39,7 @@ export type NftProps = {
   visibility: string;
   tags: TagProps[];
   comments_moderation: CommentsModerationType;
+  comments_order: CommentsOrderType;
   collection_token: string;
 };
 

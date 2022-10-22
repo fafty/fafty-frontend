@@ -37,6 +37,7 @@ const FormAsset = ({
     stepData: data,
     setStepData,
     setFinished,
+    clearState,
   } = useContext(Context);
 
   /*
@@ -68,6 +69,7 @@ const FormAsset = ({
   }, [activeStep, components, setComponent]);
 
   const [onlyUploader, setOnlyUploader] = useState(!data?.asset?.id);
+
   /*
    * Load Dynamic Content
    */
@@ -146,7 +148,6 @@ const FormAsset = ({
           .replace(/(.*)\.(.*?)$/, '$1')
           .replace(/^ +| +$|( ) +/g, '$1');
 
-        console.log('onCange?');
         if (setStepData) {
           setStepData({
             asset: currentFile,
@@ -157,14 +158,16 @@ const FormAsset = ({
                 unlockable_content: null,
                 sensitive_content: false,
               },
-              solved: false,
+              solved: true,
               error: false,
             },
           });
         }
+      } else if (!values && clearState) {
+        clearState();
       }
     },
-    [data, setStepData]
+    [data, setStepData, clearState]
   );
 
   const StepsList = [
