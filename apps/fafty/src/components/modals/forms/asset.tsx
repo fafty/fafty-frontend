@@ -35,8 +35,6 @@ const FormAssetModal = ({ title, isOpened, onClose, slug }: Props) => {
     callback: (params?: NftPutParams) => putNft(params),
   });
 
-  const defaultData = { ...preloadedNft?.record };
-
   const [submiting, setSubmiting] = useState(false);
   const [dismissibleData, setDismissibleData] = useState({
     title: 'Close',
@@ -122,14 +120,14 @@ const FormAssetModal = ({ title, isOpened, onClose, slug }: Props) => {
       <div className="flex flex-row w-full h-full p-2">
         {((isSuccess && !!slug) || !slug) && (
           <FormAssetContextProvider
-            defaultData={defaultData as NftProps}
+            defaultData={preloadedNft?.record}
             onChangeDismiss={onChangeDismiss}
             rawDataCallback={drafted}
             onRawDataCallback={(data) => onSubmit(data)}
             onFinished={() => setFinished(true)}
           >
             <FormAsset
-              defaultAsset={defaultData?.asset}
+              defaultAsset={preloadedNft?.record?.asset}
               onSubmit={onSubmit}
               submiting={submiting}
             />

@@ -47,6 +47,13 @@ const defaultStepsData: StepsProps = {
     solved: false,
     error: false,
   },
+  step4: {
+    state: {
+      is_checked: false,
+    },
+    solved: false,
+    error: false,
+  },
 };
 
 export const FormAssetContextProvider = ({
@@ -67,6 +74,7 @@ export const FormAssetContextProvider = ({
   const [step1Answered, setStep1Answered] = useState(false);
   const [step2Answered, setStep2Answered] = useState(false);
   const [step3Answered, setStep3Answered] = useState(false);
+  const [step4Answered, setStep4Answered] = useState(false);
   const [finished, setFinished] = useState<boolean>(false);
 
   const [stepData, setStepData] = useState<StepsProps>({
@@ -121,6 +129,13 @@ export const FormAssetContextProvider = ({
         !!defaultData?.comments_order,
       error: false,
     },
+    step4: {
+      state: {
+        is_checked: !!defaultData,
+      },
+      solved: !!defaultData,
+      error: false,
+    },
   });
 
   useEffect(() => {
@@ -173,6 +188,7 @@ export const FormAssetContextProvider = ({
     setStep1Answered(false);
     setStep2Answered(false);
     setStep3Answered(false);
+    setStep4Answered(false);
   };
 
   const contextValues = {
@@ -182,6 +198,8 @@ export const FormAssetContextProvider = ({
     setStep2Answered,
     step3Answered,
     setStep3Answered,
+    step4Answered,
+    setStep4Answered,
     finished,
     setFinished,
     stepData,
