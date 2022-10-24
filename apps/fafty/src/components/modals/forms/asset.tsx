@@ -35,11 +35,6 @@ const FormAssetModal = ({ title, isOpened, onClose, slug }: Props) => {
     callback: (params?: AssetPutParams) => putAsset(params),
   });
 
-<<<<<<< HEAD
-  const defaultData = { ...preloadedAsset?.record };
-
-=======
->>>>>>> 95e24fde2c6bb63885d19189b361e44c8c69d39f
   const [submiting, setSubmiting] = useState(false);
   const [dismissibleData, setDismissibleData] = useState({
     title: 'Close',
@@ -54,11 +49,7 @@ const FormAssetModal = ({ title, isOpened, onClose, slug }: Props) => {
       return;
     }
 
-<<<<<<< HEAD
-    if (drafted && !data.media) {
-=======
-    if (drafted && !data.asset?.id) {
->>>>>>> 95e24fde2c6bb63885d19189b361e44c8c69d39f
+    if (drafted && !data.media?.id) {
       setDrafted(false);
       onClose();
       return;
@@ -129,22 +120,14 @@ const FormAssetModal = ({ title, isOpened, onClose, slug }: Props) => {
       <div className="flex flex-row w-full h-full p-2">
         {((isSuccess && !!slug) || !slug) && (
           <FormAssetContextProvider
-<<<<<<< HEAD
-            defaultData={defaultData as AssetProps}
-=======
-            defaultData={preloadedNft?.record}
->>>>>>> 95e24fde2c6bb63885d19189b361e44c8c69d39f
+            defaultData={preloadedAsset?.record}
             onChangeDismiss={onChangeDismiss}
             rawDataCallback={drafted}
             onRawDataCallback={(data) => onSubmit(data)}
             onFinished={() => setFinished(true)}
           >
             <FormAsset
-<<<<<<< HEAD
-              defaultAsset={defaultData?.media}
-=======
-              defaultAsset={preloadedNft?.record?.asset}
->>>>>>> 95e24fde2c6bb63885d19189b361e44c8c69d39f
+              defaultAsset={preloadedAsset?.record?.media}
               onSubmit={onSubmit}
               submiting={submiting}
             />

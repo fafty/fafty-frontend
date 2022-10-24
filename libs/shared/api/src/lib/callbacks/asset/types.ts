@@ -1,7 +1,6 @@
 import { TagProps } from '../tags/types';
 import { EditorState } from 'lexical';
 import { CollectionProps } from '../collection/types';
-// import { CSSProperties } from 'react';
 
 export type AssetMedia = {
   dominant_color: string | null;

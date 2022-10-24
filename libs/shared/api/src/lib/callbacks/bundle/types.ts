@@ -28,7 +28,6 @@ export type BundleProps = {
   preview_assets: AssetProps[];
   likes: number;
   cover: BundleCover;
-  banner: null | string;
   sensitive_content: boolean;
   pool: string;
   deleted_at: null | string;
