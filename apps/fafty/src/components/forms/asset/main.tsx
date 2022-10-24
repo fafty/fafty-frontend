@@ -108,7 +108,7 @@ const FormAsset = ({
         ...data.step1.state,
         ...data.step2.state,
         ...data.step3.state,
-      }).finally(() => {
+      }).then(() => {
         setFinished?.(true);
       });
   }, [data, setFinished]);

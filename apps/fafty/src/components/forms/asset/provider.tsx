@@ -155,20 +155,22 @@ export const FormAssetContextProvider = ({
   }, [finished]);
 
   useEffect(() => {
-    if (step1Answered && stepData.media) {
+    if (step1Answered && stepData.media.id) {
       onChangeDismiss({
         title: 'Close and save as draft',
         disabled: false,
       });
     }
-    if (!step1Answered && stepData.media) {
+
+    if (!step1Answered && stepData.media.id) {
       onChangeDismiss({
         title:
           'The button is not active because there are errors in some fields',
         disabled: true,
       });
     }
-    if ((!step1Answered && !stepData.media) || finished) {
+
+    if ((!step1Answered && !stepData.media.id) || finished) {
       onChangeDismiss({
         title: 'Close',
         disabled: false,
