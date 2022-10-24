@@ -1,4 +1,12 @@
-import { useState, useEffect, SVGProps, ReactNode } from 'react';
+import {
+  useState,
+  useEffect,
+  SVGProps,
+  ReactNode,
+  useRef,
+  MutableRefObject,
+  useLayoutEffect,
+} from 'react';
 import Image from 'next/future/image';
 import { RadioGroup } from '@headlessui/react';
 import {
@@ -17,7 +25,7 @@ import { BrushIcon } from '@remixicons/react/line';
 import { useTheme } from '@fafty-frontend/shared/theme';
 import classNames from 'classnames';
 import Link from 'next/link';
-import { AnimatePresence, AnimateSharedLayout, motion } from 'framer-motion';
+import { AnimatePresence, motion } from 'framer-motion';
 
 const themeOptions = [
   {
@@ -142,9 +150,16 @@ const MainPanel = ({
   close: boolean;
   onLogOut: () => void;
 }): JSX.Element => {
+  const [height, setHeight] = useState(0);
+  const refChildren = useRef() as MutableRefObject<HTMLDivElement>;
   const [activeMenu, setActiveMenu] = useState('main');
   const { theme, setTheme } = useTheme();
   const [direction, setDirection] = useState(0);
+
+  const observerSize = new ResizeObserver(([entry]) => {
+    console.log(entry.contentRect.height);
+    setHeight(entry.contentRect.height);
+  });
 
   useEffect(() => {
     setActiveMenu('main');
@@ -157,6 +172,7 @@ const MainPanel = ({
     leftIcon?: (props: SVGProps<SVGSVGElement>) => JSX.Element;
     rightIcon?: (props: SVGProps<SVGSVGElement>) => JSX.Element;
   }
+
   const DropdownBack = (props: DropdownItemOrBackProps): JSX.Element => {
     return (
       <div className="flex items-center self-center p-2">
@@ -225,225 +241,249 @@ const MainPanel = ({
       </a>
     );
   };
-  return (
-    <motion.div
-      layout={true}
-      animate={{ height: 'auto' }}
-      className="relative p-2 rounded-lg text-gray-500 dark:text-gray-500 bg-white dark:bg-neutral-800 overflow-hidden"
-    >
-      <AnimatePresence
-        initial={false}
-        exitBeforeEnter={false}
-        custom={{ direction: direction, activeMenu: activeMenu }}
-      >
-        <motion.div
-          layoutTransition
-          // layout={false}
-          key={activeMenu}
-          custom={{ direction: direction, menu: activeMenu }}
-          // @ts-ignore
-          variants={variants}
-          initial="enter"
-          animate="center"
-          exit="exit"
-        >
-          {activeMenu === 'main' && (
-            <motion.div
-              layout
-              layoutId="main"
-              className="relative grid gap-1 p-1 grid-cols-1"
-            >
-              <Link href={'/profile'}>
-                <a className="focus:outline-none flex items-center rounded-lg p-2 transition duration-150 ease-in-out text-neutral-700 hover:bg-neutral-100 dark:text-neutral-100 dark:hover:bg-neutral-700">
-                  <div className="flex h-14 w-14 flex-shrink-0 items-center justify-center bg-blue-600 rounded-full hover:bg-blue-500 px-1 py-1 focus:outline-none dark:bg-neutral-700 dark:hover:bg-neutral-600">
-                    <Image
-                      className="inline-block h-12 w-12 rounded-full ring-2 ring-white m-1"
-                      src={`https://avatars.dicebear.com/api/pixel-art/${
-                        address || 'nouser'
-                      }.svg`}
-                      alt={address as string}
-                      width={32}
-                      height={32}
-                    />
-                  </div>
-                  <div className="ml-4 grid">
-                    <p className="relative text-sm font-medium truncate">
-                      {address}
-                    </p>
-                    <p className="text-xs text-neutral-400">See your profile</p>
-                  </div>
-                </a>
-              </Link>
-              <div className="py-2">
-                <div className="w-full border-t border-gray-100 dark:border-neutral-700"></div>
-              </div>
-              <Link href={'/account/dashboard'}>
-                <a className="focus:outline-none flex items-center rounded-lg p-2 transition duration-150 ease-in-out text-neutral-700 hover:bg-neutral-100 dark:text-neutral-100 dark:hover:bg-neutral-700">
-                  <div className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-full px-1 py-1 focus:outline-none bg-neutral-200 text-neutral-700 dark:text-neutral-200 dark:bg-neutral-700">
-                    <Squares2X2Icon
-                      className="h-6 w-6"
-                      strokeWidth="2"
-                      aria-hidden="true"
-                    />
-                  </div>
-                  <div className="ml-4">
-                    <p className="text-sm font-medium">Account Management</p>
-                    <p className="text-xs text-neutral-400">
-                      Account Manage Panel
-                    </p>
-                  </div>
-                </a>
-              </Link>
-              <div className="py-2">
-                <div className="w-full border-t border-gray-100 dark:border-neutral-700"></div>
-              </div>
-              <a className="focus:outline-none flex items-center rounded-lg p-2 transition duration-150 ease-in-out text-neutral-700 hover:bg-neutral-100 dark:text-neutral-100 dark:hover:bg-neutral-700">
-                <div className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-full px-1 py-1 focus:outline-none bg-neutral-200 text-neutral-700 dark:text-neutral-200 dark:bg-neutral-700">
-                  <ChatBubbleOvalLeftEllipsisIcon
-                    className="h-6 w-6"
-                    strokeWidth="2"
-                    aria-hidden="true"
-                  />
-                </div>
-                <div className="ml-4">
-                  <p className="text-sm font-medium">Give Feedback</p>
-                  <p className="text-xs text-neutral-400">
-                    Help us improve Fafty.
-                  </p>
-                </div>
-              </a>
 
-              <div className="py-2">
-                <div className="w-full border-t border-gray-100 dark:border-neutral-700"></div>
-              </div>
-              <DropdownItem
-                leftIcon={QuestionMarkCircleIcon}
-                rightIcon={ChevronRightIcon}
-                goToMenu="help"
-              >
-                Help & Support
-              </DropdownItem>
-              <DropdownItem
-                leftIcon={CogIcon}
-                rightIcon={ChevronRightIcon}
-                goToMenu="settings"
-              >
-                Settings
-              </DropdownItem>
-              <DropdownItem
-                leftIcon={BrushIcon}
-                rightIcon={ChevronRightIcon}
-                goToMenu="appearance"
-              >
-                Appearance
-              </DropdownItem>
-              <DropdownItem
-                onClick={onLogOut}
-                leftIcon={ArrowLeftOnRectangleIcon}
-              >
-                Disconnect
-              </DropdownItem>
-            </motion.div>
-          )}
-          {activeMenu === 'settings' && (
+  useEffect(() => {
+    observerSize.observe(refChildren.current);
+  }, []);
+
+  useLayoutEffect(() => {
+    return () => {
+      observerSize.unobserve(refChildren.current);
+    };
+  }, []);
+
+  return (
+    <div className="relative p-2 rounded-lg text-gray-500 dark:text-gray-500 bg-white dark:bg-neutral-800 overflow-hidden">
+      <motion.div
+        animate={{
+          height: height || 'auto',
+          transition: {
+            height: {
+              duration: 0.2,
+            },
+          },
+        }}
+      >
+        <div className="h-auto" ref={refChildren}>
+          <AnimatePresence
+            initial={false}
+            exitBeforeEnter={false}
+            custom={{ direction: direction, activeMenu: activeMenu }}
+          >
             <motion.div
-              layoutId="settings"
-              layout
-              className="relative grid gap-1 p-1 grid-cols-1"
+              layoutTransition
+              // layout={false}
+              key={activeMenu}
+              custom={{ direction: direction, menu: activeMenu }}
+              // @ts-ignore
+              variants={variants}
+              initial="enter"
+              animate="center"
+              exit="exit"
             >
-              <DropdownBack goToMenu="main">Settings</DropdownBack>
-              <DropdownItem leftIcon={Bars3Icon}>HTML</DropdownItem>
-              <DropdownItem leftIcon={Bars3Icon}>CSS</DropdownItem>
-              <DropdownItem leftIcon={Bars3Icon}>JavaScript</DropdownItem>
-              <DropdownItem leftIcon={Bars3Icon}>Awesome!</DropdownItem>
-            </motion.div>
-          )}
-          {activeMenu === 'help' && (
-            <div
-              // layoutId="help"
-              // layout
-              className=" grid gap-1 p-1 grid-cols-1"
-            >
-              <DropdownBack goToMenu="main">
-                Display & Accessibility
-              </DropdownBack>
-              <DropdownItem leftIcon={Bars3Icon}>HTML</DropdownItem>
-              <DropdownItem leftIcon={Bars3Icon}>CSS</DropdownItem>
-              <DropdownItem leftIcon={Bars3Icon}>JavaScript</DropdownItem>
-              <DropdownItem leftIcon={Bars3Icon}>Awesome!</DropdownItem>
-            </div>
-          )}
-          {activeMenu === 'appearance' && (
-            <div
-              // custom={{ direction: direction, menu: activeMenu }}
-              // variants={variants}
-              // initial="enter"
-              // animate="center"
-              // exit="exit"
-              // layoutId={activeMenu}
-              // layout
-              className=" grid gap-1 p-1 grid-cols-1"
-            >
-              <DropdownBack goToMenu="main">Appearance</DropdownBack>
-              <RadioGroup value={theme} onChange={setTheme}>
-                <RadioGroup.Label className="sr-only">
-                  Theme mode
-                </RadioGroup.Label>
-                <div className="space-y-2">
-                  {themeOptions.map((theme) => (
-                    <RadioGroup.Option
-                      key={theme.name}
-                      value={theme.theme}
-                      className={({ active, checked }) =>
-                        classNames(
-                          'focus:outline-none relative flex cursor-pointer rounded-lg px-2 py-2 text-neutral-700 hover:bg-neutral-100 dark:text-neutral-100 dark:hover:bg-neutral-700',
-                          {
-                            'ring-2': active,
-                            'bg-white bg-opacity-75 text-slate-900 dark:text-slate-50 dark:bg-neutral-700':
-                              checked,
-                          }
-                        )
-                      }
-                    >
-                      {({ checked }) => (
-                        <div className="flex w-full items-center justify-between">
-                          <div className="flex items-center">
-                            <div className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-full focus:outline-none bg-neutral-200 fill-neutral-700 dark:fill-neutral-200 dark:bg-neutral-700">
-                              <theme.icon
-                                className="flex-shrink-0 h-6 w-6"
-                                aria-hidden="true"
-                              />
-                            </div>
-                            <div className="ml-4">
-                              <RadioGroup.Label
-                                as="p"
-                                className={`font-medium`}
-                              >
-                                {theme.name}
-                              </RadioGroup.Label>
-                              <p className={`text-xs text-neutral-400`}>
-                                {theme.description}
-                              </p>
-                            </div>
-                          </div>
-                          <div className="flex-shrink-0 text-white">
-                            {checked ? (
-                              <CheckIcon className="h-6 w-6" />
-                            ) : (
-                              <div className="h-6 w-6" />
-                            )}
-                          </div>
-                        </div>
-                      )}
-                    </RadioGroup.Option>
-                  ))}
+              {activeMenu === 'main' && (
+                <motion.div
+                  layout
+                  layoutId="main"
+                  className="relative grid gap-1 p-1 grid-cols-1"
+                >
+                  <Link href={'/profile'}>
+                    <a className="focus:outline-none flex items-center rounded-lg p-2 transition duration-150 ease-in-out text-neutral-700 hover:bg-neutral-100 dark:text-neutral-100 dark:hover:bg-neutral-700">
+                      <div className="flex h-14 w-14 flex-shrink-0 items-center justify-center bg-blue-600 rounded-full hover:bg-blue-500 px-1 py-1 focus:outline-none dark:bg-neutral-700 dark:hover:bg-neutral-600">
+                        <Image
+                          className="inline-block h-12 w-12 rounded-full ring-2 ring-white m-1"
+                          src={`https://avatars.dicebear.com/api/pixel-art/${
+                            address || 'nouser'
+                          }.svg`}
+                          alt={address as string}
+                          width={32}
+                          height={32}
+                        />
+                      </div>
+                      <div className="ml-4 grid">
+                        <p className="relative text-sm font-medium truncate">
+                          {address}
+                        </p>
+                        <p className="text-xs text-neutral-400">
+                          See your profile
+                        </p>
+                      </div>
+                    </a>
+                  </Link>
+                  <div className="py-2">
+                    <div className="w-full border-t border-gray-100 dark:border-neutral-700"></div>
+                  </div>
+                  <Link href={'/account/dashboard'}>
+                    <a className="focus:outline-none flex items-center rounded-lg p-2 transition duration-150 ease-in-out text-neutral-700 hover:bg-neutral-100 dark:text-neutral-100 dark:hover:bg-neutral-700">
+                      <div className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-full px-1 py-1 focus:outline-none bg-neutral-200 text-neutral-700 dark:text-neutral-200 dark:bg-neutral-700">
+                        <Squares2X2Icon
+                          className="h-6 w-6"
+                          strokeWidth="2"
+                          aria-hidden="true"
+                        />
+                      </div>
+                      <div className="ml-4">
+                        <p className="text-sm font-medium">
+                          Account Management
+                        </p>
+                        <p className="text-xs text-neutral-400">
+                          Account Manage Panel
+                        </p>
+                      </div>
+                    </a>
+                  </Link>
+                  <div className="py-2">
+                    <div className="w-full border-t border-gray-100 dark:border-neutral-700"></div>
+                  </div>
+                  <a className="focus:outline-none flex items-center rounded-lg p-2 transition duration-150 ease-in-out text-neutral-700 hover:bg-neutral-100 dark:text-neutral-100 dark:hover:bg-neutral-700">
+                    <div className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-full px-1 py-1 focus:outline-none bg-neutral-200 text-neutral-700 dark:text-neutral-200 dark:bg-neutral-700">
+                      <ChatBubbleOvalLeftEllipsisIcon
+                        className="h-6 w-6"
+                        strokeWidth="2"
+                        aria-hidden="true"
+                      />
+                    </div>
+                    <div className="ml-4">
+                      <p className="text-sm font-medium">Give Feedback</p>
+                      <p className="text-xs text-neutral-400">
+                        Help us improve Fafty.
+                      </p>
+                    </div>
+                  </a>
+
+                  <div className="py-2">
+                    <div className="w-full border-t border-gray-100 dark:border-neutral-700"></div>
+                  </div>
+                  <DropdownItem
+                    leftIcon={QuestionMarkCircleIcon}
+                    rightIcon={ChevronRightIcon}
+                    goToMenu="help"
+                  >
+                    Help & Support
+                  </DropdownItem>
+                  <DropdownItem
+                    leftIcon={CogIcon}
+                    rightIcon={ChevronRightIcon}
+                    goToMenu="settings"
+                  >
+                    Settings
+                  </DropdownItem>
+                  <DropdownItem
+                    leftIcon={BrushIcon}
+                    rightIcon={ChevronRightIcon}
+                    goToMenu="appearance"
+                  >
+                    Appearance
+                  </DropdownItem>
+                  <DropdownItem
+                    onClick={onLogOut}
+                    leftIcon={ArrowLeftOnRectangleIcon}
+                  >
+                    Disconnect
+                  </DropdownItem>
+                </motion.div>
+              )}
+              {activeMenu === 'settings' && (
+                <motion.div
+                  layoutId="settings"
+                  layout
+                  className="relative grid gap-1 p-1 grid-cols-1"
+                >
+                  <DropdownBack goToMenu="main">Settings</DropdownBack>
+                  <DropdownItem leftIcon={Bars3Icon}>HTML</DropdownItem>
+                  <DropdownItem leftIcon={Bars3Icon}>CSS</DropdownItem>
+                  <DropdownItem leftIcon={Bars3Icon}>JavaScript</DropdownItem>
+                  <DropdownItem leftIcon={Bars3Icon}>Awesome!</DropdownItem>
+                </motion.div>
+              )}
+              {activeMenu === 'help' && (
+                <div
+                  // layoutId="help"
+                  // layout
+                  className=" grid gap-1 p-1 grid-cols-1"
+                >
+                  <DropdownBack goToMenu="main">
+                    Display & Accessibility
+                  </DropdownBack>
+                  <DropdownItem leftIcon={Bars3Icon}>HTML</DropdownItem>
+                  <DropdownItem leftIcon={Bars3Icon}>CSS</DropdownItem>
+                  <DropdownItem leftIcon={Bars3Icon}>JavaScript</DropdownItem>
+                  <DropdownItem leftIcon={Bars3Icon}>Awesome!</DropdownItem>
                 </div>
-              </RadioGroup>
-            </div>
-          )}
-        </motion.div>
-      </AnimatePresence>
-    </motion.div>
+              )}
+              {activeMenu === 'appearance' && (
+                <div
+                  // custom={{ direction: direction, menu: activeMenu }}
+                  // variants={variants}
+                  // initial="enter"
+                  // animate="center"
+                  // exit="exit"
+                  // layoutId={activeMenu}
+                  // layout
+                  className=" grid gap-1 p-1 grid-cols-1"
+                >
+                  <DropdownBack goToMenu="main">Appearance</DropdownBack>
+                  <RadioGroup value={theme} onChange={setTheme}>
+                    <RadioGroup.Label className="sr-only">
+                      Theme mode
+                    </RadioGroup.Label>
+                    <div className="space-y-2">
+                      {themeOptions.map((theme) => (
+                        <RadioGroup.Option
+                          key={theme.name}
+                          value={theme.theme}
+                          className={({ active, checked }) =>
+                            classNames(
+                              'focus:outline-none relative flex cursor-pointer rounded-lg px-2 py-2 text-neutral-700 hover:bg-neutral-100 dark:text-neutral-100 dark:hover:bg-neutral-700',
+                              {
+                                'ring-2': active,
+                                'bg-white bg-opacity-75 text-slate-900 dark:text-slate-50 dark:bg-neutral-700':
+                                  checked,
+                              }
+                            )
+                          }
+                        >
+                          {({ checked }) => (
+                            <div className="flex w-full items-center justify-between">
+                              <div className="flex items-center">
+                                <div className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-full focus:outline-none bg-neutral-200 fill-neutral-700 dark:fill-neutral-200 dark:bg-neutral-700">
+                                  <theme.icon
+                                    className="flex-shrink-0 h-6 w-6"
+                                    aria-hidden="true"
+                                  />
+                                </div>
+                                <div className="ml-4">
+                                  <RadioGroup.Label
+                                    as="p"
+                                    className={`font-medium`}
+                                  >
+                                    {theme.name}
+                                  </RadioGroup.Label>
+                                  <p className={`text-xs text-neutral-400`}>
+                                    {theme.description}
+                                  </p>
+                                </div>
+                              </div>
+                              <div className="flex-shrink-0 text-white">
+                                {checked ? (
+                                  <CheckIcon className="h-6 w-6" />
+                                ) : (
+                                  <div className="h-6 w-6" />
+                                )}
+                              </div>
+                            </div>
+                          )}
+                        </RadioGroup.Option>
+                      ))}
+                    </div>
+                  </RadioGroup>
+                </div>
+              )}
+            </motion.div>
+          </AnimatePresence>
+        </div>
+      </motion.div>
+    </div>
   );
 };
 
