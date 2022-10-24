@@ -157,7 +157,6 @@ const MainPanel = ({
   const [direction, setDirection] = useState(0);
 
   const observerSize = new ResizeObserver(([entry]) => {
-    console.log(entry.contentRect.height);
     setHeight(entry.contentRect.height);
   });
 
