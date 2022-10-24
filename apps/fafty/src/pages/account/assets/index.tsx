@@ -70,6 +70,7 @@ const AccountAssets = () => {
     slug: '',
     title: '',
   });
+
   const search = asPath.split('?')[1];
   const [localFiltersState, setLocalFiltersState] = useState<QueryFiltersProps>(
     {
@@ -508,7 +509,7 @@ const AccountAssets = () => {
           </div>
         </div>
       </AccountLayout>
-      {openedFormAssetModal && (
+      {openedFormAssetModal.open && (
         <FormAssetModal
           title={openedFormAssetModal.title}
           slug={openedFormAssetModal.slug}

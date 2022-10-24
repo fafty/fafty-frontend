@@ -22,6 +22,7 @@ interface ExistingFileProps {
 export interface FileProps {
   id: string;
   storage: string;
+  src?: string;
   metadata: {
     size: number;
     filename: string;
@@ -82,6 +83,10 @@ export interface Step3Props {
   tags: TagProps[];
 }
 
+export interface Step4Props {
+  is_checked: boolean;
+}
+
 export interface StepData<T> {
   state: T;
   solved: boolean;
@@ -93,11 +98,16 @@ export interface StepsProps {
   step1: StepData<Step1Props>;
   step2: StepData<Step2Props>;
   step3: StepData<Step3Props>;
+  step4: StepData<Step4Props>;
 }
 
 export type SetStepDataProps = Record<
   string,
-  StepData<Step1Props> | StepData<Step2Props> | StepData<Step3Props> | FileProps
+  | StepData<Step1Props>
+  | StepData<Step2Props>
+  | StepData<Step3Props>
+  | StepData<Step4Props>
+  | FileProps
 >;
 
 export interface ContextProps {
@@ -117,9 +127,12 @@ export interface ContextProps {
   setStep1Answered: (step1Answered: boolean) => void;
   setStep2Answered: (step2Answered: boolean) => void;
   setStep3Answered: (step3Answered: boolean) => void;
+  setStep4Answered: (step4Answered: boolean) => void;
   step1Answered: boolean;
   step2Answered: boolean;
   step3Answered: boolean;
+  step4Answered: boolean;
   finished: boolean;
   setFinished: (finished: boolean) => void;
+  clearState: VoidFunction;
 }

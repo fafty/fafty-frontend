@@ -27,6 +27,7 @@ export type AssetProps = {
   type?: string;
   supply_units: number;
   available_supply_units: number;
+  allow_ratings?: boolean;
   created_at: string;
   published_at: string | null;
   deleted_at: string | null;
@@ -41,6 +42,7 @@ export type AssetProps = {
   tags: TagProps[];
   comments_moderation: CommentsModerationType;
   collection?: CollectionProps;
+  comments_order: CommentsOrderType;
   collection_token: string;
 };
 

@@ -5,6 +5,7 @@ import {
   Suspense,
   useLayoutEffect,
   Context,
+  useState,
 } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { EditorPlaceholder } from '@fafty-frontend/shared/ui';
@@ -14,6 +15,7 @@ import { childVariants, variants } from '../constants';
 import classNames from 'classnames';
 import { EditorState } from 'lexical';
 import { ContextProps, Step1Props } from '../types';
+import { useComponentDidUpdate } from '@fafty-frontend/usehooks';
 
 interface EditorProps {
   isAutocomplete?: boolean;
@@ -38,6 +40,7 @@ const Editor = dynamic<EditorProps>(
 );
 
 const SelectStep1 = ({ Context }: { Context: Context<ContextProps> }) => {
+  const [isMounted, setIsMounted] = useState(false);
   /**
    * Context Store
    */
@@ -55,9 +58,9 @@ const SelectStep1 = ({ Context }: { Context: Context<ContextProps> }) => {
     getValues,
     formState: { errors, isValid },
   } = useForm({
-    mode: 'onChange',
-    reValidateMode: 'onChange',
-    // shouldFocusError: true,
+    mode: 'onSubmit',
+    reValidateMode: 'onSubmit',
+    shouldFocusError: true,
     defaultValues: {
       ...stepData?.step1?.state,
     },
@@ -68,24 +71,31 @@ const SelectStep1 = ({ Context }: { Context: Context<ContextProps> }) => {
    */
   const formFields = watch();
 
-  useEffect(() => {
-    if (stepData.media) {
-      reset({
-        name: stepData.step1.state.name,
-      });
+  useComponentDidUpdate(
+    (prevProps) => {
+      if (!prevProps?.media?.id && stepData?.media?.id) {
+        reset({
+          name: stepData.step1.state.name,
+        });
+      }
+    },
+    {
+      media: stepData?.media,
     }
-  }, [stepData.media]);
+  );
 
   /**
    * Load data from context store on component mount and save data to context store on component unmount
    */
   useLayoutEffect(() => {
-    trigger();
-
     return () => {
       storeData();
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  useEffect(() => {
+    setIsMounted(true);
   }, []);
 
   /**
@@ -112,13 +122,15 @@ const SelectStep1 = ({ Context }: { Context: Context<ContextProps> }) => {
   };
 
   useEffect(() => {
-    setStepData({
-      step1: {
-        state: getValues() as Step1Props,
-        solved: isValid,
-        error: !isValid,
-      },
-    });
+    if (stepData?.asset?.id && isMounted) {
+      setStepData({
+        step1: {
+          state: getValues() as Step1Props,
+          solved: isValid,
+          error: !isValid,
+        },
+      });
+    }
   }, [isValid]);
 
   return (

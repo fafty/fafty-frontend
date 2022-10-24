@@ -33,10 +33,12 @@ const FormAsset = ({
     step1Answered,
     step2Answered,
     step3Answered,
+    step4Answered,
     finished,
     stepData: data,
     setStepData,
     setFinished,
+    clearState,
   } = useContext(Context);
 
   /*
@@ -50,7 +52,12 @@ const FormAsset = ({
   const [view, setView] = useState<JSX.Element | null>(null);
 
   const isDisabledNextStep = useMemo(() => {
-    return data?.step1.error || data?.step2.error || data?.step3.error;
+    return (
+      data?.step1.error ||
+      data?.step2.error ||
+      data?.step3.error ||
+      data?.step4.error
+    );
   }, [data]);
 
   const loadComponent = useCallback(async () => {
@@ -68,6 +75,7 @@ const FormAsset = ({
   }, [activeStep, components, setComponent]);
 
   const [onlyUploader, setOnlyUploader] = useState(!data?.media?.id);
+
   /*
    * Load Dynamic Content
    */
@@ -106,7 +114,7 @@ const FormAsset = ({
   }, [data, setFinished]);
 
   const handleNext = (activeStep: number, steps: number | any[]) => {
-    if (activeStepNumeric === 3 && step3Answered) {
+    if (activeStepNumeric === 4 && step4Answered) {
       return submitData();
     }
 
@@ -146,7 +154,6 @@ const FormAsset = ({
           .replace(/(.*)\.(.*?)$/, '$1')
           .replace(/^ +| +$|( ) +/g, '$1');
 
-        console.log('onCange?');
         if (setStepData) {
           setStepData({
             media: currentFile,
@@ -157,14 +164,16 @@ const FormAsset = ({
                 unlockable_content: null,
                 sensitive_content: false,
               },
-              solved: false,
+              solved: true,
               error: false,
             },
           });
         }
+      } else if (!values && clearState) {
+        clearState();
       }
     },
-    [data, setStepData]
+    [data, setStepData, clearState]
   );
 
   const StepsList = [
@@ -192,13 +201,26 @@ const FormAsset = ({
       skipped: isStepSkipped(2),
       error: data?.step3.error,
     },
+    {
+      name: 'Check media',
+      active: activeStep === 3,
+      completed: data?.step4.solved,
+      optional: false,
+      skipped: isStepSkipped(3),
+      error: data?.step4.error,
+    },
   ];
 
   const activeStepNumeric = activeStep + 1;
 
   const buttonNextDisabled = useMemo(() => {
-    if (activeStepNumeric === 3) {
-      return !(step1Answered && step2Answered && step3Answered);
+    if (activeStepNumeric === 4) {
+      return !(
+        step1Answered &&
+        step2Answered &&
+        step3Answered &&
+        step4Answered
+      );
     }
 
     if (activeStepNumeric === 2) {
@@ -206,7 +228,13 @@ const FormAsset = ({
     }
 
     return !step1Answered;
-  }, [step1Answered, step2Answered, step3Answered, activeStepNumeric]);
+  }, [
+    step1Answered,
+    step2Answered,
+    step3Answered,
+    step4Answered,
+    activeStepNumeric,
+  ]);
 
   if (finished) {
     return (
@@ -276,6 +304,8 @@ const FormAsset = ({
     );
   }
 
+  console.log(buttonNextDisabled, isDisabledNextStep);
+
   return (
     <>
       <div className="flex flex-1 flex-col w-full h-[calc(65vh_-_5px)]">
@@ -295,7 +325,7 @@ const FormAsset = ({
               'md:grid grid-cols-[minmax(300px,_1fr)_300px]': !onlyUploader,
               'relative flex flex-1 flex-row': onlyUploader,
             },
-            'gap-x-4 h-auto overflow-y-auto'
+            'gap-x-4 h-full overflow-y-auto'
           )}
         >
           {!onlyUploader && (
@@ -338,7 +368,7 @@ const FormAsset = ({
                   }}
                   className=""
                 >
-                  {activeStep <= 2 && (
+                  {activeStep <= 3 && (
                     <div className="p-2">
                       <Suspense fallback="Loading Form View..">{view}</Suspense>
                     </div>
@@ -444,7 +474,7 @@ const FormAsset = ({
                   disabled={buttonNextDisabled || isDisabledNextStep}
                   onClick={() => handleNext(activeStep, 2)}
                 >
-                  {activeStepNumeric === 3 ? 'Save' : 'Next'}
+                  {activeStepNumeric === 4 ? 'Save' : 'Next'}
                 </button>
               )}
             </div>

@@ -193,7 +193,7 @@ const SelectStep3 = ({ Context }: { Context: Context<ContextProps> }) => {
                       value={option.value}
                     >
                       {({ active, selected }) => (
-                        <li
+                        <div
                           className={classNames(
                             {
                               'bg-neutral-200 dark:bg-neutral-800':
@@ -203,7 +203,7 @@ const SelectStep3 = ({ Context }: { Context: Context<ContextProps> }) => {
                           )}
                         >
                           {option.title}
-                        </li>
+                        </div>
                       )}
                     </Listbox.Option>
                   ))}

@@ -1,4 +1,11 @@
-import { ChangeEvent, CSSProperties, useEffect, useMemo, useRef, useState } from 'react';
+import {
+  ChangeEvent,
+  CSSProperties,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from 'react';
 import { FileRemoveReason, SuccessResponse, Uppy, UppyFile } from '@uppy/core';
 import Compressor from '@uppy/compressor';
 import AwsS3 from '@uppy/aws-s3';
@@ -131,6 +138,7 @@ const Uploader = ({
   onChange,
   OnGenetatedThumbnail,
 }: Props): JSX.Element => {
+  const [isMounted, setIsMounted] = useState(false);
   const [files, setFiles] = useState<FileProps[]>([]);
   const [thumbnails, setThumbnails] = useState<ThumbnailProps[]>([]);
   // const [notifications, setNotifications] = useState<any[]>([]);
@@ -186,6 +194,8 @@ const Uploader = ({
     });
     setIsLoading(false);
     engine.setOptions({ autoProceed: true });
+
+    setIsMounted(true);
   }, []);
 
   useIsomorphicLayoutEffect(() => {
@@ -449,13 +459,15 @@ const Uploader = ({
   }, []);
 
   useEffect(() => {
-    const data = files.map((file) => {
-      return file.attachment;
-    });
-    if (maxNumberOfFiles > 1) {
-      onChange(data);
-    } else {
-      onChange(data[0]);
+    if (isMounted) {
+      const data = files.map((file) => {
+        return file.attachment;
+      });
+      if (maxNumberOfFiles > 1) {
+        onChange(data);
+      } else {
+        onChange(data[0]);
+      }
     }
   }, [files]);
 
@@ -596,13 +608,17 @@ const Uploader = ({
     // getDroppedFiles(event.dataTransfer, { logDropError }).then((files) =>
     //   addFiles(files)
     // );
-    const files = await getDroppedFiles(event.dataTransfer, { logDropError })
+    const files = await getDroppedFiles(event.dataTransfer, { logDropError });
     if (files.length > 0) {
-      addFiles(files)
+      addFiles(files);
     }
   };
 
-  const handleDragOver = (event: { preventDefault: () => void; stopPropagation: () => void; dataTransfer: { dropEffect?: any; types?: any; }; }) => {
+  const handleDragOver = (event: {
+    preventDefault: () => void;
+    stopPropagation: () => void;
+    dataTransfer: { dropEffect?: any; types?: any };
+  }) => {
     if (isSorting) {
       return;
     }
@@ -613,14 +629,14 @@ const Uploader = ({
     event.stopPropagation();
 
     // Check if the "type" of the datatransfer object includes files. If not, deny drop.
-    const { types } = event.dataTransfer
-    const hasFiles = types.some(type => type === 'Files')
-    const { allowNewUpload } = engine.getState()
+    const { types } = event.dataTransfer;
+    const hasFiles = types.some((type) => type === 'Files');
+    const { allowNewUpload } = engine.getState();
     if (!hasFiles || !allowNewUpload) {
       // eslint-disable-next-line no-param-reassign
-      event.dataTransfer.dropEffect = 'none'
+      event.dataTransfer.dropEffect = 'none';
       // clearTimeout(this.removeDragOverClassTimeout)
-      return
+      return;
     }
 
     // 1. Add a small (+) icon on drop
@@ -630,13 +646,19 @@ const Uploader = ({
     setIsDraggingOver(true);
   };
 
-  const handleDragLeave = (event: { preventDefault: () => void; stopPropagation: () => void; }) => {
+  const handleDragLeave = (event: {
+    preventDefault: () => void;
+    stopPropagation: () => void;
+  }) => {
     event.preventDefault();
     event.stopPropagation();
     setIsDraggingOver(false);
   };
 
-  const handleDragEnd = (event: { preventDefault: () => void; stopPropagation: () => void; }) => {
+  const handleDragEnd = (event: {
+    preventDefault: () => void;
+    stopPropagation: () => void;
+  }) => {
     event.preventDefault();
     event.stopPropagation();
     setIsDragging(false);
