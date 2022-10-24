@@ -67,7 +67,7 @@ const FormAsset = ({
     }
   }, [activeStep, components, setComponent]);
 
-  const [onlyUploader, setOnlyUploader] = useState(!data?.asset?.id);
+  const [onlyUploader, setOnlyUploader] = useState(!data?.media?.id);
   /*
    * Load Dynamic Content
    */
@@ -76,11 +76,11 @@ const FormAsset = ({
   }, [activeStep, loadComponent]);
 
   useEffect(() => {
-    if (!data?.asset?.id) {
+    if (!data?.media?.id) {
       setActiveStep(0);
       setOnlyUploader(true);
     }
-  }, [data?.asset?.id]);
+  }, [data?.media?.id]);
 
   /*
    * Step Management
@@ -96,7 +96,7 @@ const FormAsset = ({
   const submitData = useCallback(() => {
     data &&
       onSubmit({
-        asset: data.asset,
+        media: data.media,
         ...data.step1.state,
         ...data.step2.state,
         ...data.step3.state,
@@ -139,7 +139,7 @@ const FormAsset = ({
 
   const onChangeFile = useCallback(
     (values: FileProps | FileProps[]) => {
-      if (!data?.asset?.id) {
+      if (!data?.media?.id) {
         const currentFile = Array.isArray(values) ? values[0] : values;
         const formattedFileName = (currentFile?.metadata?.filename || '')
           .replace(/[-_%]/g, '')
@@ -149,7 +149,7 @@ const FormAsset = ({
         console.log('onCange?');
         if (setStepData) {
           setStepData({
-            asset: currentFile,
+            media: currentFile,
             step1: {
               state: {
                 name: formattedFileName,
@@ -257,13 +257,13 @@ const FormAsset = ({
               {defaultAsset?.file_id ? 'updated!' : 'uploaded!'}
             </div>
             <div className="mt-4">
-              <Link href="/nft">
+              <Link href="/asset">
                 <a className="relative inline-block text-center bg-blue-600 border border-transparent rounded-md py-2 px-4 font-medium text-white hover:bg-blue-700 mr-4">
                   View your asset
                 </a>
               </Link>
               {!defaultAsset?.file_id && (
-                <Link href="/nft/create">
+                <Link href="/asset/create">
                   <a className="relative inline-block text-center bg-blue-600 border border-transparent rounded-md py-2 px-4 font-medium text-white hover:bg-blue-700">
                     Continue with created asset for publish Nft
                   </a>

@@ -48,8 +48,8 @@ export const Search = () => {
           return push(`/collection/${item?.searchable?.slug}`);
         case 'bundle':
           return push(`/bundle/${item?.searchable?.slug}`);
-        case 'nft':
-          return push(`/nft/${item?.searchable?.slug}`);
+        case 'asset':
+          return push(`/asset/${item?.searchable?.slug}`);
         case 'user':
           return push(`/account/${item?.searchable?.slug}`);
       }
@@ -130,7 +130,7 @@ export const Search = () => {
                 : 'rounded-xl',
               'border-2 focus:ring-0 focus:ring-offset-0 block w-full bg-transparent border-gray-200 dark:border-neutral-700 pl-9 pr-3 p-3 focus:border-blue-500 hover:border-blue-300/70 dark:focus:border-blue-500 dark:hover:border-blue-500/70 transition duration-200 ring-0 sm:text-sm md:text-base'
             )}
-            placeholder="Search for NFTs, Collections, Users, Bundles etc."
+            placeholder="Search for Assets, Collections, Users, Bundles etc."
           />
         </div>
         {!!data?.records?.length && isOpened && (

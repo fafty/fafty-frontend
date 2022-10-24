@@ -1,6 +1,8 @@
 import axios from 'axios';
 // import { getSession } from 'next-auth/react';
 import qs from 'qs';
+import { parseCookies } from 'nookies'
+
 
 const api = axios.create({
   baseURL: process.env['NEXT_PUBLIC_API_URL'],
@@ -11,10 +13,19 @@ const api = axios.create({
 //   const session = await getSession();
     
 //   if (config.headers && session) {
-//     config.headers.Authorization = `Bearer ${session.accessToken}`;
+//     config.headers['Authorization'] = `Bearer ${session['accessToken']}`;
 //   }
 //   return config;
 // });
+
+api.interceptors.request.use(async config => {
+    
+  if (config.headers) {
+    const cookies = parseCookies()
+    config.headers['Authorization'] = `Bearer ${cookies['accessToken']}`;
+  }
+  return config;
+});
 
 export const fetcher = (url: string) => api.get(url).then(res => res.data);
 

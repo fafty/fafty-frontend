@@ -20,7 +20,7 @@ const pagesLinks = [
     icon: ChartBarIcon,
   },
   {
-    name: 'Nfts',
+    name: 'Assets',
     description:
       'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
     href: '/account/assets',
@@ -36,10 +36,10 @@ const createLinks = [
     icon: GalleryIcon,
   },
   {
-    name: 'Add Nft',
-    key: 'nft',
+    name: 'Add Asset',
+    key: 'asset',
     href: '/account/assets',
-    description: 'Description Add Nft',
+    description: 'Description Add Asset',
     icon: ImageAddIcon,
   },
 ];
@@ -107,9 +107,9 @@ const Header = ({
                   Bundles
                 </a>
               </Link>
-              <Link href={'/nfts'}>
+              <Link href={'/assets'}>
                 <a className="text-base font-medium text-slate-900 dark:text-slate-50 hover:text-slate-800 dark:hover:text-slate-300">
-                  Nfts
+                  Assets
                 </a>
               </Link>
             </Popover.Group>

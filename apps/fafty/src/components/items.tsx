@@ -1,14 +1,14 @@
 import React, { useState, useRef, useEffect } from 'react';
-import Item from '../components/item';
+import Item from './items/asset/item';
 import isClient from '../utils/isClient';
 import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/24/outline';
 import { useNotifications } from '@fafty-frontend/notifications';
 import classNames from 'classnames';
 import { useDebouncedCallback } from '@fafty-frontend/usehooks';
-import { NftProps } from '@fafty-frontend/shared/api';
+import { AssetProps } from '@fafty-frontend/shared/api';
 
 type Props = {
-  items: NftProps[];
+  items: AssetProps[];
 };
 
 const Items = ({ items }: Props): JSX.Element => {
@@ -154,7 +154,7 @@ const Items = ({ items }: Props): JSX.Element => {
             ref={itemsContainerRef}
             aria-label="Items list"
             role="region"
-            className="items"
+            className="items carousel"
           >
             <div className="min-w-[44px]" />
             {items &&

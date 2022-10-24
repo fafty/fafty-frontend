@@ -36,7 +36,7 @@ const AccountLayout = ({ children, title, description }: Props) => {
 
   const onForm = (key: string) => {
     switch (key) {
-      case 'nft':
+      case 'asset':
         setOpenedFormAssetModal(true);
         break;
       // case 'collection':

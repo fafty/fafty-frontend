@@ -6,7 +6,7 @@ type SearchableProps = {
 };
 
 type SearchResultProps = {
-  result_type: 'nft' | 'user' | 'collection' | 'bundle';
+  result_type: 'asset' | 'user' | 'collection' | 'bundle';
   searchable: SearchableProps;
 };
 

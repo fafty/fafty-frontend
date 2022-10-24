@@ -4,14 +4,16 @@ import { useAuth } from '../utils/auth';
 import { AuthModal } from '../components/modals/auth';
 import FormAssetModal from '../components/modals/forms/asset';
 import { getAccountId } from '../utils/account';
+import classNames from 'classnames';
 
 type Props = {
   children: ReactNode;
   title: string;
   description: string;
+  className?: string;
 };
 
-const MainLayout = ({ children, title, description }: Props) => {
+const MainLayout = ({ children, title, description, className }: Props) => {
   const [openedAuthModal, setOpenedAuthModal] = useState(false);
   const [openedFormAssetModal, setOpenedFormAssetModal] = useState(false);
   // const [openedFormCollectionModal, setOpenedFormCollectionModal] = useState(false);
@@ -24,7 +26,7 @@ const MainLayout = ({ children, title, description }: Props) => {
 
   const onForm = (key: string) => {
     switch (key) {
-      case 'nft':
+      case 'asset':
         setOpenedFormAssetModal(true);
         break;
       // case 'collection':
@@ -53,7 +55,11 @@ const MainLayout = ({ children, title, description }: Props) => {
         balance={balance}
         isAuth={!!auth.principal?.toString()}
       />
-      <main className="relative container mx-auto px-8">{children}</main>
+      <main
+        className={classNames(className, 'relative mx-auto px-8')}
+      >
+        {children}
+      </main>
       <Footer />
       {openedAuthModal && (
         <AuthModal

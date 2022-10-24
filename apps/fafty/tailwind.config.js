@@ -22,7 +22,7 @@ module.exports = {
         1: 1,
       },
       gridTemplateColumns: {
-        placeholders_nfts_desktop: 'repeat(auto-fill, minmax(207px, 1fr))',
+        placeholders_assets_desktop: 'repeat(auto-fill, minmax(207px, 1fr))',
       },
       keyframes: {
         'notification-enter': {

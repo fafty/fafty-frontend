@@ -57,7 +57,7 @@ const SelectStep1 = ({ Context }: { Context: Context<ContextProps> }) => {
   } = useForm({
     mode: 'onChange',
     reValidateMode: 'onChange',
-    shouldFocusError: true,
+    // shouldFocusError: true,
     defaultValues: {
       ...stepData?.step1?.state,
     },
@@ -69,12 +69,12 @@ const SelectStep1 = ({ Context }: { Context: Context<ContextProps> }) => {
   const formFields = watch();
 
   useEffect(() => {
-    if (stepData.asset) {
+    if (stepData.media) {
       reset({
         name: stepData.step1.state.name,
       });
     }
-  }, [stepData.asset]);
+  }, [stepData.media]);
 
   /**
    * Load data from context store on component mount and save data to context store on component unmount
@@ -147,7 +147,7 @@ const SelectStep1 = ({ Context }: { Context: Context<ContextProps> }) => {
                 },
                 'text-gray-700 dark:text-gray-100 dark:bg-neutral-900/90 mt-1 border focus:outline-none rounded-md shadow-sm focus:border-gray-500 focus:shadow w-full p-3 h-12'
               )}
-              placeholder="Enter name of Nft"
+              placeholder="Enter name"
               {...(errors.name && { 'aria-invalid': true })}
               autoComplete="off"
               {...field}

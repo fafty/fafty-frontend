@@ -15,4 +15,4 @@ const getCollections = async ({
   return data;
 };
 
-export { getCollections };
+export default getCollections;

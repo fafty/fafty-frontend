@@ -13,7 +13,7 @@ interface CollectionProps {
   token: string;
   name: string;
   description: string;
-  total_nfts_count: number;
+  total_assets_count: number;
   cover?: {
     src: string;
     dominant_color: string;
@@ -281,7 +281,7 @@ const SelectCollection = ({ current, onChange }: Props): JSX.Element => {
                     <div className="flex justify-center">
                       <div className="flex flex-row space-x-4 mt-1">
                         <span className="text-slate-500 text-xs dark:text-slate-400 flex flex-col items-center justify-center">
-                          You create nft not included to the collection.
+                          You create item not included to the collection.
                         </span>
                       </div>
                     </div>
@@ -335,10 +335,10 @@ const SelectCollection = ({ current, onChange }: Props): JSX.Element => {
                           <div className="flex flex-row space-x-4 mt-1">
                             <span className="text-[0.70rem] text-slate-500 dark:text-slate-400">
                               <span className="font-medium">
-                                {collection.total_nfts_count}
+                                {collection.total_assets_count}
                               </span>
                               <span className="ml-1">
-                                NFT&apos;s
+                                Items
                               </span>
                             </span>
                           </div>

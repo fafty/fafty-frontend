@@ -1,7 +1,7 @@
 import api from '../../index';
 import {
-  GetCollectionNftsBySlugParamsProps,
-  GetCollectionNftsBySlugResponseProps,
+  GetCollectionAssetsBySlugParamsProps,
+  GetCollectionAssetsBySlugResponseProps,
   GetCollectionParamsProps,
   GetCollectionResponseProps,
 } from './types';
@@ -14,11 +14,11 @@ const getCollection = async (
   return data;
 };
 
-const getCollectionNftsBySlug = async (
-  params?: GetCollectionNftsBySlugParamsProps
-): Promise<GetCollectionNftsBySlugResponseProps> => {
-  const { data } = await api.get(`/collection/${params?.slug}/nfts`);
+const getCollectionAssetsBySlug = async (
+  params?: GetCollectionAssetsBySlugParamsProps
+): Promise<GetCollectionAssetsBySlugResponseProps> => {
+  const { data } = await api.get(`/collection/${params?.slug}/assets`);
 
   return data;
 };
-export { getCollection, getCollectionNftsBySlug };
+export { getCollection, getCollectionAssetsBySlug };

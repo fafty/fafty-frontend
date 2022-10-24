@@ -1,7 +1,7 @@
 import {
   CommentsModerationType,
   CommentsOrderType,
-  NftAsset,
+  AssetMedia,
   TagProps,
 } from '@fafty-frontend/shared/api';
 import { CSSProperties } from 'react';
@@ -42,7 +42,7 @@ export interface UploaderProps {
 }
 
 export interface FormProps {
-  asset: FileProps | null;
+  media: FileProps | null;
   name: string | null;
   description: string | EditorState | null;
   unlockable_content: string | EditorState | null;
@@ -59,7 +59,7 @@ export interface FormProps {
 export interface Props {
   onSubmit: (data: FormProps) => Promise<void>;
   submiting: boolean;
-  defaultAsset?: NftAsset;
+  defaultAsset?: AssetMedia;
 }
 
 export interface Step1Props {
@@ -89,7 +89,7 @@ export interface StepData<T> {
 }
 
 export interface StepsProps {
-  asset: FileProps;
+  media: FileProps;
   step1: StepData<Step1Props>;
   step2: StepData<Step2Props>;
   step3: StepData<Step3Props>;

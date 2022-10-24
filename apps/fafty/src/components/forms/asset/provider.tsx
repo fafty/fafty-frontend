@@ -1,6 +1,6 @@
 import { useState, ReactNode, useCallback, useEffect } from 'react';
 import {
-  NftProps,
+  AssetProps,
   CommentsOrderType,
   CommentsModerationType,
 } from '@fafty-frontend/shared/api';
@@ -17,7 +17,7 @@ export const FormAssetContextProvider = ({
 }: {
   onChangeDismiss: (data: { title: string; disabled: boolean }) => void;
   rawDataCallback: boolean;
-  defaultData?: NftProps;
+  defaultData?: AssetProps;
   onRawDataCallback: (data: FormProps) => void;
   onFinished: () => void;
   children: ReactNode;
@@ -28,14 +28,14 @@ export const FormAssetContextProvider = ({
   const [finished, setFinished] = useState<boolean>(false);
 
   const [stepData, setStepData] = useState({
-    asset: {
-      id: defaultData?.asset?.file_id || '',
-      storage: defaultData?.asset?.storage || '',
-      src: defaultData?.asset?.src || '',
+    media: {
+      id: defaultData?.media?.file_id || '',
+      storage: defaultData?.media?.storage || '',
+      src: defaultData?.media?.src || '',
       metadata: {
-        size: defaultData?.asset?.size || 0,
-        filename: defaultData?.asset?.filename || '',
-        mime_type: defaultData?.asset?.mime_type || '',
+        size: defaultData?.media?.size || 0,
+        filename: defaultData?.media?.filename || '',
+        mime_type: defaultData?.media?.mime_type || '',
       },
     },
     step1: {
@@ -78,7 +78,7 @@ export const FormAssetContextProvider = ({
   useEffect(() => {
     if (rawDataCallback) {
       onRawDataCallback({
-        asset: stepData.asset,
+        media: stepData.media,
         ...stepData.step1.state,
         ...stepData.step2.state,
         ...stepData.step3.state,
@@ -92,26 +92,26 @@ export const FormAssetContextProvider = ({
   }, [finished]);
 
   useEffect(() => {
-    if (step1Answered && stepData.asset) {
+    if (step1Answered && stepData.media) {
       onChangeDismiss({
         title: 'Close and save as draft',
         disabled: false,
       });
     }
-    if (!step1Answered && stepData.asset) {
+    if (!step1Answered && stepData.media) {
       onChangeDismiss({
         title:
           'The button is not active because there are errors in some fields',
         disabled: true,
       });
     }
-    if ((!step1Answered && !stepData.asset) || finished) {
+    if ((!step1Answered && !stepData.media) || finished) {
       onChangeDismiss({
         title: 'Close',
         disabled: false,
       });
     }
-  }, [finished, step1Answered, stepData.asset]);
+  }, [finished, step1Answered, stepData.media]);
 
   const onSetStepData = useCallback(
     (data: SetStepDataProps) => {

@@ -5,11 +5,11 @@ import { useEffect, useState } from 'react';
 import {
   api,
   useAsync,
-  putNft,
-  getNft,
-  NftProps,
-  NftResponseProps,
-  NftPutParams,
+  putAsset,
+  getAsset,
+  AssetProps,
+  AssetResponseProps,
+  AssetPutParams,
 } from '@fafty-frontend/shared/api';
 import { useNotifications } from '@fafty-frontend/notifications';
 
@@ -24,18 +24,18 @@ type Props = {
 
 const FormAssetModal = ({ title, isOpened, onClose, slug }: Props) => {
   const {
-    data: preloadedNft,
-    call: callPreloadNft,
+    data: preloadedAsset,
+    call: callPreloadAsset,
     isSuccess,
-  } = useAsync<NftResponseProps, string>({
-    callback: getNft,
+  } = useAsync<AssetResponseProps, string>({
+    callback: getAsset,
   });
 
-  const { call: putNftData } = useAsync<NftResponseProps, NftPutParams>({
-    callback: (params?: NftPutParams) => putNft(params),
+  const { call: putAssetData } = useAsync<AssetResponseProps, AssetPutParams>({
+    callback: (params?: AssetPutParams) => putAsset(params),
   });
 
-  const defaultData = { ...preloadedNft?.record };
+  const defaultData = { ...preloadedAsset?.record };
 
   const [submiting, setSubmiting] = useState(false);
   const [dismissibleData, setDismissibleData] = useState({
@@ -53,7 +53,7 @@ const FormAssetModal = ({ title, isOpened, onClose, slug }: Props) => {
       return;
     }
 
-    if (drafted && !data.asset) {
+    if (drafted && !data.media) {
       setDrafted(false);
       onClose();
       return;
@@ -63,9 +63,9 @@ const FormAssetModal = ({ title, isOpened, onClose, slug }: Props) => {
 
     try {
       if (slug) {
-        await putNftData({ slug: slug, nft: data });
+        await putAssetData({ slug: slug, asset: data });
       } else {
-        await api.post('/nft', { nft: data });
+        await api.post('/asset', { asset: data });
       }
       // eslint-disable-next-line no-useless-catch
     } catch (err) {
@@ -103,7 +103,7 @@ const FormAssetModal = ({ title, isOpened, onClose, slug }: Props) => {
 
   useEffect(() => {
     if (slug) {
-      callPreloadNft(slug);
+      callPreloadAsset(slug);
     }
   }, [slug]);
 
@@ -124,14 +124,14 @@ const FormAssetModal = ({ title, isOpened, onClose, slug }: Props) => {
       <div className="flex flex-row w-full h-full p-2">
         {((isSuccess && !!slug) || !slug) && (
           <FormAssetContextProvider
-            defaultData={defaultData as NftProps}
+            defaultData={defaultData as AssetProps}
             onChangeDismiss={onChangeDismiss}
             rawDataCallback={drafted}
             onRawDataCallback={(data) => onSubmit(data)}
             onFinished={() => setFinished(true)}
           >
             <FormAsset
-              defaultAsset={defaultData?.asset}
+              defaultAsset={defaultData?.media}
               onSubmit={onSubmit}
               submiting={submiting}
             />

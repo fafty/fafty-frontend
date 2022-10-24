@@ -1,36 +1,65 @@
 export { default as api } from './lib';
 export { default as useAsync } from './lib/useAsync';
 export {
-  getCollectionNftsBySlug,
+  getCollectionAssetsBySlug,
   getCollection,
 } from './lib/callbacks/collection';
-export { getCollections } from './lib/callbacks/collections';
-export { getNftOwners, getNftInfo, getNft, putNft } from './lib/callbacks/nft';
-export { default as getNfts } from './lib/callbacks/nfts';
+export { default as getCollections } from './lib/callbacks/collections';
+export { getAssetOwners, getAssetInfo, getAsset, putAsset } from './lib/callbacks/asset';
+export { default as getAssets } from './lib/callbacks/assets';
+export { default as getUserAssets } from './lib/callbacks/user/assets';
+export { default as getUserCollections } from './lib/callbacks/user/collections';
+export { default as getUserBundles } from './lib/callbacks/user/bundles';
+
 export { default as getSearchResult } from './lib/callbacks/search';
 export { getPopularTags, getTagsBySearch } from './lib/callbacks/tags';
+export {
+  BundleProps,
+  GetBundleResponseProps,
+  GetBundleParamsProps,
+  GetBundleAssetsBySlugParamsProps,
+  GetBundleAssetsBySlugResponseProps,
+} from './lib/callbacks/bundle/types';
 export {
   CollectionProps,
   GetCollectionResponseProps,
   GetCollectionParamsProps,
-  GetCollectionNftsBySlugParamsProps,
-  GetCollectionNftsBySlugResponseProps,
+  GetCollectionAssetsBySlugParamsProps,
+  GetCollectionAssetsBySlugResponseProps,
 } from './lib/callbacks/collection/types';
-export { GetCollectionsResponseProps } from './lib/callbacks/collections/types';
 export {
-  NftAsset,
-  NftProps,
-  NftPutParams,
-  NftResponseProps,
+  GetCollectionsParamsProps,
+  GetCollectionsResponseProps,
+} from './lib/callbacks/collections/types';
+export {
+  AssetMedia,
+  AssetProps,
+  AssetPutParams,
+  AssetResponseProps,
   CommentsOrderType,
-  NftInfoResponseProps,
+  AssetInfoResponseProps,
   CommentsModerationType,
-  NftOwnersResponseProps,
-} from './lib/callbacks/nft/types';
+  AssetOwnersResponseProps,
+} from './lib/callbacks/asset/types';
 export {
-  GetNftsParamsProps,
-  GetNftsResponseProps,
-} from './lib/callbacks/nfts/types';
+  GetAssetsParamsProps,
+  GetAssetsResponseProps,
+} from './lib/callbacks/assets/types';
+export {
+  GetUserAssetsParamsProps,
+  GetUserAssetsCallbackProps,
+  GetUserAssetsResponseProps,
+} from './lib/callbacks/user/assets/types';
+export {
+  GetUserBundlesParamsProps,
+  GetUserBundlesCallbackProps,
+  GetUserBundlesResponseProps,
+} from './lib/callbacks/user/bundles/types';
+export {
+  GetUserCollectionsParamsProps,
+  GetUserCollectionsCallbackProps,
+  GetUserCollectionsResponseProps,
+} from './lib/callbacks/user/collections/types';
 export {
   TagProps,
   GetSearchTagsResponseProps,

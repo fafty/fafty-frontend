@@ -10,13 +10,14 @@ export default function Hero() {
         <div className="absolute z-0 bottom-10 left-[15rem] w-72 h-72 bg-rose-400 dark:bg-rose-500 dark:mix-blend-lighten rounded-full filter blur-xl opacity-70 animate-blob animation-delay-4000"></div>
       </div>
       <div className="pt-16 pb-80 sm:pt-24 sm:pb-40 lg:pt-40 lg:pb-48">
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 sm:static">
+        {/* px-4 sm:px-6 lg:px-8  */}
+        <div className="relative max-w-7xl mx-auto sm:static">
           <div className="z-10 relative sm:max-w-lg">
             <h1 className="text-4xl font font-extrabold tracking-tight text-slate-900 dark:text-slate-50  sm:text-6xl">
               The new creative economy.
             </h1>
             <p className="mt-4 text-xl text-slate-900 tracking-tight dark:text-slate-50">
-              Create, explore, & collect digital art NFTs.
+              Create, explore, & collect digital art Assets.
             </p>
           </div>
           <div>

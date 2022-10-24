@@ -760,7 +760,7 @@ svg.UppyIcon-progressCircle
   .wrapper-items
     @apply relative z-0 overflow-x-hidden overflow-y-hidden w-full pt-3 -mt-3 -mb-3 will-change-scroll
   .items
-    // font-family: inherit
+    flex-wrap: nowrap !important
     padding-bottom: 32px
     -ms-scroll-snap-type: x mandatory
     scroll-snap-type: x mandatory
@@ -794,101 +794,61 @@ svg.UppyIcon-progressCircle
       align-items: stretch
       margin-left: 4px
       margin-right: 4px
+
 .items-slider
   position: relative
   width: 100%
   margin-top: 10px
   margin-bottom: 10px
   .navigation-wrapper
-    // display: block
-    // z-index: 1
-    // overflow-y: hidden
-    // overflow-x: hidden
-    // box-sizing: border-box
-    // position: absolute
-    // top: calc(50% - 20px)
-    // opacity: 1
-    // transition-timing-function: ease
-    // transition-duration: .3s
-    // transition-property: opacity
-    // transform: translateY(-50%)
-    // transition-timing-function: ease
     transition: visibility 0.3s ease 0.3s, opacity 300ms ease 0.3s
     @apply block z-10 absolute box-border top-[calc(50%_-_20px)] translate-y-[-50%] will-change-transform
     &.left
       @apply left-0
-      // left: 0px
       transform: translate(calc(-50% + 0px), -50%)
     &.right
       right: 0px
       transform: translate(calc(50% + 0px), -50%)
     .navigation
-      // border-radius: 50%
       margin: 10px
-      // box-shadow: 0 2px 8px var(--shadow-1)
-      // background-color: var(--card-background-color)
       @apply rounded-full bg-white dark:bg-neutral-700 dark:hover:bg-neutral-600
       .button
-        // width: 48px
-        // height: 48px
-        // justify-content: center
-        // border-radius: 50%
-        // padding: 0
-        // box-sizing: border-box
-        // margin: 0
         -webkit-tap-highlight-color: transparent
         tap-highlight-color: transparent
-        // cursor: pointer
-        // color: var(--page-text-color)
         @apply w-12 h-12 rounded-full box-border justify-center p-0 m-0 cursor-pointer flex relative drop-shadow-md shadow-md dark:text-gray-200 touch-manipulation items-center select-none border-0 list-none outline-none decoration-0
-        // box-shadow: 0 0 0 1px var(--shadow-1)
-        // position: relative
-        // display: flex
-        // text-align: inherit
-        // touch-action: manipulation
-        // align-items: center
-        // -webkit-user-select: none
-        // border-width: 0
-        // border: 0
-        // list-style: none
-        // outline: none
-        // text-decoration: none
-        // &:hover
-        //   background-color: var(--dropdown-item-hover-background-color)
-  .wrapper-items
-    @apply relative z-0 overflow-x-hidden overflow-y-hidden w-full pt-3 -mt-3 -mb-3 will-change-scroll
-    // overflow-y: hidden
-    // overflow-x: hidden
-    // width: 100%
-    // padding-top: 10px
-    // margin-top: -10px
-    // margin-bottom: -10px
-    // // font-family: inherit
-    // position: relative
-    // z-index: 0
+     
+.wrapper-items
+  @apply relative z-0 overflow-x-hidden overflow-y-hidden w-full pt-3 -mt-3 -mb-3 will-change-scroll
   .items
-    // font-family: inherit
-    padding-bottom: 32px
-    -ms-scroll-snap-type: x mandatory
-    scroll-snap-type: x mandatory
-    scroll-padding: 48px
-    box-sizing: border-box
-    width: calc(100% + 88px)
-    scrollbar-width: none
-    margin-bottom: -20px
-    margin-left: -44px
-    margin-right: -44px
     display: flex
-    -webkit-overflow-scrolling: touch
-    overflow-scrolling: touch
+    flex-wrap: wrap
+    flex-direction: row
+    align-content: flex-start
     white-space: nowrap
-    scroll-snap-destination: 0 100%
-    overflow-y: auto
-    overflow-x: scroll
-    padding-top: 8px
-    -webkit-scroll-snap-points-x: repeat(calc(100% - 128px))
-    scroll-snap-points-x: repeat(calc(100% - 128px))
-    scroll-behavior: smooth
+    &.carousel
+      flex-wrap: nowrap
+      // font-family: inherit
+      padding-bottom: 32px
+      -ms-scroll-snap-type: x mandatory
+      scroll-snap-type: x mandatory
+      scroll-padding: 48px
+      box-sizing: border-box
+      width: calc(100% + 88px)
+      scrollbar-width: none
+      margin-bottom: -20px
+      margin-left: -44px
+      margin-right: -44px
+      // display: flex
+      -webkit-overflow-scrolling: touch
+      overflow-scrolling: touch
+      // white-space: nowrap
+      scroll-snap-destination: 0 100%
+      overflow-y: auto
+      overflow-x: scroll
+      padding-top: 8px
+      -webkit-scroll-snap-points-x: repeat(calc(100% - 128px))
+      scroll-snap-points-x: repeat(calc(100% - 128px))
+      scroll-behavior: smooth
     .item
       font-family: inherit
       // width: calc((100% - 88px)/6 - 8px) // temp solution disabling // @media (max-width: 1553px) and (min-width: 1396px)
@@ -901,22 +861,44 @@ svg.UppyIcon-progressCircle
       align-items: stretch
       margin-left: 4px
       margin-right: 4px
+      padding-top: 4px
+      padding-bottom: 4px
       // flex-basis: 0px
   @media (min-width: 300px) and (max-width: 640px)
-    .item
-      width: calc((100% - 88px)/2 - 8px)
+    .carousel
+      .item
+        width: calc((100% - 88px)/2 - 8px)
+    .grided
+      .item
+        width: calc(100%/2 - 8px)
   @media (min-width: 641px) and (max-width: 767px)
-    .item
-      width: calc((100% - 88px)/3 - 8px)
+    .carousel
+      .item
+        width: calc((100% - 88px)/3 - 8px)
+    .grided
+      .item
+        width: calc(100%/3 - 8px)
   @media (min-width: 768px) and (max-width: 1024px)
-    .item
-      width: calc((100% - 88px)/4 - 8px)
+    .carousel
+      .item
+        width: calc((100% - 88px)/4 - 8px)
+    .grided
+      .item
+        width: calc(100%/4 - 8px)
   @media (min-width: 1025px) and (max-width: 1280px)
-    .item
-      width: calc((100% - 88px)/5 - 8px)
+    .carousel
+      .item
+        width: calc((100% - 88px)/5 - 8px)
+    .grided
+      .item
+        width: calc(100%/5 - 8px)
   @media (min-width: 1281px) and (max-width: 10000px)
-    .item
-      width: calc((100% - 88px)/6 - 8px)
+    .carousel
+      .item
+        width: calc((100% - 88px)/6 - 8px)
+    .grided
+      .item
+        width: calc(100%/6 - 8px)
 
   .item
     // flex-basis: 0px
@@ -953,7 +935,7 @@ svg.UppyIcon-progressCircle
           box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2)
           // &:hover
           //   background-color: var(--dropdown-item-hover-background-color)
-          a.item-card-link
+          .item-card-link
             min-height: 0
             padding-right: 0
             box-sizing: border-box
@@ -1032,11 +1014,10 @@ svg.UppyIcon-progressCircle
                 padding-top: 100% // custom for diferent variants
               &.offer
                 padding-top: 60%
-              &.nft
+              &.asset
                 padding-top: 100%
             .item-card-body
               @apply text-slate-800 dark:text-slate-200
-              // color: var(--page-text-color)
               -webkit-font-smoothing: antialiased
               font-smoothing: antialiased
               display: flex
