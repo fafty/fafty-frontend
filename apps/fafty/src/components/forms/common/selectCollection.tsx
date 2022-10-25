@@ -144,9 +144,7 @@ const SelectCollection = ({ current, onChange }: Props): JSX.Element => {
 
   const fetchData = async () => {
     setLoading(true);
-    const response = await api.get<ResponceProps>(
-      `user/faftymaster/collections`
-    );
+    const response = await api.get<ResponceProps>(`user/abcd/collections`);
     if (response.status === 200 && response.data) {
       const { data } = response;
       setData(data.records);
@@ -183,14 +181,21 @@ const SelectCollection = ({ current, onChange }: Props): JSX.Element => {
    */
   const scrollItemsToCenterSelected = (id: string, delay: number): void => {
     const item = document.getElementById(id);
-    if (item === null || item === undefined) return;
-    setTimeout(function () {
-      item.scrollIntoView({
-        behavior: 'smooth',
-        block: 'nearest',
-        inline: 'center',
-      });
-    }, delay);
+    if (!item) return;
+
+    const parentNode = item.parentNode as HTMLElement;
+
+    if (item && item instanceof HTMLElement) {
+      const scrollSize = item.getBoundingClientRect();
+
+      setTimeout(function () {
+        if (scrollSize?.left && scrollSize.width) {
+          itemsContainerRef.current?.scroll({
+            left: parentNode?.offsetLeft - scrollSize.width,
+          });
+        }
+      }, delay);
+    }
   };
 
   const Button = ({ direction }: { direction: string }): JSX.Element => {
@@ -337,9 +342,7 @@ const SelectCollection = ({ current, onChange }: Props): JSX.Element => {
                               <span className="font-medium">
                                 {collection.total_assets_count}
                               </span>
-                              <span className="ml-1">
-                                Items
-                              </span>
+                              <span className="ml-1">Items</span>
                             </span>
                           </div>
                         </div>

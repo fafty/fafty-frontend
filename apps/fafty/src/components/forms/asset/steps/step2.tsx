@@ -81,8 +81,6 @@ const SelectStep2 = ({ Context }: { Context: Context<ContextProps> }) => {
     });
   };
 
-  console.log(formFields.collection_token);
-
   return (
     <div className="flex flex-col">
       <h4 className="font-bold">Assosiation</h4>
