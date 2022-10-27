@@ -24,7 +24,7 @@ const Uploader = dynamic<UploaderProps>(
 const FormCollection = ({
   onSubmit,
   submiting,
-  defaultAsset,
+  defaultCover,
 }: Props): JSX.Element => {
   /*
    * Form Store
@@ -74,7 +74,7 @@ const FormCollection = ({
     }
   }, [activeStep, components, setComponent]);
 
-  const [onlyUploader, setOnlyUploader] = useState(!data?.media?.id);
+  const [onlyUploader, setOnlyUploader] = useState(!data?.cover?.id);
 
   /*
    * Load Dynamic Content
@@ -84,11 +84,11 @@ const FormCollection = ({
   }, [activeStep, loadComponent]);
 
   useEffect(() => {
-    if (!data?.media?.id) {
+    if (!data?.cover?.id) {
       setActiveStep(0);
       setOnlyUploader(true);
     }
-  }, [data?.media?.id]);
+  }, [data?.cover?.id]);
 
   /*
    * Step Management
@@ -104,7 +104,7 @@ const FormCollection = ({
   const submitData = useCallback(() => {
     data &&
       onSubmit({
-        media: data.media,
+        cover: data.cover,
         ...data.step1.state,
         ...data.step2.state,
         ...data.step3.state,
@@ -147,19 +147,15 @@ const FormCollection = ({
 
   const onChangeFile = useCallback(
     (values: FileProps | FileProps[]) => {
-      if (!data?.media?.id) {
+      if (!data?.cover?.id) {
         const currentFile = Array.isArray(values) ? values[0] : values;
-        const formattedFileName = (currentFile?.metadata?.filename || '')
-          .replace(/[-_%]/g, '')
-          .replace(/(.*)\.(.*?)$/, '$1')
-          .replace(/^ +| +$|( ) +/g, '$1');
 
         if (setStepData) {
           setStepData({
-            media: currentFile,
+            cover: currentFile,
             step1: {
               state: {
-                name: formattedFileName,
+                name: '',
                 description: null,
                 unlockable_content: null,
                 sensitive_content: false,
@@ -186,7 +182,7 @@ const FormCollection = ({
       error: data?.step1.error,
     },
     {
-      name: 'Assosiation',
+      name: 'Assets',
       active: activeStep === 1,
       completed: data?.step2.solved,
       optional: true,
@@ -202,7 +198,7 @@ const FormCollection = ({
       error: data?.step3.error,
     },
     {
-      name: 'Check media',
+      name: 'Check cover',
       active: activeStep === 3,
       completed: data?.step4.solved,
       optional: false,
@@ -282,7 +278,7 @@ const FormCollection = ({
             </div>
             <div className="text-lg font-bold">
               Congratulations! Your Collection is{' '}
-              {defaultAsset?.file_id ? 'updated!' : 'uploaded!'}
+              {defaultCover?.file_id ? 'updated!' : 'uploaded!'}
             </div>
             <div className="mt-4">
               <Link href="/asset">
@@ -290,7 +286,7 @@ const FormCollection = ({
                   View your collection
                 </a>
               </Link>
-              {!defaultAsset?.file_id && (
+              {!defaultCover?.file_id && (
                 <Link href="/asset/create">
                   <a className="relative inline-block text-center bg-blue-600 border border-transparent rounded-md py-2 px-4 font-medium text-white hover:bg-blue-700">
                     Continue with created asset for publish Nft
@@ -303,8 +299,6 @@ const FormCollection = ({
       </AnimatePresence>
     );
   }
-
-  console.log(buttonNextDisabled, isDisabledNextStep);
 
   return (
     <>
@@ -352,7 +346,9 @@ const FormCollection = ({
                 animate="animate"
                 exit="exit"
                 key={activeStep}
-                className=""
+                className={classNames({
+                  'md:col-span-2': activeStepNumeric == 2,
+                })}
               >
                 <motion.div
                   variants={{
@@ -377,40 +373,85 @@ const FormCollection = ({
               </motion.div>
             </AnimatePresence>
           )}
-          <div
-            className={classNames(
-              {
-                'w-full': onlyUploader,
-                'max-w-[20rem] max-h-[20rem]': !onlyUploader,
+          <motion.div
+            initial={'visible'}
+            variants={{
+              visible: {
+                opacity: 1,
+                x: 0,
+                // scale: 1,
+                transition: {
+                  // when: 'afterChildren',
+                  duration: 0.3,
+                  delay: 0.3,
+                },
               },
-              'flex flex-1 sticky top-5 mx-auto h-full'
+              hidden: {
+                opacity: 0,
+                x: '110%',
+                // scale: 0.7,
+                transition: {
+                  // when: 'beforeChildren',
+                  duration: 0.3,
+                  // delay: 0.2,
+                },
+              },
+            }}
+            animate={activeStepNumeric !== 2 ? `visible` : `hidden`}
+            className={classNames(
+              'flex flex-1 sticky top-5 mx-auto w-full h-full',
+              {
+                'max-w-[20rem] max-h-[20rem]': !onlyUploader,
+              }
             )}
           >
-            <Uploader
-              existingFiles={
-                defaultAsset
-                  ? [
-                      {
-                        id: defaultAsset.file_id,
-                        file_id: defaultAsset.file_id,
-                        src: defaultAsset.src,
-                        mime_type: defaultAsset.mime_type,
-                        type: defaultAsset.type,
-                        filename: defaultAsset.filename,
-                        storage: defaultAsset.storage,
-                        size: defaultAsset.size,
-                        position: 0,
-                      },
-                    ]
-                  : undefined
-              }
-              hasError={false}
-              onChange={onChangeFile}
-              OnGenetatedThumbnail={() => {
-                setOnlyUploader(false);
+            <motion.div
+              initial={'visible'}
+              variants={{
+                visible: {
+                  display: 'block',
+                  transition: {
+                    duration: 0.3,
+                    // delay: 0.3,
+                  },
+                },
+                hidden: {
+                  display: 'none',
+                  transition: {
+                    duration: 0.3,
+                    delay: 0.4,
+                  },
+                },
               }}
-            />
-          </div>
+              animate={activeStepNumeric !== 2 ? `visible` : `hidden`}
+              className="flex flex-1 justify-center"
+            >
+              <Uploader
+                existingFiles={
+                  defaultCover
+                    ? [
+                        {
+                          id: defaultCover.file_id,
+                          file_id: defaultCover.file_id,
+                          src: defaultCover.src,
+                          mime_type: defaultCover.mime_type,
+                          type: defaultCover.type,
+                          filename: defaultCover.filename,
+                          storage: defaultCover.storage,
+                          size: defaultCover.size,
+                          position: 0,
+                        },
+                      ]
+                    : undefined
+                }
+                hasError={false}
+                onChange={onChangeFile}
+                OnGenetatedThumbnail={() => {
+                  setOnlyUploader(false);
+                }}
+              />
+            </motion.div>
+          </motion.div>
         </div>
         {!onlyUploader && (
           <div className="flex justify-end sticky bottom-0 pt-4 bg-slate-50 dark:bg-neutral-800 border-t border-gray-100 dark:border-neutral-700">

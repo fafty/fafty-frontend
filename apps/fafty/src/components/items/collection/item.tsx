@@ -51,7 +51,9 @@ const Item = ({ item }: Props) => {
                       <div className="flex overflow-hidden -space-x-4 mt-2">
                         { item.preview_assets?.slice(0, 3).map((asset, index) => (
                           <div key={index} className="relative flex-inline rounded-full overflow-hidden border-2">
-                            <div className="w-8 h-8 bg-base-300">
+                            <div className="w-8 h-8 bg-base-300"
+                              style={{ backgroundColor: asset.media.dominant_color || '' }}
+                            >
                             <Image
                               className="relative inline-block h-9 w-9 rounded-full ring-1 ring-white"
                               src={asset.media.src || ''}

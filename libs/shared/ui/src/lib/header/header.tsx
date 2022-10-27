@@ -29,19 +29,23 @@ const pagesLinks = [
 ];
 const createLinks = [
   {
+    name: 'Add Asset',
+    key: 'asset',
+    description: 'Description Add Asset',
+    icon: ImageAddIcon,
+  },
+  {
     name: 'Add Bundle',
     key: 'bundle',
-    href: '/account/assets',
     description: 'Description Add Bundle',
     icon: GalleryIcon,
   },
   {
-    name: 'Add Asset',
-    key: 'asset',
-    href: '/account/assets',
-    description: 'Description Add Asset',
-    icon: ImageAddIcon,
-  },
+    name: 'Add Collection',
+    key: 'collection',
+    description: 'Description Add Collection',
+    icon: GalleryIcon,
+  }
 ];
 
 type Props = {
@@ -257,7 +261,6 @@ const Header = ({
                   {createLinks.map((item) => (
                     <a
                       key={item.name}
-                      href={item.href}
                       className="text-base font-medium text-gray-900 hover:text-gray-700"
                     >
                       {item.name}.

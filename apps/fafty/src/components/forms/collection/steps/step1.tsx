@@ -73,14 +73,14 @@ const SelectStep1 = ({ Context }: { Context: Context<ContextProps> }) => {
 
   useComponentDidUpdate(
     (prevProps) => {
-      if (!prevProps?.media?.id && stepData?.media?.id) {
+      if (!prevProps?.cover?.id && stepData?.cover?.id) {
         reset({
           name: stepData.step1.state.name,
         });
       }
     },
     {
-      media: stepData?.media,
+      cover: stepData?.cover,
     }
   );
 
@@ -122,7 +122,7 @@ const SelectStep1 = ({ Context }: { Context: Context<ContextProps> }) => {
   };
 
   useEffect(() => {
-    if (stepData?.media?.id && isMounted) {
+    if (stepData?.cover?.id && isMounted) {
       setStepData({
         step1: {
           state: getValues() as Step1Props,
@@ -214,37 +214,6 @@ const SelectStep1 = ({ Context }: { Context: Context<ContextProps> }) => {
             )}
           />
         </Suspense>
-      </div>
-      <div className="my-3">
-        <div className="flex-row mb-2">
-          <div className="block text-sm font-medium text-gray-700 dark:text-gray-100">
-            Unlockable Content
-          </div>
-          <div className="text-xs block truncate text-gray-400">
-            Include unlockable content that can only be revealed by the owner of
-            the item.
-          </div>
-        </div>
-        <Controller
-          name="unlockable_content"
-          control={control}
-          defaultValue={formFields.unlockable_content}
-          render={({ field }) => (
-            <Editor
-              {...field}
-              {...(errors.unlockable_content && {
-                'aria-invalid': true,
-              })}
-              initialEditorState={field.value}
-              name="unlockable_content"
-              placeholder="Enter content (access key, code to redeem, link to a file, etc.)"
-              isRichText={false}
-              namespace="unlockable_content"
-              hasError={errors.unlockable_content as unknown as boolean}
-              loading={false}
-            />
-          )}
-        />
       </div>
     </div>
   );

@@ -16,7 +16,7 @@ export type AssetMedia = {
 };
 
 export type AssetProps = {
-  token: number;
+  token: string;
   name: string;
   description: string | EditorState | null;
   price?: number;

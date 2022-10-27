@@ -1,6 +1,5 @@
 import { useState, ReactNode, useCallback, useEffect } from 'react';
 import {
-  AssetProps,
   CommentsOrderType,
   CommentsModerationType,
 } from '@fafty-frontend/shared/api';
@@ -8,7 +7,7 @@ import Context from './context';
 import { FormProps, SetStepDataProps, StepsProps } from './types';
 
 const defaultStepsData: StepsProps = {
-  media: {
+  cover: {
     id: '',
     storage: '',
     src: undefined,
@@ -21,18 +20,14 @@ const defaultStepsData: StepsProps = {
   step1: {
     state: {
       name: '',
-      description: null,
-      unlockable_content: null,
-      sensitive_content: false,
+      description: null
     },
     solved: false,
     error: false,
   },
   step2: {
     state: {
-      blockchain: 'dfinity',
-      supply_units: 1,
-      collection_token: '',
+      assets: [],
     },
     solved: false,
     error: false,
@@ -56,7 +51,7 @@ const defaultStepsData: StepsProps = {
   },
 };
 
-export const FormAssetContextProvider = ({
+export const FormCollectionContextProvider = ({
   onChangeDismiss,
   rawDataCallback,
   onRawDataCallback,
@@ -66,7 +61,7 @@ export const FormAssetContextProvider = ({
 }: {
   onChangeDismiss: (data: { title: string; disabled: boolean }) => void;
   rawDataCallback: boolean;
-  defaultData?: AssetProps;
+  defaultData?: FormProps;
   onRawDataCallback: (data: FormProps) => void;
   onFinished: () => void;
   children: ReactNode;
@@ -78,14 +73,14 @@ export const FormAssetContextProvider = ({
   const [finished, setFinished] = useState<boolean>(false);
 
   const [stepData, setStepData] = useState<StepsProps>({
-    media: {
-      id: defaultData?.media?.file_id || '',
-      storage: defaultData?.media?.storage || '',
-      src: defaultData?.media?.src || '',
+    cover: {
+      id: defaultData?.cover?.file_id || '',
+      storage: defaultData?.cover?.storage || '',
+      src: defaultData?.cover?.src || '',
       metadata: {
-        size: defaultData?.media?.size || 0,
-        filename: defaultData?.media?.filename || '',
-        mime_type: defaultData?.media?.mime_type || '',
+        size: defaultData?.cover?.metadata.size || 0,
+        filename: defaultData?.cover?.metadata.filename || '',
+        mime_type: defaultData?.cover?.metadata.mime_type || '',
       },
     },
     step1: {
@@ -95,23 +90,17 @@ export const FormAssetContextProvider = ({
           defaultData?.description &&
           Object.keys(defaultData?.description).length
             ? defaultData?.description
-            : '',
-        unlockable_content: null,
-        sensitive_content: !!defaultData?.sensitive_content,
+            : ''
       },
       solved: !!defaultData?.description,
       error: false,
     },
     step2: {
       state: {
-        blockchain: defaultData?.blockchain || 'dfinity',
-        supply_units: defaultData?.available_supply_units || 1,
-        collection_token: defaultData?.collection_token || '',
+        assets: defaultData?.assets || [],
       },
       solved:
-        !!defaultData?.available_supply_units &&
-        !!defaultData?.collection_token &&
-        !!defaultData?.blockchain,
+        !!defaultData?.assets,
       error: false,
     },
     step3: {
@@ -141,7 +130,7 @@ export const FormAssetContextProvider = ({
   useEffect(() => {
     if (rawDataCallback) {
       onRawDataCallback({
-        media: stepData.media,
+        cover: stepData.cover,
         ...stepData.step1.state,
         ...stepData.step2.state,
         ...stepData.step3.state,
@@ -155,26 +144,26 @@ export const FormAssetContextProvider = ({
   }, [finished]);
 
   useEffect(() => {
-    if (step1Answered && stepData.media.id) {
+    if (step1Answered && stepData.cover.id) {
       onChangeDismiss({
         title: 'Close and save as draft',
         disabled: false,
       });
     }
-    if (!step1Answered && stepData.media.id) {
+    if (!step1Answered && stepData.cover.id) {
       onChangeDismiss({
         title:
           'The button is not active because there are errors in some fields',
         disabled: true,
       });
     }
-    if ((!step1Answered && !stepData.media.id) || finished) {
+    if ((!step1Answered && !stepData.cover.id) || finished) {
       onChangeDismiss({
         title: 'Close',
         disabled: false,
       });
     }
-  }, [finished, step1Answered, stepData.media]);
+  }, [finished, step1Answered, stepData.cover]);
 
   const onSetStepData = useCallback(
     (data: SetStepDataProps) => {

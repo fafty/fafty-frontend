@@ -1,5 +1,6 @@
 import api from '../../index';
 import {
+  PutCollectionParamsProps,
   GetCollectionAssetsBySlugParamsProps,
   GetCollectionAssetsBySlugResponseProps,
   GetCollectionParamsProps,
@@ -21,4 +22,13 @@ const getCollectionAssetsBySlug = async (
 
   return data;
 };
-export { getCollection, getCollectionAssetsBySlug };
+
+const putCollection = async (
+  params?: PutCollectionParamsProps
+): Promise<GetCollectionResponseProps> => {
+  const { data } = await api.put(`/collection/${params?.slug}`, { collection: params?.collection });
+
+  return data;
+};
+
+export { getCollection, getCollectionAssetsBySlug, putCollection };

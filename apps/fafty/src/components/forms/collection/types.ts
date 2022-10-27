@@ -3,6 +3,7 @@ import {
   CommentsOrderType,
   AssetMedia,
   TagProps,
+  AssetProps,
 } from '@fafty-frontend/shared/api';
 import { CSSProperties } from 'react';
 import { EditorState } from 'lexical';
@@ -43,14 +44,10 @@ export interface UploaderProps {
 }
 
 export interface FormProps {
-  media: FileProps | null;
+  cover: FileProps | null;
   name: string | null;
   description: string | EditorState | null;
-  unlockable_content: string | EditorState | null;
-  sensitive_content: boolean;
-  supply_units: number | null;
-  blockchain: string;
-  collection_token: string;
+  assets: AssetProps[] | null;
   allow_ratings: boolean;
   comments_moderation: CommentsModerationType;
   comments_order: CommentsOrderType;
@@ -60,20 +57,16 @@ export interface FormProps {
 export interface Props {
   onSubmit: (data: FormProps) => Promise<void>;
   submiting: boolean;
-  defaultAsset?: AssetMedia;
+  defaultCover?: AssetMedia;
 }
 
 export interface Step1Props {
   name: string;
   description: null | EditorState | string;
-  unlockable_content: null | EditorState | string;
-  sensitive_content: boolean;
 }
 
 export interface Step2Props {
-  blockchain: string;
-  supply_units: number;
-  collection_token: string;
+  assets: AssetProps[] | null;
 }
 
 export interface Step3Props {
@@ -94,7 +87,7 @@ export interface StepData<T> {
 }
 
 export interface StepsProps {
-  media: FileProps;
+  cover: FileProps;
   step1: StepData<Step1Props>;
   step2: StepData<Step2Props>;
   step3: StepData<Step3Props>;

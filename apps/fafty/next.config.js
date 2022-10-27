@@ -42,7 +42,11 @@ const nextConfig = {
     images: { allowFutureImage: true },
   },
   images: {
-    domains: ['fafty-assets.s3.amazonaws.com', 'dhch6dszrgnpb.cloudfront.net','avatars.dicebear.com'],
+    domains: [
+      'fafty-assets.s3.amazonaws.com',
+      'dhch6dszrgnpb.cloudfront.net',
+      'avatars.dicebear.com',
+    ],
   },
 
   // swcMinify: true,

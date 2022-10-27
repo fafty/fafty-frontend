@@ -1,13 +1,9 @@
 import { motion } from 'framer-motion';
-import { useEffect, useContext, lazy, useLayoutEffect, Context } from 'react';
+import { useEffect, useContext, useLayoutEffect, Context } from 'react';
 import { Controller, useForm } from 'react-hook-form';
+import DragAndDropAssets from '../../common/dragAndDropAssets';
 import { childVariants, variants } from '../constants';
 import { ContextProps } from '../types';
-
-const SelectBlockchain = lazy(() => import('../../common/selectBlockchain'));
-const SelectCollection = lazy(() => import('../../common/selectCollection'));
-
-const CounterInput = lazy(() => import('../../common/counterInput'));
 
 const SelectStep2 = ({ Context }: { Context: Context<ContextProps> }) => {
   /**
@@ -27,9 +23,7 @@ const SelectStep2 = ({ Context }: { Context: Context<ContextProps> }) => {
     formState: { errors, isValid },
   } = useForm({
     defaultValues: {
-      blockchain: stepData?.step2?.state?.blockchain || 'dfinity',
-      collection_token: stepData?.step2?.state?.collection_token,
-      supply_units: stepData?.step2?.state?.supply_units || 1,
+      assets: stepData?.step2?.state?.assets || []
     },
     mode: 'onChange',
     reValidateMode: 'onChange',
@@ -81,107 +75,41 @@ const SelectStep2 = ({ Context }: { Context: Context<ContextProps> }) => {
     });
   };
 
-  console.log(formFields.collection_token);
-
   return (
-    <div className="flex flex-col">
-      <h4 className="font-bold">Assosiation</h4>
-      <div className="mb-5 mt-1 relative">
-        <div className="flex justify-left">
-          <div className="flex flex-col">
-            <label
-              htmlFor="item-supply-units"
-              className="block text-sm font-medium"
-            >
-              Supply
-            </label>
-            <Controller
-              name="supply_units"
-              control={control}
-              defaultValue={formFields.supply_units}
-              rules={{ required: true, min: 1, max: 100 }}
-              render={({ field }) => (
-                <CounterInput
-                  {...field}
-                  current={field.value}
-                  hasError={errors.supply_units as unknown as boolean}
-                />
-              )}
-            />
-          </div>
-        </div>
+    <div className="col-span-2">
+      <div className="flex flex-col">
+        <h4 className="font-bold">Assets</h4>
+        <label htmlFor="" className="text-sm font-bold">
+          Add Assets to this collection
+        </label>
+        <p className="text-xs font-medium">
+          This is th..........
+        </p>
+        <Controller
+          name="assets"
+          control={control}
+          defaultValue={formFields.assets}
+          rules={{ required: true }}
+          render={({ field }) => (
+            <DragAndDropAssets onDragStart={() => console.log('onDragStart') } onDragEnd={() => console.log('onDragEnd') } hasError={false} {...field} current={field.value} />
+          )}
+        />
         <motion.div
           initial={'hidden'}
           variants={variants}
-          animate={errors.supply_units ? `visible` : `hidden`}
+          animate={errors.assets ? `visible` : `hidden`}
         >
           <motion.div variants={childVariants} className="min-h-[24px]">
-            <span className="text-red-500 ">
-              {errors.supply_units?.type === 'required' && (
+            <span className="text-red-500">
+              {errors.assets?.type === 'required' && (
                 <motion.div variants={childVariants} role="alert">
-                  Name is required.
-                </motion.div>
-              )}
-              {errors.supply_units?.type === 'min' && (
-                <motion.div variants={childVariants} role="alert">
-                  Minimum 1 unit.
-                </motion.div>
-              )}
-              {errors.supply_units?.type === 'max' && (
-                <motion.div variants={childVariants} role="alert">
-                  Maximum 100 unit.
+                  Assets choose is required.
                 </motion.div>
               )}
             </span>
           </motion.div>
         </motion.div>
       </div>
-      <div className="my-3">
-        <label htmlFor="" className="text-sm font-medium">
-          Choose Blockchain
-        </label>
-        <p className="text-xs font-medium">
-          This is the collection where your item will appear.
-        </p>
-        <Controller
-          name="blockchain"
-          control={control}
-          defaultValue={formFields.blockchain}
-          render={({ field }) => (
-            <SelectBlockchain {...field} current={field.value} />
-          )}
-        />
-      </div>
-      <label htmlFor="" className="text-sm font-bold">
-        Choose Collection
-      </label>
-      <p className="text-xs font-medium">
-        This is the collection where your item will appear.
-      </p>
-      <Controller
-        name="collection_token"
-        control={control}
-        defaultValue={formFields.collection_token}
-        rules={{ required: true }}
-        render={({ field }) => (
-          <SelectCollection {...field} current={field.value} />
-        )}
-      />
-      <motion.div
-        initial={'hidden'}
-        variants={variants}
-        animate={errors.collection_token ? `visible` : `hidden`}
-      >
-        <motion.div variants={childVariants} className="min-h-[24px]">
-          <span className="text-red-500">
-            {errors.collection_token?.type === 'required' && (
-              <motion.div variants={childVariants} role="alert">
-                Collection choose is required.
-              </motion.div>
-            )}
-          </span>
-        </motion.div>
-      </motion.div>
     </div>
   );
 };

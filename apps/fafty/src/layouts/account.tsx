@@ -11,6 +11,8 @@ import {
 } from '@heroicons/react/24/outline';
 import { getAccountId } from '../utils/account';
 import FormAssetModal from '../components/modals/forms/asset';
+import FormCollectionModal from '../components/modals/forms/collection';
+
 import { GalleryIcon } from '@remixicons/react/line';
 import classNames from 'classnames';
 import { useRouter } from 'next/router'
@@ -24,10 +26,10 @@ type Props = {
 const AccountLayout = ({ children, title, description }: Props) => {
   const [collapseShow, setCollapseShow] = useState('hidden');
   const [openedFormAssetModal, setOpenedFormAssetModal] = useState(false);
+  const [openedFormCollectionModal, setOpenedFormCollectionModal] = useState(false);
+  const [openedFormBundleModal, setOpenedFormBundleModal] = useState(false);
   const router = useRouter()
 
-  // const [openedFormCollectionModal, setOpenedFormCollectionModal] = useState(false);
-  // const [openedFormBundleModal, setOpenedFormBundleModal] = useState(false);
   const auth = useAuth();
 
   const balance = useMemo(() => {
@@ -39,12 +41,12 @@ const AccountLayout = ({ children, title, description }: Props) => {
       case 'asset':
         setOpenedFormAssetModal(true);
         break;
-      // case 'collection':
-      //   setOpenedFormCollectionModal(true);
-      //   break;
-      // case 'bundle':
-      //   setOpenedFormBundleModal(true);
-      //   break;
+      case 'collection':
+        setOpenedFormCollectionModal(true);
+        break;
+      case 'bundle':
+        setOpenedFormBundleModal(true);
+        break;
       default:
         break;
     }
@@ -188,6 +190,13 @@ const AccountLayout = ({ children, title, description }: Props) => {
           title="Create Your Asset"
           onClose={() => setOpenedFormAssetModal(false)}
           isOpened={openedFormAssetModal}
+        />
+      )}
+      {openedFormCollectionModal && (
+        <FormCollectionModal
+          title="Create Your Collection"
+          onClose={() => setOpenedFormCollectionModal(false)}
+          isOpened={openedFormCollectionModal}
         />
       )}
     </>

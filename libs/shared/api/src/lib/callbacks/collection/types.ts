@@ -1,8 +1,10 @@
+import { TagProps } from '../tags/types';
+
 import { EditorState } from 'lexical';
 import { AssetProps } from '../asset/types';
 import { GetAssetsResponseProps } from '../assets/types';
 
-export type CollectionCover = {
+export type CollectionCoverProps = {
   dominant_color: string | null;
   file_id: string;
   filename: string;
@@ -27,7 +29,7 @@ export type CollectionProps = {
   rating: number;
   preview_assets: AssetProps[];
   likes: number;
-  cover: CollectionCover;
+  cover: CollectionCoverProps;
   banner: null | string;
   sensitive_content: boolean;
   pool: string;
@@ -62,15 +64,42 @@ export type GetCollectionAssetsBySlugResponseProps = {
     slug: string;
     token: string;
   }
-  // paginate: PaginateProps;
-
 };
-// type PaginateProps = {
-//   count: number;
-//   limit: number;
-//   offset: number;
-// };
+
+export interface FileProps {
+  id: string;
+  storage: string;
+  metadata: {
+    size: number;
+    filename: string;
+    mime_type: string;
+  };
+}
+
+export type CommentsModerationType =
+  | 'allow_all'
+  | 'automoderation'
+  | 'hold_all'
+  | 'disabled';
+
+export type CommentsOrderType = 'interesting' | 'newest';
+
+export interface FormProps {
+  cover: FileProps | null;
+  name: string | null;
+  description: string | EditorState | null;
+  assets: AssetProps[] | null;
+  allow_ratings: boolean;
+  comments_moderation: CommentsModerationType;
+  comments_order: CommentsOrderType;
+  tags: TagProps[] | null;
+}
 
 export type GetCollectionResponseProps = {
   record: CollectionProps;
+};
+
+export type PutCollectionParamsProps = {
+  slug?: string;
+  collection: FormProps;
 };

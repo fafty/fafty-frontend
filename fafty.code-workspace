@@ -11,6 +11,9 @@
         },
         {
             "path": "../../RubyProjects/fafty-backend"
+        },
+        {
+            "path": "../forsage-community-frontend"
         }
     ]
 }

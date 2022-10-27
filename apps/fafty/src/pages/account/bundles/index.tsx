@@ -209,7 +209,9 @@ const AccountBundles = () => {
         onMouseLeave={() => setIsHovered(false)}
       >
         <div className="flex flex-row w-full p-1 z-2 ml-7 items-center overflow-hidden">
-          <div className="relative flex h-17 w-17 flex-shrink-0 items-center justify-center bg-neutral-300 rounded hover:bg-neutral-200 focus:outline-none dark:bg-neutral-700 dark:hover:bg-neutral-600">
+          <div className="relative flex h-17 w-17 flex-shrink-0 items-center justify-cente rounded focus:outline-none bg-neutral-200 dark:bg-neutral-700"
+            style={{ backgroundColor: item.cover.dominant_color || '' }}
+          >
             <Image
               className="relative inline-block h-16 w-16 rounded"
               src={item?.cover.src}
@@ -323,7 +325,10 @@ const AccountBundles = () => {
                   key={index}
                   className="relative flex-inline rounded-full overflow-hidden border-2"
                 >
-                  <div className="w-8 h-8 bg-base-300">
+                  <div
+                    className="w-8 h-8 bg-base-300"
+                    style={{ backgroundColor: asset.media.dominant_color || '' }}
+                  >
                     <Image
                       className="relative inline-block h-9 w-9 rounded-full ring-1 ring-white"
                       src={asset.media.src || ''}
@@ -380,7 +385,7 @@ const AccountBundles = () => {
           <div className="flex overflow-hidden -space-x-4">
             { Array.from({ length: 4 }, (_, index) => (
               <div key={index} className="relative flex-inline rounded-full overflow-hidden">
-                <div className="w-9 h-9 bg-neutral-300 dark:bg-neutral-800 rounded-sm animate-pulse">
+                <div className="w-9 h-9 bg-neutral-300 dark:bg-neutral-700 rounded-sm animate-pulse">
                 </div>
               </div>
             ))}
@@ -392,7 +397,7 @@ const AccountBundles = () => {
         <div className="flex items-center justify-left">
           <div className="w-[3rem] h-[0.75rem] bg-neutral-300 dark:bg-neutral-700 rounded-sm animate-pulse" />
         </div>
-        <div className="flex items-center justify-center">
+        <div className="flex items-center justify-left">
           <div className="w-[2rem] h-[0.75rem] bg-neutral-300 dark:bg-neutral-700 rounded-sm animate-pulse" />
         </div>
       </div>

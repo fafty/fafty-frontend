@@ -16,7 +16,7 @@ import isDragDropSupported from '@uppy/utils/lib/isDragDropSupported';
 import toArray from '@uppy/utils/lib/toArray';
 import Item from './ui/item';
 import classNames from 'classnames';
-import { useNotifications } from '@fafty-frontend/notifications';
+// import { useNotifications } from '@fafty-frontend/notifications';
 import { useIsomorphicLayoutEffect } from '@fafty-frontend/usehooks';
 import Sortable from 'sortablejs';
 import { gsap } from 'gsap';

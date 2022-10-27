@@ -1,12 +1,14 @@
 export { default as api } from './lib';
 export { default as useAsync } from './lib/useAsync';
+export { getAssetOwners, getAssetInfo, getAsset, putAsset } from './lib/callbacks/asset';
+export { default as getAssets } from './lib/callbacks/assets';
 export {
   getCollectionAssetsBySlug,
   getCollection,
+  putCollection
 } from './lib/callbacks/collection';
 export { default as getCollections } from './lib/callbacks/collections';
-export { getAssetOwners, getAssetInfo, getAsset, putAsset } from './lib/callbacks/asset';
-export { default as getAssets } from './lib/callbacks/assets';
+
 export { default as getUserAssets } from './lib/callbacks/user/assets';
 export { default as getUserCollections } from './lib/callbacks/user/collections';
 export { default as getUserBundles } from './lib/callbacks/user/bundles';
@@ -26,6 +28,7 @@ export {
   GetCollectionParamsProps,
   GetCollectionAssetsBySlugParamsProps,
   GetCollectionAssetsBySlugResponseProps,
+  PutCollectionParamsProps
 } from './lib/callbacks/collection/types';
 export {
   GetCollectionsParamsProps,

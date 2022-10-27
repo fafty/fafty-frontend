@@ -8,6 +8,7 @@ import {
 } from './filters';
 import { CloseIcon } from '@remixicons/react/fill';
 import { FiltersValues } from '../../pages/assets';
+import { motion } from 'framer-motion';
 
 type Pill = {
   title: string;
@@ -70,32 +71,80 @@ export const Pills = ({ onClosePill, onClearFilters }: Props) => {
     onClosePill(value);
   };
 
+  const variants = {
+    visible: {
+      height: 'auto',
+      transition: {
+        duration: 0.2,
+        delay: 0.2,
+        when: 'beforeChildren',
+        staggerChildren: 0.1,
+      },
+    },
+    hidden: {
+      height: 0,
+      transition: {
+        duration: 0.2,
+        delay: 0.2,
+        staggerChildren: 0.3,
+        when: 'beforeChildren',
+        staggerDirection: -1,
+      },
+    },
+  };
+  
+  const childVariants = {
+    visible: {
+      opacity: 1,
+      transition: {
+        duration: 0.3,
+        delay: 0.2,
+      },
+    },
+    hidden: {
+      opacity: 0,
+      className: 'pointer-events-none',
+      transition: {
+        duration: 0.3,
+        delay: 0.1,
+      },
+    },
+  };
+
   return (
     <div className="flex">
-      <div className="flex items-center gap-[8px]">
-        {queryPills?.map(({ title, value }) => (
-          <div
-            key={value}
-            className="flex relative justify-between text-center bg-blue-600 border border-transparent rounded-md p-1 pl-2 pr-7 font-medium text-white hover:bg-blue-700"
-          >
-            {title}
-            <div
-              onClick={() => onClickPill(value)}
-              className="flex items-center justify-center top-0 bottom-0 w-8 absolute right-0 cursor-pointer"
-            >
-              <CloseIcon className="w-5 h-5  fill-white" />
-            </div>
-          </div>
-        ))}
-        {!!queryPills?.length && (
-          <span
-            onClick={onClearFilters}
-            className="px-2.5 dark:text-white text-slate-900 cursor-pointer"
-          >
-            Clear filters
-          </span>
-        )}
-      </div>
+      <motion.div
+          className="flex items-center gap-[8px]"
+          initial={'hidden'}
+          variants={variants}
+          animate={queryPills?.length ? `visible` : `hidden`}
+        >
+          <motion.div className="flex flex-row items-center gap-[8px] min-h-[30px]" variants={childVariants}>
+            {queryPills?.map(({ title, value }) => (
+              <motion.div
+                variants={childVariants}
+                key={value}
+                className="flex relative justify-between text-center bg-blue-600 border border-transparent rounded-md p-1 pl-2 pr-7 font-medium text-white hover:bg-blue-700"
+              >
+                {title}
+                <div
+                  onClick={() => onClickPill(value)}
+                  className="flex items-center justify-center top-0 bottom-0 w-8 absolute right-0 cursor-pointer"
+                >
+                  <CloseIcon className="w-5 h-5 fill-white" />
+                </div>
+              </motion.div>
+            ))}
+            {!!queryPills?.length && (
+              <motion.div
+                onClick={onClearFilters}
+                className="px-2.5 dark:text-white text-slate-900 cursor-pointer"
+              >
+                Clear filters
+              </motion.div>
+            )}
+          </motion.div>
+        </motion.div>
     </div>
   );
 };

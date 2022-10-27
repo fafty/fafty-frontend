@@ -864,6 +864,9 @@ svg.UppyIcon-progressCircle
       padding-top: 4px
       padding-bottom: 4px
       // flex-basis: 0px
+      &.selected
+        .item-card
+          box-shadow: 0 2px 5px rgb(29 78 216 / 50%) !important
   @media (min-width: 300px) and (max-width: 640px)
     .carousel
       .item
@@ -900,6 +903,33 @@ svg.UppyIcon-progressCircle
       .item
         width: calc(100%/6 - 8px)
 
+
+  @media (min-width: 260px) and (max-width: 654px)
+    .grided.small
+      .item
+        width: calc(100%/1 - 8px)
+  @media (min-width: 655px) and (max-width: 1280px)
+    .grided.small
+      .item
+        width: calc(100%/2 - 8px)
+  @media (min-width: 1281px) and (max-width: 10000px)
+    .grided.small
+      .item
+        width: calc(100%/3 - 8px)
+
+  .grided.small
+    .item
+      .item-wrapper
+        min-width: 120px !important
+        .item-card-body
+          // padding: 8px !important
+        .item-card-title span
+          font-size: 0.75rem !important
+        .item-price
+          margin-top: 3px !important
+          border-width: 1.2px !important
+          font-size: 0.60rem !important
+          line-height: 0.75rem !important
   .item
     // flex-basis: 0px
     .item-wrapper
@@ -1043,6 +1073,7 @@ svg.UppyIcon-progressCircle
                   flex-direction: column
                   word-break: break-word
                   margin-bottom: 5px
+                  @apply mr-1
                   span
                     font-weight: 600
                     font-size: .9375rem
