@@ -172,16 +172,13 @@ const DragAndDropAssets = (props: DragAndDropAssetsProps) => {
   // );
 
   const items = useMemo(() => {
-    const count = Math.min(
-      localFiltersState.paginate.offset + LIMIT,
-      data?.paginate?.count ?? 0
-    );
+    console.log(current, data?.records);
 
-    return Array.from(
-      { length: count },
-      (_, index) => data?.records[index] ?? {}
+    return data?.records?.filter(
+      (item) =>
+        !current.find((currentItem) => currentItem.token === item?.token)
     ) as AssetProps[];
-  }, [data?.paginate?.count, data?.records, localFiltersState.paginate.offset]);
+  }, [data?.records, current]);
 
   useEffect(() => {
     console.log('useEffect mount?');
@@ -277,7 +274,7 @@ const DragAndDropAssets = (props: DragAndDropAssetsProps) => {
         },
         onAdd: (e) => {
           console.log('onAdd', e);
-        }
+        },
       }
     );
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -369,7 +366,6 @@ const DragAndDropAssets = (props: DragAndDropAssetsProps) => {
                   !onDragOverSortableCollectionAssets,
               }
             )}
-            
           >
             <div className="w-full h-full min-w-full min-h-full wrapper-items">
               <div
