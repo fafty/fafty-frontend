@@ -4,9 +4,9 @@ import qs from 'qs';
 import MainLayout from '../../layouts/main';
 import {
   useAsync,
-  getAssets,
-  GetAssetsParamsProps,
-  GetAssetsResponseProps,
+  getBundles,
+  GetBundlesParamsProps,
+  GetBundlesResponseProps,
   BundlesProps,
 } from '@fafty-frontend/shared/api';
 

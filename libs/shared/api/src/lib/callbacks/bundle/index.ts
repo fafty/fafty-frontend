@@ -1,5 +1,6 @@
 import api from '../../index';
 import {
+  PutBundleParamsProps,
   GetBundleAssetsBySlugParamsProps,
   GetBundleAssetsBySlugResponseProps,
   GetBundleParamsProps,
@@ -21,4 +22,12 @@ const getBundleAssetsBySlug = async (
 
   return data;
 };
-export { getBundle, getBundleAssetsBySlug };
+
+const putBundle = async (
+  params?: PutBundleParamsProps
+): Promise<GetBundleResponseProps> => {
+  const { data } = await api.put(`/bundle/${params?.slug}`, { bundle: params?.bundle });
+
+  return data;
+};
+export { getBundle, getBundleAssetsBySlug, putBundle };

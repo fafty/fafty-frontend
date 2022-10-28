@@ -1,6 +1,7 @@
 import { EditorState } from 'lexical';
-import { AssetProps } from '../asset/types';
+import { AssetProps, CommentsModerationType, CommentsOrderType, FileProps } from '../asset/types';
 import { GetAssetsResponseProps } from '../assets/types';
+import { TagProps } from '../tags/types';
 
 export type BundleCover = {
   dominant_color: string | null;
@@ -64,12 +65,22 @@ export type GetBundleAssetsBySlugResponseProps = {
   // paginate: PaginateProps;
 
 };
-// type PaginateProps = {
-//   count: number;
-//   limit: number;
-//   offset: number;
-// };
+export interface FormProps {
+  cover: FileProps | null;
+  name: string | null;
+  description: string | EditorState | null;
+  assets: AssetProps[] | null;
+  allow_ratings: boolean;
+  comments_moderation: CommentsModerationType;
+  comments_order: CommentsOrderType;
+  tags: TagProps[] | null;
+}
 
 export type GetBundleResponseProps = {
   record: BundleProps;
+};
+
+export type PutBundleParamsProps = {
+  slug?: string;
+  bundle: FormProps;
 };

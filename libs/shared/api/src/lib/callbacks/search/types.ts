@@ -1,5 +1,8 @@
 type SearchableProps = {
-  image: string;
+  image: {
+    src: string;
+    dominant_color: string;
+  };
   name: string;
   description: null | string;
   slug: string;

@@ -150,10 +150,14 @@ export const Search = () => {
                   key={index}
                   onMouseEnter={() => setActiveIndex(index)}
                 >
-                  <div className="relative flex h-10 w-10 flex-shrink-0 items-center justify-center bg-blue-600 rounded-full hover:bg-blue-500 focus:outline-none dark:bg-neutral-700 dark:hover:bg-neutral-600">
+                  <div
+                    className="relative flex h-10 w-10 flex-shrink-0 items-center justify-center bg-blue-600 rounded-full hover:bg-blue-500 focus:outline-none dark:bg-neutral-700 dark:hover:bg-neutral-600"
+                    style={{ backgroundColor: searchable?.image.dominant_color || '' }}
+
+                    >
                     <Image
                       className="relative inline-block h-9 w-9 rounded-full ring-1 ring-white"
-                      src={searchable?.image || ''}
+                      src={searchable?.image.src || ''}
                       alt=""
                       width={32}
                       height={32}
