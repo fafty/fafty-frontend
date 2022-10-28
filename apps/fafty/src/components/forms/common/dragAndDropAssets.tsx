@@ -172,13 +172,23 @@ const DragAndDropAssets = (props: DragAndDropAssetsProps) => {
   // );
 
   const items = useMemo(() => {
-    console.log(current, data?.records);
+    const count = Math.min(
+      localFiltersState.paginate.offset + LIMIT,
+      data?.paginate?.count ?? 0
+    );
 
-    return data?.records?.filter(
+    return Array.from(
+      { length: count },
+      (_, index) => data?.records[index] ?? {}
+    ).filter(
       (item) =>
-        !current.find((currentItem) => currentItem.token === item?.token)
+        !current.find((currentItem) => {
+          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+          //@ts-ignore
+          return currentItem.token === item?.token;
+        })
     ) as AssetProps[];
-  }, [data?.records, current]);
+  }, [data?.paginate?.count, data?.records, localFiltersState.paginate.offset]);
 
   useEffect(() => {
     console.log('useEffect mount?');
@@ -310,14 +320,17 @@ const DragAndDropAssets = (props: DragAndDropAssetsProps) => {
       <div className="grid grid-cols-[repeat(2,_minmax(100px,_1fr))] gap-4">
         <div>
           <div>
-            <h3 className="font-semibold">Your aviable assets for adding to collection.</h3>
+            <h3 className="font-semibold">
+              Your aviable assets for adding to collection.
+            </h3>
           </div>
           <div
             className={classNames(
               'border-[2px] rounded-md w-full h-full min-w-full min-h-full',
               {
                 'border-blue-700': onDragOverSortableAccountAssets,
-                'border-gray-200 bg-gray-100 dark:border-neutral-900 dark:bg-neutral-900/50': !onDragOverSortableAccountAssets,
+                'border-gray-200 bg-gray-100 dark:border-neutral-900 dark:bg-neutral-900/50':
+                  !onDragOverSortableAccountAssets,
               }
             )}
           >
@@ -355,7 +368,9 @@ const DragAndDropAssets = (props: DragAndDropAssetsProps) => {
         </div>
         <div>
           <div>
-            <h3 className="font-semibold">Items draged here will be apper in your collection.</h3>
+            <h3 className="font-semibold">
+              Items draged here will be apper in your collection.
+            </h3>
           </div>
           <div
             className={classNames(
