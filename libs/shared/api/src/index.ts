@@ -3,6 +3,11 @@ export { default as useAsync } from './lib/useAsync';
 export { getAssetOwners, getAssetInfo, getAsset, putAsset } from './lib/callbacks/asset';
 export { default as getAssets } from './lib/callbacks/assets';
 export {
+  getBundleAssetsBySlug,
+  getBundle,
+  putBundle,
+} from './lib/callbacks/bundle';
+export {
   getCollectionAssetsBySlug,
   getCollection,
   putCollection

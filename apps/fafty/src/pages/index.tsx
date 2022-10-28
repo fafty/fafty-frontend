@@ -78,7 +78,7 @@ export default function Home(): JSX.Element {
             <h3 className="font-semibold">Top Bundles</h3>
           </div>
           <div className="ml-auto right-0">
-            <Link href="/collections">
+            <Link href="/bundles">
               <a className="text-gray-900 dark:text-gray-50 bg-gray-200 dark:bg-neutral-700 hover:bg-gray-300 mb-1 w-full rounded-[7px] p-3 focus:outline-none transition duration-150 ease-in-out">
                 See all Bundles
               </a>
@@ -93,7 +93,7 @@ export default function Home(): JSX.Element {
             <h3 className="font-semibold">Top Nfts</h3>
           </div>
           <div className="ml-auto right-0">
-            <Link href="/collections">
+            <Link href="/assets">
               <a className="text-gray-900 dark:text-gray-50 bg-gray-200 dark:bg-neutral-700 hover:bg-gray-300 mb-1 w-full rounded-[7px] p-3 focus:outline-none transition duration-150 ease-in-out">
                 See all Nfts
               </a>
