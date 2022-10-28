@@ -280,20 +280,17 @@ const FormCollection = ({
               Congratulations! Your Collection is{' '}
               {defaultCover?.file_id ? 'updated!' : 'uploaded!'}
             </div>
-            <div className="mt-4">
-              <Link href="/asset">
-                <a className="relative inline-block text-center bg-blue-600 border border-transparent rounded-md py-2 px-4 font-medium text-white hover:bg-blue-700 mr-4">
+            {/* //TODO: response of backend store on context for dysplay results on this page */}
+            {/* <div className="mt-4">
+              <Link
+                href={`/collection/[slug]`}
+                as={`/collection/${encodeURIComponent(item.slug as string)}`}
+              >
+                <a className="relative inline-block text-center border border-transparent rounded-md py-2 px-4 mr-4 font-medium text-white bg-blue-600 hover:bg-blue-700 ">
                   View your collection
                 </a>
               </Link>
-              {!defaultCover?.file_id && (
-                <Link href="/asset/create">
-                  <a className="relative inline-block text-center bg-blue-600 border border-transparent rounded-md py-2 px-4 font-medium text-white hover:bg-blue-700">
-                    Continue with created asset for publish Nft
-                  </a>
-                </Link>
-              )}
-            </div>
+            </div> */}
           </motion.div>
         </motion.div>
       </AnimatePresence>

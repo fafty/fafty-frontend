@@ -284,7 +284,8 @@ const FormAsset = ({
               Congratulations! Your asset is{' '}
               {defaultAsset?.file_id ? 'updated!' : 'uploaded!'}
             </div>
-            <div className="mt-4">
+            {/* //TODO: response of backend store on context for dysplay results on this page */}
+            {/* <div className="mt-4">
               <Link href="/asset">
                 <a className="relative inline-block text-center bg-blue-600 border border-transparent rounded-md py-2 px-4 font-medium text-white hover:bg-blue-700 mr-4">
                   View your asset
@@ -297,7 +298,7 @@ const FormAsset = ({
                   </a>
                 </Link>
               )}
-            </div>
+            </div> */}
           </motion.div>
         </motion.div>
       </AnimatePresence>

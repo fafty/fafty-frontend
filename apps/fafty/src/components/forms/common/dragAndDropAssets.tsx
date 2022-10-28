@@ -281,7 +281,7 @@ const DragAndDropAssets = (props: DragAndDropAssetsProps) => {
   }, [currentAssets, data?.records]);
 
   return (
-    <div className="flex flex-col">
+    <div className="flex flex-col my-5">
       <div className="relative flex flex-col">
         <div>
           <div className="relative w-full h-[50px] flex flex-row">
@@ -310,18 +310,18 @@ const DragAndDropAssets = (props: DragAndDropAssetsProps) => {
       <div className="grid grid-cols-[repeat(2,_minmax(100px,_1fr))] gap-4">
         <div>
           <div>
-            <h3>Your aviable assets for adding to collection.</h3>
+            <h3 className="font-semibold">Your aviable assets for adding to collection.</h3>
           </div>
           <div
             className={classNames(
               'border-[2px] rounded-md w-full h-full min-w-full min-h-full',
               {
                 'border-blue-700': onDragOverSortableAccountAssets,
-                'border-gray-200 bg-gray-100': !onDragOverSortableAccountAssets,
+                'border-gray-200 bg-gray-100 dark:border-neutral-900 dark:bg-neutral-900/50': !onDragOverSortableAccountAssets,
               }
             )}
           >
-            <div className="account-assets">
+            <div className="grid-items">
               <div className="wrapper-items">
                 <div
                   id="sortable-account-assets"
@@ -355,14 +355,14 @@ const DragAndDropAssets = (props: DragAndDropAssetsProps) => {
         </div>
         <div>
           <div>
-            <h3>Items draged here will be apper in your collection.</h3>
+            <h3 className="font-semibold">Items draged here will be apper in your collection.</h3>
           </div>
           <div
             className={classNames(
               'border-[2px] rounded-md w-full h-full min-w-full min-h-full',
               {
                 'border-blue-700': onDragOverSortableCollectionAssets,
-                'border-gray-200 bg-gray-100':
+                'border-gray-200 bg-gray-100 dark:border-neutral-900 dark:bg-neutral-900/50':
                   !onDragOverSortableCollectionAssets,
               }
             )}

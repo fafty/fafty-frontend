@@ -1,17 +1,21 @@
 import React, { useState, useRef, useEffect } from 'react';
-import Item from './items/asset/item';
+import {default as AssetItem } from './items/asset/item';
+import {default as BundleItem } from './items/bundle/item';
+import {default as CollectionItem} from './items/collection/item';
+
 import isClient from '../utils/isClient';
 import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/24/outline';
 import { useNotifications } from '@fafty-frontend/notifications';
 import classNames from 'classnames';
 import { useDebouncedCallback } from '@fafty-frontend/usehooks';
-import { AssetProps } from '@fafty-frontend/shared/api';
+import { AssetProps, BundleProps, CollectionProps } from '@fafty-frontend/shared/api';
 
-type Props = {
-  items: AssetProps[];
-};
+interface Props <T> {
+  type: 'asset' | 'bundle' | 'collection';
+  items: T
+}
 
-const Items = ({ items }: Props): JSX.Element => {
+const Items = <T extends AssetProps[] | BundleProps[] | CollectionProps[]>({ type, items }: Props<T>): JSX.Element => {
   const [notificationId, setNotificationId] = useState<number>();
   const { enqueueNotification, closeNotification } = useNotifications();
   const itemsContainerRef = useRef<HTMLDivElement | null>(null);
@@ -143,10 +147,7 @@ const Items = ({ items }: Props): JSX.Element => {
   };
 
   return (
-    <div>
-      <button type="button" onClick={handleClick}>
-        Show notification
-      </button>
+    <div className="">
       <div className="items-slider">
         <Button direction="left" />
         <div className="wrapper-items">
@@ -158,7 +159,18 @@ const Items = ({ items }: Props): JSX.Element => {
           >
             <div className="min-w-[44px]" />
             {items &&
-              items.map((item, index) => <Item key={index} item={item} />)}
+              items.map((item, index) => {
+                switch (type) {
+                  case 'asset':
+                    return <AssetItem key={index} item={item}/>;
+                  case 'bundle':
+                    return <BundleItem key={index} item={item} />;
+                  case 'collection':
+                    return <CollectionItem key={index} item={item} />;
+                  default:
+                    return null;
+                }
+              })}
             <div className="min-w-[44px]" />
           </div>
         </div>

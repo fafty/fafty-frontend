@@ -70,9 +70,13 @@ export const Price = ({ value, onChange }: PriceFilterProps) => {
         <div className="relative mt-1 w-full flex">
           <Listbox.Button className="flex w-full px-5 py-2.5 items-center border text-sm border-blue-600 rounded-md justify-between">
             {title || 'Select currency'}
-            <ArrowDownSIcon className="h-4 w-4 fill-gray-200 flex-shrink-0" />
+            <ArrowDownSIcon
+              className="h-4 w-4 fill-neutral-700 dark:fill-neutral-200 flex-shrink-0"
+              strokeWidth="2"
+              aria-hidden="true"
+            />
           </Listbox.Button>
-          <Listbox.Options className="absolute top-full right-0 left-0 z-10 overflow-hidden p-2 rounded-lg text-gray-500 dark:text-gray-500 bg-white dark:bg-neutral-800 ">
+          <Listbox.Options className="absolute top-full right-0 left-0 z-10 overflow-hidden p-2 rounded-lg text-gray-500 dark:text-gray-500 bg-white dark:bg-neutral-800">
             {CURRENCY_OPTIONS.map((option) => (
               <Listbox.Option key={option.value} value={option.value}>
                 {({ active, selected }) => (
