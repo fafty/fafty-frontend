@@ -50,7 +50,7 @@ export const TagsSelect = ({ value, onChange }: Props) => {
               <div
                 key={record.slug}
                 onClick={() => onChangeTag(record)}
-                className="bg-blue-600 text-sm px-4 py-2 cursor-pointer flex text-white dark:text-slate-50"
+                className="bg-blue-600  rounded text-sm px-4 py-2 cursor-pointer flex text-white dark:text-slate-50"
               >
                 {record.name}
               </div>

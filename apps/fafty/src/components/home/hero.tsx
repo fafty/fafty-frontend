@@ -17,14 +17,14 @@ export default function Hero() {
               The new creative economy.
             </h1>
             <p className="mt-4 text-xl text-slate-900 tracking-tight dark:text-slate-50">
-              Create, explore, & collect digital art Assets.
+              Create, explore, & collect digital art NFT.
             </p>
           </div>
           <div>
             <div className="mt-10">
               <Link href="/collections">
                 <a className="z-10 relative inline-block text-center bg-blue-600 border border-transparent rounded-md py-3 px-8 font-medium text-white hover:bg-blue-700">
-                  Shop Collection
+                  See Collection
                 </a>
               </Link>
               <div
@@ -46,7 +46,7 @@ export default function Hero() {
                       {/* backdrop-blur */}
                       <div className="relative w-44 h-64 rounded-lg overflow-hidden">
                         <Image
-                          src="/images/card-pic-1.jpeg"
+                          src="/images/card-pic-2.jpeg"
                           loading="eager"
                           alt={'Card 2'}
                           layout="fill"
@@ -57,7 +57,7 @@ export default function Hero() {
                     <div className="flex-shrink-0 grid grid-cols-1 gap-y-6 lg:gap-y-8">
                       <div className="relative w-44 h-64 rounded-lg overflow-hidden">
                         <Image
-                          src="/images/card-pic-2.jpeg"
+                          src="/images/card-pic-3.jpeg"
                           loading="eager"
                           alt={'Card 2'}
                           layout="fill"
@@ -75,7 +75,7 @@ export default function Hero() {
                       </div>
                       <div className="relative w-44 h-64 rounded-lg overflow-hidden">
                         <Image
-                          src="/images/card-pic-2.jpeg"
+                          src="/images/card-pic-5.jpeg"
                           loading="eager"
                           alt={'Card 2'}
                           layout="fill"
@@ -86,7 +86,7 @@ export default function Hero() {
                     <div className="flex-shrink-0 grid grid-cols-1 gap-y-6 lg:gap-y-8">
                       <div className="relative w-44 h-64 rounded-lg overflow-hidden">
                         <Image
-                          src="/images/card-pic-2.jpeg"
+                          src="/images/card-pic-6.jpeg"
                           loading="eager"
                           alt={'Card 1'}
                           layout="fill"
@@ -95,7 +95,7 @@ export default function Hero() {
                       </div>
                       <div className="relative w-44 h-64 rounded-lg overflow-hidden">
                         <Image
-                          src="/images/card-pic-2.jpeg"
+                          src="/images/card-pic-7.jpeg"
                           loading="eager"
                           alt={'Card 2'}
                           layout="fill"

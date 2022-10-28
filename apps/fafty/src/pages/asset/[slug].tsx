@@ -1,7 +1,7 @@
 import MainLayout from '../../layouts/main';
 import Image from 'next/future/image';
 import { useRouter } from 'next/router';
-import { api } from '@fafty-frontend/shared/api';
+import { api, TagProps } from '@fafty-frontend/shared/api';
 import { SVGProps, useEffect, useMemo, useState } from 'react';
 import { Tabs } from '../../components/asset/tabs';
 import { Info } from '../../components/asset/tabs/info';
@@ -9,6 +9,7 @@ import { Owners } from '../../components/asset/tabs/owners';
 import { ChevronRightIcon, HomeIcon } from '@heroicons/react/24/outline';
 import Link from 'next/link';
 import { Viewer } from '@fafty-frontend/text/viewer';
+import classNames from 'classnames';
 
 const isObjectEmpty = (value: object | string) =>
   typeof value === 'object' ? Object.keys(value).length === 0 : !value;
@@ -37,6 +38,7 @@ interface AssetProps {
   slug: string;
   price: string;
   ticker: string;
+  tags: TagProps[];
   owner: string;
   token: string;
   available_supply_units: number;
@@ -111,45 +113,30 @@ export default function Asset() {
     };
   }, [slug, breadcrumb]);
 
-  useEffect(() => {
-    // const fetchData = async () => {
-    //   setLoading(true);
-    //   const response = await api.get<ResponceProps>(`asset/${slug}`);
-    //   if (response.status === 200 && response.data) {
-    //     const { data } = response;
-    //     setDetail(data.record);
-    //     setLoading(false);
-    //   } else {
-    //     setError(true);
-    //   }
-    // };
-    // fetchData();
 
-    return () => {
-      // setLoading(false);
-      // setError(false);
-      // setDetail(null);
-    };
-  }, [tabIndex]);
+  const randomColor = () => {
+    const colors = [
+      'bg-red-500',
+      'bg-yellow-500',
+      'bg-green-500',
+      'bg-gray-800',
+      'bg-blue-500',
+      'bg-indigo-500',
+      'bg-purple-500',
+      'bg-pink-500',
+    ];
+    return colors[Math.floor(Math.random() * colors.length)];
+  };
 
-  // if (isLoading) {
-  //   return (
-  //     <MainLayout title={''} description={''}>
-  //       <div className="flex justify-center">
-  //         <div className="spinner"></div>
-  //       </div>
-  //     </MainLayout>
-  //   );
-  // }
 
   if (isError) return <div>Failed to load</div>;
-  // if (!detail) return <p>No data</p>;
 
   return (
     <>
       <MainLayout
         title={detail?.name || '...'}
         description={detail?.description || '...'}
+        className="container"
       >
         <div className="grid sm:grid-cols-1 md:grid-cols-[1fr,350px] lg:grid-cols-[1fr,400px] gap-y-16 sm:gap-x-2 md:gap-x-4 lg:gap-x-8 xl:gap-x-10 2xl:gap-x-13  py-24 px-4">
           <div className="row-start-1 col-span-full">
@@ -195,16 +182,18 @@ export default function Asset() {
               )}
               <div className="absolute ml-5 mt-5 transition motion-reduce:hover:translate-y-0 motion-reduce:transition-none duration-750 delay-300 group-hover:opacity-0 group-hover:delay-1 ease-in-out">
                 <div className="inline-flex space-x-2 items-start justify-start">
-                  <div className="flex items-center justify-center px-2 pt-2 pb-1.5 bg-gray-800 rounded drop-shadow shadow hover:opacity-100">
-                    <p className="text-xs font-bold leading-3 text-gray-50 uppercase">
-                      Art
-                    </p>
-                  </div>
-                  <div className="flex items-center justify-center px-2 pt-2 pb-1.5 bg-purple-500 rounded drop-shadow shadow">
-                    <p className="text-xs font-bold leading-3 text-gray-50 uppercase">
-                      unlockable
-                    </p>
-                  </div>
+                  {detail?.tags?.map((tag) => (
+                    <div key={tag.slug} className={
+                      classNames(
+                        randomColor(),
+                        "flex items-center justify-center px-2 pt-2 pb-1.5 rounded drop-shadow shadow hover:opacity-100"
+                      )}
+                    >
+                      <p className="text-xs font-bold leading-3 text-gray-50 uppercase">
+                        {tag.name}
+                      </p>
+                    </div>
+                  ))}
                 </div>
               </div>
             </div>
@@ -216,14 +205,13 @@ export default function Asset() {
                   <p className="w-full text-4xl font-bold leading-10 text-slate-900 dark:text-slate-50">
                     {detail?.name}
                   </p>
-                  
                 </div>
                 <div className="inline-flex space-x-2 items-center justify-start">
                   <div className="flex items-center justify-center ml-auto text-sm font-bold text-green-500 border-2 border-green-500 rounded px-1 py-1">
-                    <span>2.5 ETH</span>
+                    <span>20 ICP</span>
                   </div>
                   <div className="flex items-center justify-center ml-auto text-sm font-bold text-gray-500 border-2 border-gray-200 dark:border-neutral-700 rounded px-1 py-1">
-                    <span>$4,429.87</span>
+                    <span>$100</span>
                   </div>
                   <p className="text-sm font-bold leading-none text-gray-500">
                     {detail?.available_supply_units} in stock
@@ -256,37 +244,29 @@ export default function Asset() {
                       Highest bid by
                     </span>
                     <span className="text-base font-medium leading-normal">
-                      Kohaku Tora
+                      Andrew Zhuk
                     </span>
                   </div>
                   <div className="inline-flex space-x-3 items-start justify-start">
                     <span className="text-2xl font-semibold leading-loose text-black dark:text-white">
-                      1.46 ETH
+                      20 ICP
                     </span>
                     <span className="text-2xl font-semibold leading-loose text-gray-500">
-                      $2,764.89
+                      $100
                     </span>
                   </div>
                 </div>
                 <div className="inline-flex space-x-2 items-start justify-start w-full">
                   <div className="flex items-center justify-center flex-1 px-6 py-4 bg-blue-500 rounded-full">
-                    <p className="text-base font-bold leading-none text-center text-gray-50">
+                    <p className="text-base font-bold leading-none text-center">
                       Purchase now
                     </p>
                   </div>
                   <div className="flex items-center justify-center flex-1 px-6 py-4 border-2 rounded-full border-gray-200">
-                    <p className="text-base font-bold leading-none text-center text-gray-800">
+                    <p className="text-base font-bold leading-none text-center ">
                       Place a bid
                     </p>
                   </div>
-                </div>
-                <div className="inline-flex space-x-3 items-center justify-start w-full">
-                  <p className="text-sm font-medium leading-normal">
-                    Service fee
-                  </p>
-                  <p className="text-sm font-medium leading-normal">1.5%</p>
-                  <p className="text-sm leading-normal">2.563 ETH</p>
-                  <p className="text-sm leading-normal">$4,540.62</p>
                 </div>
               </div>
             </div>

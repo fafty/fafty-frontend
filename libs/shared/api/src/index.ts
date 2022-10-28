@@ -23,6 +23,10 @@ export {
   GetBundleAssetsBySlugResponseProps,
 } from './lib/callbacks/bundle/types';
 export {
+  GetBundlesParamsProps,
+  GetBundlesResponseProps,
+} from './lib/callbacks/bundles/types';
+export {
   CollectionProps,
   GetCollectionResponseProps,
   GetCollectionParamsProps,

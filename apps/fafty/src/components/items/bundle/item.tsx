@@ -1,9 +1,9 @@
 import Link from 'next/link';
 import Image from 'next/future/image';
-import { CollectionProps } from '@fafty-frontend/shared/api';
+import { BundleProps } from '@fafty-frontend/shared/api';
 
 type Props = {
-  item: CollectionProps;
+  item: BundleProps;
 };
 
 const Item = ({ item }: Props) => {
@@ -13,8 +13,8 @@ const Item = ({ item }: Props) => {
         <div className="item-block">
           <div className="item-card">
             <Link
-              href={`/collection/[slug]`}
-              as={`/collection/${encodeURIComponent(item.slug as string)}`}
+              href={`/bundle/[slug]`}
+              as={`/bundle/${encodeURIComponent(item.slug as string)}`}
             >
               <a className="item-card-link">
                 <div className="thumbnail-wrapper asset">
@@ -48,6 +48,7 @@ const Item = ({ item }: Props) => {
                   <div className="item-card-action">
                     { item.total_assets_count != null && item.total_assets_count > 0 && (
                       <div className="pb-3 pt-1">
+
                         <div className="flex overflow-hidden -space-x-4">
                           { item.preview_assets?.slice(0, 3).map((asset, index) => (
                             <div key={index} className="relative flex-inline rounded-full overflow-hidden border-2">

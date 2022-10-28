@@ -20,20 +20,20 @@ export type BundleProps = {
   slug: string;
   name: string;
   description: string | EditorState | null;
-  total_assets_count: number;
-  blockchain: string;
+  total_assets_count?: number;
+  blockchain?: string;
   visibility?: string;
   restrictions?: string;
-  rating: number;
-  preview_assets: AssetProps[];
-  likes: number;
+  rating?: number;
+  preview_assets?: AssetProps[];
+  likes?: number;
   cover: BundleCover;
-  sensitive_content: boolean;
-  pool: string;
-  deleted_at: null | string;
-  published_at: string;
-  updated_at: string;
-  created_at: string;
+  sensitive_content?: boolean;
+  pool?: string;
+  deleted_at?: null | string;
+  published_at?: string;
+  updated_at?: string;
+  created_at?: string;
 };
 
 export type GetBundleParamsProps = {

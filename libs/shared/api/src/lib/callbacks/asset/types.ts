@@ -21,28 +21,28 @@ export type AssetProps = {
   description: string | EditorState | null;
   price?: number;
   ticker?: string;
+  media: AssetMedia;
   edit_count?: number;
   slug: string;
   type?: string;
-  supply_units: number;
-  available_supply_units: number;
+  supply_units?: number;
+  available_supply_units?: number;
   allow_ratings?: boolean;
-  created_at: string;
-  published_at: string | null;
-  deleted_at: string | null;
-  media: AssetMedia;
   sensitive_content?: boolean;
   contract_address?: string;
   token_id?: number;
   token_standart?: string;
   blockchain?: string;
   restrictions?: string;
-  visibility: string;
+  visibility?: string;
   tags: TagProps[];
-  comments_moderation: CommentsModerationType;
+  comments_moderation?: CommentsModerationType;
   collection?: CollectionProps;
-  comments_order: CommentsOrderType;
-  collection_token: string;
+  comments_order?: CommentsOrderType;
+  collection_token?: string;
+  created_at: string;
+  published_at: string | null;
+  deleted_at: string | null;
 };
 
 export type AssetInfoResponseProps = {

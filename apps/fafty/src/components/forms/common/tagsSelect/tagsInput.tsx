@@ -92,15 +92,12 @@ export const TagsInput = ({ tags, onChange, onDelete }: Props) => {
   return (
     <div
       className={classNames(
-        'flex relative  flex-wrap rounded border-white border-transparent px-2 my-2 border w-1/2',
-        {
-          'py-2': !tags.length,
-        }
+        'flex relative flex-wrap rounded border-white border-transparent my-2 border'
       )}
     >
       <div
         onClick={() => inputRef?.current?.focus?.()}
-        className="flex w-[350px] p-1.5 rounded-md gap-2.5 flex-wrap border border-gray-200 dark:border-neutral-700 cursor-pointer"
+        className="flex w-full p-2 rounded-md gap-2 flex-wrap border border-gray-200 dark:border-neutral-700 cursor-pointer"
       >
         {!!tags.length &&
           tags.map((tag, tagIndex) => (
@@ -108,20 +105,20 @@ export const TagsInput = ({ tags, onChange, onDelete }: Props) => {
               onClick={() => onChange(tag)}
               key={tag.slug}
               className={classNames(
-                'bg-blue-600 text-white dark:text-slate-50 text-xs px-1 py-1 cursor-pointer flex items-center',
+                'flex items-center justify-center p-2 cursor-pointer text-sm rounded text-white dark:text-slate-50 bg-blue-600',
                 {
                   'bg-gray-500': hiddenTagIndex === tagIndex,
                 }
               )}
             >
               {tag.name}
-              <CloseIcon className="h-4 w-4 ml-1.5 fill-white" />
+              <CloseIcon className="h-4 w-4 ml-1 fill-white" />
             </div>
           ))}
         <input
           placeholder="Type to search tags"
           ref={inputRef}
-          className={classNames('border-0 outline-0 bg-transparent text-sm')}
+          className={classNames('border-0 outline-0 bg-transparent p-2 text-sm')}
           value={inputValue}
           onKeyDown={onKeyDown}
           onFocus={() => setIsFocused(true)}
