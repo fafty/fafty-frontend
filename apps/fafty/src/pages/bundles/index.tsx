@@ -1,5 +1,5 @@
 import { useRouter } from 'next/router';
-import { ItemPlaceholder } from '@fafty-frontend/shared/ui';
+import { BundleItemPlaceholder } from '@fafty-frontend/shared/ui';
 import qs from 'qs';
 import MainLayout from '../../layouts/main';
 import {
@@ -7,11 +7,9 @@ import {
   getBundles,
   GetBundlesParamsProps,
   GetBundlesResponseProps,
-  BundlesProps,
+  BundleProps,
 } from '@fafty-frontend/shared/api';
-
-
-import Item from '../../components/items/asset/item';
+import Item from '../../components/items/bundle/item';
 import {
   BillingType,
   BillingTypeValue,
@@ -209,7 +207,7 @@ const Bundles = () => {
     return Array.from(
       { length: count },
       (_, index) => data?.records[index] ?? {}
-    );
+    ) as BundleProps[];
   }, [data?.paginate?.count, data?.records, localFiltersState.paginate.offset]);
 
   return (
@@ -250,14 +248,14 @@ const Bundles = () => {
           <div className="flex my-4">
             <Pills onClosePill={onClosePill} onClearFilters={onClearFilters} />
           </div>
-          <div className="wrapper-items ">
+          <div className="wrapper-items">
             <div className="items grided">
               {!isSuccess && !data?.paginate?.count
                 ? Array.from({ length: 24 }, (_, index) => (
-                    <ItemPlaceholder key={index} />
+                    <BundleItemPlaceholder key={index} />
                   ))
                 : items.map((item) => (
-                    <Item key={item.token} item={item as AssetProps} />
+                    <Item key={item.token} item={item} />
                   ))}
             </div>
           </div>

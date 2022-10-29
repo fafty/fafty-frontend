@@ -9,8 +9,6 @@ import {
   GetCollectionsResponseProps,
   CollectionProps,
 } from '@fafty-frontend/shared/api';
-
-
 import Item from '../../components/items/collection/item';
 import {
   BillingType,
@@ -197,7 +195,7 @@ const Collections = () => {
     return Array.from(
       { length: count },
       (_, index) => data?.records[index] ?? {}
-    );
+    ) as CollectionProps[];
   }, [data?.paginate?.count, data?.records, localFiltersState.paginate.offset]);
 
   return (
@@ -245,7 +243,7 @@ const Collections = () => {
                     <CollectionItemPlaceholder key={index} />
                   ))
                 : items.map((item) => (
-                    <Item key={item.token} item={item as CollectionProps} />
+                    <Item key={item.token} item={item} />
                   ))
               }
             </div>
