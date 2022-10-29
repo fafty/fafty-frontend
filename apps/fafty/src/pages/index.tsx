@@ -153,7 +153,7 @@ export default function Home(): JSX.Element {
             </div>
           )
           : bundlesData?.records && (
-              <Items type="asset" items={bundlesData?.records} />
+              <Items type="bundle" items={bundlesData?.records} />
             )
         }
       </div>
