@@ -65,22 +65,22 @@ export default function Home(): JSX.Element {
   }, [assetsContainerOnScreen]);
 
   const bundlesContainerOnScreen: boolean = useOnScreen<HTMLDivElement>(
-    assetsContainerRef as MutableRefObject<HTMLDivElement>,
+    bundlesContainerRef as MutableRefObject<HTMLDivElement>,
     '0px'
   );
   useEffect(() => {
-    if (!assetsIsSuccess && assetsContainerOnScreen) {
+    if (!bundlesIsSuccess && bundlesContainerOnScreen) {
       bundlesCall({ limit: 15, offset: 0 });
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [bundlesContainerOnScreen]);
 
   const collectionsContainerOnScreen: boolean = useOnScreen<HTMLDivElement>(
-    assetsContainerRef as MutableRefObject<HTMLDivElement>,
+    collectionsContainerRef as MutableRefObject<HTMLDivElement>,
     '0px'
   );
   useEffect(() => {
-    if (!collectionsIsSuccess && assetsContainerOnScreen) {
+    if (!collectionsIsSuccess && collectionsContainerOnScreen) {
       collectionsCall({ limit: 15, offset: 0 });
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
