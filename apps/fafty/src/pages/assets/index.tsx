@@ -1,5 +1,5 @@
 import { useRouter } from 'next/router';
-import { ItemPlaceholder } from '@fafty-frontend/shared/ui';
+import { AssetItemPlaceholder } from '@fafty-frontend/shared/ui';
 import qs from 'qs';
 import MainLayout from '../../layouts/main';
 import {
@@ -9,12 +9,12 @@ import {
   GetAssetsResponseProps,
   AssetProps,
 } from '@fafty-frontend/shared/api';
-import {
-  Masonry,
-  MasonryScroller,
-  useContainerPosition,
-  usePositioner,
-} from 'masonic';
+// import {
+//   Masonry,
+//   MasonryScroller,
+//   useContainerPosition,
+//   usePositioner,
+// } from 'masonic';
 import { useVirtualizer } from '@tanstack/react-virtual';
 
 // import { Virtuoso } from 'react-virtuoso'
@@ -393,7 +393,7 @@ const Assets = () => {
             <div className="items grided">
               {!isSuccess && !data?.paginate?.count
                 ? Array.from({ length: 24 }, (_, index) => (
-                    <ItemPlaceholder key={index} />
+                    <AssetItemPlaceholder key={index} />
                   ))
                 : items.map((item) => (
                     <Item key={item.token} item={item} />

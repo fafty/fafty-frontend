@@ -70,6 +70,7 @@ function useAsync<D, P>({
     if (withMount) {
       getData();
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [withMount]);
 
   const call = async (params?: P) => {

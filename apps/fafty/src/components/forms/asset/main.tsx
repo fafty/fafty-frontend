@@ -472,7 +472,7 @@ const FormAsset = ({
                 <button
                   type="button"
                   className="inline-flex items-center px-4 py-2 font-semibold leading-6 text-sm shadow rounded-md text-white bg-blue-600 hover:bg-blue-500"
-                  disabled={buttonNextDisabled || isDisabledNextStep}
+                  disabled={isDisabledNextStep} // buttonNextDisabled
                   onClick={() => handleNext(activeStep, 2)}
                 >
                   {activeStepNumeric === 4 ? 'Save' : 'Next'}

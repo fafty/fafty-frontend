@@ -317,7 +317,7 @@ const AccountCollections = () => {
             </motion.div>
           </div>
         </div>
-        {item.total_assets_count > 0 ? (
+        {item.total_assets_count != null && item.total_assets_count > 0 ? (
           <div className="flex flex-row items-center justify-left">
             <div className="flex overflow-hidden -space-x-4">
               {item.preview_assets?.slice(0, 3).map((asset, index) => (

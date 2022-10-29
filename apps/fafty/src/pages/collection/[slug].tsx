@@ -3,6 +3,7 @@ import { useEffect, useMemo, useState } from 'react';
 import MainLayout from '../../layouts/main';
 import Item from '../../components/items/asset/item';
 import Image from 'next/future/image';
+import { Viewer } from '@fafty-frontend/text/viewer';
 
 import {
   useAsync,
@@ -21,7 +22,7 @@ import {
   PriceFiltersValue,
 } from '../../components/assets/filters';
 import { InfinityLoadChecker } from '../../components/common/infinityLoadChecker';
-import { ItemPlaceholder } from '@fafty-frontend/shared/ui';
+import { AssetItemPlaceholder } from '@fafty-frontend/shared/ui';
 import { useComponentDidUpdate } from '@fafty-frontend/usehooks';
 import { TabsProps } from '../../components/asset/tabs';
 import dynamic from 'next/dynamic';
@@ -254,6 +255,9 @@ const Collection = () => {
     localFiltersState.paginate.offset,
   ]);
 
+  const isObjectEmpty = (value: object | string) =>
+    typeof value === 'object' ? Object.keys(value).length === 0 : !value;
+
   return (
     <MainLayout title={`Collection ${slug}`} description={`Collection ${slug}`}>
       <div className="flex flex-col py-10 h-full w-full">
@@ -262,7 +266,7 @@ const Collection = () => {
           <div className="relative flex h-48 w-48 flex-shrink-0 items-center justify-center bg-blue-600 rounded-full hover:bg-blue-500 focus:outline-none dark:bg-neutral-700 dark:hover:bg-neutral-600">
             {data && data?.record.cover && (
               <Image
-                className="relative inline-block h-auto w-47 rounded-full ring-4 ring-white"
+                className="relative flex flex-shrink-0 w-full h-full rounded-full ring-4 ring-white"
                 src={data?.record.cover.src || ''}
                 alt=""
                 width={100}
@@ -271,7 +275,17 @@ const Collection = () => {
             )}
           </div>
           <div className="flex flex-col ml-5">
-            {data?.record &&
+            <h3 className="text-2xl font-bold">
+              { data?.record.name }
+            </h3>
+            {data?.record?.description && isObjectEmpty(data?.record.description) ? (
+                <span className="text-xs font-medium opacity-50">
+                  No description
+                </span>
+              ) : (
+                data?.record?.description && <Viewer namespace={'description'} editorState={data?.record.description as string} />
+              )}
+            {/* {data?.record &&
               Object.entries(data.record).map(([key, value]) => (
                 <div key={key} className="flex">
                   <span className="text-white font-bold text-lg">{key}</span>
@@ -279,7 +293,7 @@ const Collection = () => {
                     {typeof value === 'string' ? value : ''}
                   </span>
                 </div>
-              ))}
+              ))} */}
           </div>
         </div>
         <div className="flex mt-10 w-full">
@@ -326,7 +340,7 @@ const Collection = () => {
                 <div className="items grided">
                   {!isAssetsSuccess && !assetsData?.record.assets.paginate.count
                     ? Array.from({ length: 24 }, (_, index) => (
-                        <ItemPlaceholder key={index} />
+                        <AssetItemPlaceholder key={index} />
                       ))
                     : items.map((item) => (
                         <Item key={item.token} item={item} />

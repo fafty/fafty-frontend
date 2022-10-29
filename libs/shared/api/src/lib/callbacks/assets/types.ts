@@ -16,8 +16,8 @@ export type GetAssetsResponseProps = {
 };
 
 export type GetAssetsParamsProps = {
-  limit: number;
-  offset: number;
+  limit?: number;
+  offset?: number;
   filters?: {
     currency?: string;
     price?: {

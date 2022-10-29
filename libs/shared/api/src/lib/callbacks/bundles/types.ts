@@ -12,8 +12,8 @@ export type GetBundlesResponseProps = {
 };
 
 export type GetBundlesParamsProps = {
-  limit: number;
-  offset: number;
+  limit?: number;
+  offset?: number;
   filters?: {
     blockchain?: string;
   };

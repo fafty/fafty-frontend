@@ -7,6 +7,7 @@ export {
   getBundle,
   putBundle,
 } from './lib/callbacks/bundle';
+export { default as getBundles } from './lib/callbacks/bundles';
 export {
   getCollectionAssetsBySlug,
   getCollection,

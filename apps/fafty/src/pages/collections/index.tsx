@@ -1,5 +1,5 @@
 import { useRouter } from 'next/router';
-import { ItemPlaceholder } from '@fafty-frontend/shared/ui';
+import { CollectionItemPlaceholder } from '@fafty-frontend/shared/ui';
 import qs from 'qs';
 import MainLayout from '../../layouts/main';
 import {
@@ -242,7 +242,7 @@ const Collections = () => {
             <div className="items grided">
               {!isSuccess && !data?.paginate?.count
                 ? Array.from({ length: 24 }, (_, index) => (
-                    <ItemPlaceholder key={index} />
+                    <CollectionItemPlaceholder key={index} />
                   ))
                 : items.map((item) => (
                     <Item key={item.token} item={item as CollectionProps} />

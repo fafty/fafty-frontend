@@ -12,7 +12,7 @@ import dynamic from 'next/dynamic';
 import { AnimatePresence, motion } from 'framer-motion';
 import classNames from 'classnames';
 import { ReactComponent as CompleteIlustation } from '../../../assets/complete.svg';
-import Link from 'next/link';
+// import Link from 'next/link';
 import { FileProps, Props, UploaderProps } from './types';
 import StepsBar from '../common/stepsBar';
 
@@ -155,7 +155,7 @@ const FormCollection = ({
             cover: currentFile,
             step1: {
               state: {
-                name: '',
+                name: null,
                 description: null,
                 unlockable_content: null,
                 sensitive_content: false,
@@ -509,7 +509,7 @@ const FormCollection = ({
                 <button
                   type="button"
                   className="inline-flex items-center px-4 py-2 font-semibold leading-6 text-sm shadow rounded-md text-white bg-blue-600 hover:bg-blue-500"
-                  disabled={buttonNextDisabled || isDisabledNextStep}
+                  disabled={isDisabledNextStep} //buttonNextDisabled
                   onClick={() => handleNext(activeStep, 2)}
                 >
                   {activeStepNumeric === 4 ? 'Save' : 'Next'}
