@@ -1,5 +1,5 @@
 import { useRouter } from 'next/router';
-import { useEffect, useMemo, useState } from 'react';
+import { lazy, Suspense, useEffect, useMemo, useState } from 'react';
 import MainLayout from '../../layouts/main';
 import Item from '../../components/items/asset/item';
 import Image from 'next/future/image';
@@ -22,9 +22,8 @@ import {
   PriceFiltersValue,
 } from '../../components/assets/filters';
 import { InfinityLoadChecker } from '../../components/common/infinityLoadChecker';
-import { AssetItemPlaceholder } from '@fafty-frontend/shared/ui';
+import { AssetItemPlaceholder, AssetTabsPlaceholder } from '@fafty-frontend/shared/ui';
 import { useComponentDidUpdate } from '@fafty-frontend/usehooks';
-import { TabsProps } from '../../components/asset/tabs';
 import dynamic from 'next/dynamic';
 import qs from 'qs';
 import { Pills } from '../../components/assets/pills';
@@ -55,12 +54,14 @@ const TABS = [
   },
 ];
 
-const Tabs = dynamic<TabsProps>(
-  () => import('../../components/asset/tabs').then((mod) => mod.Tabs),
-  {
-    ssr: false,
-  }
-);
+// const Tabs = dynamic<TabsProps>(
+//   () => import('../../components/asset/tabs').then((mod) => mod.Tabs),
+//   {
+//     ssr: false,
+//   }
+// );
+const Tabs = lazy(() => import('../../components/asset/tabs'));
+
 
 const Price = dynamic<PriceFilterProps>(
   () => import('../../components/assets/filters/price').then((mod) => mod.Price),
@@ -159,6 +160,7 @@ const Collection = () => {
       call({ slug });
       callAssets({ slug, limit: LIMIT, offset: 0 });
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isReady]);
 
   const tabIndex = useMemo(() => {
@@ -223,6 +225,7 @@ const Collection = () => {
         },
         sort: TABS[tabIndex]?.value || TABS[0].value,
       });
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [localFiltersState]);
 
   useComponentDidUpdate(
@@ -249,6 +252,7 @@ const Collection = () => {
       { length: count },
       (_, index) => assetsData?.record.assets.records[index] ?? {}
     ) as AssetProps[];
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
     assetsData?.record?.assets?.paginate?.count,
     assetsData?.record?.assets?.records,
@@ -323,11 +327,9 @@ const Collection = () => {
             <div className="flex flex-col w-full">
               <div className="flex items-center justify-end">
                 <div className="flex">
-                  <Tabs
-                    tabs={TABS}
-                    tabIndex={tabIndex}
-                    setTabIndex={onChangeTab}
-                  />
+                  <Suspense fallback={<AssetTabsPlaceholder />}>
+                    <Tabs tabs={TABS} tabIndex={tabIndex} setTabIndex={onChangeTab} />
+                  </Suspense>
                 </div>
               </div>
               <div className="flex my-4">

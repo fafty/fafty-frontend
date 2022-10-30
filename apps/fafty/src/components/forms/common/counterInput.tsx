@@ -13,6 +13,7 @@ const CounterInput = ({ current, onChange, hasError }: Props): JSX.Element => {
 
   useEffect(() => {
     onChange(value);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [value]);
 
   return (

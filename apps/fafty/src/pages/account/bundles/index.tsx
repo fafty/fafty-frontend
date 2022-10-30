@@ -112,6 +112,7 @@ const AccountBundles = () => {
         offset: paginate.offset,
       },
     });
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [localFiltersState]);
 
   useComponentDidUpdate(
@@ -132,8 +133,9 @@ const AccountBundles = () => {
     date,
   }: {
     visibility: string | undefined;
-    date: string;
+    date: string | undefined;
   }) => {
+    
     switch (visibility) {
       case 'public':
         return (
@@ -145,7 +147,7 @@ const AccountBundles = () => {
               </div>
               <span className="flex flex-col text-xs font-medium opacity-50">
                 <span>Published:</span>{' '}
-                <span>{format(new Date(date), 'dd LLL yyyy')}</span>
+                <span>{date && format(new Date(date), 'dd LLL yyyy')}</span>
               </span>
             </div>
           </>
@@ -160,7 +162,7 @@ const AccountBundles = () => {
               </div>
               <span className="flex flex-col text-xs font-medium opacity-50">
                 <span>Uploaded:</span>{' '}
-                <span>{format(new Date(date), 'dd LLL yyyy')}</span>
+                <span>{date && format(new Date(date), 'dd LLL yyyy')}</span>
               </span>
             </div>
           </>
@@ -414,7 +416,7 @@ const AccountBundles = () => {
     return Array.from(
       { length: count },
       (_, index) => data?.records[index] ?? {}
-    );
+    ) as  BundleProps[];
   }, [data?.paginate?.count, data?.records, localFiltersState.paginate.offset]);
 
   const renderMasonry = useMemo(() => {
@@ -438,10 +440,11 @@ const AccountBundles = () => {
           if (!Object.keys(data).length) {
             return <ItemPlaceholder />;
           }
-          return <Item item={data as BundleProps} />;
+          return <Item item={data} />;
         }}
       />
     );
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data?.paginate?.count, isSuccess, items]);
 
   return (

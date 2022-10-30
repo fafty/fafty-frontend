@@ -3,7 +3,7 @@ import Image from 'next/future/image';
 import { useRouter } from 'next/router';
 import { api, TagProps } from '@fafty-frontend/shared/api';
 import { SVGProps, useEffect, useMemo, useState } from 'react';
-import { Tabs } from '../../components/asset/tabs';
+import Tabs  from '../../components/asset/tabs';
 import { Info } from '../../components/asset/tabs/info';
 import { Owners } from '../../components/asset/tabs/owners';
 import { ChevronRightIcon, HomeIcon } from '@heroicons/react/24/outline';
@@ -56,7 +56,7 @@ export default function Asset() {
   const breadcrumb: BreadcrumbProps[] = useMemo(() => [], []);
 
   const [detail, setDetail] = useState<AssetProps | null>(null);
-  const [isLoading, setLoading] = useState(false);
+  // const [isLoading, setLoading] = useState(false);
   const [isError, setError] = useState(false);
 
   const [tabIndex, setTabIndex] = useState(0);
@@ -74,7 +74,7 @@ export default function Asset() {
 
   useEffect(() => {
     const fetchData = async () => {
-      setLoading(true);
+      // setLoading(true);
       if (slug) {
         const response = await api.get<ResponceProps>(`asset/${slug}`);
         if (response.status === 200 && response.data) {
@@ -97,7 +97,6 @@ export default function Asset() {
             }
           );
           setDetail(data.record);
-          setLoading(false);
         } else {
           setError(true);
         }
@@ -106,7 +105,6 @@ export default function Asset() {
     fetchData();
 
     return () => {
-      setLoading(false);
       setError(false);
       setDetail(null);
       breadcrumb.length = 0;
@@ -114,19 +112,65 @@ export default function Asset() {
   }, [slug, breadcrumb]);
 
 
-  const randomColor = () => {
-    const colors = [
-      'bg-red-500',
-      'bg-yellow-500',
-      'bg-green-500',
-      'bg-gray-800',
-      'bg-blue-500',
-      'bg-indigo-500',
-      'bg-purple-500',
-      'bg-pink-500',
-    ];
-    return colors[Math.floor(Math.random() * colors.length)];
-  };
+  const renderBreadcrumb = useMemo(() => {
+    return (
+      <nav
+        className="flex px-5 py-5 border dark:bg-neutral-800 text-slate-900 border-t border-gray-100 dark:border-neutral-700 rounded-lg shadow-md"
+        aria-label="Breadcrumb"
+      >
+        <ol className="inline-flex items-center space-x-1 md:space-x-3">
+          {breadcrumb &&
+            breadcrumb.map((item) => (
+              <li key={item.name} className="inline-flex items-center">
+                <Link href={item.href || ''}>
+                  <a className="inline-flex items-center text-sm font-medium text-gray-700 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white">
+                    {item.icon && (
+                      <item.icon
+                        className="w-5 h-5 mr-2 "
+                        aria-hidden="true"
+                      />
+                    )}
+                    {item.name}
+                  </a>
+                </Link>
+              </li>
+            ))}
+        </ol>
+      </nav>
+    );
+  }, [breadcrumb]);
+
+  const renderTags = useMemo(() => {
+    const randomColor = () => {
+      const colors = [
+        'bg-red-500',
+        'bg-yellow-500',
+        'bg-green-500',
+        'bg-gray-800',
+        'bg-blue-500',
+        'bg-indigo-500',
+        'bg-purple-500',
+        'bg-pink-500',
+      ];
+      return colors[Math.floor(Math.random() * colors.length)];
+    };
+    return (
+      <div className="inline-flex space-x-2 items-start justify-start">
+        {detail?.tags?.map((tag) => (
+          <div key={tag.slug} className={
+            classNames(
+              randomColor(),
+              "flex items-center justify-center px-2 pt-2 pb-1.5 rounded drop-shadow shadow hover:opacity-100"
+            )}
+          >
+            <p className="text-xs font-bold leading-3 text-gray-50 uppercase">
+              {tag.name}
+            </p>
+          </div>
+        ))}
+      </div>
+    );
+  }, [detail]);
 
 
   if (isError) return <div>Failed to load</div>;
@@ -140,29 +184,7 @@ export default function Asset() {
       >
         <div className="grid sm:grid-cols-1 md:grid-cols-[1fr,350px] lg:grid-cols-[1fr,400px] gap-y-16 sm:gap-x-2 md:gap-x-4 lg:gap-x-8 xl:gap-x-10 2xl:gap-x-13  py-24 px-4">
           <div className="row-start-1 col-span-full">
-            <nav
-              className="flex px-5 py-5 border dark:bg-neutral-800 text-slate-900 border-t border-gray-100 dark:border-neutral-700 rounded-lg shadow-md"
-              aria-label="Breadcrumb"
-            >
-              <ol className="inline-flex items-center space-x-1 md:space-x-3">
-                {breadcrumb &&
-                  breadcrumb.map((item) => (
-                    <li key={item.name} className="inline-flex items-center">
-                      <Link href={item.href || ''}>
-                        <a className="inline-flex items-center text-sm font-medium text-gray-700 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white">
-                          {item.icon && (
-                            <item.icon
-                              className="w-5 h-5 mr-2 "
-                              aria-hidden="true"
-                            />
-                          )}
-                          {item.name}
-                        </a>
-                      </Link>
-                    </li>
-                  ))}
-              </ol>
-            </nav>
+            { renderBreadcrumb }
           </div>
           <div className="row-start-2 row-span-2 lg:mr-10">
             <div className="bg-gray-200 flex rounded-2xl overflow-hidden w-full h-full group">
@@ -174,27 +196,13 @@ export default function Asset() {
                     backgroundColor: detail?.media?.dominant_color,
                   }}
                   alt={detail.name}
-                  // layout="raw"
                   width={400}
                   height={400}
                   className="w-full h-full object-center object-cover"
                 />
               )}
               <div className="absolute ml-5 mt-5 transition motion-reduce:hover:translate-y-0 motion-reduce:transition-none duration-750 delay-300 group-hover:opacity-0 group-hover:delay-1 ease-in-out">
-                <div className="inline-flex space-x-2 items-start justify-start">
-                  {detail?.tags?.map((tag) => (
-                    <div key={tag.slug} className={
-                      classNames(
-                        randomColor(),
-                        "flex items-center justify-center px-2 pt-2 pb-1.5 rounded drop-shadow shadow hover:opacity-100"
-                      )}
-                    >
-                      <p className="text-xs font-bold leading-3 text-gray-50 uppercase">
-                        {tag.name}
-                      </p>
-                    </div>
-                  ))}
-                </div>
+                {renderTags}
               </div>
             </div>
           </div>
@@ -226,8 +234,6 @@ export default function Asset() {
                 ) : (
                   detail?.description && <Viewer namespace={'description'} editorState={detail.description as string} />
                 )}
-
-               
               </div>
               <div className="flex flex-col space-y-2.5">
                 <Tabs

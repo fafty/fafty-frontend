@@ -72,6 +72,7 @@ const SelectStep3 = ({ Context }: { Context: Context<ContextProps> }) => {
     return () => {
       storeData();
     };
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   /**
@@ -87,6 +88,7 @@ const SelectStep3 = ({ Context }: { Context: Context<ContextProps> }) => {
 
   useEffect(() => {
     storeData();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isValid]);
 
   const storeData = async () => {

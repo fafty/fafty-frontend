@@ -8,13 +8,13 @@ type TabType = {
   value: string;
 };
 
-export type TabsProps = {
+type TabsProps = {
   tabIndex: number;
   setTabIndex: Dispatch<number>;
   tabs: TabType[];
 };
 
-export const Tabs = ({ tabIndex, setTabIndex, tabs }: TabsProps) => {
+const Tabs = ({ tabIndex, setTabIndex, tabs }: TabsProps) => {
   const { theme } = useTheme();
 
   const tabsTitlesId = useMemo(() => {
@@ -83,3 +83,5 @@ export const Tabs = ({ tabIndex, setTabIndex, tabs }: TabsProps) => {
     </Tab.Group>
   );
 };
+
+export default Tabs;

@@ -23,7 +23,7 @@ const SelectStep2 = ({ Context }: { Context: Context<ContextProps> }) => {
     formState: { errors, isValid },
   } = useForm({
     defaultValues: {
-      assets: stepData?.step2?.state?.assets || []
+      assets: stepData?.step2?.state?.assets || [],
     },
     mode: 'onChange',
     reValidateMode: 'onChange',
@@ -38,6 +38,7 @@ const SelectStep2 = ({ Context }: { Context: Context<ContextProps> }) => {
     return () => {
       storeData();
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
@@ -50,6 +51,7 @@ const SelectStep2 = ({ Context }: { Context: Context<ContextProps> }) => {
         storeData();
       };
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isValid]);
 
   /**
@@ -82,16 +84,20 @@ const SelectStep2 = ({ Context }: { Context: Context<ContextProps> }) => {
         <label htmlFor="" className="text-sm font-bold">
           Add Assets to this collection
         </label>
-        <p className="text-xs font-medium">
-          This is th..........
-        </p>
+        <p className="text-xs font-medium">This is th..........</p>
         <Controller
           name="assets"
           control={control}
           defaultValue={formFields.assets}
           rules={{ required: true }}
           render={({ field }) => (
-            <DragAndDropAssets onDragStart={() => console.log('onDragStart') } onDragEnd={() => console.log('onDragEnd') } hasError={false} {...field} current={field.value} />
+            <DragAndDropAssets
+              onDragStart={() => console.log('onDragStart')}
+              onDragEnd={() => console.log('onDragEnd')}
+              hasError={errors.assets?.type === 'required'}
+              {...field}
+              current={field.value}
+            />
           )}
         />
         <motion.div

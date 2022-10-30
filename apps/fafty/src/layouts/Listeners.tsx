@@ -12,6 +12,7 @@ export const Listeners = ({ children }: Props) => {
     if (!auth.principal && auth.wallet) {
       auth.wallet?.logIn();
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [auth.wallet]);
 
   return children;

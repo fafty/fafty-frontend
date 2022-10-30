@@ -112,6 +112,7 @@ const AccountCollections = () => {
         offset: paginate.offset,
       },
     });
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [localFiltersState]);
 
   useComponentDidUpdate(
@@ -132,7 +133,7 @@ const AccountCollections = () => {
     date,
   }: {
     visibility: string | undefined;
-    date: string;
+    date: string | undefined;
   }) => {
     switch (visibility) {
       case 'public':
@@ -145,7 +146,7 @@ const AccountCollections = () => {
               </div>
               <span className="flex flex-col text-xs font-medium opacity-50">
                 <span>Published:</span>{' '}
-                <span>{format(new Date(date), 'dd LLL yyyy')}</span>
+                <span>{date && format(new Date(date), 'dd LLL yyyy')}</span>
               </span>
             </div>
           </>
@@ -160,7 +161,7 @@ const AccountCollections = () => {
               </div>
               <span className="flex flex-col text-xs font-medium opacity-50">
                 <span>Uploaded:</span>{' '}
-                <span>{format(new Date(date), 'dd LLL yyyy')}</span>
+                <span>{date && format(new Date(date), 'dd LLL yyyy')}</span>
               </span>
             </div>
           </>
@@ -443,6 +444,7 @@ const AccountCollections = () => {
         }}
       />
     );
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data?.paginate?.count, isSuccess, items]);
 
   return (

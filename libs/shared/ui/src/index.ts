@@ -7,3 +7,4 @@ export { default as MainPanelPlaceholder } from './lib/placeholders/header/compo
 export { default as AssetItemPlaceholder } from './lib/placeholders/asset/item';
 export { default as BundleItemPlaceholder } from './lib/placeholders/bundle/item';
 export { default as CollectionItemPlaceholder } from './lib/placeholders/collection/item';
+export { default as AssetTabsPlaceholder } from './lib/placeholders/asset/tabs';

@@ -5,7 +5,7 @@ import {
   GetUserAssetsResponseProps,
   useAsync,
 } from '@fafty-frontend/shared/api';
-import { useComponentDidUpdate } from '@fafty-frontend/usehooks';
+// import { useComponentDidUpdate } from '@fafty-frontend/usehooks';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import Sortable, { MultiDrag } from 'sortablejs';
 import { InfinityLoadChecker } from '../../common/infinityLoadChecker';
@@ -70,7 +70,7 @@ const Item = ({ item }: Props): JSX.Element => {
 
 // Component for drag and drop based sortablejs with two columns
 const DragAndDropAssets = (props: DragAndDropAssetsProps) => {
-  const { current, onDragStart, onDragEnd, hasError, onChange } = props;
+  const { current, onDragStart, onDragEnd, onChange, hasError } = props;
 
   /**
    * Sortablejs
@@ -83,14 +83,14 @@ const DragAndDropAssets = (props: DragAndDropAssetsProps) => {
     onDragOverSortableCollectionAssets,
     setOnDragOverSortableCollectionAssets,
   ] = useState(false);
-  const [
-    selectedSortableAccountAssetsCount,
-    setSelectedSortableAccountAssetsCount,
-  ] = useState(0);
-  const [
-    selectedSortableCollectionAssetsCount,
-    setSelectedSortableCollectionAssetsCount,
-  ] = useState(0);
+  // const [
+  //   selectedSortableAccountAssetsCount,
+  //   setSelectedSortableAccountAssetsCount,
+  // ] = useState(0);
+  // const [
+  //   selectedSortableCollectionAssetsCount,
+  //   setSelectedSortableCollectionAssetsCount,
+  // ] = useState(0);
 
   const [currentAssets] = useState<AssetProps[]>(current || []);
 
@@ -124,7 +124,7 @@ const DragAndDropAssets = (props: DragAndDropAssetsProps) => {
     }
   );
 
-  const { data, call, isLoading, isSuccess, clearAsyncData } = useAsync<
+  const { data, call, isLoading, isSuccess } = useAsync<
     GetUserAssetsResponseProps,
     GetUserAssetsCallbackProps
   >({
@@ -156,6 +156,7 @@ const DragAndDropAssets = (props: DragAndDropAssetsProps) => {
         offset: paginate.offset,
       },
     });
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [localFiltersState]);
 
   // useComponentDidUpdate(
@@ -188,6 +189,7 @@ const DragAndDropAssets = (props: DragAndDropAssetsProps) => {
           return currentItem.token === item?.token;
         })
     ) as AssetProps[];
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data?.paginate?.count, data?.records, localFiltersState.paginate.offset]);
 
   useEffect(() => {
@@ -378,7 +380,8 @@ const DragAndDropAssets = (props: DragAndDropAssetsProps) => {
               {
                 'border-blue-700': onDragOverSortableCollectionAssets,
                 'border-gray-200 bg-gray-100 dark:border-neutral-900 dark:bg-neutral-900/50':
-                  !onDragOverSortableCollectionAssets,
+                  !onDragOverSortableCollectionAssets && !hasError,
+                  'border-red-500': hasError
               }
             )}
           >

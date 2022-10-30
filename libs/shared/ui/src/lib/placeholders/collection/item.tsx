@@ -16,8 +16,8 @@ const AssetItemPlaceholder = () => {
                 <div className="item-card-content">
                   <div className="item-head">
                     <div className="item-card-title">
-                      <span className="flex w-[6rem] h-[0.8rem] mt-1 mb-2 rounded-lg bg-white dark:bg-neutral-600 animate-pulse" />
-                      <span className="flex w-[3rem] h-[0.8rem] rounded-lg bg-white dark:bg-neutral-600 animate-pulse" />
+                      <span className="flex w-[6rem] h-[0.8rem] mt-1 mb-2 rounded-lg bg-neutral-300 dark:bg-neutral-600 animate-pulse" />
+                      <span className="flex w-[3rem] h-[0.8rem] rounded-lg bg-neutral-300 dark:bg-neutral-600 animate-pulse" />
                     </div>
                   </div>
                 </div>

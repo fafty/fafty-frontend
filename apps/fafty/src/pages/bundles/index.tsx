@@ -1,5 +1,5 @@
 import { useRouter } from 'next/router';
-import { BundleItemPlaceholder } from '@fafty-frontend/shared/ui';
+import { AssetTabsPlaceholder, BundleItemPlaceholder } from '@fafty-frontend/shared/ui';
 import qs from 'qs';
 import MainLayout from '../../layouts/main';
 import {
@@ -16,9 +16,9 @@ import {
   PriceFilterProps,
   PriceFiltersValue,
 } from '../../components/assets/filters';
-import { useEffect, useMemo, useState } from 'react';
+import { lazy, Suspense, useEffect, useMemo, useState } from 'react';
 import dynamic from 'next/dynamic';
-import { TabsProps } from '../../components/asset/tabs';
+// import { TabsProps } from '../../components/asset/tabs';
 import { InfinityLoadChecker } from '../../components/common/infinityLoadChecker';
 import { Panel } from '../../components/common/panel';
 import { Pills } from '../../components/assets/pills';
@@ -46,15 +46,18 @@ const TABS = [
   {
     title: 'Max price',
     value: 'max_price',
-  },
+  }
 ];
 
-const Tabs = dynamic<TabsProps>(
-  () => import('../../components/asset/tabs').then((mod) => mod.Tabs),
-  {
-    ssr: false,
-  }
-);
+// const Tabs = dynamic<TabsProps>(
+//   () => import('../../components/asset/tabs').then((mod) => mod.Tabs),
+//   { 
+//     loading: () => <AssetTabsPlaceholder />,
+//     ssr: false,
+//   }
+// );
+const Tabs = lazy(() => import('../../components/asset/tabs'));
+
 
 const Price = dynamic<PriceFilterProps>(
   () => import('../../components/assets/filters/price').then((mod) => mod.Price),
@@ -183,6 +186,7 @@ const Bundles = () => {
       },
       sort: TABS[tabIndex]?.value || TABS[0].value,
     });
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [localFiltersState]);
 
   useComponentDidUpdate(
@@ -242,7 +246,9 @@ const Bundles = () => {
         <div className="flex flex-col w-full">
           <div className="flex items-center justify-end">
             <div className="flex">
-              <Tabs tabs={TABS} tabIndex={tabIndex} setTabIndex={onChangeTab} />
+              <Suspense fallback={<AssetTabsPlaceholder />}>
+                <Tabs tabs={TABS} tabIndex={tabIndex} setTabIndex={onChangeTab} />
+              </Suspense>
             </div>
           </div>
           <div className="flex my-4">

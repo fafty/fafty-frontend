@@ -50,7 +50,6 @@ function CheckIcon(props: JSX.IntrinsicAttributes & SVGProps<SVGSVGElement>) {
 const SelectCollection = ({ current, onChange }: Props): JSX.Element => {
   const [data, setData] = useState<CollectionProps[] | null>(null);
   const [loading, setLoading] = useState(false);
-  const [isError, setError] = useState(false);
   const defaultSelected =
     current === 'none'
       ? { token: current }
@@ -106,7 +105,6 @@ const SelectCollection = ({ current, onChange }: Props): JSX.Element => {
 
     return () => {
       setLoading(false);
-      setError(false);
       setData(null);
       // Remove event listener on unmount
       if (refCurrent) {
@@ -115,6 +113,7 @@ const SelectCollection = ({ current, onChange }: Props): JSX.Element => {
         });
       }
     };
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const onScreen: boolean = useOnScreen<HTMLDivElement>(
@@ -125,6 +124,7 @@ const SelectCollection = ({ current, onChange }: Props): JSX.Element => {
     if (onScreen) {
       scrollItemsToCenterSelected(selected, 0);
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [onScreen]);
 
   useEffect(() => {
@@ -133,6 +133,7 @@ const SelectCollection = ({ current, onChange }: Props): JSX.Element => {
     }
     onChange(selected);
     setPreviousSelected(selected);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selected]);
 
   useEffect(() => {
@@ -140,6 +141,7 @@ const SelectCollection = ({ current, onChange }: Props): JSX.Element => {
       const defaultSelected = data && data.find((b) => b.token === current);
       setSelected(defaultSelected?.token || '');
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [current, loading]);
 
   const fetchData = async () => {
@@ -149,8 +151,6 @@ const SelectCollection = ({ current, onChange }: Props): JSX.Element => {
       const { data } = response;
       setData(data.records);
       setLoading(false);
-    } else {
-      setError(true);
     }
   };
 

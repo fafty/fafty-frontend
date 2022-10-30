@@ -30,9 +30,9 @@ const FormCollection = ({
    * Form Store
    */
   const {
-    step1Answered,
-    step2Answered,
-    step3Answered,
+    // step1Answered,
+    // step2Answered,
+    // step3Answered,
     step4Answered,
     finished,
     stepData: data,
@@ -111,9 +111,10 @@ const FormCollection = ({
       }).finally(() => {
         setFinished?.(true);
       });
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data, setFinished]);
 
-  const handleNext = (activeStep: number, steps: number | any[]) => {
+  const handleNext = (activeStep: number, steps: number) => {
     if (activeStepNumeric === 4 && step4Answered) {
       return submitData();
     }
@@ -155,7 +156,7 @@ const FormCollection = ({
             cover: currentFile,
             step1: {
               state: {
-                name: null,
+                name: '',
                 description: null,
                 unlockable_content: null,
                 sensitive_content: false,
@@ -209,28 +210,28 @@ const FormCollection = ({
 
   const activeStepNumeric = activeStep + 1;
 
-  const buttonNextDisabled = useMemo(() => {
-    if (activeStepNumeric === 4) {
-      return !(
-        step1Answered &&
-        step2Answered &&
-        step3Answered &&
-        step4Answered
-      );
-    }
+  // const buttonNextDisabled = useMemo(() => {
+  //   if (activeStepNumeric === 4) {
+  //     return !(
+  //       step1Answered &&
+  //       step2Answered &&
+  //       step3Answered &&
+  //       step4Answered
+  //     );
+  //   }
 
-    if (activeStepNumeric === 2) {
-      return !step2Answered;
-    }
+  //   if (activeStepNumeric === 2) {
+  //     return !step2Answered;
+  //   }
 
-    return !step1Answered;
-  }, [
-    step1Answered,
-    step2Answered,
-    step3Answered,
-    step4Answered,
-    activeStepNumeric,
-  ]);
+  //   return !step1Answered;
+  // }, [
+  //   step1Answered,
+  //   step2Answered,
+  //   step3Answered,
+  //   step4Answered,
+  //   activeStepNumeric,
+  // ]);
 
   if (finished) {
     return (

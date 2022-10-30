@@ -21,6 +21,7 @@ export const InfinityLoadChecker = ({
     if (!isLoading && onScreen && allowLoad) {
       loadMore();
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [onScreen, isLoading, allowLoad]);
 
   return (

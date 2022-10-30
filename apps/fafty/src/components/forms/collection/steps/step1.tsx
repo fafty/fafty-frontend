@@ -131,6 +131,7 @@ const SelectStep1 = ({ Context }: { Context: Context<ContextProps> }) => {
         },
       });
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isValid]);
 
   return (

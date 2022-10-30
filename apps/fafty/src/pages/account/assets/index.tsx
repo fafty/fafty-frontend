@@ -64,7 +64,7 @@ type QueryFiltersProps = {
 };
 
 const AccountAssets = () => {
-  const { replace, asPath } = useRouter();
+  const { asPath } = useRouter();
   const [openedFormAssetModal, setOpenedFormAssetModal] = useState({
     open: false,
     slug: '',
@@ -113,6 +113,7 @@ const AccountAssets = () => {
         offset: paginate.offset,
       },
     });
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [localFiltersState]);
 
   useComponentDidUpdate(
@@ -453,6 +454,7 @@ const AccountAssets = () => {
         }}
       />
     );
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data?.paginate?.count, isSuccess, items]);
 
   return (

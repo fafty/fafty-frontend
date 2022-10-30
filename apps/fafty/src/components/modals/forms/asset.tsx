@@ -7,7 +7,6 @@ import {
   useAsync,
   putAsset,
   getAsset,
-  AssetProps,
   AssetResponseProps,
   AssetPutParams,
 } from '@fafty-frontend/shared/api';
@@ -101,6 +100,7 @@ const FormAssetModal = ({ title, isOpened, onClose, slug }: Props) => {
     if (slug) {
       callPreloadAsset(slug);
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [slug]);
 
   return (

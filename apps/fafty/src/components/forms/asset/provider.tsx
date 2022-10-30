@@ -152,6 +152,7 @@ export const FormAssetContextProvider = ({
 
   useEffect(() => {
     finished && onFinished();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [finished]);
 
   useEffect(() => {
@@ -176,6 +177,7 @@ export const FormAssetContextProvider = ({
         disabled: false,
       });
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [finished, step1Answered, stepData.media]);
 
   const onSetStepData = useCallback(

@@ -44,6 +44,7 @@ const SelectStep2 = ({ Context }: { Context: Context<ContextProps> }) => {
     return () => {
       storeData();
     };
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
@@ -56,6 +57,7 @@ const SelectStep2 = ({ Context }: { Context: Context<ContextProps> }) => {
         storeData();
       };
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isValid]);
 
   /**

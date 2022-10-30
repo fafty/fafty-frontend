@@ -19,10 +19,10 @@ export const Owners = () => {
         >
           <div className="inline-flex space-x-4 items-center justify-start">
             <div className="flex items-center justify-center w-12 h-12 bg-green-500 rounded-full">
-              <img
+              {/* <img
                 className="flex-1 h-full"
                 src="https://via.placeholder.com/48x71.9912109375"
-              />
+              /> */}
             </div>
             <div className="inline-flex flex-col space-y-0.5 items-start justify-start">
               <p className="text-sm leading-normal text-gray-500">Creator</p>

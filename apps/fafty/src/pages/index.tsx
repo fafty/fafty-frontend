@@ -90,7 +90,7 @@ export default function Home(): JSX.Element {
     <MainLayout
       title={'undefined'}
       description={'undefined'}
-      className="container"
+      // className="container"
     >
       <Hero />
       <div className="mt-10" ref={collectionsContainerRef}>

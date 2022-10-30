@@ -1,5 +1,5 @@
 import { useRouter } from 'next/router';
-import { AssetItemPlaceholder } from '@fafty-frontend/shared/ui';
+import { AssetItemPlaceholder, AssetTabsPlaceholder } from '@fafty-frontend/shared/ui';
 import qs from 'qs';
 import MainLayout from '../../layouts/main';
 import {
@@ -9,16 +9,7 @@ import {
   GetAssetsResponseProps,
   AssetProps,
 } from '@fafty-frontend/shared/api';
-// import {
-//   Masonry,
-//   MasonryScroller,
-//   useContainerPosition,
-//   usePositioner,
-// } from 'masonic';
-import { useVirtualizer } from '@tanstack/react-virtual';
-
-// import { Virtuoso } from 'react-virtuoso'
-
+// import { useVirtualizer } from '@tanstack/react-virtual';
 import Item from '../../components/items/asset/item';
 import {
   BillingType,
@@ -26,13 +17,12 @@ import {
   PriceFilterProps,
   PriceFiltersValue,
 } from '../../components/assets/filters';
-import { Fragment, useEffect, useMemo, useRef, useState } from 'react';
+import { lazy, Suspense, useEffect, useMemo, useState } from 'react';
 import dynamic from 'next/dynamic';
-import { TabsProps } from '../../components/asset/tabs';
 import { InfinityLoadChecker } from '../../components/common/infinityLoadChecker';
 import { Panel } from '../../components/common/panel';
 import { Pills } from '../../components/assets/pills';
-import { useComponentDidUpdate, useWindowSize } from '@fafty-frontend/usehooks';
+import { useComponentDidUpdate } from '@fafty-frontend/usehooks';
 
 export type FiltersValues = {
   price?: PriceFiltersValue;
@@ -59,12 +49,16 @@ const TABS = [
   },
 ];
 
-const Tabs = dynamic<TabsProps>(
-  () => import('../../components/asset/tabs').then((mod) => mod.Tabs),
-  {
-    ssr: false,
-  }
-);
+// const Tabs = dynamic<TabsProps>(
+//   () => import('../../components/asset/tabs').then((mod) => mod.Tabs),
+//   {
+//     // loading: () => <AssetTabsPlaceholder />,
+//     ssr: false,
+//     // suspense: true,
+//   }
+// );
+
+const Tabs = lazy(() => import('../../components/asset/tabs'));
 
 const Price = dynamic<PriceFilterProps>(
   () => import('../../components/assets/filters/price').then((mod) => mod.Price),
@@ -97,18 +91,7 @@ type QueryFiltersProps = {
 
 const Assets = () => {
   const { replace, asPath } = useRouter();
-  const containerRef = useRef(null);
-  // const [windowWidth, windowHeight] = useWindowSize();
-  // const { offset, width } = useContainerPosition(containerRef, [
-  //   windowWidth,
-  //   windowHeight,
-  // ]);
-  // const positioner = usePositioner({
-  //   width,
-  //   columnGutter: 8,
-  //   columnWidth: 230,
-  // });
-
+  // const containerRef = useRef(null);
   const search = asPath.split('?')[1];
 
   const [localFiltersState, setLocalFiltersState] = useState<QueryFiltersProps>(
@@ -203,6 +186,7 @@ const Assets = () => {
       },
       sort: TABS[tabIndex]?.value || TABS[0].value,
     });
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [localFiltersState]);
 
   useComponentDidUpdate(
@@ -291,65 +275,65 @@ const Assets = () => {
   //   );
   // }, [data?.paginate?.count, isSuccess, items]);
 
-  const GridVirtualizerDynamic = ({ rows }: { rows: any[] }) => {
-    const parentRef = useRef();
+  // const GridVirtualizerDynamic = ({ rows }: { rows: any[] }) => {
+  //   const parentRef = useRef();
 
-    const rowVirtualizer = useVirtualizer({
-      count: rows.length,
-      getScrollElement: () => parentRef.current,
-      estimateSize: () => 400,
-    });
+  //   const rowVirtualizer = useVirtualizer({
+  //     count: rows.length,
+  //     getScrollElement: () => parentRef.current,
+  //     estimateSize: () => 400,
+  //   });
 
-    return (
-      <>
-        <div
-          ref={parentRef}
-          className="wrapper-items"
-          style={{
-            height: `100vh`,
-            width: `100%`,
-            overflow: 'auto',
-          }}
-        >
-          <div
-            // className="items"
-            style={{
-              height: rowVirtualizer.getTotalSize(),
-              position: 'relative',
-            }}
-          >
-            {rowVirtualizer.getVirtualItems().map((virtualRow) => (
-              <div
-                key={virtualRow.key}
-                ref={(el) => {
-                  virtualRow.measureElement(el);
-                }}
-                className="items"
-                // style={{
-                //   position: 'absolute',
-                //   top: 0,
-                //   left: 0,
-                //   transform: `translateY(${virtualRow.start}px)`,
-                // }}
-              >
-                {rows[virtualRow.index].map((item: AssetProps) => (
-                  <Item key={item.token} item={item} />
-                  // items.map((item) => <Item key={item.token} item={item} />)
-                  // JSON.stringify(items)
-                ))}
-                {/* <div
-                  style={{
-                    height: rows[virtualRow.index],
-                  }}
-                >
-                </div> */}
-              </div>
-            ))}
-          </div>
-        </div>
-      </>
-    );
-  };
+  //   return (
+  //     <>
+  //       <div
+  //         ref={parentRef}
+  //         className="wrapper-items"
+  //         style={{
+  //           height: `100vh`,
+  //           width: `100%`,
+  //           overflow: 'auto',
+  //         }}
+  //       >
+  //         <div
+  //           // className="items"
+  //           style={{
+  //             height: rowVirtualizer.getTotalSize(),
+  //             position: 'relative',
+  //           }}
+  //         >
+  //           {rowVirtualizer.getVirtualItems().map((virtualRow) => (
+  //             <div
+  //               key={virtualRow.key}
+  //               ref={(el) => {
+  //                 virtualRow.measureElement(el);
+  //               }}
+  //               className="items"
+  //               // style={{
+  //               //   position: 'absolute',
+  //               //   top: 0,
+  //               //   left: 0,
+  //               //   transform: `translateY(${virtualRow.start}px)`,
+  //               // }}
+  //             >
+  //               {rows[virtualRow.index].map((item: AssetProps) => (
+  //                 <Item key={item.token} item={item} />
+  //                 // items.map((item) => <Item key={item.token} item={item} />)
+  //                 // JSON.stringify(items)
+  //               ))}
+  //               {/* <div
+  //                 style={{
+  //                   height: rows[virtualRow.index],
+  //                 }}
+  //               >
+  //               </div> */}
+  //             </div>
+  //           ))}
+  //         </div>
+  //       </div>
+  //     </>
+  //   );
+  // };
 
   return (
     <MainLayout
@@ -383,7 +367,9 @@ const Assets = () => {
         <div className="flex flex-col w-full">
           <div className="flex items-center justify-end">
             <div className="flex">
-              <Tabs tabs={TABS} tabIndex={tabIndex} setTabIndex={onChangeTab} />
+              <Suspense fallback={<AssetTabsPlaceholder />}>
+                <Tabs tabs={TABS} tabIndex={tabIndex} setTabIndex={onChangeTab} />
+              </Suspense>
             </div>
           </div>
           <div className="flex my-4">

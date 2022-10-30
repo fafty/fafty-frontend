@@ -14,11 +14,11 @@ const AssetItemPlaceholder = () => {
                 <div className="item-card-content">
                   <div className="item-head">
                     <div className="item-card-title">
-                      <span className="flex w-[6rem] h-[0.8rem] mt-1 mb-2 rounded-lg bg-white dark:bg-neutral-600 animate-pulse" />
-                      <span className="flex w-[3rem] h-[0.8rem] rounded-lg bg-white dark:bg-neutral-600 animate-pulse" />
+                      <span className="flex w-[6rem] h-[0.8rem] mt-1 mb-2 rounded-lg bg-neutral-300 dark:bg-neutral-600 animate-pulse" />
+                      <span className="flex w-[3rem] h-[0.8rem] rounded-lg bg-neutral-300 dark:bg-neutral-600 animate-pulse" />
                     </div>
                     <div className="item-price animate-pulse">
-                      <span className="flex w-[2rem] h-[0.8rem] rounded-lg bg-green-600 animate-pulse" />
+                      <span className="flex w-[3rem] h-[0.8rem] rounded-lg bg-green-600 animate-pulse" />
                     </div>
                   </div>
                 </div>
@@ -29,7 +29,7 @@ const AssetItemPlaceholder = () => {
                     className="flex items-center justify-center"
                   >
                     <div>
-                    <span className="flex w-12 h-5 rounded-lg bg-white dark:bg-neutral-600" />
+                    <span className="flex w-12 h-5 rounded-lg bg-neutral-300 dark:bg-neutral-600" />
                     </div>
                   </button>
                 </div>

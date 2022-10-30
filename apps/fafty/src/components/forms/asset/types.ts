@@ -64,7 +64,7 @@ export interface Props {
 }
 
 export interface Step1Props {
-  name: string;
+  name: string | null;
   description: null | EditorState | string;
   unlockable_content: null | EditorState | string;
   sensitive_content: boolean;
@@ -117,7 +117,7 @@ export interface ContextProps {
   setSkipped: (skipped: Set<number>) => void;
   allowSkip: boolean;
   components: { [key: string]: JSX.Element };
-  setComponent: (components: { [key: string]: any }) => void;
+  setComponent: (components: { [key: string]: unknown }) => void;
   view: null | JSX.Element;
   stepData: StepsProps;
   setStepData: (stepData: SetStepDataProps) => void;

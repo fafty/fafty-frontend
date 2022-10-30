@@ -60,7 +60,7 @@ const SelectStep1 = ({ Context }: { Context: Context<ContextProps> }) => {
   } = useForm({
     mode: 'onSubmit',
     reValidateMode: 'onSubmit',
-    shouldFocusError: true,
+    // shouldFocusError: true,
     defaultValues: {
       ...stepData?.step1?.state,
     },
@@ -131,6 +131,7 @@ const SelectStep1 = ({ Context }: { Context: Context<ContextProps> }) => {
         },
       });
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isValid]);
 
   return (
@@ -153,11 +154,11 @@ const SelectStep1 = ({ Context }: { Context: Context<ContextProps> }) => {
               type="text"
               id="item-name"
               className={classNames(
+                'text-gray-700 dark:text-gray-100 dark:bg-neutral-900/90 mt-1 border focus:outline-none rounded-md shadow-sm focus:border-gray-500 focus:shadow w-full p-3 h-12',
                 {
                   'border-red-500': errors.name,
                   'border-gray-200 dark:border-neutral-800': !errors.name,
                 },
-                'text-gray-700 dark:text-gray-100 dark:bg-neutral-900/90 mt-1 border focus:outline-none rounded-md shadow-sm focus:border-gray-500 focus:shadow w-full p-3 h-12'
               )}
               placeholder="Enter name"
               {...(errors.name && { 'aria-invalid': true })}

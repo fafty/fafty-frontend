@@ -143,6 +143,7 @@ const SelectBlockchain = ({ current, onChange }: Props): JSX.Element => {
         });
       }
     };
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const onScreen: boolean = useOnScreen<HTMLDivElement>(
@@ -153,6 +154,7 @@ const SelectBlockchain = ({ current, onChange }: Props): JSX.Element => {
     if (onScreen) {
       scrollItemsToCenterSelected(selected, 0);
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [onScreen]);
 
   useEffect(() => {
@@ -161,6 +163,7 @@ const SelectBlockchain = ({ current, onChange }: Props): JSX.Element => {
     }
     onChange(selected);
     setPreviousSelected(selected);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selected]);
 
   useEffect(() => {

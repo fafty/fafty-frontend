@@ -2,10 +2,8 @@ import React, { useState, useRef, useEffect } from 'react';
 import {default as AssetItem } from './items/asset/item';
 import {default as BundleItem } from './items/bundle/item';
 import {default as CollectionItem} from './items/collection/item';
-
 import isClient from '../utils/isClient';
 import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/24/outline';
-import { useNotifications } from '@fafty-frontend/notifications';
 import classNames from 'classnames';
 import { useDebouncedCallback } from '@fafty-frontend/usehooks';
 import { AssetProps, BundleProps, CollectionProps } from '@fafty-frontend/shared/api';
@@ -16,8 +14,6 @@ interface Props <T> {
 }
 
 const Items = <T extends AssetProps[] | BundleProps[] | CollectionProps[]>({ type, items }: Props<T>): JSX.Element => {
-  const [notificationId, setNotificationId] = useState<number>();
-  const { enqueueNotification, closeNotification } = useNotifications();
   const itemsContainerRef = useRef<HTMLDivElement | null>(null);
   const [arrows, setArrows] = useState({ left: false, right: false });
 
@@ -69,25 +65,14 @@ const Items = <T extends AssetProps[] | BundleProps[] | CollectionProps[]>({ typ
         });
       }
     };
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-
-  const handleClick = (): void => {
-    // create notification demo
-    const id = enqueueNotification({
-      title: 'Notification title',
-      message: 'This is an awesome Notification! and other more data here',
-      options: { dismissible: true, playSound: true },
-      position: 'bottom-left',
-    });
-    setNotificationId(id);
-  };
 
   /**
    * Increase/decrease the current page value
    * @param {String} direction (Optional) The direction to advance
    */
   const scrollItems = (direction: string): void => {
-    notificationId && closeNotification(notificationId);
     if (itemsContainerRef.current === null) return;
     const items =
       itemsContainerRef.current?.parentElement?.querySelector('.items');

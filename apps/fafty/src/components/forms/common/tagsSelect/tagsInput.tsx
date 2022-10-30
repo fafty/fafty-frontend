@@ -22,7 +22,7 @@ export const TagsInput = ({ tags, onChange, onDelete }: Props) => {
   const debouncedValue = useDebounce(inputValue, 300);
 
   const [hiddenTagIndex, setHiddenTagIndex] = useState<number | null>(null);
-  const [selectedSearchedTag, setSelectedSearchedTag] = useState(null);
+  // const [selectedSearchedTag, setSelectedSearchedTag] = useState(null);
   const tm: { current: NodeJS.Timeout | null } = useRef(null);
 
   const {
@@ -83,6 +83,7 @@ export const TagsInput = ({ tags, onChange, onDelete }: Props) => {
 
   useEffect(() => {
     callSearchTags(debouncedValue);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [debouncedValue]);
 
   useOnClickOutside(inputRef, () => {

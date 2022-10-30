@@ -12,7 +12,7 @@ import dynamic from 'next/dynamic';
 import { AnimatePresence, motion } from 'framer-motion';
 import classNames from 'classnames';
 import { ReactComponent as CompleteIlustation } from '../../../assets/complete.svg';
-import Link from 'next/link';
+// import Link from 'next/link';
 import { FileProps, Props, UploaderProps } from './types';
 import StepsBar from '../common/stepsBar';
 
@@ -30,9 +30,9 @@ const FormAsset = ({
    * Form Store
    */
   const {
-    step1Answered,
-    step2Answered,
-    step3Answered,
+    // step1Answered,
+    // step2Answered,
+    // step3Answered,
     step4Answered,
     finished,
     stepData: data,
@@ -111,9 +111,10 @@ const FormAsset = ({
       }).then(() => {
         setFinished?.(true);
       });
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data, setFinished]);
 
-  const handleNext = (activeStep: number, steps: number | any[]) => {
+  const handleNext = (activeStep: number, steps: number ) => { //any[]
     if (activeStepNumeric === 4 && step4Answered) {
       return submitData();
     }
@@ -213,28 +214,28 @@ const FormAsset = ({
 
   const activeStepNumeric = activeStep + 1;
 
-  const buttonNextDisabled = useMemo(() => {
-    if (activeStepNumeric === 4) {
-      return !(
-        step1Answered &&
-        step2Answered &&
-        step3Answered &&
-        step4Answered
-      );
-    }
+  // const buttonNextDisabled = useMemo(() => {
+  //   if (activeStepNumeric === 4) {
+  //     return !(
+  //       step1Answered &&
+  //       step2Answered &&
+  //       step3Answered &&
+  //       step4Answered
+  //     );
+  //   }
 
-    if (activeStepNumeric === 2) {
-      return !step2Answered;
-    }
+  //   if (activeStepNumeric === 2) {
+  //     return !step2Answered;
+  //   }
 
-    return !step1Answered;
-  }, [
-    step1Answered,
-    step2Answered,
-    step3Answered,
-    step4Answered,
-    activeStepNumeric,
-  ]);
+  //   return !step1Answered;
+  // }, [
+  //   step1Answered,
+  //   step2Answered,
+  //   step3Answered,
+  //   step4Answered,
+  //   activeStepNumeric,
+  // ]);
 
   if (finished) {
     return (
@@ -304,8 +305,6 @@ const FormAsset = ({
       </AnimatePresence>
     );
   }
-
-  console.log(buttonNextDisabled, isDisabledNextStep);
 
   return (
     <>
@@ -432,6 +431,7 @@ const FormAsset = ({
                 <>
                   {allowSkip && (
                     <button
+                      type="button"
                       className="inline-flex items-center px-4 py-2 font-semibold leading-6 text-sm shadow rounded-md text-white bg-blue-600 hover:bg-blue-500"
                       onClick={handleSkip}
                     >

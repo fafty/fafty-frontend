@@ -19,7 +19,7 @@ const MainLayout = ({ children, title, description, className }: Props) => {
   const [openedAuthModal, setOpenedAuthModal] = useState(false);
   const [openedFormAssetModal, setOpenedFormAssetModal] = useState(false);
   const [openedFormCollectionModal, setOpenedFormCollectionModal] = useState(false);
-  const [openedFormBundleModal, setOpenedFormBundleModal] = useState(false);
+  // const [openedFormBundleModal, setOpenedFormBundleModal] = useState(false);
   const auth = useAuth();
 
   const onAuth = () => {
@@ -34,9 +34,9 @@ const MainLayout = ({ children, title, description, className }: Props) => {
       case 'collection':
         setOpenedFormCollectionModal(true);
         break;
-      case 'bundle':
-        setOpenedFormBundleModal(true);
-        break;
+      // case 'bundle':
+      //   setOpenedFormBundleModal(true);
+      //   break;
       default:
         break;
     }

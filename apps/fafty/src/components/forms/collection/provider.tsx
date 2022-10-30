@@ -141,6 +141,7 @@ export const FormCollectionContextProvider = ({
 
   useEffect(() => {
     finished && onFinished();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [finished]);
 
   useEffect(() => {
@@ -163,6 +164,7 @@ export const FormCollectionContextProvider = ({
         disabled: false,
       });
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [finished, step1Answered, stepData.cover]);
 
   const onSetStepData = useCallback(

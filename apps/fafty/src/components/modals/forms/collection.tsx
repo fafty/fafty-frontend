@@ -100,6 +100,7 @@ const FormCollectionModal = ({ title, isOpened, onClose, slug }: Props) => {
     if (slug) {
       callPreloadCollection(slug);
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [slug]);
 
   return (

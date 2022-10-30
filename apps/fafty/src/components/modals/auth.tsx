@@ -12,6 +12,7 @@ type Props = {
 const List = [
   {
     name: 'Plug',
+    description: 'Plug is a browser extension that allows you to use your Internet Identity to authenticate to any website.',
     value: 'plug',
     logo: {
       src: PlugLogo,
@@ -20,6 +21,7 @@ const List = [
   },
   {
     name: 'Internet identity',
+    description: 'Internet Identity is a decentralized identity solution built on the Internet Computer.',
     value: 'ii',
     logo: {
       src: InternetIdentityLogo,
@@ -47,6 +49,13 @@ export const AuthModal = ({ isOpened, onClose }: Props) => {
       title="Connect your wallet"
       open={isOpened}
       onDismiss={onClose}
+      options={{
+        dismissible: {
+          active: true,
+          title: "Close",
+          disabled: false,
+        },
+      }}
       className="w-[700px]"
     >
       <div className="flex flex-row h-full w-full p-5">
@@ -239,7 +248,7 @@ export const AuthModal = ({ isOpened, onClose }: Props) => {
         </div>
         <div className="flex flex-col mt-2.5 w-full lg:ml-2">
           <div className="relative grid gap-1 p-1 grid-cols-1">
-            {List.map(({ name, value, logo }) => (
+            {List.map(({ name, description, value, logo }) => (
               <div
                 className="cursor-pointer focus:outline-none flex items-center rounded-lg p-2 transition duration-150 ease-in-out text-neutral-700 hover:bg-neutral-100 dark:text-neutral-100 dark:hover:bg-neutral-700"
                 onClick={onClickAuth(value)}
@@ -250,6 +259,9 @@ export const AuthModal = ({ isOpened, onClose }: Props) => {
                 </div>
                 <div className="ml-4">
                   <p className="text-sm font-medium">{name}</p>
+                  <p className="text-[0.6rem] text-neutral-400 ">
+                    {description}
+                  </p>
                 </div>
               </div>
             ))}
