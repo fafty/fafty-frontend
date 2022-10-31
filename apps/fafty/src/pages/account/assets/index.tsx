@@ -15,10 +15,8 @@ import { List } from 'masonic';
 
 import { useEffect, useMemo, useState } from 'react';
 import { useComponentDidUpdate } from '@fafty-frontend/usehooks';
-import { InfinityLoadChecker } from '../../../components/common/infinityLoadChecker';
 import {
   EyeIcon,
-  FunnelIcon,
   ChatBubbleBottomCenterTextIcon,
   PencilSquareIcon,
   DocumentIcon,
@@ -30,6 +28,8 @@ import {
   variants,
 } from '../../../components/forms/asset/constants';
 import FormAssetModal from '../../../components/modals/forms/asset';
+import { Filters } from '../../../components/features/user/assets';
+import { InfinityLoadChecker } from '../../../components/common/InfinityLoadChecker';
 
 const isObjectEmpty = (value: object | string | null) => {
   return (
@@ -113,7 +113,7 @@ const AccountAssets = () => {
         offset: paginate.offset,
       },
     });
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [localFiltersState]);
 
   useComponentDidUpdate(
@@ -211,8 +211,9 @@ const AccountAssets = () => {
         onMouseLeave={() => setIsHovered(false)}
       >
         <div className="flex flex-row w-full p-1 z-2 ml-7 items-center overflow-hidden">
-        {/* bg-neutral-300 dark:bg-neutral-700 */}
-          <div className="relative flex h-17 w-17 flex-shrink-0 items-center justify-center rounded focus:outline-none bg-neutral-200 dark:bg-neutral-700"
+          {/* bg-neutral-300 dark:bg-neutral-700 */}
+          <div
+            className="relative flex h-17 w-17 flex-shrink-0 items-center justify-center rounded focus:outline-none bg-neutral-200 dark:bg-neutral-700"
             style={{ backgroundColor: item.media.dominant_color || '' }}
           >
             <Image
@@ -320,12 +321,15 @@ const AccountAssets = () => {
             </motion.div>
           </div>
         </div>
-        { item.collection && item.collection.cover ? (
+        {item.collection && item.collection.cover ? (
           <div className="flex items-center justify-center flex-col">
             <div className="flex w-full flex-col">
               <div className="relative flex rounded-full w-10 h-10 overflow-hidden border-2">
-                <div className="bg-base-300"
-                  style={{ backgroundColor: item.collection.cover.dominant_color || '' }}
+                <div
+                  className="bg-base-300"
+                  style={{
+                    backgroundColor: item.collection.cover.dominant_color || '',
+                  }}
                 >
                   <Image
                     className="relative inline-block h-10 w-10 rounded-full ring-2 ring-white"
@@ -333,7 +337,7 @@ const AccountAssets = () => {
                     alt={item.collection?.name || ''}
                     width={36}
                     height={36}
-                    />
+                  />
                 </div>
               </div>
               <div className="w-full mt-1">
@@ -341,7 +345,6 @@ const AccountAssets = () => {
                   {item.collection?.name || ''}
                 </p>
               </div>
-
             </div>
           </div>
         ) : (
@@ -362,29 +365,20 @@ const AccountAssets = () => {
           <div className="flex flex-col space-x-1">
             <span className="opacity-50">Aviable:</span>
             <div className="flex flex-row space-x-1">
-              <span>
-                {item.available_supply_units}
-              </span>
+              <span>{item.available_supply_units}</span>
               <span className="opacity-50">of</span>
-              <span>
-                {item.supply_units}
-              </span>
-
+              <span>{item.supply_units}</span>
             </div>
           </div>
         </div>
-        <div className="flex items-center justify-left">
-          {item.blockchain}
-        </div>
+        <div className="flex items-center justify-left">{item.blockchain}</div>
       </div>
     );
   };
 
   const ItemPlaceholder = () => {
     return (
-      <div
-        className="relative h-[6rem] group grid grid-cols-[minmax(300px,_400px)_minmax(100px,_120px)_minmax(100px,_120px)_minmax(100px,_120px)_minmax(100px,_120px)_minmax(100px,_120px)] gap-x-1 py-1 mx-auto w-full transition duration-350 hover:bg-white dark:hover:bg-neutral-800/95 text-sm"
-      >
+      <div className="relative h-[6rem] group grid grid-cols-[minmax(300px,_400px)_minmax(100px,_120px)_minmax(100px,_120px)_minmax(100px,_120px)_minmax(100px,_120px)_minmax(100px,_120px)] gap-x-1 py-1 mx-auto w-full transition duration-350 hover:bg-white dark:hover:bg-neutral-800/95 text-sm">
         <div className="flex flex-row w-full p-1 z-2 ml-7 items-center overflow-hidden">
           <div className="relative flex h-17 w-17 flex-shrink-0 items-center justify-center bg-neutral-300 rounded hover:bg-neutral-200 focus:outline-none dark:bg-neutral-700 dark:hover:bg-neutral-600 animate-pulse">
             <span className="relative inline-block h-16 w-16 rounded"></span>
@@ -454,7 +448,7 @@ const AccountAssets = () => {
         }}
       />
     );
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data?.paginate?.count, isSuccess, items]);
 
   return (
@@ -472,37 +466,9 @@ const AccountAssets = () => {
             className="relative flex flex-col mx-auto w-full mb-10"
           >
             <div className="flex flex-col mx-auto w-full sticky top-[82px] z-1 bg-white dark:bg-neutral-800 shadow-[0_10px_5px_-10px_rgba(0,0,0,0.2)]">
-              <div className="relative flex flex-col ml-8">
-                <div>
-                  <div className="relative w-full h-[50px] flex flex-row">
-                    <div className="pointer-events-none absolute py-2 inset-0 left-0 flex items-center pr-5">
-                      <div className="w-8 h-8 rounded-full hover:bg-blue-100 dark:hover:bg-neutral-600 box-border justify-center p-0 m-0 cursor-pointer flex relative dark:text-gray-200 touch-manipulation items-center select-none border-0 list-none outline-none decoration-0 transition duration-250 ease-in-out bg-neutral-200 dark:bg-neutral-700">
-                        <FunnelIcon
-                          strokeWidth="2"
-                          className="touch-manipulation select-none w-5 h-5"
-                        />
-                      </div>
-                    </div>
-                    <input
-                      autoComplete="off"
-                      spellCheck="false"
-                      type="search"
-                      autoCorrect="off"
-                      autoCapitalize="off"
-                      name="search"
-                      id="search"
-                      className="border-2 focus:ring-0 focus:ring-offset-0 block w-full bg-transparent border-transparent dark:border-transparent pl-[2.5rem] pr-3 p-3 focus:border-transparent hover:border-transparent dark:focus:border-transparent dark:hover:border-transparent transition duration-200 ring-0 sm:text-sm md:text-base"
-                      placeholder="Filter"
-                    />
-                  </div>
-                </div>
-              </div>
-              <div
-                className="left-0 sticky grid grid-cols-[minmax(300px,_400px)_minmax(100px,_120px)_minmax(100px,_120px)_minmax(100px,_120px)_minmax(100px,_120px)_minmax(100px,_120px)] gap-x-1 mx-auto h-[2rem] text-sm w-full"
-              >
-                <div className="ml-8 left-0 sticky">
-                  Asset
-                </div>
+              <Filters />
+              <div className="left-0 sticky grid grid-cols-[minmax(300px,_400px)_minmax(100px,_120px)_minmax(100px,_120px)_minmax(100px,_120px)_minmax(100px,_120px)_minmax(100px,_120px)] gap-x-1 mx-auto h-[2rem] text-sm w-full">
+                <div className="ml-8 left-0 sticky">Asset</div>
                 <div className="truncate">Collection</div>
                 <div className="truncate">Access Options</div>
                 <div className="truncate">Restrictions</div>

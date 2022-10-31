@@ -62,7 +62,7 @@ export interface Props {
 }
 
 export interface Step1Props {
-  name: string;
+  name: string | null;
   description: null | EditorState | string;
 }
 

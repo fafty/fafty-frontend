@@ -2,6 +2,7 @@ import { useState, ReactNode, useCallback, useEffect } from 'react';
 import {
   CommentsOrderType,
   CommentsModerationType,
+  CollectionProps,
 } from '@fafty-frontend/shared/api';
 import Context from './context';
 import { FormProps, SetStepDataProps, StepsProps } from './types';
@@ -20,7 +21,7 @@ const defaultStepsData: StepsProps = {
   step1: {
     state: {
       name: '',
-      description: null
+      description: null,
     },
     solved: false,
     error: false,
@@ -61,7 +62,7 @@ export const FormCollectionContextProvider = ({
 }: {
   onChangeDismiss: (data: { title: string; disabled: boolean }) => void;
   rawDataCallback: boolean;
-  defaultData?: FormProps;
+  defaultData?: CollectionProps;
   onRawDataCallback: (data: FormProps) => void;
   onFinished: () => void;
   children: ReactNode;
@@ -78,9 +79,9 @@ export const FormCollectionContextProvider = ({
       storage: defaultData?.cover?.storage || '',
       src: defaultData?.cover?.src || '',
       metadata: {
-        size: defaultData?.cover?.metadata.size || 0,
-        filename: defaultData?.cover?.metadata.filename || '',
-        mime_type: defaultData?.cover?.metadata.mime_type || '',
+        size: defaultData?.cover?.size || 0,
+        filename: defaultData?.cover?.filename || '',
+        mime_type: defaultData?.cover?.mime_type || '',
       },
     },
     step1: {
@@ -90,32 +91,26 @@ export const FormCollectionContextProvider = ({
           defaultData?.description &&
           Object.keys(defaultData?.description).length
             ? defaultData?.description
-            : ''
+            : '',
       },
       solved: !!defaultData?.description,
       error: false,
     },
     step2: {
       state: {
-        assets: defaultData?.assets || [],
+        assets: defaultData?.preview_assets || [],
       },
-      solved:
-        !!defaultData?.assets,
+      solved: !!defaultData?.preview_assets,
       error: false,
     },
     step3: {
       state: {
-        allow_ratings: !!defaultData?.allow_ratings,
-        comments_moderation:
-          defaultData?.comments_moderation || ('' as CommentsModerationType),
-        comments_order:
-          defaultData?.comments_order || ('newest' as CommentsOrderType),
-        tags: defaultData?.tags || [],
+        allow_ratings: false,
+        comments_moderation: '' as CommentsModerationType,
+        comments_order: 'newest' as CommentsOrderType,
+        tags: [],
       },
-      solved:
-        !!defaultData?.tags?.length &&
-        !!defaultData?.comments_moderation &&
-        !!defaultData?.comments_order,
+      solved: false,
       error: false,
     },
     step4: {
@@ -141,7 +136,7 @@ export const FormCollectionContextProvider = ({
 
   useEffect(() => {
     finished && onFinished();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [finished]);
 
   useEffect(() => {
@@ -164,7 +159,7 @@ export const FormCollectionContextProvider = ({
         disabled: false,
       });
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [finished, step1Answered, stepData.cover]);
 
   const onSetStepData = useCallback(

@@ -1,5 +1,8 @@
 import { useRouter } from 'next/router';
-import { AssetTabsPlaceholder, CollectionItemPlaceholder } from '@fafty-frontend/shared/ui';
+import {
+  AssetTabsPlaceholder,
+  CollectionItemPlaceholder,
+} from '@fafty-frontend/shared/ui';
 import qs from 'qs';
 import MainLayout from '../../layouts/main';
 import {
@@ -18,7 +21,7 @@ import {
 } from '../../components/assets/filters';
 import { lazy, Suspense, useEffect, useMemo, useState } from 'react';
 import dynamic from 'next/dynamic';
-import { InfinityLoadChecker } from '../../components/common/infinityLoadChecker';
+import { InfinityLoadChecker } from '../../components/common/InfinityLoadChecker';
 import { Panel } from '../../components/common/panel';
 import { Pills } from '../../components/assets/pills';
 import { useComponentDidUpdate } from '@fafty-frontend/usehooks';
@@ -49,9 +52,9 @@ const TABS = [
 
 const Tabs = lazy(() => import('../../components/asset/tabs'));
 
-
 const Price = dynamic<PriceFilterProps>(
-  () => import('../../components/assets/filters/price').then((mod) => mod.Price),
+  () =>
+    import('../../components/assets/filters/price').then((mod) => mod.Price),
   {
     ssr: false,
   }
@@ -167,7 +170,7 @@ const Collections = () => {
       },
       sort: TABS[tabIndex]?.value || TABS[0].value,
     });
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [localFiltersState]);
 
   useComponentDidUpdate(
@@ -203,21 +206,19 @@ const Collections = () => {
       <div className="flex items-start py-10 relative">
         <div className="flex w-[250px]  items-start flex-shrink-0 sticky top-[120px] pr-5">
           <div className="flex flex-col bg-white dark:bg-neutral-800 p-2.5  rounded w-full">
-            <Panel
-              title="Price"
-              initialState={!!localFiltersState?.filters?.price}
-            >
+            <Panel title="Price" initialState>
               <Price
-                value={localFiltersState?.filters?.price}
+                value={{
+                  currency: '',
+                  from: '',
+                  to: '',
+                }}
                 onChange={onChangeFiltersByKey('price')}
               />
             </Panel>
-            <Panel
-              title="Billing type"
-              initialState={!!localFiltersState?.filters?.billing_type}
-            >
+            <Panel title="Billing type" initialState>
               <BillingType
-                value={localFiltersState?.filters?.billing_type}
+                value={'fixed_price'}
                 onChange={onChangeFiltersByKey('billing_type')}
               />
             </Panel>
@@ -227,12 +228,16 @@ const Collections = () => {
           <div className="flex items-center justify-end">
             <div className="flex">
               <Suspense fallback={<AssetTabsPlaceholder />}>
-                <Tabs tabs={TABS} tabIndex={tabIndex} setTabIndex={onChangeTab} />
+                <Tabs
+                  tabs={TABS}
+                  tabIndex={tabIndex}
+                  setTabIndex={onChangeTab}
+                />
               </Suspense>
             </div>
           </div>
           <div className="flex my-4">
-            <Pills onClosePill={onClosePill} onClearFilters={onClearFilters} />
+            {/*<Pills onClosePill={onClosePill} onClearFilters={onClearFilters} />*/}
           </div>
           <div className="wrapper-items">
             <div className="items grided">
@@ -240,10 +245,7 @@ const Collections = () => {
                 ? Array.from({ length: 24 }, (_, index) => (
                     <CollectionItemPlaceholder key={index} />
                   ))
-                : items.map((item) => (
-                    <Item key={item.token} item={item} />
-                  ))
-              }
+                : items.map((item) => <Item key={item.token} item={item} />)}
             </div>
           </div>
           <InfinityLoadChecker

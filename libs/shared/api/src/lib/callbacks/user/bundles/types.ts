@@ -1,7 +1,3 @@
-import {
-  BillingTypeValue,
-  PriceFiltersValue,
-} from '../../../components/assets/filters';
 import { BundleProps } from '../../bundle/types';
 
 type PaginateProps = {
@@ -14,6 +10,8 @@ export type GetUserBundlesResponseProps = {
   paginate: PaginateProps;
   records: BundleProps[];
 };
+
+export type BillingTypeValue = 'fixed_price' | 'auction' | null;
 
 export type GetUserBundlesParamsProps = {
   limit: number;

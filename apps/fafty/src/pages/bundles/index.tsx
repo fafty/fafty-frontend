@@ -1,5 +1,8 @@
 import { useRouter } from 'next/router';
-import { AssetTabsPlaceholder, BundleItemPlaceholder } from '@fafty-frontend/shared/ui';
+import {
+  AssetTabsPlaceholder,
+  BundleItemPlaceholder,
+} from '@fafty-frontend/shared/ui';
 import qs from 'qs';
 import MainLayout from '../../layouts/main';
 import {
@@ -19,7 +22,7 @@ import {
 import { lazy, Suspense, useEffect, useMemo, useState } from 'react';
 import dynamic from 'next/dynamic';
 // import { TabsProps } from '../../components/asset/tabs';
-import { InfinityLoadChecker } from '../../components/common/infinityLoadChecker';
+import { InfinityLoadChecker } from '../../components/common/InfinityLoadChecker';
 import { Panel } from '../../components/common/panel';
 import { Pills } from '../../components/assets/pills';
 import { useComponentDidUpdate } from '@fafty-frontend/usehooks';
@@ -46,21 +49,21 @@ const TABS = [
   {
     title: 'Max price',
     value: 'max_price',
-  }
+  },
 ];
 
 // const Tabs = dynamic<TabsProps>(
 //   () => import('../../components/asset/tabs').then((mod) => mod.Tabs),
-//   { 
+//   {
 //     loading: () => <AssetTabsPlaceholder />,
 //     ssr: false,
 //   }
 // );
 const Tabs = lazy(() => import('../../components/asset/tabs'));
 
-
 const Price = dynamic<PriceFilterProps>(
-  () => import('../../components/assets/filters/price').then((mod) => mod.Price),
+  () =>
+    import('../../components/assets/filters/price').then((mod) => mod.Price),
   {
     ssr: false,
   }
@@ -90,7 +93,6 @@ type QueryFiltersProps = {
 
 const Bundles = () => {
   const { replace, asPath } = useRouter();
-  
 
   const search = asPath.split('?')[1];
 
@@ -179,14 +181,10 @@ const Bundles = () => {
     call({
       limit: LIMIT,
       offset: paginate.offset,
-      filters: {
-        currency: filters?.price?.currency,
-        price: { lg: filters?.price?.from, ge: filters?.price?.to },
-        billing_type: filters?.billing_type,
-      },
+      filters: {},
       sort: TABS[tabIndex]?.value || TABS[0].value,
     });
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [localFiltersState]);
 
   useComponentDidUpdate(
@@ -247,7 +245,11 @@ const Bundles = () => {
           <div className="flex items-center justify-end">
             <div className="flex">
               <Suspense fallback={<AssetTabsPlaceholder />}>
-                <Tabs tabs={TABS} tabIndex={tabIndex} setTabIndex={onChangeTab} />
+                <Tabs
+                  tabs={TABS}
+                  tabIndex={tabIndex}
+                  setTabIndex={onChangeTab}
+                />
               </Suspense>
             </div>
           </div>
@@ -260,9 +262,7 @@ const Bundles = () => {
                 ? Array.from({ length: 24 }, (_, index) => (
                     <BundleItemPlaceholder key={index} />
                   ))
-                : items.map((item) => (
-                    <Item key={item.token} item={item} />
-                  ))}
+                : items.map((item) => <Item key={item.token} item={item} />)}
             </div>
           </div>
           <InfinityLoadChecker

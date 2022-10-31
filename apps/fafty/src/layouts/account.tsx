@@ -15,7 +15,7 @@ import FormCollectionModal from '../components/modals/forms/collection';
 
 import { GalleryIcon } from '@remixicons/react/line';
 import classNames from 'classnames';
-import { useRouter } from 'next/router'
+import { useRouter } from 'next/router';
 
 type Props = {
   children: ReactNode;
@@ -28,7 +28,7 @@ const AccountLayout = ({ children, title, description }: Props) => {
   const [openedFormAssetModal, setOpenedFormAssetModal] = useState(false);
   const [openedFormCollectionModal, setOpenedFormCollectionModal] = useState(false);
   const [openedFormBundleModal, setOpenedFormBundleModal] = useState(false);
-  const router = useRouter()
+  const router = useRouter();
 
   const auth = useAuth();
 
@@ -96,7 +96,7 @@ const AccountLayout = ({ children, title, description }: Props) => {
         isAuth={!!auth.principal?.toString()}
       />
       <>
-        <nav className="hidden lg:block fixed z-20 inset-0 top-[5.12rem] left-[max(0px,calc(50%-45rem))] right-auto w-[15.5rem] pb-10 px-2 overflow-y-auto backdrop-blur bg-white/95 dark:bg-neutral-800/95 border-r border-gray-100 dark:border-neutral-700">
+        <nav className="hidden lg:block fixed z-20 inset-0 top-[5.12rem] left-0 right-auto w-[15.5rem] pb-10 px-2 overflow-y-auto backdrop-blur bg-white/95 dark:bg-neutral-800/95 border-r border-gray-100 dark:border-neutral-700">
           <div className="md:flex-col md:items-stretch md:min-h-full md:flex-nowrap px-0 flex flex-wrap items-center justify-between w-full mx-auto">
             {/* Toggler */}
             <button
@@ -152,19 +152,13 @@ const AccountLayout = ({ children, title, description }: Props) => {
               {/* Navigation */}
 
               <ul className="md:flex-col md:min-w-full list-none  relative grid gap-2 p-1 grid-cols-1">
-                <MenuItem
-                  path="/account/dashboard"
-                  icon={Squares2X2Icon}
-                >
+                <MenuItem path="/account/dashboard" icon={Squares2X2Icon}>
                   Dashboard
                 </MenuItem>
                 <MenuItem path="/account/assets" icon={GalleryIcon}>
                   Assets
                 </MenuItem>
-                <MenuItem
-                  path="/account/collections"
-                  icon={GalleryIcon}
-                >
+                <MenuItem path="/account/collections" icon={GalleryIcon}>
                   Collections
                 </MenuItem>
                 <MenuItem path="/account/bundles" icon={RectangleStackIcon}>

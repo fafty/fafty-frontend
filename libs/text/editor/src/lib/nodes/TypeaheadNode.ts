@@ -1,4 +1,4 @@
-import type { EditorConfig } from 'lexical';
+import type { EditorConfig, TextModeType } from 'lexical';
 
 import { TextNode } from 'lexical';
 
@@ -19,5 +19,5 @@ export class TypeaheadNode extends TextNode {
 }
 
 export function $createTypeaheadNode(text: string): TypeaheadNode {
-  return new TypeaheadNode(text).setMode('inert');
+  return new TypeaheadNode(text).setMode('normal');
 }

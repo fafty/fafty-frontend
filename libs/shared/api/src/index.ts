@@ -1,6 +1,11 @@
 export { default as api } from './lib';
 export { default as useAsync } from './lib/useAsync';
-export { getAssetOwners, getAssetInfo, getAsset, putAsset } from './lib/callbacks/asset';
+export {
+  getAssetOwners,
+  getAssetInfo,
+  getAsset,
+  putAsset,
+} from './lib/callbacks/asset';
 export { default as getAssets } from './lib/callbacks/assets';
 export {
   getBundleAssetsBySlug,
@@ -11,7 +16,7 @@ export { default as getBundles } from './lib/callbacks/bundles';
 export {
   getCollectionAssetsBySlug,
   getCollection,
-  putCollection
+  putCollection,
 } from './lib/callbacks/collection';
 export { default as getCollections } from './lib/callbacks/collections';
 
@@ -21,30 +26,30 @@ export { default as getUserBundles } from './lib/callbacks/user/bundles';
 
 export { default as getSearchResult } from './lib/callbacks/search';
 export { getPopularTags, getTagsBySearch } from './lib/callbacks/tags';
-export {
+export type {
   BundleProps,
   GetBundleResponseProps,
   GetBundleParamsProps,
   GetBundleAssetsBySlugParamsProps,
   GetBundleAssetsBySlugResponseProps,
 } from './lib/callbacks/bundle/types';
-export {
+export type {
   GetBundlesParamsProps,
   GetBundlesResponseProps,
 } from './lib/callbacks/bundles/types';
-export {
+export type {
   CollectionProps,
   GetCollectionResponseProps,
   GetCollectionParamsProps,
   GetCollectionAssetsBySlugParamsProps,
   GetCollectionAssetsBySlugResponseProps,
-  PutCollectionParamsProps
+  PutCollectionParamsProps,
 } from './lib/callbacks/collection/types';
-export {
+export type {
   GetCollectionsParamsProps,
   GetCollectionsResponseProps,
 } from './lib/callbacks/collections/types';
-export {
+export type {
   AssetMediaProps as AssetMedia,
   AssetProps,
   AssetPutParamsProps,
@@ -54,28 +59,28 @@ export {
   CommentsModerationType,
   AssetOwnersResponseProps,
 } from './lib/callbacks/asset/types';
-export {
+export type {
   GetAssetsParamsProps,
   GetAssetsResponseProps,
 } from './lib/callbacks/assets/types';
-export {
+export type {
   GetUserAssetsParamsProps,
   GetUserAssetsCallbackProps,
   GetUserAssetsResponseProps,
 } from './lib/callbacks/user/assets/types';
-export {
+export type {
   GetUserBundlesParamsProps,
   GetUserBundlesCallbackProps,
   GetUserBundlesResponseProps,
 } from './lib/callbacks/user/bundles/types';
-export {
+export type {
   GetUserCollectionsParamsProps,
   GetUserCollectionsCallbackProps,
   GetUserCollectionsResponseProps,
 } from './lib/callbacks/user/collections/types';
-export {
+export type {
   TagProps,
   GetSearchTagsResponseProps,
   GetPopularTagsResponseProps,
 } from './lib/callbacks/tags/types';
-export { SearchResultResponseProps } from './lib/callbacks/search/types';
+export type { SearchResultResponseProps } from './lib/callbacks/search/types';

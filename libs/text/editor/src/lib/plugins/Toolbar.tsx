@@ -1,5 +1,5 @@
 import { useLexicalComposerContext } from '@lexical/react/LexicalComposerContext';
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import {
   COMMAND_PRIORITY_CRITICAL,
   INDENT_CONTENT_COMMAND,
@@ -17,10 +17,7 @@ import {
   $createParagraphNode,
   $getNodeByKey,
 } from 'lexical';
-import {
-  $isParentElementRTL,
-  $wrapLeafNodesInElements,
-} from '@lexical/selection';
+import { $isParentElementRTL, $wrapNodes } from '@lexical/selection';
 import { $getNearestNodeOfType, mergeRegister } from '@lexical/utils';
 import {
   INSERT_ORDERED_LIST_COMMAND,
@@ -146,7 +143,7 @@ function BlockOptionsDropdown({
           const selection = $getSelection();
 
           if ($isRangeSelection(selection)) {
-            $wrapLeafNodesInElements(selection, command);
+            $wrapNodes(selection, command);
           }
         });
       }
@@ -281,6 +278,7 @@ function AlignOptionsDropdown({
     },
   ];
   const action = (value: string) => {
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore Correct types, but since they're dynamic TS doesn't like it.
     editor?.dispatchCommand(FORMAT_ELEMENT_COMMAND, value);
   };
@@ -553,6 +551,7 @@ export default function ToolbarPlugin(): JSX.Element {
           } disabled:opacity-75 h-7 w-7 md:h-8 md:w-8 rounded-lg box-border justify-center p-0 m-0 cursor-pointer flex   dark:text-gray-200 touch-manipulation items-center select-none border-0 list-none outline-none decoration-0 transition duration-250 ease-in-out`}
           key={button.type}
           onClick={() => {
+            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
             // @ts-ignore Correct types, but since they're dynamic TS doesn't like it.
             activeEditor.dispatchCommand(button.command, null);
           }}
@@ -589,6 +588,7 @@ export default function ToolbarPlugin(): JSX.Element {
               } h-7 w-7 md:h-8 md:w-8 rounded-md lg:rounded-lg hover:bg-blue-100 dark:hover:bg-neutral-600 box-border justify-center p-0 m-0 cursor-pointer flex   dark:text-gray-200 touch-manipulation items-center select-none border-0 list-none outline-none decoration-0 transition duration-250 ease-in-out`}
               key={button.type}
               onClick={() => {
+                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
                 // @ts-ignore Correct types, but since they're dynamic TS doesn't like it.
                 activeEditor.dispatchCommand(FORMAT_TEXT_COMMAND, button.type);
               }}
@@ -613,6 +613,7 @@ export default function ToolbarPlugin(): JSX.Element {
               className="h-7 w-7 md:h-8 md:w-8 rounded-md lg:rounded-lg hover:bg-blue-100 dark:hover:bg-neutral-600 box-border justify-center p-0 m-0 cursor-pointer flex   dark:text-gray-200 touch-manipulation items-center select-none border-0 list-none outline-none decoration-0 transition duration-250 ease-in-out"
               key={button.type}
               onClick={() => {
+                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
                 // @ts-ignore Correct types, but since they're dynamic TS doesn't like it.
                 activeEditor.dispatchCommand(button.command, null);
               }}

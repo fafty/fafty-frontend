@@ -8,7 +8,7 @@ import {
 // import { useComponentDidUpdate } from '@fafty-frontend/usehooks';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import Sortable, { MultiDrag } from 'sortablejs';
-import { InfinityLoadChecker } from '../../common/infinityLoadChecker';
+import { InfinityLoadChecker } from '../../common/InfinityLoadChecker';
 import Image from 'next/future/image';
 import { FunnelIcon } from '@heroicons/react/24/outline';
 import classNames from 'classnames';
@@ -156,7 +156,7 @@ const DragAndDropAssets = (props: DragAndDropAssetsProps) => {
         offset: paginate.offset,
       },
     });
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [localFiltersState]);
 
   // useComponentDidUpdate(
@@ -189,7 +189,7 @@ const DragAndDropAssets = (props: DragAndDropAssetsProps) => {
           return currentItem.token === item?.token;
         })
     ) as AssetProps[];
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data?.paginate?.count, data?.records, localFiltersState.paginate.offset]);
 
   useEffect(() => {
@@ -381,7 +381,7 @@ const DragAndDropAssets = (props: DragAndDropAssetsProps) => {
                 'border-blue-700': onDragOverSortableCollectionAssets,
                 'border-gray-200 bg-gray-100 dark:border-neutral-900 dark:bg-neutral-900/50':
                   !onDragOverSortableCollectionAssets && !hasError,
-                  'border-red-500': hasError
+                'border-red-500': hasError,
               }
             )}
           >

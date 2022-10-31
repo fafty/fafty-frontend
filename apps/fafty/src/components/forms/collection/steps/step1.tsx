@@ -64,7 +64,7 @@ const SelectStep1 = ({ Context }: { Context: Context<ContextProps> }) => {
     defaultValues: {
       ...stepData?.step1?.state,
     },
-  });
+  } as never);
 
   /**
    *  Local State
@@ -131,7 +131,7 @@ const SelectStep1 = ({ Context }: { Context: Context<ContextProps> }) => {
         },
       });
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isValid]);
 
   return (

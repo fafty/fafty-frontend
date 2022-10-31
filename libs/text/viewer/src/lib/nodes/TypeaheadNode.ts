@@ -19,5 +19,5 @@ export class TypeaheadNode extends TextNode {
 }
 
 export function $createTypeaheadNode(text: string): TypeaheadNode {
-  return new TypeaheadNode(text).setMode('inert');
+  return new TypeaheadNode(text).setMode('normal');
 }

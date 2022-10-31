@@ -15,7 +15,7 @@ import { List } from 'masonic';
 
 import { useEffect, useMemo, useState } from 'react';
 import { useComponentDidUpdate } from '@fafty-frontend/usehooks';
-import { InfinityLoadChecker } from '../../../components/common/infinityLoadChecker';
+import { InfinityLoadChecker } from '../../../components/common/InfinityLoadChecker';
 import {
   EyeIcon,
   FunnelIcon,
@@ -112,7 +112,7 @@ const AccountBundles = () => {
         offset: paginate.offset,
       },
     });
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [localFiltersState]);
 
   useComponentDidUpdate(
@@ -135,7 +135,6 @@ const AccountBundles = () => {
     visibility: string | undefined;
     date: string | undefined;
   }) => {
-    
     switch (visibility) {
       case 'public':
         return (
@@ -211,7 +210,8 @@ const AccountBundles = () => {
         onMouseLeave={() => setIsHovered(false)}
       >
         <div className="flex flex-row w-full p-1 z-2 ml-7 items-center overflow-hidden">
-          <div className="relative flex h-17 w-17 flex-shrink-0 items-center justify-cente rounded focus:outline-none bg-neutral-200 dark:bg-neutral-700"
+          <div
+            className="relative flex h-17 w-17 flex-shrink-0 items-center justify-cente rounded focus:outline-none bg-neutral-200 dark:bg-neutral-700"
             style={{ backgroundColor: item.cover.dominant_color || '' }}
           >
             <Image
@@ -329,7 +329,9 @@ const AccountBundles = () => {
                 >
                   <div
                     className="w-8 h-8 bg-base-300"
-                    style={{ backgroundColor: asset.media.dominant_color || '' }}
+                    style={{
+                      backgroundColor: asset.media.dominant_color || '',
+                    }}
                   >
                     <Image
                       className="relative inline-block h-9 w-9 rounded-full ring-1 ring-white"
@@ -364,9 +366,7 @@ const AccountBundles = () => {
         <div className="flex items-center justify-left">
           <Restrictions restrictions={item.restrictions} />
         </div>
-        <div className="flex items-center justify-left">
-          {item.blockchain}
-        </div>
+        <div className="flex items-center justify-left">{item.blockchain}</div>
       </div>
     );
   };
@@ -385,10 +385,12 @@ const AccountBundles = () => {
         </div>
         <div className="flex items-center justify-left">
           <div className="flex overflow-hidden -space-x-4">
-            { Array.from({ length: 4 }, (_, index) => (
-              <div key={index} className="relative flex-inline rounded-full overflow-hidden">
-                <div className="w-9 h-9 bg-neutral-300 dark:bg-neutral-700 rounded-sm animate-pulse">
-                </div>
+            {Array.from({ length: 4 }, (_, index) => (
+              <div
+                key={index}
+                className="relative flex-inline rounded-full overflow-hidden"
+              >
+                <div className="w-9 h-9 bg-neutral-300 dark:bg-neutral-700 rounded-sm animate-pulse"></div>
               </div>
             ))}
           </div>
@@ -416,7 +418,7 @@ const AccountBundles = () => {
     return Array.from(
       { length: count },
       (_, index) => data?.records[index] ?? {}
-    ) as  BundleProps[];
+    ) as BundleProps[];
   }, [data?.paginate?.count, data?.records, localFiltersState.paginate.offset]);
 
   const renderMasonry = useMemo(() => {
@@ -444,7 +446,7 @@ const AccountBundles = () => {
         }}
       />
     );
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data?.paginate?.count, isSuccess, items]);
 
   return (
@@ -493,9 +495,7 @@ const AccountBundles = () => {
                 <div className="truncate">Access Options</div>
                 <div className="truncate">Restrictions</div>
                 <div className="truncate items-center justify-center">
-                  <div>
-                    Blockchain
-                  </div>
+                  <div>Blockchain</div>
                 </div>
               </div>
             </div>

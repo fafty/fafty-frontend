@@ -103,10 +103,16 @@ const NotificationProvider = ({
   return (
     <Context.Provider value={contextValue}>
       {children}
-      {!!notifications.filter((notification) => notification.position === 'bottom-left' as NotificationPositionType).length && (
+      {!!notifications.filter(
+        (notification) =>
+          notification.position === ('bottom-left' as NotificationOptions)
+      ).length && (
         <div className="fixed bottom-2 left-2 z-40 ">
           {notifications
-            .filter((notification) => notification.position === 'bottom-left' as NotificationPositionType)
+            .filter(
+              (notification) =>
+                notification.position === ('bottom-left' as NotificationOptions)
+            )
             .map((notification) => {
               const { options, ...rest } = notification;
               return (
@@ -125,10 +131,17 @@ const NotificationProvider = ({
             })}
         </div>
       )}
-      {!!notifications.filter((notification) => notification.position === 'bottom-center' as NotificationPositionType).length && (
+      {!!notifications.filter(
+        (notification) =>
+          notification.position === ('bottom-center' as NotificationOptions)
+      ).length && (
         <div className="fixed bottom-2 inset-x-0 flex items-center justify-center z-40 ">
           {notifications
-            .filter((notification) => notification.position === 'bottom-center' as NotificationPositionType)
+            .filter(
+              (notification) =>
+                notification.position ===
+                ('bottom-center' as NotificationOptions)
+            )
             .map((notification) => {
               const { options, ...rest } = notification;
               return (

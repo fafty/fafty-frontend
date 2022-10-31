@@ -1,5 +1,8 @@
 import { useRouter } from 'next/router';
-import { AssetItemPlaceholder, AssetTabsPlaceholder } from '@fafty-frontend/shared/ui';
+import {
+  AssetItemPlaceholder,
+  AssetTabsPlaceholder,
+} from '@fafty-frontend/shared/ui';
 import qs from 'qs';
 import MainLayout from '../../layouts/main';
 import {
@@ -19,10 +22,10 @@ import {
 } from '../../components/assets/filters';
 import { lazy, Suspense, useEffect, useMemo, useState } from 'react';
 import dynamic from 'next/dynamic';
-import { InfinityLoadChecker } from '../../components/common/infinityLoadChecker';
 import { Panel } from '../../components/common/panel';
 import { Pills } from '../../components/assets/pills';
 import { useComponentDidUpdate } from '@fafty-frontend/usehooks';
+import { InfinityLoadChecker } from '../../components/common/InfinityLoadChecker';
 
 export type FiltersValues = {
   price?: PriceFiltersValue;
@@ -61,7 +64,8 @@ const TABS = [
 const Tabs = lazy(() => import('../../components/asset/tabs'));
 
 const Price = dynamic<PriceFilterProps>(
-  () => import('../../components/assets/filters/price').then((mod) => mod.Price),
+  () =>
+    import('../../components/assets/filters/price').then((mod) => mod.Price),
   {
     ssr: false,
   }
@@ -186,7 +190,7 @@ const Assets = () => {
       },
       sort: TABS[tabIndex]?.value || TABS[0].value,
     });
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [localFiltersState]);
 
   useComponentDidUpdate(
@@ -368,7 +372,11 @@ const Assets = () => {
           <div className="flex items-center justify-end">
             <div className="flex">
               <Suspense fallback={<AssetTabsPlaceholder />}>
-                <Tabs tabs={TABS} tabIndex={tabIndex} setTabIndex={onChangeTab} />
+                <Tabs
+                  tabs={TABS}
+                  tabIndex={tabIndex}
+                  setTabIndex={onChangeTab}
+                />
               </Suspense>
             </div>
           </div>
@@ -381,9 +389,7 @@ const Assets = () => {
                 ? Array.from({ length: 24 }, (_, index) => (
                     <AssetItemPlaceholder key={index} />
                   ))
-                : items.map((item) => (
-                    <Item key={item.token} item={item} />
-                  ))}
+                : items.map((item) => <Item key={item.token} item={item} />)}
             </div>
           </div>
           <InfinityLoadChecker

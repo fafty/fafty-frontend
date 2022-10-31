@@ -1,7 +1,7 @@
 import { Modal } from '@fafty-frontend/shared/modals';
 import FormCollection from '../../forms/collection/main';
 import { FormCollectionContextProvider } from '../../forms/collection/provider';
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import {
   api,
   useAsync,
@@ -9,6 +9,7 @@ import {
   getCollection,
   GetCollectionResponseProps,
   PutCollectionParamsProps,
+  GetCollectionParamsProps,
 } from '@fafty-frontend/shared/api';
 import { useNotifications } from '@fafty-frontend/notifications';
 
@@ -26,11 +27,14 @@ const FormCollectionModal = ({ title, isOpened, onClose, slug }: Props) => {
     data: preloadedCollection,
     call: callPreloadCollection,
     isSuccess,
-  } = useAsync<GetCollectionResponseProps, string>({
+  } = useAsync<GetCollectionResponseProps, GetCollectionParamsProps>({
     callback: getCollection,
   });
 
-  const { call: putCollectionData } = useAsync<GetCollectionResponseProps, PutCollectionParamsProps>({
+  const { call: putCollectionData } = useAsync<
+    GetCollectionResponseProps,
+    PutCollectionParamsProps
+  >({
     callback: (params?: PutCollectionParamsProps) => putCollection(params),
   });
 
@@ -98,9 +102,9 @@ const FormCollectionModal = ({ title, isOpened, onClose, slug }: Props) => {
 
   useEffect(() => {
     if (slug) {
-      callPreloadCollection(slug);
+      callPreloadCollection({ slug });
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [slug]);
 
   return (

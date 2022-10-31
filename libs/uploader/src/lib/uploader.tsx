@@ -268,19 +268,19 @@ const Uploader = ({
         fallbackTolerance: 10, // Specify in pixels how far the mouse should move before it's considered as a drag.
         // Element dragging started
         onStart: function (/**Event*/ evt) {
-          evt.oldIndex; // element index within parent
+          // evt.oldIndex; // element index within parent
         },
 
         // Element dragging ended
         onEnd: function (/**Event*/ evt) {
-          evt.to; // target list
-          evt.from; // previous list
-          evt.oldIndex; // element's old index within old parent
-          evt.newIndex; // element's new index within new parent
-          evt.oldDraggableIndex; // element's old index within old parent, only counting draggable elements
-          evt.newDraggableIndex; // element's new index within new parent, only counting draggable elements
-          evt.clone; // the clone element
-          evt.pullMode; // when item is in another sortable: `"clone"` if cloning, `true` if moving
+          // evt.to; // target list
+          // evt.from; // previous list
+          // evt.oldIndex; // element's old index within old parent
+          // evt.newIndex; // element's new index within new parent
+          // evt.oldDraggableIndex; // element's old index within old parent, only counting draggable elements
+          // evt.newDraggableIndex; // element's new index within new parent, only counting draggable elements
+          // evt.clone; // the clone element
+          // evt.pullMode; // when item is in another sortable: `"clone"` if cloning, `true` if moving
         },
       });
     }
@@ -376,17 +376,23 @@ const Uploader = ({
             addVideo(file);
           }
         })
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore
         .on('preprocess-progress', (file: UppyFile) => {
           changeThumbnailState(file.id, 'compressing');
         })
         .on('preprocess-complete', (file) => {
-          changeThumbnailState(file.id, 'in-upload-queue');
+          if (file) {
+            changeThumbnailState(file.id, 'in-upload-queue');
+          }
         })
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore
         .on('upload-started', (file: UppyFile) => {
           changeThumbnailState(file.id, 'uploading');
         })
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
         .on('upload-success', (file: UppyFile, _response: SuccessResponse) => {
           changeThumbnailState(file.id, 'complete');
           // @ts-expect-error Object is of type 'unknown'.
@@ -630,7 +636,7 @@ const Uploader = ({
 
     // Check if the "type" of the datatransfer object includes files. If not, deny drop.
     const { types } = event.dataTransfer;
-    const hasFiles = types.some((type) => type === 'Files');
+    const hasFiles = types.some((type: string) => type === 'Files');
     const { allowNewUpload } = engine.getState();
     if (!hasFiles || !allowNewUpload) {
       // eslint-disable-next-line no-param-reassign

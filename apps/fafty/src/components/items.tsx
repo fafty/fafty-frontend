@@ -1,19 +1,26 @@
 import React, { useState, useRef, useEffect } from 'react';
-import {default as AssetItem } from './items/asset/item';
-import {default as BundleItem } from './items/bundle/item';
-import {default as CollectionItem} from './items/collection/item';
+import { default as AssetItem } from './items/asset/item';
+import { default as BundleItem } from './items/bundle/item';
+import { default as CollectionItem } from './items/collection/item';
 import isClient from '../utils/isClient';
 import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/24/outline';
 import classNames from 'classnames';
 import { useDebouncedCallback } from '@fafty-frontend/usehooks';
-import { AssetProps, BundleProps, CollectionProps } from '@fafty-frontend/shared/api';
+import {
+  AssetProps,
+  BundleProps,
+  CollectionProps,
+} from '@fafty-frontend/shared/api';
 
-interface Props <T> {
+interface Props<T> {
   type: 'asset' | 'bundle' | 'collection';
-  items: T
+  items: T;
 }
 
-const Items = <T extends AssetProps[] | BundleProps[] | CollectionProps[]>({ type, items }: Props<T>): JSX.Element => {
+const Items = <T extends AssetProps[] | BundleProps[] | CollectionProps[]>({
+  type,
+  items,
+}: Props<T>): JSX.Element => {
   const itemsContainerRef = useRef<HTMLDivElement | null>(null);
   const [arrows, setArrows] = useState({ left: false, right: false });
 
@@ -65,7 +72,7 @@ const Items = <T extends AssetProps[] | BundleProps[] | CollectionProps[]>({ typ
         });
       }
     };
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   /**
@@ -147,11 +154,18 @@ const Items = <T extends AssetProps[] | BundleProps[] | CollectionProps[]>({ typ
               items.map((item, index) => {
                 switch (type) {
                   case 'asset':
-                    return <AssetItem key={index} item={item}/>;
+                    return <AssetItem key={index} item={item as AssetProps} />;
                   case 'bundle':
-                    return <BundleItem key={index} item={item} />;
+                    return (
+                      <BundleItem key={index} item={item as BundleProps} />
+                    );
                   case 'collection':
-                    return <CollectionItem key={index} item={item} />;
+                    return (
+                      <CollectionItem
+                        key={index}
+                        item={item as CollectionProps}
+                      />
+                    );
                   default:
                     return null;
                 }

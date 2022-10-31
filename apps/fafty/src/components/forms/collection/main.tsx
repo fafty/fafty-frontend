@@ -111,7 +111,7 @@ const FormCollection = ({
       }).finally(() => {
         setFinished?.(true);
       });
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data, setFinished]);
 
   const handleNext = (activeStep: number, steps: number) => {
@@ -158,8 +158,6 @@ const FormCollection = ({
               state: {
                 name: '',
                 description: null,
-                unlockable_content: null,
-                sensitive_content: false,
               },
               solved: true,
               error: false,

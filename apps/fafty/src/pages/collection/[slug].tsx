@@ -21,8 +21,11 @@ import {
   PriceFilterProps,
   PriceFiltersValue,
 } from '../../components/assets/filters';
-import { InfinityLoadChecker } from '../../components/common/infinityLoadChecker';
-import { AssetItemPlaceholder, AssetTabsPlaceholder } from '@fafty-frontend/shared/ui';
+import { InfinityLoadChecker } from '../../components/common/InfinityLoadChecker';
+import {
+  AssetItemPlaceholder,
+  AssetTabsPlaceholder,
+} from '@fafty-frontend/shared/ui';
 import { useComponentDidUpdate } from '@fafty-frontend/usehooks';
 import dynamic from 'next/dynamic';
 import qs from 'qs';
@@ -62,9 +65,9 @@ const TABS = [
 // );
 const Tabs = lazy(() => import('../../components/asset/tabs'));
 
-
 const Price = dynamic<PriceFilterProps>(
-  () => import('../../components/assets/filters/price').then((mod) => mod.Price),
+  () =>
+    import('../../components/assets/filters/price').then((mod) => mod.Price),
   {
     ssr: false,
   }
@@ -82,8 +85,11 @@ const mapper = (
         ...prev.record,
         assets: {
           paginate: assetsData.record?.assets?.paginate,
-          records: [...prev.record.assets.records, ...assetsData.record.assets.records],
-        }
+          records: [
+            ...prev.record.assets.records,
+            ...assetsData.record.assets.records,
+          ],
+        },
       },
     };
   }
@@ -152,7 +158,8 @@ const Collection = () => {
 
   const allowLoad = assetsData
     ? !isAssetsLoading &&
-      assetsData?.record.assets.records.length < assetsData?.record.assets.paginate?.count
+      assetsData?.record.assets.records.length <
+        assetsData?.record.assets.paginate?.count
     : false;
 
   useEffect(() => {
@@ -160,7 +167,7 @@ const Collection = () => {
       call({ slug });
       callAssets({ slug, limit: LIMIT, offset: 0 });
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isReady]);
 
   const tabIndex = useMemo(() => {
@@ -225,7 +232,7 @@ const Collection = () => {
         },
         sort: TABS[tabIndex]?.value || TABS[0].value,
       });
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [localFiltersState]);
 
   useComponentDidUpdate(
@@ -252,7 +259,7 @@ const Collection = () => {
       { length: count },
       (_, index) => assetsData?.record.assets.records[index] ?? {}
     ) as AssetProps[];
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
     assetsData?.record?.assets?.paginate?.count,
     assetsData?.record?.assets?.records,
@@ -279,16 +286,20 @@ const Collection = () => {
             )}
           </div>
           <div className="flex flex-col ml-5">
-            <h3 className="text-2xl font-bold">
-              { data?.record.name }
-            </h3>
-            {data?.record?.description && isObjectEmpty(data?.record.description) ? (
-                <span className="text-xs font-medium opacity-50">
-                  No description
-                </span>
-              ) : (
-                data?.record?.description && <Viewer namespace={'description'} editorState={data?.record.description as string} />
-              )}
+            <h3 className="text-2xl font-bold">{data?.record.name}</h3>
+            {data?.record?.description &&
+            isObjectEmpty(data?.record.description) ? (
+              <span className="text-xs font-medium opacity-50">
+                No description
+              </span>
+            ) : (
+              data?.record?.description && (
+                <Viewer
+                  namespace={'description'}
+                  editorState={data?.record.description as string}
+                />
+              )
+            )}
             {/* {data?.record &&
               Object.entries(data.record).map(([key, value]) => (
                 <div key={key} className="flex">
@@ -328,7 +339,11 @@ const Collection = () => {
               <div className="flex items-center justify-end">
                 <div className="flex">
                   <Suspense fallback={<AssetTabsPlaceholder />}>
-                    <Tabs tabs={TABS} tabIndex={tabIndex} setTabIndex={onChangeTab} />
+                    <Tabs
+                      tabs={TABS}
+                      tabIndex={tabIndex}
+                      setTabIndex={onChangeTab}
+                    />
                   </Suspense>
                 </div>
               </div>

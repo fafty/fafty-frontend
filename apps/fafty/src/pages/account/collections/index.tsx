@@ -15,7 +15,7 @@ import { List } from 'masonic';
 
 import { useEffect, useMemo, useState } from 'react';
 import { useComponentDidUpdate } from '@fafty-frontend/usehooks';
-import { InfinityLoadChecker } from '../../../components/common/infinityLoadChecker';
+import { InfinityLoadChecker } from '../../../components/common/InfinityLoadChecker';
 import {
   EyeIcon,
   FunnelIcon,

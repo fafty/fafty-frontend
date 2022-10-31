@@ -1,7 +1,3 @@
-import {
-  BillingTypeValue,
-  PriceFiltersValue,
-} from '../../../components/assets/filters';
 import { CollectionProps } from '../../collection/types';
 
 type PaginateProps = {
@@ -14,6 +10,8 @@ export type GetUserCollectionsResponseProps = {
   paginate: PaginateProps;
   records: CollectionProps[];
 };
+
+export type BillingTypeValue = 'fixed_price' | 'auction' | null;
 
 export type GetUserCollectionsParamsProps = {
   limit: number;

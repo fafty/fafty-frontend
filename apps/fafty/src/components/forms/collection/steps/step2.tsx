@@ -3,7 +3,7 @@ import { useEffect, useContext, useLayoutEffect, Context } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import DragAndDropAssets from '../../common/dragAndDropAssets';
 import { childVariants, variants } from '../constants';
-import { ContextProps } from '../types';
+import { ContextProps, Step2Props } from '../types';
 
 const SelectStep2 = ({ Context }: { Context: Context<ContextProps> }) => {
   /**
@@ -28,7 +28,7 @@ const SelectStep2 = ({ Context }: { Context: Context<ContextProps> }) => {
     mode: 'onChange',
     reValidateMode: 'onChange',
     shouldFocusError: true,
-  });
+  } as never);
 
   const formFields = watch();
   /**
@@ -71,7 +71,7 @@ const SelectStep2 = ({ Context }: { Context: Context<ContextProps> }) => {
     setStepData({
       step2: {
         solved: isValidStore,
-        state: getValues(),
+        state: getValues() as Step2Props,
         error: !isValidStore,
       },
     });
