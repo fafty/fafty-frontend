@@ -146,6 +146,7 @@
     "nx": "15.0.0",
     "postcss": "8.4.16",
     "prettier": "2.7.1",
+    "prettier-plugin-tailwindcss": "^0.1.13",
     "react-test-renderer": "18.2.0",
     "remixicons": "^1.0.0",
     "sortablejs": "^1.15.0",

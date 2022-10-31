@@ -29,7 +29,7 @@ import {
   childVariants,
   variants,
 } from '../../../components/forms/asset/constants';
-import FormAssetModal from '../../../components/modals/forms/asset';
+import FormCollectionModal from '../../../components/modals/forms/collection';
 
 const isObjectEmpty = (value: object | string | null) => {
   return (
@@ -65,7 +65,7 @@ type QueryFiltersProps = {
 
 const AccountCollections = () => {
   const { asPath } = useRouter();
-  const [openedFormAssetModal, setOpenedFormAssetModal] = useState({
+  const [openedFormCollectionModal, setOpenedFormCollectionModal] = useState({
     open: false,
     slug: '',
     title: '',
@@ -112,7 +112,7 @@ const AccountCollections = () => {
         offset: paginate.offset,
       },
     });
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [localFiltersState]);
 
   useComponentDidUpdate(
@@ -141,7 +141,7 @@ const AccountCollections = () => {
           <>
             <div className="flex flex-col">
               <div className="flex items-center text-green-500">
-                <EyeIcon className="w-4 h-4 mr-1" />
+                <EyeIcon className="mr-1 h-4 w-4" />
                 <span className="">Public</span>
               </div>
               <span className="flex flex-col text-xs font-medium opacity-50">
@@ -156,7 +156,7 @@ const AccountCollections = () => {
           <>
             <div className="flex flex-col">
               <div className="flex items-center">
-                <DocumentIcon className="w-4 h-4 mr-1" />
+                <DocumentIcon className="mr-1 h-4 w-4" />
                 <span className="">Draft</span>
               </div>
               <span className="flex flex-col text-xs font-medium opacity-50">
@@ -169,7 +169,7 @@ const AccountCollections = () => {
       case 'private':
         return (
           <div className="flex items-center">
-            <EyeIcon className="w-4 h-4 mr-1 text-gray-500" />
+            <EyeIcon className="mr-1 h-4 w-4 text-gray-500" />
             <span className="text-gray-500">Private</span>
           </div>
         );
@@ -205,12 +205,13 @@ const AccountCollections = () => {
     const [isHovered, setIsHovered] = useState(false);
     return (
       <div
-        className="relative h-[6rem] group grid grid-cols-[minmax(300px,_400px)_minmax(100px,_120px)_minmax(100px,_120px)_minmax(100px,_120px)_minmax(100px,_120px)] gap-x-1 py-1 mx-auto w-full transition duration-350 hover:bg-white dark:hover:bg-neutral-800/95 text-sm"
+        className="duration-350 group relative mx-auto grid h-[6rem] w-full grid-cols-[minmax(300px,_400px)_minmax(100px,_120px)_minmax(100px,_120px)_minmax(100px,_120px)_minmax(100px,_120px)] gap-x-1 py-1 text-sm transition hover:bg-white dark:hover:bg-neutral-800/95"
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
       >
-        <div className="flex flex-row w-full p-1 z-2 ml-7 items-center overflow-hidden">
-          <div className="relative flex h-17 w-17 flex-shrink-0 items-center justify-center rounded focus:outline-none bg-neutral-200 dark:bg-neutral-700"
+        <div className="z-2 ml-7 flex w-full flex-row items-center overflow-hidden p-1">
+          <div
+            className="h-17 w-17 relative flex flex-shrink-0 items-center justify-center rounded bg-neutral-200 focus:outline-none dark:bg-neutral-700"
             style={{ backgroundColor: item.cover.dominant_color || '' }}
           >
             <Image
@@ -224,7 +225,7 @@ const AccountCollections = () => {
           <div className="ml-4">
             <p className="text-sm font-medium">{item.name}</p>
             <motion.div
-              className="text-xs text-neutral-500 font-medium  w-[150px] truncate"
+              className="w-[150px] truncate text-xs  font-medium text-neutral-500"
               initial={'visible'}
               variants={{
                 visible: {
@@ -268,13 +269,13 @@ const AccountCollections = () => {
               exit={'hidden'}
             >
               <motion.div variants={childVariants}>
-                <div className="py-2 grid grid-flow-col auto-cols-max items-center gap-2">
+                <div className="grid auto-cols-max grid-flow-col items-center gap-2 py-2">
                   <button
                     type="button"
                     title="Edit"
-                    className="w-8 h-8 rounded-full hover:bg-blue-100 dark:hover:bg-neutral-600 box-border justify-center p-0 m-0 cursor-pointer flex relative dark:text-gray-200 touch-manipulation items-center select-none border-0 list-none outline-none decoration-0 transition duration-250 ease-in-out bg-neutral-200 dark:bg-neutral-700"
+                    className="duration-250 relative m-0 box-border flex h-8 w-8 cursor-pointer touch-manipulation select-none list-none items-center justify-center rounded-full border-0 bg-neutral-200 p-0 decoration-0 outline-none transition ease-in-out hover:bg-blue-100 dark:bg-neutral-700 dark:text-gray-200 dark:hover:bg-neutral-600"
                     onClick={() =>
-                      setOpenedFormAssetModal({
+                      setOpenedFormCollectionModal({
                         open: true,
                         slug: item.slug,
                         title: item.name,
@@ -283,20 +284,20 @@ const AccountCollections = () => {
                   >
                     <PencilSquareIcon
                       strokeWidth="2"
-                      className="touch-manipulation select-none w-5 h-5"
+                      className="h-5 w-5 touch-manipulation select-none"
                     />
                   </button>
                   <button
                     type="button"
                     title="Manage Comments"
-                    className="w-8 h-8 rounded-full hover:bg-blue-100 dark:hover:bg-neutral-600 box-border justify-center p-0 m-0 cursor-pointer flex relative dark:text-gray-200 touch-manipulation items-center select-none border-0 list-none outline-none decoration-0 transition duration-250 ease-in-out bg-neutral-200 dark:bg-neutral-700"
+                    className="duration-250 relative m-0 box-border flex h-8 w-8 cursor-pointer touch-manipulation select-none list-none items-center justify-center rounded-full border-0 bg-neutral-200 p-0 decoration-0 outline-none transition ease-in-out hover:bg-blue-100 dark:bg-neutral-700 dark:text-gray-200 dark:hover:bg-neutral-600"
                     onClick={() =>
                       void console.log('open modal for manage comments')
                     }
                   >
                     <ChatBubbleBottomCenterTextIcon
                       strokeWidth="2"
-                      className="touch-manipulation select-none w-5 h-5"
+                      className="h-5 w-5 touch-manipulation select-none"
                     />
                   </button>
                   <Link
@@ -304,12 +305,12 @@ const AccountCollections = () => {
                     as={`/collection/${encodeURIComponent(item.slug)}`}
                   >
                     <a
-                      className="w-8 h-8 rounded-full hover:bg-blue-100 dark:hover:bg-neutral-600 box-border justify-center p-0 m-0 cursor-pointer flex relative dark:text-gray-200 touch-manipulation items-center select-none border-0 list-none outline-none decoration-0 transition duration-250 ease-in-out bg-neutral-200 dark:bg-neutral-700"
+                      className="duration-250 relative m-0 box-border flex h-8 w-8 cursor-pointer touch-manipulation select-none list-none items-center justify-center rounded-full border-0 bg-neutral-200 p-0 decoration-0 outline-none transition ease-in-out hover:bg-blue-100 dark:bg-neutral-700 dark:text-gray-200 dark:hover:bg-neutral-600"
                       title={`View ${item.name} on the marketplace`}
                     >
                       <EyeIcon
                         strokeWidth="2"
-                        className="touch-manipulation select-none w-5 h-5"
+                        className="h-5 w-5 touch-manipulation select-none"
                       />
                     </a>
                   </Link>
@@ -319,17 +320,18 @@ const AccountCollections = () => {
           </div>
         </div>
         {item.total_assets_count != null && item.total_assets_count > 0 ? (
-          <div className="flex flex-row items-center justify-left">
-            <div className="flex overflow-hidden -space-x-4">
+          <div className="justify-left flex flex-row items-center">
+            <div className="flex -space-x-4 overflow-hidden">
               {item.preview_assets?.slice(0, 3).map((asset, index) => (
                 <div
                   key={index}
-                  className="relative flex-inline rounded-full overflow-hidden border-2"
+                  className="flex-inline relative overflow-hidden rounded-full border-2"
                 >
                   <div
-                    className="w-8 h-8 bg-base-300"
-                    style={{ backgroundColor: asset.media.dominant_color || '' }}
-
+                    className="bg-base-300 h-8 w-8"
+                    style={{
+                      backgroundColor: asset.media.dominant_color || '',
+                    }}
                   >
                     <Image
                       className="relative inline-block h-9 w-9 rounded-full ring-1 ring-white"
@@ -342,8 +344,8 @@ const AccountCollections = () => {
                 </div>
               ))}
               {item.total_assets_count > 3 && (
-                <div className="relative flex-inline rounded-full overflow-hidden border-2">
-                  <div className="flex items-center justify-center bg-neutral-200 dark:bg-neutral-700 w-8 h-full">
+                <div className="flex-inline relative overflow-hidden rounded-full border-2">
+                  <div className="flex h-full w-8 items-center justify-center bg-neutral-200 dark:bg-neutral-700">
                     <div className="font-bold">
                       +{item.total_assets_count - 3}
                     </div>
@@ -353,54 +355,54 @@ const AccountCollections = () => {
             </div>
           </div>
         ) : (
-          <div className="flex items-center justify-left">Without Assets</div>
+          <div className="justify-left flex items-center">Without Assets</div>
         )}
-        <div className="flex items-center justify-left">
+        <div className="justify-left flex items-center">
           <Visibility
             visibility={item.visibility}
             date={item.published_at || item.created_at}
           />
         </div>
-        <div className="flex items-center justify-left">
+        <div className="justify-left flex items-center">
           <Restrictions restrictions={item.restrictions} />
         </div>
-        <div className="flex items-center justify-left">
-          {item.blockchain}
-        </div>
+        <div className="justify-left flex items-center">{item.blockchain}</div>
       </div>
     );
   };
 
   const ItemPlaceholder = () => {
     return (
-      <div className="relative h-[6rem] grid grid-cols-[minmax(300px,_400px)_minmax(100px,_120px)_minmax(100px,_120px)_minmax(100px,_120px)_minmax(100px,_120px)] gap-x-1 mx-auto w-full hover:bg-white dark:hover:bg-neutral-800/95">
-        <div className="flex flex-row w-full p-1 z-2 ml-7 items-center overflow-hidden">
-          <div className="relative flex h-17 w-17 flex-shrink-0 items-center justify-center rounded focus:outline-none bg-neutral-300 dark:bg-neutral-700 animate-pulse">
+      <div className="relative mx-auto grid h-[6rem] w-full grid-cols-[minmax(300px,_400px)_minmax(100px,_120px)_minmax(100px,_120px)_minmax(100px,_120px)_minmax(100px,_120px)] gap-x-1 hover:bg-white dark:hover:bg-neutral-800/95">
+        <div className="z-2 ml-7 flex w-full flex-row items-center overflow-hidden p-1">
+          <div className="h-17 w-17 relative flex flex-shrink-0 animate-pulse items-center justify-center rounded bg-neutral-300 focus:outline-none dark:bg-neutral-700">
             <span className="relative inline-block h-16 w-16 rounded"></span>
           </div>
           <div className="ml-4 -mt-2">
-            <div className="w-[10rem] h-[0.75rem] bg-neutral-300 dark:bg-neutral-700 rounded-sm animate-pulse" />
-            <div className="w-[7rem] h-[0.55rem] mt-2 bg-neutral-300 dark:bg-neutral-800 rounded-sm animate-pulse" />
+            <div className="h-[0.75rem] w-[10rem] animate-pulse rounded-sm bg-neutral-300 dark:bg-neutral-700" />
+            <div className="mt-2 h-[0.55rem] w-[7rem] animate-pulse rounded-sm bg-neutral-300 dark:bg-neutral-800" />
           </div>
         </div>
-        <div className="flex items-center justify-left">
-          <div className="flex overflow-hidden -space-x-4">
-            { Array.from({ length: 4 }, (_, index) => (
-              <div key={index} className="relative flex-inline rounded-full overflow-hidden">
-                <div className="w-9 h-9 bg-neutral-300 dark:bg-neutral-700 rounded-sm animate-pulse">
-                </div>
+        <div className="justify-left flex items-center">
+          <div className="flex -space-x-4 overflow-hidden">
+            {Array.from({ length: 4 }, (_, index) => (
+              <div
+                key={index}
+                className="flex-inline relative overflow-hidden rounded-full"
+              >
+                <div className="h-9 w-9 animate-pulse rounded-sm bg-neutral-300 dark:bg-neutral-700"></div>
               </div>
             ))}
           </div>
         </div>
-        <div className="flex items-center justify-left">
-          <div className="w-[2rem] h-[0.75rem] bg-neutral-300 dark:bg-neutral-700 rounded-sm animate-pulse" />
+        <div className="justify-left flex items-center">
+          <div className="h-[0.75rem] w-[2rem] animate-pulse rounded-sm bg-neutral-300 dark:bg-neutral-700" />
         </div>
-        <div className="flex items-center justify-left">
-          <div className="w-[3rem] h-[0.75rem] bg-neutral-300 dark:bg-neutral-700 rounded-sm animate-pulse" />
+        <div className="justify-left flex items-center">
+          <div className="h-[0.75rem] w-[3rem] animate-pulse rounded-sm bg-neutral-300 dark:bg-neutral-700" />
         </div>
-        <div className="flex items-center justify-left">
-          <div className="w-[2rem] h-[0.75rem] bg-neutral-300 dark:bg-neutral-700 rounded-sm animate-pulse" />
+        <div className="justify-left flex items-center">
+          <div className="h-[0.75rem] w-[2rem] animate-pulse rounded-sm bg-neutral-300 dark:bg-neutral-700" />
         </div>
       </div>
     );
@@ -432,7 +434,7 @@ const AccountCollections = () => {
 
     return (
       <List
-        className="relative grid grid-cols-[minmax(300px,_400px)_minmax(100px,_120px)_minmax(70px,_100px)_minmax(100px,_120px)_minmax(100px,_120px)] gap-x-1 mx-auto w-full"
+        className="relative mx-auto grid w-full grid-cols-[minmax(300px,_400px)_minmax(100px,_120px)_minmax(70px,_100px)_minmax(100px,_120px)_minmax(100px,_120px)] gap-x-1"
         items={items}
         role="list"
         rowGutter={0}
@@ -444,32 +446,32 @@ const AccountCollections = () => {
         }}
       />
     );
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data?.paginate?.count, isSuccess, items]);
 
   return (
     <>
       <AccountLayout
-        title={'Assets on your profile'}
-        description={'Assets on your profile'}
+        title={'Collections on your profile'}
+        description={'Collections on your profile'}
       >
-        <div className="flex flex-1 flex-col w-full">
+        <div className="flex w-full flex-1 flex-col">
           <div className="flex p-8">
             <h1 className="text-2xl">Your Collections</h1>
           </div>
           <div
-            aria-label="Assets list"
-            className="relative flex flex-col mx-auto w-full mb-10"
+            aria-label="Collections list"
+            className="relative mx-auto mb-10 flex w-full flex-col"
           >
-            <div className="flex flex-col mx-auto w-full sticky top-[82px] z-1 bg-white dark:bg-neutral-800 shadow-[0_10px_5px_-10px_rgba(0,0,0,0.2)]">
-              <div className="relative flex flex-col ml-8">
+            <div className="z-1 sticky top-[82px] mx-auto flex w-full flex-col bg-white shadow-[0_10px_5px_-10px_rgba(0,0,0,0.2)] dark:bg-neutral-800">
+              <div className="relative ml-8 flex flex-col">
                 <div>
-                  <div className="relative w-full h-[50px] flex flex-row">
-                    <div className="pointer-events-none absolute py-2 inset-0 left-0 flex items-center pr-5">
-                      <div className="w-8 h-8 rounded-full hover:bg-blue-100 dark:hover:bg-neutral-600 box-border justify-center p-0 m-0 cursor-pointer flex relative dark:text-gray-200 touch-manipulation items-center select-none border-0 list-none outline-none decoration-0 transition duration-250 ease-in-out bg-neutral-200 dark:bg-neutral-700">
+                  <div className="relative flex flex-row h-[50px] w-full">
+                    <div className="pointer-events-none absolute inset-0 left-0 flex items-center py-2 pr-5">
+                      <div className="duration-250 relative m-0 box-border flex h-8 w-8 cursor-pointer touch-manipulation select-none list-none items-center justify-center rounded-full border-0 bg-neutral-200 p-0 decoration-0 outline-none transition ease-in-out hover:bg-blue-100 dark:bg-neutral-700 dark:text-gray-200 dark:hover:bg-neutral-600">
                         <FunnelIcon
                           strokeWidth="2"
-                          className="touch-manipulation select-none w-5 h-5"
+                          className="h-5 w-5 touch-manipulation select-none"
                         />
                       </div>
                     </div>
@@ -481,14 +483,14 @@ const AccountCollections = () => {
                       autoCapitalize="off"
                       name="search"
                       id="search"
-                      className="border-2 focus:ring-0 focus:ring-offset-0 block w-full bg-transparent border-transparent dark:border-transparent pl-[2.5rem] pr-3 p-3 focus:border-transparent hover:border-transparent dark:focus:border-transparent dark:hover:border-transparent transition duration-200 ring-0 sm:text-sm md:text-base"
+                      className="block w-full border-2 border-transparent bg-transparent p-3 pl-[2.5rem] pr-3 ring-0 transition duration-200 hover:border-transparent focus:border-transparent focus:ring-0 focus:ring-offset-0 dark:border-transparent dark:hover:border-transparent dark:focus:border-transparent sm:text-sm md:text-base"
                       placeholder="Filter"
                     />
                   </div>
                 </div>
               </div>
-              <div className="left-0 sticky grid grid-cols-[minmax(300px,_400px)_minmax(100px,_120px)_minmax(100px,_120px)_minmax(100px,_120px)_minmax(100px,_120px)] gap-x-1 mx-auto h-[2rem] text-sm w-full">
-                <div className="ml-8 left-0 sticky">Collection</div>
+              <div className="sticky left-0 mx-auto grid h-[2rem] w-full grid-cols-[minmax(300px,_400px)_minmax(100px,_120px)_minmax(100px,_120px)_minmax(100px,_120px)_minmax(100px,_120px)] gap-x-1 text-sm">
+                <div className="sticky left-0 ml-8">Collection</div>
                 <div className="truncate">Assets</div>
                 <div className="truncate">Access Options</div>
                 <div className="truncate">Restrictions</div>
@@ -504,14 +506,14 @@ const AccountCollections = () => {
           </div>
         </div>
       </AccountLayout>
-      {openedFormAssetModal && (
-        <FormAssetModal
-          title={openedFormAssetModal.title}
-          slug={openedFormAssetModal.slug}
+      {openedFormCollectionModal && (
+        <FormCollectionModal
+          title={openedFormCollectionModal.title}
+          slug={openedFormCollectionModal.slug}
           onClose={() =>
-            setOpenedFormAssetModal({ open: false, title: '', slug: '' })
+            setOpenedFormCollectionModal({ open: false, title: '', slug: '' })
           }
-          isOpened={openedFormAssetModal.open}
+          isOpened={openedFormCollectionModal.open}
         />
       )}
     </>

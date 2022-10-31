@@ -2,7 +2,7 @@ import { TagProps } from '../tags/types';
 import { EditorState } from 'lexical';
 import { CollectionProps } from '../collection/types';
 
-export type AssetMedia = {
+export type AssetMediaProps = {
   dominant_color: string | null;
   file_id: string;
   filename: string;
@@ -21,7 +21,7 @@ export type AssetProps = {
   description: string | EditorState | null;
   price?: number;
   ticker?: string;
-  media: AssetMedia;
+  media: AssetMediaProps;
   edit_count?: number;
   slug: string;
   type?: string;
@@ -78,7 +78,7 @@ export type AssetOwnersResponseProps = {
   };
 };
 
-export type AssetResponseProps = {
+export type GetAssetResponseProps = {
   record: AssetProps;
 };
 
@@ -127,7 +127,7 @@ export interface FormProps {
   tags: TagProps[] | null;
 }
 
-export type AssetPutParams = {
+export type AssetPutParamsProps = {
   slug?: string;
   asset: FormProps;
 };

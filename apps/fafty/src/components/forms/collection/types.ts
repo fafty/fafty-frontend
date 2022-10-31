@@ -21,6 +21,7 @@ interface ExistingFileProps {
 }
 
 export interface FileProps {
+  file_id?: string;
   id: string;
   storage: string;
   src?: string;

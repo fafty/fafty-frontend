@@ -45,10 +45,10 @@ export {
   GetCollectionsResponseProps,
 } from './lib/callbacks/collections/types';
 export {
-  AssetMedia,
+  AssetMediaProps as AssetMedia,
   AssetProps,
-  AssetPutParams,
-  AssetResponseProps,
+  AssetPutParamsProps,
+  GetAssetResponseProps as AssetResponseProps,
   CommentsOrderType,
   AssetInfoResponseProps,
   CommentsModerationType,

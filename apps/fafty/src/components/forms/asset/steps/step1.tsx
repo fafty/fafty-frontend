@@ -144,7 +144,7 @@ const SelectStep1 = ({ Context }: { Context: Context<ContextProps> }) => {
         >
           Name
         </label>
-        <Controller
+        {/* <Controller
           name="name"
           control={control}
           defaultValue={formFields.name}
@@ -166,7 +166,7 @@ const SelectStep1 = ({ Context }: { Context: Context<ContextProps> }) => {
               {...field}
             />
           )}
-        />
+        /> */}
         <motion.div
           initial={'hidden'}
           variants={variants}

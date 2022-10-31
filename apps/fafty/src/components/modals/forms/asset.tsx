@@ -8,7 +8,7 @@ import {
   putAsset,
   getAsset,
   AssetResponseProps,
-  AssetPutParams,
+  AssetPutParamsProps,
 } from '@fafty-frontend/shared/api';
 import { useNotifications } from '@fafty-frontend/notifications';
 
@@ -30,8 +30,8 @@ const FormAssetModal = ({ title, isOpened, onClose, slug }: Props) => {
     callback: getAsset,
   });
 
-  const { call: putAssetData } = useAsync<AssetResponseProps, AssetPutParams>({
-    callback: (params?: AssetPutParams) => putAsset(params),
+  const { call: putAssetData } = useAsync<AssetResponseProps, AssetPutParamsProps>({
+    callback: (params?: AssetPutParamsProps) => putAsset(params),
   });
 
   const [submiting, setSubmiting] = useState(false);
