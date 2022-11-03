@@ -1,19 +1,19 @@
-import { ReactElement, useEffect } from 'react';
-import { useAuth } from '../utils/auth';
+import { ReactElement, useEffect } from 'react'
+import { useAuth } from '../utils/auth'
 
 type Props = {
   children: ReactElement | null;
 };
 
 export const Listeners = ({ children }: Props) => {
-  const auth = useAuth();
+  const auth = useAuth()
 
   useEffect(() => {
     if (!auth.principal && auth.wallet) {
-      auth.wallet?.logIn();
+      auth.wallet?.logIn()
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [auth.wallet]);
+  }, [auth.wallet])
 
-  return children;
-};
+  return children
+}

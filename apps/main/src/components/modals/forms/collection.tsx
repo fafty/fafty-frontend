@@ -1,7 +1,7 @@
-import { Modal } from '@fafty/shared/modals';
-import FormCollection from '../../forms/collection/main';
-import { FormCollectionContextProvider } from '../../forms/collection/provider';
-import { useEffect, useMemo, useState } from 'react';
+import { Modal } from '@fafty/shared/modals'
+import FormCollection from '../../forms/collection/main'
+import { FormCollectionContextProvider } from '../../forms/collection/provider'
+import { useEffect, useState } from 'react'
 import {
   api,
   useAsync,
@@ -10,10 +10,10 @@ import {
   GetCollectionResponseProps,
   PutCollectionParamsProps,
   GetCollectionParamsProps,
-} from '@fafty/shared/api';
-import { useNotifications } from '@fafty/notifications';
+} from '@fafty/shared/api'
+import { useNotifications } from '@fafty/notifications'
 
-import { FormProps } from '../../forms/collection/types';
+import { FormProps } from '../../forms/collection/types'
 
 type Props = {
   title: string;
@@ -29,83 +29,83 @@ const FormCollectionModal = ({ title, isOpened, onClose, slug }: Props) => {
     isSuccess,
   } = useAsync<GetCollectionResponseProps, GetCollectionParamsProps>({
     callback: getCollection,
-  });
+  })
 
   const { call: putCollectionData } = useAsync<
     GetCollectionResponseProps,
     PutCollectionParamsProps
   >({
     callback: (params?: PutCollectionParamsProps) => putCollection(params),
-  });
+  })
 
-  const [submiting, setSubmiting] = useState(false);
+  const [submiting, setSubmiting] = useState(false)
   const [dismissibleData, setDismissibleData] = useState({
     title: 'Close',
     disabled: false,
-  });
-  const [finished, setFinished] = useState(false);
-  const [drafted, setDrafted] = useState(false);
-  const { enqueueNotification } = useNotifications();
+  })
+  const [finished, setFinished] = useState(false)
+  const [drafted, setDrafted] = useState(false)
+  const { enqueueNotification } = useNotifications()
 
   const onSubmit = async (data: FormProps) => {
     if (submiting) {
-      return;
+      return
     }
 
     if (drafted && !data.cover?.id) {
-      setDrafted(false);
-      onClose();
-      return;
+      setDrafted(false)
+      onClose()
+      return
     }
 
-    setSubmiting(true);
+    setSubmiting(true)
 
     try {
       if (slug) {
-        await putCollectionData({ slug: slug, collection: data });
+        await putCollectionData({ slug: slug, collection: data })
       } else {
-        await api.post('/collection', { collection: data });
+        await api.post('/collection', { collection: data })
       }
       // eslint-disable-next-line no-useless-catch
     } catch (err) {
-      throw err;
+      throw err
     } finally {
-      setSubmiting(false);
+      setSubmiting(false)
       if (drafted && !slug) {
-        onClose();
-        setDrafted(false);
+        onClose()
+        setDrafted(false)
         enqueueNotification({
           title: `Collection "${data.name}" saved as draft.`,
           position: 'bottom-center',
-          message: `You can continue to edit it at any time.`,
+          message: 'You can continue to edit it at any time.',
           options: { dismissible: true },
-        });
+        })
       }
     }
-  };
+  }
 
   const onChangeDismiss = (data: { title: string; disabled: boolean }) => {
-    setDismissibleData(data);
-  };
+    setDismissibleData(data)
+  }
 
   const dismiss = () => {
     if (isOpened && !finished) {
-      setDrafted(true);
+      setDrafted(true)
     } else {
-      onClose();
+      onClose()
     }
 
     if (!finished && slug) {
-      onClose();
+      onClose()
     }
-  };
+  }
 
   useEffect(() => {
     if (slug) {
-      callPreloadCollection({ slug });
+      callPreloadCollection({ slug })
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [slug]);
+  }, [slug])
 
   return (
     <Modal
@@ -139,7 +139,7 @@ const FormCollectionModal = ({ title, isOpened, onClose, slug }: Props) => {
         )}
       </div>
     </Modal>
-  );
-};
+  )
+}
 
-export default FormCollectionModal;
+export default FormCollectionModal

@@ -1,8 +1,8 @@
-import { Modal } from '@fafty/shared/modals';
-import { useAuth } from '../../utils/auth';
-import classNames from 'classnames';
-import { ReactComponent as PlugLogo } from '../../assets/plug.svg';
-import { ReactComponent as InternetIdentityLogo } from '../../assets/internet-identity.svg';
+import { Modal } from '@fafty/shared/modals'
+import { useAuth } from '../../utils/auth'
+import classNames from 'classnames'
+import { ReactComponent as PlugLogo } from '../../assets/plug.svg'
+import { ReactComponent as InternetIdentityLogo } from '../../assets/internet-identity.svg'
 
 type Props = {
   onClose: () => void;
@@ -30,20 +30,20 @@ const List = [
       fill: 'fill-[#23262F] dark:fill-[#F4F5F6]',
     },
   },
-];
+]
 
 export const AuthModal = ({ isOpened, onClose }: Props) => {
-  const auth = useAuth();
+  const auth = useAuth()
 
   const onClickAuth = (key: string) => () => {
     if (key === 'ii') {
-      auth.useInternetIdentity();
+      auth.useInternetIdentity()
     } else if (key === 'plug') {
-      auth.usePlug();
+      auth.usePlug()
     }
 
-    onClose();
-  };
+    onClose()
+  }
 
   return (
     <Modal
@@ -270,5 +270,5 @@ export const AuthModal = ({ isOpened, onClose }: Props) => {
         </div>
       </div>
     </Modal>
-  );
-};
+  )
+}

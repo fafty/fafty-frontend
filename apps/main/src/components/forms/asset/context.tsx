@@ -1,6 +1,6 @@
-import { createContext } from 'react';
-import { ContextProps } from './types';
+import { createContext } from 'react'
+import { ContextProps } from './types'
 
-const Context = createContext<Partial<ContextProps>>({});
+const Context = createContext<Partial<ContextProps>>({})
 
-export default Context;
+export default Context

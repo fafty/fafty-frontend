@@ -1,4 +1,4 @@
-import styles from './index.module.scss';
+import styles from './index.module.scss'
 
 export function Index() {
   /*
@@ -409,7 +409,7 @@ export function Index() {
         </div>
       </div>
     </div>
-  );
+  )
 }
 
-export default Index;
+export default Index

@@ -5,7 +5,6 @@ import {
   GetUserAssetsResponseProps,
   useAsync,
 } from '@fafty/shared/api'
-// import { useComponentDidUpdate } from '@fafty/usehooks';
 import { useEffect, useMemo, useRef, useState } from 'react'
 import Sortable, { MultiDrag } from 'sortablejs'
 import { InfinityLoadChecker } from '../../common/infinityLoadChecker'

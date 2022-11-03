@@ -6,7 +6,7 @@ export function TermsOfServiceAgreement(props: TermsOfServiceAgreementProps) {
     <div>
       <h1>Welcome to TermsOfServiceAgreement!</h1>
     </div>
-  );
+  )
 }
 
-export default TermsOfServiceAgreement;
+export default TermsOfServiceAgreement

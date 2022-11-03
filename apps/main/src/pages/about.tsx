@@ -1,11 +1,11 @@
-import Head from 'next/head';
-import MainLayout from '../layouts/main';
+import Head from 'next/head'
+import MainLayout from '../layouts/main'
 
 const AboutPage = (): JSX.Element => {
   const jsonLd = {
     '@context': 'https://schema.org',
     '@type': 'Organization',
-    url: "https://www.fafty.com",
+    url: 'https://www.fafty.com',
     logo: '/assets/shared/ui/images/logo.svg',
     name: 'Fafty',
     description: 'Fafty is a decentralized, open-source, decentralized identity platform for the Ethereum blockchain.',
@@ -23,6 +23,6 @@ const AboutPage = (): JSX.Element => {
       </Head>
       <h1>About us</h1>
     </MainLayout>
-  );
+  )
 }
-export default AboutPage;
+export default AboutPage

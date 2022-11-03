@@ -6,7 +6,7 @@ export function ReferralProgram(props: ReferralProgramProps) {
     <div>
       <h1>Welcome to ReferralProgram!</h1>
     </div>
-  );
+  )
 }
 
-export default ReferralProgram;
+export default ReferralProgram

@@ -1,11 +1,11 @@
-import MainLayout from '../layouts/main';
-import Hero from '../components/home/hero';
-import Items from '../components/items';
+import MainLayout from '../layouts/main'
+import Hero from '../components/home/hero'
+import Items from '../components/items'
 import {
   AssetItemPlaceholder,
   BundleItemPlaceholder,
   CollectionItemPlaceholder,
-} from '@fafty/shared/ui';
+} from '@fafty/shared/ui'
 import {
   getAssets,
   getBundles,
@@ -17,16 +17,16 @@ import {
   GetCollectionsParamsProps,
   GetCollectionsResponseProps,
   useAsync,
-} from '@fafty/shared/api';
-import { MutableRefObject, useEffect, useRef } from 'react';
-import Link from 'next/link';
-import { useOnScreen } from '@fafty/usehooks';
+} from '@fafty/shared/api'
+import { MutableRefObject, useEffect, useRef } from 'react'
+import Link from 'next/link'
+import { useOnScreen } from '@fafty/usehooks'
 
 export default function Home(): JSX.Element {
   // Refs
-  const assetsContainerRef = useRef<HTMLDivElement | null>(null);
-  const bundlesContainerRef = useRef<HTMLDivElement | null>(null);
-  const collectionsContainerRef = useRef<HTMLDivElement | null>(null);
+  const assetsContainerRef = useRef<HTMLDivElement | null>(null)
+  const bundlesContainerRef = useRef<HTMLDivElement | null>(null)
+  const collectionsContainerRef = useRef<HTMLDivElement | null>(null)
 
   // Async hooks
   const {
@@ -36,7 +36,7 @@ export default function Home(): JSX.Element {
     isSuccess: assetsIsSuccess,
   } = useAsync<GetAssetsResponseProps, GetAssetsParamsProps>({
     callback: getAssets,
-  });
+  })
 
   const {
     data: bundlesData,
@@ -45,7 +45,7 @@ export default function Home(): JSX.Element {
     isSuccess: bundlesIsSuccess,
   } = useAsync<GetBundlesResponseProps, GetBundlesParamsProps>({
     callback: getBundles,
-  });
+  })
 
   const {
     data: collectionsData,
@@ -54,41 +54,41 @@ export default function Home(): JSX.Element {
     isSuccess: collectionsIsSuccess,
   } = useAsync<GetCollectionsResponseProps, GetCollectionsParamsProps>({
     callback: getCollections,
-  });
+  })
 
   // On screen hooks
   const assetsContainerOnScreen: boolean = useOnScreen<HTMLDivElement>(
     assetsContainerRef as MutableRefObject<HTMLDivElement>,
     '0px'
-  );
+  )
   useEffect(() => {
     if (!assetsIsSuccess && assetsContainerOnScreen) {
-      assetsCall({ limit: 15, offset: 0 });
+      assetsCall({ limit: 15, offset: 0 })
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [assetsContainerOnScreen]);
+  }, [assetsContainerOnScreen])
 
   const bundlesContainerOnScreen: boolean = useOnScreen<HTMLDivElement>(
     bundlesContainerRef as MutableRefObject<HTMLDivElement>,
     '0px'
-  );
+  )
   useEffect(() => {
     if (!bundlesIsSuccess && bundlesContainerOnScreen) {
-      bundlesCall({ limit: 15, offset: 0 });
+      bundlesCall({ limit: 15, offset: 0 })
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [bundlesContainerOnScreen]);
+  }, [bundlesContainerOnScreen])
 
   const collectionsContainerOnScreen: boolean = useOnScreen<HTMLDivElement>(
     collectionsContainerRef as MutableRefObject<HTMLDivElement>,
     '0px'
-  );
+  )
   useEffect(() => {
     if (!collectionsIsSuccess && collectionsContainerOnScreen) {
-      collectionsCall({ limit: 15, offset: 0 });
+      collectionsCall({ limit: 15, offset: 0 })
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [collectionsContainerOnScreen]);
+  }, [collectionsContainerOnScreen])
 
   return (
     <MainLayout
@@ -194,5 +194,5 @@ export default function Home(): JSX.Element {
         )}
       </div>
     </MainLayout>
-  );
+  )
 }

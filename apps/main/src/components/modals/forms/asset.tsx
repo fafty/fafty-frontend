@@ -1,7 +1,7 @@
-import { Modal } from '@fafty/shared/modals';
-import FormAsset from '../../forms/asset/main';
-import { FormAssetContextProvider } from '../../forms/asset/provider';
-import { useEffect, useState } from 'react';
+import { Modal } from '@fafty/shared/modals'
+import FormAsset from '../../forms/asset/main'
+import { FormAssetContextProvider } from '../../forms/asset/provider'
+import { useEffect, useState } from 'react'
 import {
   api,
   useAsync,
@@ -9,10 +9,10 @@ import {
   getAsset,
   AssetResponseProps,
   AssetPutParamsProps,
-} from '@fafty/shared/api';
-import { useNotifications } from '@fafty/notifications';
+} from '@fafty/shared/api'
+import { useNotifications } from '@fafty/notifications'
 
-import { FormProps } from '../../forms/asset/types';
+import { FormProps } from '../../forms/asset/types'
 
 type Props = {
   title: string;
@@ -28,80 +28,80 @@ const FormAssetModal = ({ title, isOpened, onClose, slug }: Props) => {
     isSuccess,
   } = useAsync<AssetResponseProps, string>({
     callback: getAsset,
-  });
+  })
 
   const { call: putAssetData } = useAsync<AssetResponseProps, AssetPutParamsProps>({
     callback: (params?: AssetPutParamsProps) => putAsset(params),
-  });
+  })
 
-  const [submiting, setSubmiting] = useState(false);
+  const [submiting, setSubmiting] = useState(false)
   const [dismissibleData, setDismissibleData] = useState({
     title: 'Close',
     disabled: false,
-  });
-  const [finished, setFinished] = useState(false);
-  const [drafted, setDrafted] = useState(false);
-  const { enqueueNotification } = useNotifications();
+  })
+  const [finished, setFinished] = useState(false)
+  const [drafted, setDrafted] = useState(false)
+  const { enqueueNotification } = useNotifications()
 
   const onSubmit = async (data: FormProps) => {
     if (submiting) {
-      return;
+      return
     }
 
     if (drafted && !data.media?.id) {
-      setDrafted(false);
-      onClose();
-      return;
+      setDrafted(false)
+      onClose()
+      return
     }
 
-    setSubmiting(true);
+    setSubmiting(true)
 
     try {
       if (slug) {
-        await putAssetData({ slug: slug, asset: data });
+        await putAssetData({ slug: slug, asset: data })
       } else {
-        await api.post('/asset', { asset: data });
+        await api.post('/asset', { asset: data })
       }
       // eslint-disable-next-line no-useless-catch
     } catch (err) {
-      throw err;
+      throw err
     } finally {
-      setSubmiting(false);
+      setSubmiting(false)
       if (drafted && !slug) {
-        onClose();
-        setDrafted(false);
+        onClose()
+        setDrafted(false)
         enqueueNotification({
           title: `Asset "${data.name}" saved as draft.`,
           position: 'bottom-center',
-          message: `You can continue to edit it at any time.`,
+          message: 'You can continue to edit it at any time.',
           options: { dismissible: true },
-        });
+        })
       }
     }
-  };
+  }
 
   const onChangeDismiss = (data: { title: string; disabled: boolean }) => {
-    setDismissibleData(data);
-  };
+    setDismissibleData(data)
+  }
 
   const dismiss = () => {
     if (isOpened && !finished) {
-      setDrafted(true);
+      setDrafted(true)
     } else {
-      onClose();
+      onClose()
     }
 
     if (!finished && slug) {
-      onClose();
+      onClose()
     }
-  };
+  }
 
   useEffect(() => {
     if (slug) {
-      callPreloadAsset(slug);
+      callPreloadAsset(slug)
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [slug]);
+  }, [slug])
 
   return (
     <Modal
@@ -135,7 +135,7 @@ const FormAssetModal = ({ title, isOpened, onClose, slug }: Props) => {
         )}
       </div>
     </Modal>
-  );
-};
+  )
+}
 
-export default FormAssetModal;
+export default FormAssetModal
