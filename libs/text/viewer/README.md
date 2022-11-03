@@ -1,22 +1,7 @@
-# Fafty Web Text Viewer library
+# text-viewer
 
-## Basic usage
-
-1. Base import
-
-```javascript
-import Viewer from '@fafty-frontend/text/viewer'
-
-
-export default function MyComponent() {
-  return (
-    <Viewer editorState={null} />
-  );
-}
-```
-
-Based on [Facebook Lexical](https://lexical.dev) - An extensible text editor framework
+This library was generated with [Nx](https://nx.dev).
 
 ## Running unit tests
 
-Run `nx test text-editor` to execute the unit tests via [Jest](https://jestjs.io).
+Run `nx test text-viewer` to execute the unit tests via [Jest](https://jestjs.io).

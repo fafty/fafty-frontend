@@ -1,12 +1,12 @@
-import { SearchResultResponseProps } from './types';
-import api from '../../index';
+import { SearchResultResponseProps } from './types'
+import api from '../../index'
 
 const getSearchResult = async (
   query?: string
 ): Promise<SearchResultResponseProps> => {
-  const { data } = await api.get('/search', { params: { query } });
+  const { data } = await api.get('/search', { params: { query } })
 
-  return data;
-};
+  return data
+}
 
-export default getSearchResult;
+export default getSearchResult

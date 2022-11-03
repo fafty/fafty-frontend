@@ -1,1 +1,1 @@
-export { default as Uploader } from './lib/uploader';
+export { default as Uploader } from './lib/uploader'

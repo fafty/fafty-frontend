@@ -1,4 +1,4 @@
-import { CollectionProps } from '../collection/types';
+import { CollectionProps } from '../collection/types'
 
 type PaginateProps = {
   count: number;

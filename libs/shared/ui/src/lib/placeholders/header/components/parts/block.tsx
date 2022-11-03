@@ -15,22 +15,18 @@ const Block = ({
   full?: boolean;
 }): JSX.Element => {
   return (
-    <div className="flex items-center rounded-lg p-2 placeholder">
-      <div className="flex h-9 w-9 circle" />
+    <div className="placeholder flex items-center rounded-lg p-2">
+      <div className="circle flex h-9 w-9" />
       <div className="ml-4">
-        <div className="flex mb-2">
-          <div
-            className={`h-3 ${widthFirst} line`}
-          />
-          <div
-            className={`h-3 ml-1 ${widthSecond} line`}
-          />
+        <div className="mb-2 flex">
+          <div className={`h-3 ${widthFirst} line`} />
+          <div className={`ml-1 h-3 ${widthSecond} line`} />
         </div>
         {full && (
           <div className="flex">
-            <div className="h-2 w-9 line" />
-            <div className="h-2 w-9 ml-1 line" />
-            <div className="h-2 w-12 ml-1 line" />
+            <div className="line h-2 w-9" />
+            <div className="line ml-1 h-2 w-9" />
+            <div className="line ml-1 h-2 w-12" />
           </div>
         )}
       </div>
@@ -38,4 +34,4 @@ const Block = ({
   );
 };
 
-export default Block;
+export default Block

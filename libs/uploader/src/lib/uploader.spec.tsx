@@ -1,10 +1,14 @@
-import { render } from '@testing-library/react';
+import { render } from "@testing-library/react"
 
-import Uploader from './uploader';
+import Uploader, { AttachmentProps } from "./uploader"
 
-describe('Uploader', () => {
-  it('should render successfully', () => {
-    const { baseElement } = render(<Uploader />);
-    expect(baseElement).toBeTruthy();
-  });
-});
+describe("Uploader", () => {
+  it("should render successfully", () => {
+    const { baseElement } = render(<Uploader onChange={function (value: AttachmentProps | AttachmentProps[]): void {
+      throw new Error("Function not implemented.")
+    } } OnGenetatedThumbnail={function (): void {
+      throw new Error("Function not implemented.")
+    } } />)
+    expect(baseElement).toBeTruthy()
+  })
+})

@@ -24,7 +24,7 @@ import useIsomorphicLayoutEffect from './useIsomorphicLayoutEffect'
 
 // export default useTimeout;
 
-import { useEffect, useCallback, useRef } from 'react';
+import { useEffect, useCallback, useRef } from 'react'
 
 // React hook for delaying calls with time
 // returns callback to use for cancelling
@@ -34,21 +34,21 @@ const useTimeout = (
   // if you create a new callback each render, then previous callback will be cancelled on render.
   timeout = 0 // delay, ms (default: immediately put into JS Event Queue)
 ): (() => void) => {
-  const timeoutIdRef = useRef<NodeJS.Timeout>();
+  const timeoutIdRef = useRef<NodeJS.Timeout>()
   const cancel = useCallback(() => {
-    const timeoutId = timeoutIdRef.current;
+    const timeoutId = timeoutIdRef.current
     if (timeoutId) {
-      timeoutIdRef.current = undefined;
-      clearTimeout(timeoutId);
+      timeoutIdRef.current = undefined
+      clearTimeout(timeoutId)
     }
-  }, [timeoutIdRef]);
+  }, [timeoutIdRef])
 
   useEffect(() => {
-    timeoutIdRef.current = setTimeout(callback, timeout);
-    return cancel;
-  }, [callback, timeout, cancel]);
+    timeoutIdRef.current = setTimeout(callback, timeout)
+    return cancel
+  }, [callback, timeout, cancel])
 
-  return cancel;
-};
+  return cancel
+}
 
-export default useTimeout;
+export default useTimeout

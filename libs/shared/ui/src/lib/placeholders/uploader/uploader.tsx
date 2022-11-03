@@ -1,11 +1,9 @@
 const UploaderPlaceholder = (): JSX.Element => {
   return (
-    <div className="grow h-full">
-      <div className="flex flex-row h-full w-full space-x-1 flex-1">
-        <div
-          className="flex flex-row items-center justify-center flex-1 border-2 rounded-lg bg-neutral-50 dark:bg-neutral-800 border-dashed border-gray-300 dark:border-neutral-300"
-        >
-          <div className="flex flex-col items-center flex-1">
+    <div className="h-full grow">
+      <div className="flex h-full w-full flex-1 flex-row space-x-1">
+        <div className="flex flex-1 flex-row items-center justify-center rounded-lg border-2 border-dashed border-gray-300 bg-neutral-50 dark:border-neutral-300 dark:bg-neutral-800">
+          <div className="flex flex-1 flex-col items-center">
             <svg
               className="mx-auto h-12 w-12 text-gray-400 dark:text-gray-300"
               stroke="currentColor"
@@ -20,24 +18,24 @@ const UploaderPlaceholder = (): JSX.Element => {
                 strokeLinejoin="round"
               ></path>
             </svg>
-            <div className="flex flex-row mt-2">
-              <div className="w-12 h-[0.60rem] bg-neutral-300 dark:bg-neutral-700 rounded"></div>
-              <div className="mx-2 w-6 h-[0.60rem] bg-neutral-300 dark:bg-neutral-700 rounded col-span-1"></div>
-              <div className="mx-2 w-6 h-[0.60rem] bg-neutral-300 dark:bg-neutral-700 rounded col-span-1"></div>
-              <div className="mx-2 w-6 h-[0.60rem] bg-neutral-300 dark:bg-neutral-700 rounded col-span-1"></div>
+            <div className="mt-2 flex flex-row">
+              <div className="h-[0.60rem] w-12 rounded bg-neutral-300 dark:bg-neutral-700"></div>
+              <div className="col-span-1 mx-2 h-[0.60rem] w-6 rounded bg-neutral-300 dark:bg-neutral-700"></div>
+              <div className="col-span-1 mx-2 h-[0.60rem] w-6 rounded bg-neutral-300 dark:bg-neutral-700"></div>
+              <div className="col-span-1 mx-2 h-[0.60rem] w-6 rounded bg-neutral-300 dark:bg-neutral-700"></div>
 
-              <div className="w-6 h-3 bg-neutral-300 dark:bg-neutral-700 rounded col-span-1"></div>
+              <div className="col-span-1 h-3 w-6 rounded bg-neutral-300 dark:bg-neutral-700"></div>
             </div>
-            <div className="flex flex-row mt-2">
-              <div className="w-10 h-[0.55rem] bg-neutral-300 dark:bg-neutral-700 rounded"></div>
-              <div className="mx-2 w-6 h-[0.55rem] bg-neutral-300 dark:bg-neutral-700 rounded col-span-1"></div>
-              <div className="w-6 h-[0.55rem] bg-neutral-300 dark:bg-neutral-700 rounded col-span-1"></div>
+            <div className="mt-2 flex flex-row">
+              <div className="h-[0.55rem] w-10 rounded bg-neutral-300 dark:bg-neutral-700"></div>
+              <div className="col-span-1 mx-2 h-[0.55rem] w-6 rounded bg-neutral-300 dark:bg-neutral-700"></div>
+              <div className="col-span-1 h-[0.55rem] w-6 rounded bg-neutral-300 dark:bg-neutral-700"></div>
             </div>
           </div>
         </div>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default UploaderPlaceholder;
+export default UploaderPlaceholder

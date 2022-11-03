@@ -5,25 +5,21 @@ import {
   useMemo,
   useRef,
   useState,
-} from 'react';
-import { FileRemoveReason, SuccessResponse, Uppy, UppyFile } from '@uppy/core';
-import Compressor from '@uppy/compressor';
-import AwsS3 from '@uppy/aws-s3';
-
-import ThumbnailGenerator from '@uppy/thumbnail-generator';
-import getDroppedFiles from '@uppy/utils/lib/getDroppedFiles';
-import isDragDropSupported from '@uppy/utils/lib/isDragDropSupported';
-import toArray from '@uppy/utils/lib/toArray';
-import Item from './ui/item';
-import classNames from 'classnames';
-// import { useNotifications } from '@fafty-frontend/notifications';
-import { useIsomorphicLayoutEffect } from '@fafty-frontend/usehooks';
-import Sortable from 'sortablejs';
-import { gsap } from 'gsap';
-
-import axios from 'axios';
-// import { getSession } from 'next-auth/react';
-import qs from 'qs';
+} from 'react'
+import { FileRemoveReason, SuccessResponse, Uppy, UppyFile } from '@uppy/core'
+import Compressor from '@uppy/compressor'
+import AwsS3 from '@uppy/aws-s3'
+import ThumbnailGenerator from '@uppy/thumbnail-generator'
+import getDroppedFiles from '@uppy/utils/lib/getDroppedFiles'
+import isDragDropSupported from '@uppy/utils/lib/isDragDropSupported'
+import toArray from '@uppy/utils/lib/toArray'
+import Item from './ui/item'
+import classNames from 'classnames'
+import { useIsomorphicLayoutEffect } from '@fafty/usehooks'
+import Sortable from 'sortablejs'
+import { gsap } from 'gsap'
+import axios from 'axios'
+import qs from 'qs'
 
 export interface ExistingFileProps {
   id: string;
@@ -95,17 +91,6 @@ interface Props {
   onChange: (value: AttachmentProps | AttachmentProps[]) => void;
   OnGenetatedThumbnail: () => void;
 }
-// interface UploaderProps {
-//   hasError?: boolean;
-//   loading?: boolean;
-//   type?: string;
-//   previewHeight?: number;
-//   existingFiles?: ExistingFileProps[];
-//   allowedFileTypes?: string[];
-//   style?: CSSProperties;
-//   presignEndpoint?: string;
-//   onChange: (value: FileProps[]) => void;
-// }
 
 const Uploader = ({
   hasError = false,
@@ -138,27 +123,26 @@ const Uploader = ({
   onChange,
   OnGenetatedThumbnail,
 }: Props): JSX.Element => {
-  const [isMounted, setIsMounted] = useState(false);
-  const [files, setFiles] = useState<FileProps[]>([]);
-  const [thumbnails, setThumbnails] = useState<ThumbnailProps[]>([]);
+  const [isMounted, setIsMounted] = useState(false)
+  const [files, setFiles] = useState<FileProps[]>([])
+  const [thumbnails, setThumbnails] = useState<ThumbnailProps[]>([])
   // const [notifications, setNotifications] = useState<any[]>([]);
-  const [isSorting, setIsSorting] = useState(false);
-  const [isDraggingOver, setIsDraggingOver] = useState(false);
-  const [isDragging, setIsDragging] = useState(false);
-  const [dragDropSupported] = useState(isDragDropSupported);
+  const [isSorting, setIsSorting] = useState(false)
+  const [isDraggingOver, setIsDraggingOver] = useState(false)
+  const [isDragging, setIsDragging] = useState(false)
+  const [dragDropSupported] = useState(isDragDropSupported)
   // const removeDragOverClassTimeout = useRef<setTimeout | undefined>(undefined)
-  const [isLoading, setIsLoading] = useState(true);
-  const inputFilesRef: any = useRef<HTMLInputElement>();
-  // const { enqueueNotification, closeNotification } = useNotifications();
+  const [isLoading, setIsLoading] = useState(true)
+  const inputFilesRef: any = useRef<HTMLInputElement>()
 
-  const mainTextRef = useRef<HTMLDivElement>(null);
-  const tipTextRef = useRef<HTMLDivElement>(null);
-  const uploadIconRef = useRef<SVGSVGElement>(null);
+  const mainTextRef = useRef<HTMLDivElement>(null)
+  const tipTextRef = useRef<HTMLDivElement>(null)
+  const uploadIconRef = useRef<SVGSVGElement>(null)
 
   const api = axios.create({
     baseURL: process.env['NEXT_PUBLIC_API_URL'],
     paramsSerializer: (params) => qs.stringify(params, { encode: false }),
-  });
+  })
 
   useEffect(() => {
     existingFiles.forEach(function (file) {
@@ -179,7 +163,7 @@ const Uploader = ({
             },
           },
         },
-      ]);
+      ])
       setThumbnails((thumbnails) => [
         ...thumbnails,
         {
@@ -190,68 +174,69 @@ const Uploader = ({
           meta: { existing: true },
           src: file.src,
         },
-      ]);
-    });
-    setIsLoading(false);
-    engine.setOptions({ autoProceed: true });
+      ])
+    })
+    setIsLoading(false)
+    engine.setOptions({ autoProceed: true })
 
-    setIsMounted(true);
-  }, []);
+    setIsMounted(true)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   useIsomorphicLayoutEffect(() => {
     const tiptl = gsap.timeline({
       delay: 5,
       repeat: 3,
       repeatDelay: 15,
-    });
+    })
     const icontl = gsap.timeline({
       delay: 5,
       repeat: 3,
       repeatDelay: 15,
-    });
+    })
     tiptl.to(mainTextRef.current, {
       duration: 0.5,
       opacity: 0,
       display: 'none',
       delay: 0.5,
-    });
+    })
     tiptl.to(tipTextRef.current, {
       duration: 0.5,
       opacity: 1,
       display: 'block',
       delay: 0.5,
-    });
+    })
     tiptl.to(tipTextRef.current, {
       duration: 0.5,
       opacity: 0,
       display: 'none',
       delay: 5,
-    });
+    })
     tiptl.to(mainTextRef.current, {
       duration: 0.5,
       opacity: 1,
       display: 'block',
       delay: 0.5,
-    });
+    })
 
     icontl.to(uploadIconRef.current, {
       duration: 0.5,
       scale: 1.2,
       stroke: 'rgb(59 130 246)',
       delay: 0.5,
-    });
+    })
     icontl.to(uploadIconRef.current, {
       duration: 0.5,
       scale: 1,
       stroke: 'rgb(156 163 175)',
       delay: 1.2,
-    });
-  }, []);
+    })
+  }, [])
 
   useEffect(() => {
     if (!isLoading) {
-      const draggablesection = document.getElementById('draggable');
-      const draggable = new Sortable(draggablesection as HTMLElement, {
+      const draggablesection = document.getElementById('draggable')
+      new Sortable(draggablesection as HTMLElement, {
         sort: true,
         animation: 400,
         delay: 0, // time in milliseconds to define when the sorting should start
@@ -282,9 +267,9 @@ const Uploader = ({
           // evt.clone; // the clone element
           // evt.pullMode; // when item is in another sortable: `"clone"` if cloning, `true` if moving
         },
-      });
+      })
     }
-  }, [isLoading]);
+  }, [isLoading])
 
   const engine = useMemo(() => {
     return (
@@ -309,7 +294,7 @@ const Uploader = ({
             noInternetConnection: 'No Internet connection',
             connectedToInternet: 'Connected to the Internet',
             noDuplicates:
-              "Cannot add the duplicate file '%{fileName}', it already exists",
+              'Cannot add the duplicate file \'%{fileName}\', it already exists',
             // youCanOnlyUploadFileTypes: 'You can only upload images and videos with extension: .jpeg, .png, .bpm, .mp4, .mov, .webm, .ogg, .avi'
           },
         },
@@ -340,16 +325,16 @@ const Uploader = ({
                 }
               )
               .then((res) => {
-                return res.data;
+                return res.data
               })
               .catch((err) => {
-                console.log(err);
-              });
+                console.log(err)
+              })
             return {
               method: data.method,
               url: data.url,
               fields: data.fields,
-            };
+            }
           },
         })
         .use(Compressor, {
@@ -368,35 +353,35 @@ const Uploader = ({
               // meta: file.meta,
               // src: preview
             },
-          ]);
-          OnGenetatedThumbnail();
+          ])
+          OnGenetatedThumbnail()
         })
         .on('file-added', (file: UppyFile) => {
           if (file.type && file.type.includes('video')) {
-            addVideo(file);
+            addVideo(file)
           }
         })
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore
         .on('preprocess-progress', (file: UppyFile) => {
-          changeThumbnailState(file.id, 'compressing');
+          changeThumbnailState(file.id, 'compressing')
         })
         .on('preprocess-complete', (file) => {
           if (file) {
-            changeThumbnailState(file.id, 'in-upload-queue');
+            changeThumbnailState(file.id, 'in-upload-queue')
           }
         })
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore
         .on('upload-started', (file: UppyFile) => {
-          changeThumbnailState(file.id, 'uploading');
+          changeThumbnailState(file.id, 'uploading')
         })
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore
         .on('upload-success', (file: UppyFile, _response: SuccessResponse) => {
-          changeThumbnailState(file.id, 'complete');
+          changeThumbnailState(file.id, 'complete')
           // @ts-expect-error Object is of type 'unknown'.
-          const id: string = file.meta.key.match(/^cache\/(.+)/)[1];
+          const id: string = file.meta.key.match(/^cache\/(.+)/)[1]
           const object = {
             id: file.id,
             type: 'image',
@@ -410,9 +395,9 @@ const Uploader = ({
                 mime_type: file.type as string,
               },
             },
-          };
+          }
           // TODO add attachment to object
-          setFiles((files) => [...files, object]);
+          setFiles((files) => [...files, object])
           // setFiles([...files, { id: 1, attachment: uploadedFileData(file) } ])
         })
 
@@ -428,26 +413,26 @@ const Uploader = ({
         .on('file-removed', (file) => {
           try {
             // for edit page
-            console.log('file removed', file);
+            console.log('file removed', file)
             console.log(
               'file removed?',
               files.filter((f) => f.id !== file.id)
-            );
-            setFiles((files) => files.filter((f) => f.id !== file.id));
+            )
+            setFiles((files) => files.filter((f) => f.id !== file.id))
             setThumbnails((thumbnails) =>
               thumbnails.filter((t) => t.id !== file.id)
-            );
+            )
           } catch (error) {
             // eslint-disable-next-line no-console
-            console.error(error);
+            console.error(error)
             // expected output: ReferenceError: nonExistentFunction is not defined
             // Note - error messages will vary depending on browser
           }
         })
         .on('info-visible', () => {
-          const info = engine.getState().info;
+          const info = engine.getState().info
           if (info && info.message !== '') {
-            console.log('info', info);
+            console.log('info', info)
             // notifications.push(info)
             // if (info.type === 'error' && !info.isHidden) {
             //   const id = enqueueNotification({
@@ -461,21 +446,23 @@ const Uploader = ({
         .on('info-hidden', () => {
           // setNotifications([]);
         })
-    );
-  }, []);
+    )
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   useEffect(() => {
     if (isMounted) {
       const data = files.map((file) => {
-        return file.attachment;
-      });
+        return file.attachment
+      })
       if (maxNumberOfFiles > 1) {
-        onChange(data);
+        onChange(data)
       } else {
-        onChange(data[0]);
+        onChange(data[0])
       }
     }
-  }, [files]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [files])
 
   // useEffect(() => {
   // TODO check why unmount on dynamic import
@@ -483,11 +470,11 @@ const Uploader = ({
   // }, [engine]);
 
   useEffect(() => {
-    console.log('isDragging', isDragging);
-    console.log('isDraggingOver', isDraggingOver);
-    console.log('isSorting', isSorting);
-    console.log('isSorting', isSorting);
-  }, [isDraggingOver, isDragging, isSorting]);
+    console.log('isDragging', isDragging)
+    console.log('isDraggingOver', isDraggingOver)
+    console.log('isSorting', isSorting)
+    console.log('isSorting', isSorting)
+  }, [isDraggingOver, isDragging, isSorting])
 
   // functions -------
 
@@ -514,18 +501,18 @@ const Uploader = ({
   //   )
   // }
 
-  const chnageThumbnailPosition = (id: string, position: number) => {
-    setThumbnails((thumbnails) =>
-      thumbnails.map((t) =>
-        t.id === id
-          ? {
-              ...t,
-              position,
-            }
-          : t
-      )
-    );
-  };
+  // const chnageThumbnailPosition = (id: string, position: number) => {
+  //   setThumbnails((thumbnails) =>
+  //     thumbnails.map((t) =>
+  //       t.id === id
+  //         ? {
+  //             ...t,
+  //             position,
+  //           }
+  //         : t
+  //     )
+  //   );
+  // };
 
   const changeThumbnailState = (id: string, state: string) => {
     setThumbnails((thumbnails) =>
@@ -537,8 +524,8 @@ const Uploader = ({
             }
           : t
       )
-    );
-  };
+    )
+  }
 
   const addFiles = (files: File[]): void => {
     const descriptors = files.map((file) => ({
@@ -551,16 +538,16 @@ const Uploader = ({
       },
       source: 'Local',
       isRemote: false,
-    }));
+    }))
 
     try {
-      console.log('addFiles', descriptors);
-      engine.addFiles(descriptors);
+      console.log('addFiles', descriptors)
+      engine.addFiles(descriptors)
     } catch (err) {
       // eslint-disable-next-line no-console
-      console.log(err);
+      console.log(err)
     }
-  };
+  }
 
   const addVideo = (file: UppyFile) => {
     setThumbnails((thumbnails) => [
@@ -577,15 +564,15 @@ const Uploader = ({
         // },
         src: URL.createObjectURL(file.data),
       },
-    ]);
-  };
+    ])
+  }
 
   // Ui function to add a file to the uploader
   const onInputChange = (event: ChangeEvent<HTMLInputElement>): void => {
-    const files = toArray(event.target.files);
-    console.log('onInputChange', files);
+    const files = toArray(event.target.files)
+    console.log('onInputChange', files)
     if (files.length > 0) {
-      addFiles(files);
+      addFiles(files)
     }
 
     // We clear the input after a file is selected, because otherwise
@@ -594,31 +581,31 @@ const Uploader = ({
     // ___Why not use value="" on <input/> instead?
     //    Because if we use that method of clearing the input,
     //    Chrome will not trigger change if we drop the same file twice (Issue #768).
-    event.target.value = '';
-  };
+    event.target.value = ''
+  }
 
   const handleDrop = async (event: any): Promise<void> => {
-    event.preventDefault();
-    event.stopPropagation();
+    event.preventDefault()
+    event.stopPropagation()
 
     // 2. Remove dragover class
-    setIsDraggingOver(false);
+    setIsDraggingOver(false)
 
-    setIsDragging(true);
+    setIsDragging(true)
 
     // 3. Add all dropped files
     const logDropError = (error: any) => {
       // eslint-disable-next-line no-console
-      console.log(error, 'error');
-    };
+      console.log(error, 'error')
+    }
     // getDroppedFiles(event.dataTransfer, { logDropError }).then((files) =>
     //   addFiles(files)
     // );
-    const files = await getDroppedFiles(event.dataTransfer, { logDropError });
+    const files = await getDroppedFiles(event.dataTransfer, { logDropError })
     if (files.length > 0) {
-      addFiles(files);
+      addFiles(files)
     }
-  };
+  }
 
   const handleDragOver = (event: {
     preventDefault: () => void;
@@ -626,61 +613,61 @@ const Uploader = ({
     dataTransfer: { dropEffect?: any; types?: any };
   }) => {
     if (isSorting) {
-      return;
+      return
     }
     if (thumbnails.length > 0 && maxNumberOfFiles !== 1) {
-      return;
+      return
     }
-    event.preventDefault();
-    event.stopPropagation();
+    event.preventDefault()
+    event.stopPropagation()
 
     // Check if the "type" of the datatransfer object includes files. If not, deny drop.
-    const { types } = event.dataTransfer;
-    const hasFiles = types.some((type: string) => type === 'Files');
-    const { allowNewUpload } = engine.getState();
+    const { types } = event.dataTransfer
+    const hasFiles = types.some((type: string) => type === 'Files')
+    const { allowNewUpload } = engine.getState()
     if (!hasFiles || !allowNewUpload) {
       // eslint-disable-next-line no-param-reassign
-      event.dataTransfer.dropEffect = 'none';
+      event.dataTransfer.dropEffect = 'none'
       // clearTimeout(this.removeDragOverClassTimeout)
-      return;
+      return
     }
 
     // 1. Add a small (+) icon on drop
     // (and prevent browsers from interpreting this as files being _moved_ into the browser, https://github.com/transloadit/uppy/issues/1978)
-    event.dataTransfer.dropEffect = 'copy';
+    event.dataTransfer.dropEffect = 'copy'
 
-    setIsDraggingOver(true);
-  };
+    setIsDraggingOver(true)
+  }
 
   const handleDragLeave = (event: {
     preventDefault: () => void;
     stopPropagation: () => void;
   }) => {
-    event.preventDefault();
-    event.stopPropagation();
-    setIsDraggingOver(false);
-  };
+    event.preventDefault()
+    event.stopPropagation()
+    setIsDraggingOver(false)
+  }
 
   const handleDragEnd = (event: {
     preventDefault: () => void;
     stopPropagation: () => void;
   }) => {
-    event.preventDefault();
-    event.stopPropagation();
-    setIsDragging(false);
-    console.log('handleDragExit');
-  };
+    event.preventDefault()
+    event.stopPropagation()
+    setIsDragging(false)
+    console.log('handleDragExit')
+  }
 
-  const draggableChange = ({ moved }: { moved: any }) => {
-    if (moved) {
-      // move the item in the underlying array
-      files.splice(moved.newIndex, 0, files.splice(moved.oldIndex, 1)[0]);
-      // update order property based on position in array
-      files.forEach(function (file, index) {
-        file.position = index; // + 1
-      });
-    }
-  };
+  // const draggableChange = ({ moved }: { moved: any }) => {
+  //   if (moved) {
+  //     // move the item in the underlying array
+  //     files.splice(moved.newIndex, 0, files.splice(moved.oldIndex, 1)[0]);
+  //     // update order property based on position in array
+  //     files.forEach(function (file, index) {
+  //       file.position = index; // + 1
+  //     });
+  //   }
+  // };
 
   const PlaceHolders = (): JSX.Element => {
     const items = existingFiles.map((file) => (
@@ -693,9 +680,9 @@ const Uploader = ({
           <div className="placeholder" />
         </div>
       </div>
-    ));
-    return <>{items}</>;
-  };
+    ))
+    return items as unknown as JSX.Element
+  }
 
   const onAction = ({
     id,
@@ -708,22 +695,22 @@ const Uploader = ({
     action: string;
     reason: FileRemoveReason;
   }): void => {
-    console.log('action', action);
+    console.log('action', action)
     switch (action) {
       case 'cancel':
-        engine.removeFile(id, reason);
-        break;
+        engine.removeFile(id, reason)
+        break
       case 'remove':
-        engine.removeFile(id, reason);
-        break;
+        engine.removeFile(id, reason)
+        break
       case 'retry':
-        engine.retryUpload(id);
-        break;
+        engine.retryUpload(id)
+        break
       default:
         // eslint-disable-next-line no-console
-        console.log('unknown action emited from progress indicator');
+        console.log('unknown action emited from progress indicator')
     }
-  };
+  }
 
   return (
     <div
@@ -732,12 +719,12 @@ const Uploader = ({
       onDragOver={handleDragOver}
       onDragEnd={handleDragEnd}
       onDrop={handleDrop}
-      className="grow h-full"
+      className="h-full grow"
     >
       <div
         id="draggable"
         className={classNames({
-          'grow h-full': thumbnails.length > 0,
+          'h-full grow': thumbnails.length > 0,
         })}
       >
         {isLoading ? (
@@ -768,9 +755,9 @@ const Uploader = ({
       {(isDragging || thumbnails.length === 0) && (
         <div
           className={classNames(
-            'flex flex-row h-full w-full space-x-1 flex-1',
+            'flex h-full w-full flex-1 flex-row space-x-1',
             {
-              'absolute left-0 right-0 top-0 bottom-0 z-10 p-5 hidden ':
+              'absolute left-0 right-0 top-0 bottom-0 z-10 hidden p-5 ':
                 thumbnails.length > 0,
               'show block': isDraggingOver,
             }
@@ -779,7 +766,7 @@ const Uploader = ({
           <div
             role="button"
             className={classNames(
-              'flex items-center justify-center flex-1 border-2 rounded-lg bg-gray-50 dark:bg-neutral-800',
+              'flex flex-1 items-center justify-center rounded-lg border-2 bg-gray-50 dark:bg-neutral-800',
               {
                 'border-blue-500': isDraggingOver,
                 'border-dashed': !isDraggingOver,
@@ -790,7 +777,7 @@ const Uploader = ({
             )}
             onClick={() => inputFilesRef.current.click()}
           >
-            <div className="flex flex-col items-center flex-1">
+            <div className="flex flex-1 flex-col items-center">
               <svg
                 ref={uploadIconRef}
                 className={classNames('mx-auto h-12 w-12', {
@@ -810,12 +797,12 @@ const Uploader = ({
                 />
               </svg>
               <div className="flex text-sm text-gray-600">
-                <span className="relative cursor-pointer font-medium text-blue-600 hover:text-blue-500 focus-within:outline-none focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-blue-500">
+                <span className="relative cursor-pointer font-medium text-blue-600 focus-within:outline-none focus-within:ring-2 focus-within:ring-blue-500 focus-within:ring-offset-2 hover:text-blue-500">
                   <span>Upload a file</span>
                 </span>
                 <p className="pl-1">or drag and drop</p>
               </div>
-              <div className="text-xs text-gray-500 h-3">
+              <div className="h-3 text-xs text-gray-500">
                 <span ref={mainTextRef}>PNG, JPG, GIF up to 100MB</span>
                 <span ref={tipTextRef} className="hidden">
                   Also MP3 WAW, OGG, GLB, GLTF File types supported.
@@ -850,7 +837,7 @@ const Uploader = ({
         </div>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default Uploader;
+export default Uploader

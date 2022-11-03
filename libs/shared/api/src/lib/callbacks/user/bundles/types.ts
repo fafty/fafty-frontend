@@ -1,4 +1,4 @@
-import { BundleProps } from '../../bundle/types';
+import { BundleProps } from '../../bundle/types'
 
 type PaginateProps = {
   count: number;

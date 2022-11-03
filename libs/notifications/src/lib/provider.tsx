@@ -22,6 +22,7 @@ const NotificationProvider = ({
     if (notifications.length < maxNotifications) {
       addNext();
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [queue, notifications, maxNotifications]);
 
   const enqueue = (notification: QueueableNotificationProps) => {

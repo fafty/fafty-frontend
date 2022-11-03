@@ -6,12 +6,11 @@ import {
   useState,
 } from 'react';
 import { SearchIcon } from '@remixicons/react/line';
-import { useDebounce, useOnClickOutside } from '@fafty-frontend/usehooks';
-import { useAsync, SearchResultResponseProps, getSearchResult } from '@fafty-frontend/shared/api';
+import { useDebounce, useOnClickOutside } from '@fafty/usehooks';
+import { useAsync, SearchResultResponseProps, getSearchResult } from '@fafty/shared/api';
 import classNames from 'classnames';
 import { useRouter } from 'next/router';
-import Image from 'next/future/image';
-const isObject = (value: any) => typeof value === 'object';
+import Image from 'next/image';
 
 export const Search = () => {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -56,6 +55,7 @@ export const Search = () => {
     }
 
     return;
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [activeIndex, data]);
 
   const onKeyDown = useCallback(
@@ -74,6 +74,7 @@ export const Search = () => {
         return onClickItem();
       }
     },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     [data, activeIndex, setActiveIndex]
   );
 
@@ -86,6 +87,7 @@ export const Search = () => {
     if (inputValue) {
       call(inputValue);
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [debouncedValue]);
 
   useEffect(() => {
@@ -94,6 +96,7 @@ export const Search = () => {
     return () => {
       window.removeEventListener('keydown', onKeyDown);
     };
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isOpened, activeIndex, onClickItem]);
 
   return (
@@ -166,9 +169,6 @@ export const Search = () => {
                   <div className="ml-4">
                     <p className="text-sm font-medium">{searchable.name}</p>
                     <p className="text-xs font-medium opacity-50">{result_type}</p>
-                    {/* {!isObject(searchable.description) && (
-                      <p className="text-xs font-medium opacity-50">{searchable.description}</p>
-                    )} */}
                   </div>
                 </div>
               );

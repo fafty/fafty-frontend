@@ -1,5 +1,5 @@
-import { useState, useEffect, useCallback } from 'react';
-import axios, { AxiosError } from 'axios';
+import { useState, useEffect, useCallback } from "react"
+import axios, { AxiosError } from "axios"
 
 type useAsyncParams<D, P> = (params?: P) => Promise<D>;
 
@@ -14,13 +14,13 @@ function useAsync<D, P>({
   mapper,
   withMount = false,
 }: RequestParams<D, P>) {
-  const [data, setData] = useState<D>();
-  const [errorMessage, setErrorMessage] = useState('');
+  const [data, setData] = useState<D>()
+  const [errorMessage, setErrorMessage] = useState("")
   const [state, setState] = useState({
     isSuccess: false,
     isError: false,
     isLoading: false,
-  });
+  })
 
   const getData = useCallback(
     async (params?: P) => {
@@ -29,56 +29,56 @@ function useAsync<D, P>({
         isSuccess: false,
         isError: false,
         isLoading: true,
-      }));
+      }))
 
       try {
-        const data = await callback(params);
+        const data = await callback(params)
 
         setState((prev) => ({
           ...prev,
           isSuccess: true,
           isLoading: false,
-        }));
+        }))
 
         if (mapper) {
-          return setData((prev) => mapper(data, prev));
+          return setData((prev) => mapper(data, prev))
         }
 
-        setData(data);
+        setData(data)
 
-        return data;
+        return data
       } catch (error) {
         if (error instanceof AxiosError || error instanceof Error) {
           if (!axios.isCancel(error)) {
-            setErrorMessage(error?.message);
+            setErrorMessage(error?.message)
 
             setState((prev) => ({
               ...prev,
               isError: true,
               isLoading: false,
-            }));
+            }))
           }
         }
 
-        return undefined;
+        return undefined
       }
     },
     [callback, mapper]
-  );
+  )
 
   useEffect(() => {
     if (withMount) {
-      getData();
+      getData()
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [withMount]);
+  }, [withMount])
 
   const call = async (params?: P) => {
     if (!state.isLoading) {
-      return await getData(params);
+      return await getData(params)
     }
 
-    return;
+    return
   };
 
   const clearAsyncData = () => {
@@ -86,11 +86,11 @@ function useAsync<D, P>({
       isSuccess: false,
       isError: false,
       isLoading: false,
-    });
+    })
 
-    setErrorMessage('');
+    setErrorMessage("")
 
-    setData(undefined);
+    setData(undefined)
   };
 
   return {
@@ -99,7 +99,7 @@ function useAsync<D, P>({
     errorMessage,
     clearAsyncData,
     ...state,
-  };
+  }
 }
 
-export default useAsync;
+export default useAsync

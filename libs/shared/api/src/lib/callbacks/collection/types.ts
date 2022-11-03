@@ -1,8 +1,8 @@
-import { TagProps } from '../tags/types';
+import { TagProps } from '../tags/types'
 
-import { EditorState } from 'lexical';
-import { AssetProps } from '../asset/types';
-import { GetAssetsResponseProps } from '../assets/types';
+import { EditorState } from 'lexical'
+import { AssetProps } from '../asset/types'
+import { GetAssetsResponseProps } from '../assets/types'
 
 export type CollectionCoverProps = {
   dominant_color: string | null;
@@ -63,7 +63,7 @@ export type GetCollectionAssetsBySlugResponseProps = {
     assets: GetAssetsResponseProps;
     slug: string;
     token: string;
-  }
+  };
 };
 
 export interface FileProps {

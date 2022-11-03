@@ -1,6 +1,6 @@
-import { TagProps } from '../tags/types';
-import { EditorState } from 'lexical';
-import { CollectionProps } from '../collection/types';
+import { TagProps } from '../tags/types'
+import { EditorState } from 'lexical'
+import { CollectionProps } from '../collection/types'
 
 export type AssetMediaProps = {
   dominant_color: string | null;

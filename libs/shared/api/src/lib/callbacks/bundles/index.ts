@@ -1,15 +1,13 @@
-import api from '../../index';
-import {
-  GetBundlesParamsProps,
-  GetBundlesResponseProps,
-} from './types';
+import api from '../../index'
+import { GetBundlesParamsProps, GetBundlesResponseProps } from './types'
 
+const getBundles = async (
+  params?: GetBundlesParamsProps
+): Promise<GetBundlesResponseProps> => {
+  const { data } = await api.get('/bundles', { params })
 
-const getBundles = async (params?: GetBundlesParamsProps): Promise<GetBundlesResponseProps> => {
-  const { data } = await api.get(`/bundles`, { params });
-
-  return data;
-};
+  return data
+}
 
 // const getBundles = async ({
 //   offset,
@@ -23,4 +21,4 @@ const getBundles = async (params?: GetBundlesParamsProps): Promise<GetBundlesRes
 //   return data;
 // };
 
-export default getBundles;
+export default getBundles

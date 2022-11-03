@@ -1,21 +1,21 @@
-import Block from '../../parts/block';
-import Divider from "../../../../../header/components/parts/divider";
+import Block from '../../parts/block'
+import Divider from '../../../../../header/components/parts/divider'
 
 const MainPanelPlaceholder = (): JSX.Element => {
   return (
-    <div className="relative overflow-hidden p-2 rounded-lg bg-white dark:bg-neutral-800">
-      <div className="animate-pulse relative grid gap-1 p-1 grid-cols-1">
-        <div className="flex rounded-lg p-2 placeholder">
-          <div className="flex h-14 w-14 flex-shrink-0 px-1 py-1 circle"></div>
+    <div className="relative overflow-hidden rounded-lg bg-white p-2 dark:bg-neutral-800">
+      <div className="relative grid animate-pulse grid-cols-1 gap-1 p-1">
+        <div className="placeholder flex rounded-lg p-2">
+          <div className="circle flex h-14 w-14 flex-shrink-0 px-1 py-1"></div>
           <div className="ml-4">
             <div className="h-3" />
-            <div className="flex mb-2">
-              <div className="h-3 w-14 line" />
-              <div className="h-3 w-11 ml-1 line" />
+            <div className="mb-2 flex">
+              <div className="line h-3 w-14" />
+              <div className="line ml-1 h-3 w-11" />
             </div>
             <div className="flex">
-              <div className="h-2 w-9 line" />
-              <div className="h-2 w-12 ml-1 line" />
+              <div className="line h-2 w-9" />
+              <div className="line ml-1 h-2 w-12" />
             </div>
           </div>
         </div>
@@ -31,4 +31,4 @@ const MainPanelPlaceholder = (): JSX.Element => {
   );
 };
 
-export default MainPanelPlaceholder;
+export default MainPanelPlaceholder

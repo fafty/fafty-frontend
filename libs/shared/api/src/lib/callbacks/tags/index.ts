@@ -1,18 +1,21 @@
-import api from '../../index';
-import { GetPopularTagsResponseProps, GetSearchTagsResponseProps } from './types';
+import api from '../../index'
+import {
+  GetPopularTagsResponseProps,
+  GetSearchTagsResponseProps,
+} from './types'
 
 const getPopularTags = async (): Promise<GetPopularTagsResponseProps> => {
-  const { data } = await api.get('/tags/popular');
+  const { data } = await api.get('/tags/popular')
 
-  return data;
-};
+  return data
+}
 
 const getTagsBySearch = async (
   query?: string
 ): Promise<GetSearchTagsResponseProps> => {
-  const { data } = await api.get('/tags/search', { params: { query } });
+  const { data } = await api.get('/tags/search', { params: { query } })
 
-  return data;
-};
+  return data
+}
 
-export { getPopularTags, getTagsBySearch };
+export { getPopularTags, getTagsBySearch }

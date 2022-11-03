@@ -1,11 +1,19 @@
-import { FileRemoveReason } from '@uppy/core';
-import { useState } from 'react';
+import { FileRemoveReason } from '@uppy/core'
+import { useState } from 'react'
 
 interface Props {
   id: string;
   state: string;
   percentage: number;
-  onAction: ({ id, action, reason }: { id: string; action: string, reason: FileRemoveReason }) => void;
+  onAction: ({
+    id,
+    action,
+    reason,
+  }: {
+    id: string;
+    action: string;
+    reason: FileRemoveReason;
+  }) => void;
 }
 
 const progressIndicator = ({
@@ -14,30 +22,30 @@ const progressIndicator = ({
   percentage,
   onAction,
 }: Props): JSX.Element => {
-  const [circleLength] = useState(126.24778); // 2 * Math.PI * 15
+  const [circleLength] = useState(126.24778) // 2 * Math.PI * 15
   const action = () => {
     // ['preprocessing', 'pending'].includes(state) && onAction({ id, action: 'cancel' })
-    console.log('action', id, state, percentage);
+    console.log('action', id, state, percentage)
     if (
       state === 'preprocessing' ||
       state === 'pending' ||
       state === 'complete'
     ) {
-      return;
+      return
     }
-    let type = null;
+    let type = null
     switch (state) {
       case 'error':
-        type = 'retry';
-        break;
+        type = 'retry'
+        break
       default:
-        type = 'cancel';
+        type = 'cancel'
     }
-    onAction({ id: id, action: type, reason: 'removed-by-user' });
-  };
+    onAction({ id: id, action: type, reason: 'removed-by-user' })
+  }
   return (
     <>
-      { state !== 'complete' && (
+      {state !== 'complete' && (
         <div className={`item-progress ${state}`}>
           <button
             className="reset uppy-DashboardItem-progressIndicator"
@@ -133,7 +141,7 @@ const progressIndicator = ({
         </div>
       )}
     </>
-  );
-};
+  )
+}
 
-export default progressIndicator;
+export default progressIndicator

@@ -6,7 +6,7 @@ Notifications is a notification provider for React/Next that can easily show, st
 
 1) Wrap App inside NotificationProvider
 ```javascript
-import { NotificationProvider } from '@fafty-frontend/notifications';
+import { NotificationProvider } from '@fafty/notifications';
 
 <NotificationProvider>
   <App/>
@@ -15,7 +15,7 @@ import { NotificationProvider } from '@fafty-frontend/notifications';
 
 2) Import useNotifications, this hook has two methods "enqueueNotification" and "closeNotification". the method "enqueueNotification" returns the notification id that can be provided to "closeNotification" if needed.
 ```javascript
-import { useNotifications } from '@fafty-frontend/notifications';
+import { useNotifications } from '@fafty/notifications';
 
 const MyComponent = () => {
   const { enqueueNotification, closeNotification } = useNotifications()

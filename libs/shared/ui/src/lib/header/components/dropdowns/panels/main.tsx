@@ -7,7 +7,7 @@ import {
   MutableRefObject,
   useLayoutEffect,
 } from 'react';
-import Image from 'next/future/image';
+import Image from 'next/image';
 import { RadioGroup } from '@headlessui/react';
 import {
   ChatBubbleOvalLeftEllipsisIcon,
@@ -22,7 +22,7 @@ import {
   Squares2X2Icon,
 } from '@heroicons/react/24/outline';
 import { BrushIcon } from '@remixicons/react/line';
-import { useTheme } from '@fafty-frontend/shared/theme';
+import { useTheme } from '@fafty/shared/theme';
 import classNames from 'classnames';
 import Link from 'next/link';
 import { AnimatePresence, motion } from 'framer-motion';
@@ -179,7 +179,7 @@ const MainPanel = ({
           <button
             type="button"
             onClick={() => goTo(props.goToMenu)}
-            className="w-full rounded-full px-1 py-1 focus:outline-none text-neutral-700 bg-neutral-100 hover:bg-neutral-200/80 dark:text-neutral-200 dark:fill-neutral-200 dark:bg-neutral-700 dark:hover:bg-neutral-600"
+            className="w-full rounded-full bg-neutral-100 px-1 py-1 text-neutral-700 hover:bg-neutral-200/80 focus:outline-none dark:bg-neutral-700 dark:fill-neutral-200 dark:text-neutral-200 dark:hover:bg-neutral-600"
           >
             <span className="sr-only">Back to main menu</span>
             <ArrowSmallLeftIcon
@@ -193,7 +193,7 @@ const MainPanel = ({
         </div>
         <div>
           <h3
-            className="text-base font-bold text-slate-900 dark:text-slate-50 ml-3"
+            className="ml-3 text-base font-bold text-slate-900 dark:text-slate-50"
             dir="auto"
           >
             {props.children}
@@ -220,11 +220,11 @@ const MainPanel = ({
     } = props;
 
     return (
-      <a
-        className="cursor-pointer focus:outline-none flex items-center rounded-lg p-2 transition duration-150 ease-in-out text-neutral-700 hover:bg-neutral-100 dark:text-neutral-100 dark:hover:bg-neutral-700"
+      <div
+        className="flex cursor-pointer items-center rounded-lg p-2 text-neutral-700 transition duration-150 ease-in-out hover:bg-neutral-100 focus:outline-none dark:text-neutral-100 dark:hover:bg-neutral-700"
         onClick={() => (goToMenu ? goTo(goToMenu) : onClick?.())}
       >
-        <div className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-full px-1 py-1 focus:outline-none bg-neutral-200 text-neutral-700 dark:text-neutral-200 dark:fill-neutral-200 dark:bg-neutral-700">
+        <div className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-full bg-neutral-200 px-1 py-1 text-neutral-700 focus:outline-none dark:bg-neutral-700 dark:fill-neutral-200 dark:text-neutral-200">
           {LeftIcon && (
             <LeftIcon className="h-6 w-6" strokeWidth="2" aria-hidden="true" />
           )}
@@ -232,27 +232,29 @@ const MainPanel = ({
         <div className="ml-4">
           <p className="text-sm font-medium">{children}</p>
         </div>
-        <div className="justify-end ml-auto">
+        <div className="ml-auto justify-end">
           {RightIcon && (
             <RightIcon className="h-6 w-6" strokeWidth="2" aria-hidden="true" />
           )}
         </div>
-      </a>
+      </div>
     );
   };
 
   useEffect(() => {
     observerSize.observe(refChildren.current);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useLayoutEffect(() => {
     return () => {
       observerSize.unobserve(refChildren.current);
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
-    <div className="relative p-2 rounded-lg text-gray-500 dark:text-gray-500 bg-white dark:bg-neutral-800 overflow-hidden">
+    <div className="relative overflow-hidden rounded-lg bg-white p-2 text-gray-500 dark:bg-neutral-800 dark:text-gray-500">
       <motion.div
         animate={{
           height: height || 'auto',
@@ -270,7 +272,7 @@ const MainPanel = ({
             custom={{ direction: direction, activeMenu: activeMenu }}
           >
             <motion.div
-              layoutTransition
+              // layouttransition
               // layout={false}
               key={activeMenu}
               custom={{ direction: direction, menu: activeMenu }}
@@ -284,13 +286,16 @@ const MainPanel = ({
                 <motion.div
                   layout
                   layoutId="main"
-                  className="relative grid gap-1 p-1 grid-cols-1"
+                  className="relative grid grid-cols-1 gap-1 p-1"
                 >
-                  <Link href={'/profile'}>
-                    <a className="focus:outline-none flex items-center rounded-lg p-2 transition duration-150 ease-in-out text-neutral-700 hover:bg-neutral-100 dark:text-neutral-100 dark:hover:bg-neutral-700">
-                      <div className="flex h-14 w-14 flex-shrink-0 items-center justify-center bg-blue-600 rounded-full hover:bg-blue-500 px-1 py-1 focus:outline-none dark:bg-neutral-700 dark:hover:bg-neutral-600">
+                  <Link
+                    href={'/profile'}
+                    className="flex items-center rounded-lg p-2 text-neutral-700 transition duration-150 ease-in-out hover:bg-neutral-100 focus:outline-none dark:text-neutral-100 dark:hover:bg-neutral-700"
+                  >
+                    <>
+                      <div className="flex h-14 w-14 flex-shrink-0 items-center justify-center rounded-full bg-blue-600 px-1 py-1 hover:bg-blue-500 focus:outline-none dark:bg-neutral-700 dark:hover:bg-neutral-600">
                         <Image
-                          className="inline-block h-12 w-12 rounded-full ring-2 ring-white m-1"
+                          className="m-1 inline-block h-12 w-12 rounded-full ring-2 ring-white"
                           src={`https://avatars.dicebear.com/api/pixel-art/${
                             address || 'nouser'
                           }.svg`}
@@ -300,21 +305,24 @@ const MainPanel = ({
                         />
                       </div>
                       <div className="ml-4 grid">
-                        <p className="relative text-sm font-medium truncate">
+                        <p className="relative truncate text-sm font-medium">
                           {address}
                         </p>
                         <p className="text-xs text-neutral-400">
                           See your profile
                         </p>
                       </div>
-                    </a>
+                    </>
                   </Link>
                   <div className="py-2">
                     <div className="w-full border-t border-gray-100 dark:border-neutral-700"></div>
                   </div>
-                  <Link href={'/account/dashboard'}>
-                    <a className="focus:outline-none flex items-center rounded-lg p-2 transition duration-150 ease-in-out text-neutral-700 hover:bg-neutral-100 dark:text-neutral-100 dark:hover:bg-neutral-700">
-                      <div className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-full px-1 py-1 focus:outline-none bg-neutral-200 text-neutral-700 dark:text-neutral-200 dark:bg-neutral-700">
+                  <Link
+                    href={'/account/dashboard'}
+                    className="flex items-center rounded-lg p-2 text-neutral-700 transition duration-150 ease-in-out hover:bg-neutral-100 focus:outline-none dark:text-neutral-100 dark:hover:bg-neutral-700"
+                  >
+                    <>
+                      <div className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-full bg-neutral-200 px-1 py-1 text-neutral-700 focus:outline-none dark:bg-neutral-700 dark:text-neutral-200">
                         <Squares2X2Icon
                           className="h-6 w-6"
                           strokeWidth="2"
@@ -329,27 +337,31 @@ const MainPanel = ({
                           Account Manage Panel
                         </p>
                       </div>
-                    </a>
+                    </>
                   </Link>
                   <div className="py-2">
                     <div className="w-full border-t border-gray-100 dark:border-neutral-700"></div>
                   </div>
-                  <a className="focus:outline-none flex items-center rounded-lg p-2 transition duration-150 ease-in-out text-neutral-700 hover:bg-neutral-100 dark:text-neutral-100 dark:hover:bg-neutral-700">
-                    <div className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-full px-1 py-1 focus:outline-none bg-neutral-200 text-neutral-700 dark:text-neutral-200 dark:bg-neutral-700">
-                      <ChatBubbleOvalLeftEllipsisIcon
-                        className="h-6 w-6"
-                        strokeWidth="2"
-                        aria-hidden="true"
-                      />
-                    </div>
-                    <div className="ml-4">
-                      <p className="text-sm font-medium">Give Feedback</p>
-                      <p className="text-xs text-neutral-400">
-                        Help us improve Fafty.
-                      </p>
-                    </div>
-                  </a>
-
+                  <Link
+                    href={'/'}
+                    className="flex items-center rounded-lg p-2 text-neutral-700 transition duration-150 ease-in-out hover:bg-neutral-100 focus:outline-none dark:text-neutral-100 dark:hover:bg-neutral-700"
+                  >
+                    <>
+                      <div className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-full bg-neutral-200 px-1 py-1 text-neutral-700 focus:outline-none dark:bg-neutral-700 dark:text-neutral-200">
+                        <ChatBubbleOvalLeftEllipsisIcon
+                          className="h-6 w-6"
+                          strokeWidth="2"
+                          aria-hidden="true"
+                        />
+                      </div>
+                      <div className="ml-4">
+                        <p className="text-sm font-medium">Give Feedback</p>
+                        <p className="text-xs text-neutral-400">
+                          Help us improve Fafty.
+                        </p>
+                      </div>
+                    </>
+                  </Link>
                   <div className="py-2">
                     <div className="w-full border-t border-gray-100 dark:border-neutral-700"></div>
                   </div>
@@ -386,7 +398,7 @@ const MainPanel = ({
                 <motion.div
                   layoutId="settings"
                   layout
-                  className="relative grid gap-1 p-1 grid-cols-1"
+                  className="relative grid grid-cols-1 gap-1 p-1"
                 >
                   <DropdownBack goToMenu="main">Settings</DropdownBack>
                   <DropdownItem leftIcon={Bars3Icon}>HTML</DropdownItem>
@@ -399,7 +411,7 @@ const MainPanel = ({
                 <div
                   // layoutId="help"
                   // layout
-                  className=" grid gap-1 p-1 grid-cols-1"
+                  className=" grid grid-cols-1 gap-1 p-1"
                 >
                   <DropdownBack goToMenu="main">
                     Display & Accessibility
@@ -419,7 +431,7 @@ const MainPanel = ({
                   // exit="exit"
                   // layoutId={activeMenu}
                   // layout
-                  className=" grid gap-1 p-1 grid-cols-1"
+                  className=" grid grid-cols-1 gap-1 p-1"
                 >
                   <DropdownBack goToMenu="main">Appearance</DropdownBack>
                   <RadioGroup value={theme} onChange={setTheme}>
@@ -433,10 +445,10 @@ const MainPanel = ({
                           value={theme.theme}
                           className={({ active, checked }) =>
                             classNames(
-                              'focus:outline-none relative flex cursor-pointer rounded-lg px-2 py-2 text-neutral-700 hover:bg-neutral-100 dark:text-neutral-100 dark:hover:bg-neutral-700',
+                              'relative flex cursor-pointer rounded-lg px-2 py-2 text-neutral-700 hover:bg-neutral-100 focus:outline-none dark:text-neutral-100 dark:hover:bg-neutral-700',
                               {
                                 'ring-2': active,
-                                'bg-white bg-opacity-75 text-slate-900 dark:text-slate-50 dark:bg-neutral-700':
+                                'bg-white bg-opacity-75 text-slate-900 dark:bg-neutral-700 dark:text-slate-50':
                                   checked,
                               }
                             )
@@ -445,9 +457,9 @@ const MainPanel = ({
                           {({ checked }) => (
                             <div className="flex w-full items-center justify-between">
                               <div className="flex items-center">
-                                <div className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-full focus:outline-none bg-neutral-200 fill-neutral-700 dark:fill-neutral-200 dark:bg-neutral-700">
+                                <div className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-full bg-neutral-200 fill-neutral-700 focus:outline-none dark:bg-neutral-700 dark:fill-neutral-200">
                                   <theme.icon
-                                    className="flex-shrink-0 h-6 w-6"
+                                    className="h-6 w-6 flex-shrink-0"
                                     aria-hidden="true"
                                   />
                                 </div>

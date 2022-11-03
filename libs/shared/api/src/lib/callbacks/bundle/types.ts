@@ -1,7 +1,12 @@
-import { EditorState } from 'lexical';
-import { AssetProps, CommentsModerationType, CommentsOrderType, FileProps } from '../asset/types';
-import { GetAssetsResponseProps } from '../assets/types';
-import { TagProps } from '../tags/types';
+import { EditorState } from 'lexical'
+import {
+  AssetProps,
+  CommentsModerationType,
+  CommentsOrderType,
+  FileProps,
+} from '../asset/types'
+import { GetAssetsResponseProps } from '../assets/types'
+import { TagProps } from '../tags/types'
 
 export type BundleCover = {
   dominant_color: string | null;
@@ -61,10 +66,9 @@ export type GetBundleAssetsBySlugResponseProps = {
     assets: GetAssetsResponseProps;
     slug: string;
     token: string;
-  }
-  // paginate: PaginateProps;
-
+  };
 };
+
 export interface FormProps {
   cover: FileProps | null;
   name: string | null;

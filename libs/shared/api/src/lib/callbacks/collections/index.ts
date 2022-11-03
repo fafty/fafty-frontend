@@ -1,14 +1,16 @@
-import api from '../../index';
+import api from '../../index'
 import {
   GetCollectionsParamsProps,
   GetCollectionsResponseProps,
-} from './types';
+} from './types'
 
-const getCollections = async (params?: GetCollectionsParamsProps): Promise<GetCollectionsResponseProps> => {
-  const { data } = await api.get(`/collections`, { params });
+const getCollections = async (
+  params?: GetCollectionsParamsProps
+): Promise<GetCollectionsResponseProps> => {
+  const { data } = await api.get('/collections', { params })
 
-  return data;
-};
+  return data
+}
 // const getCollections = async ({
 //   offset,
 //   limit,
@@ -21,4 +23,4 @@ const getCollections = async (params?: GetCollectionsParamsProps): Promise<GetCo
 //   return data;
 // };
 
-export default getCollections;
+export default getCollections

@@ -1,29 +1,29 @@
-import { MutableRefObject, useEffect, useLayoutEffect, useState } from 'react';
+import { MutableRefObject, useEffect, useLayoutEffect, useState } from 'react'
 
 const useOnScreen = <T extends Element>(
   ref: MutableRefObject<T>,
-  rootMargin: string = '0px'
+  rootMargin = '0px'
 ): boolean => {
   // State and setter for storing whether element is visible
-  const [isIntersecting, setIntersecting] = useState<boolean>(false);
+  const [isIntersecting, setIntersecting] = useState<boolean>(false)
   useLayoutEffect(() => {
     const observer = new IntersectionObserver(
       ([entry]) => {
         // Update our state when observer callback fires
-        setIntersecting(entry.isIntersecting);
+        setIntersecting(entry.isIntersecting)
       },
       {
         rootMargin,
       }
-    );
+    )
     if (ref.current) {
-      observer.observe(ref.current);
+      observer.observe(ref.current)
     }
     return () => {
-      observer.unobserve(ref.current);
-    };
-  }, []);
-  return isIntersecting;
-};
+      observer.unobserve(ref.current)
+    }
+  }, [])
+  return isIntersecting
+}
 
-export default useOnScreen;
+export default useOnScreen

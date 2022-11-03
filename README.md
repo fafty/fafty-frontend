@@ -1,3 +1,6 @@
+<p align="center">
+  <img src="https://raw.githubusercontent.com/fafty/fafty-frontend/master/.github/logo.svg" alt="Fafty">
+</p>
 # Fafty Frontend - Monorepo
 [![Continuous Integration](https://github.com/fafty/fafty-frontend/actions/workflows/ci.yml/badge.svg?branch=master)](https://github.com/fafty/fafty-frontend/actions/workflows/ci.yml)
 [![CodeQL](https://github.com/fafty/fafty-frontend/actions/workflows/codeql.yml/badge.svg?branch=master)](https://github.com/fafty/fafty-frontend/actions/workflows/codeql.yml)
@@ -6,23 +9,23 @@
 
 ## Development server
 
-Run `nx serve fafty` for a dev server. Navigate to http://localhost:4200/. The app will automatically reload if you change any of the source files.
+Run `nx serve main` for a dev server. Navigate to http://localhost:4200/. The app will automatically reload if you change any of the source files.
 
 ## Running unit tests
 
-Run `nx test fafty` to execute the unit tests via [Jest](https://jestjs.io).
+Run `nx test main` to execute the unit tests via [Jest](https://jestjs.io).
 
 Run `nx affected:test` to execute the unit tests affected by a change.
 
 ## Running end-to-end tests
 
-Run `nx e2e fafty-e2e` to execute the end-to-end tests via [Cypress](https://www.cypress.io).
+Run `nx e2e main-e2e` to execute the end-to-end tests via [Cypress](https://www.cypress.io).
 
 Run `nx affected:e2e` to execute the end-to-end tests affected by a change.
 
 ## Build
 
-Run `nx build fafty` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `--prod` flag for a production build.
+Run `nx build main` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `--prod` flag for a production build.
 
 ## Understand your workspace
 
@@ -38,9 +41,9 @@ Run `nx g @nrwl/next:app new-next-app` to generate an next application.
 
 ## Code scaffolding
 
-Run `nx g @nrwl/react:component new-component-name --project=fafty` to generate a new component.
+Run `nx g @nrwl/react:component new-component-name --project=main` to generate a new component.
 
-Run `nx g @nrwl/react:page new-page-name --project=fafty` to generate a new paage.
+Run `nx g @nrwl/react:page new-page-name --project=main` to generate a new paage.
 
 > You can use any of the plugins above to generate applications as well.
 
@@ -52,7 +55,7 @@ Run `nx g @nrwl/react:lib new-lib` to generate a library.
 
 > You can also use any of the plugins above to generate libraries as well.
 
-Libraries are shareable across libraries and applications. They can be imported from `@fafty-frontend/newlib`.
+Libraries are shareable across libraries and applications. They can be imported from `@fafty/newlib`.
 
 ## For more info 
 

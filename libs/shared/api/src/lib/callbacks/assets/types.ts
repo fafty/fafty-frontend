@@ -1,4 +1,4 @@
-import { AssetProps } from '../asset/types';
+import { AssetProps } from '../asset/types'
 
 type PaginateProps = {
   count: number;

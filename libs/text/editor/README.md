@@ -1,55 +1,6 @@
-# Fafty Web Text Editor library
+# text-editor
 
-## Basic usage
-
-1. Base import
-
-```javascript
-import Editor from '@fafty-frontend/text/editor'
-
-const onEditorChange = (text-editorState: JSON) => {
-  // your code
-}
-
-export default function MyComponent() {
-  return (
-    <Editor initialEditorState={null} onChange={onEditorChange} />
-  );
-}
-```
-
-2. Dynamic import and placeholder
-
-```javascript
-
-import dynamic from 'next/dynamic'
-
-import { EditorPlaceholder } from '@fafty-frontend/shared/ui';
-
-interface EditorProps {
-  isAutocomplete?: boolean
-  maxCharacters?: null | number
-  isRichText?: boolean
-  showTreeView?: boolean
-  initialEditorState: null | string
-  onChange: (text-editorState: JSON) => void
-}
-const Editor = dynamic<EditorProps>(() => import('@fafty-frontend/text/editor').then((mod) => mod.Editor), {
-  ssr: false, loading: () => <EditorPlaceholder />
-});
-
-const onEditorChange = (text-editorState: JSON) => {
-  // your code
-}
-
-export default function MyComponent() {
-  return (
-    <Editor initialEditorState={null} onChange={onEditorChange} />
-  );
-}
-```
-
-Based on [Facebook Lexical](https://lexical.dev) - An extensible text text-editor framework
+This library was generated with [Nx](https://nx.dev).
 
 ## Running unit tests
 

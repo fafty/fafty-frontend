@@ -64,6 +64,6 @@ const BaseTheme = {
     url: 'editor-tokenOperator',
     variable: 'editor-tokenVariable',
   },
-};
+}
 
-export default BaseTheme;
+export default BaseTheme

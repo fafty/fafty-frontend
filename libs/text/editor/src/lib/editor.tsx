@@ -1,24 +1,24 @@
-import { CharacterLimitPlugin } from '@lexical/react/LexicalCharacterLimitPlugin';
-import { LexicalComposer } from '@lexical/react/LexicalComposer';
-import { RichTextPlugin } from '@lexical/react/LexicalRichTextPlugin';
-import { PlainTextPlugin } from '@lexical/react/LexicalPlainTextPlugin';
-import { ContentEditable } from '@lexical/react/LexicalContentEditable';
-import { HistoryPlugin } from '@lexical/react/LexicalHistoryPlugin';
-import { AutoFocusPlugin } from '@lexical/react/LexicalAutoFocusPlugin';
-import { LinkPlugin } from '@lexical/react/LexicalLinkPlugin';
-import { ListPlugin } from '@lexical/react/LexicalListPlugin';
-import { OnChangePlugin } from '@lexical/react/LexicalOnChangePlugin';
-import { EditorPlaceholder } from '@fafty-frontend/shared/ui';
-import BaseTheme from './themes/base';
-import AutoLinkPlugin from './plugins/AutoLink';
+import { CharacterLimitPlugin } from '@lexical/react/LexicalCharacterLimitPlugin'
+import { LexicalComposer } from '@lexical/react/LexicalComposer'
+import { RichTextPlugin } from '@lexical/react/LexicalRichTextPlugin'
+import { PlainTextPlugin } from '@lexical/react/LexicalPlainTextPlugin'
+import { ContentEditable } from '@lexical/react/LexicalContentEditable'
+import { HistoryPlugin } from '@lexical/react/LexicalHistoryPlugin'
+import { AutoFocusPlugin } from '@lexical/react/LexicalAutoFocusPlugin'
+import { LinkPlugin } from '@lexical/react/LexicalLinkPlugin'
+import { ListPlugin } from '@lexical/react/LexicalListPlugin'
+import { OnChangePlugin } from '@lexical/react/LexicalOnChangePlugin'
+import { EditorPlaceholder } from '@fafty/shared/ui'
+import BaseTheme from './themes/base'
+import AutoLinkPlugin from './plugins/AutoLink'
 // import AutocompletePlugin from './plugins/Autocomplete';
-import TreeViewPlugin from './plugins/TreeView';
-import ToolbarPlugin from './plugins/Toolbar';
-import ListMaxIndentLevelPlugin from './plugins/ListMaxIndentLevel';
-import CodeHighlightPlugin from './plugins/CodeHighlight';
-import { EditorState, LexicalEditor } from 'lexical';
-import nodes from './nodes/nodes';
-import { ChangeEvent, EventHandler } from 'react';
+import TreeViewPlugin from './plugins/TreeView'
+import ToolbarPlugin from './plugins/Toolbar'
+import ListMaxIndentLevelPlugin from './plugins/ListMaxIndentLevel'
+import CodeHighlightPlugin from './plugins/CodeHighlight'
+import { EditorState, LexicalEditor } from 'lexical'
+import nodes from './nodes/nodes'
+import { ChangeEvent, EventHandler } from 'react'
 
 type ChangeEventHandler<T = Element> = EventHandler<ChangeEvent<T>>;
 
@@ -27,8 +27,8 @@ const Placeholder = ({ text }: { text: string }): JSX.Element => {
     <div className="editor-placeholder absolute text-ellipsis overflow-hidden top-4 left-4 select-none inline-block pointer-events-none text-base text-gray-400 dark:text-gray-500">
       {text}
     </div>
-  );
-};
+  )
+}
 
 interface Props {
   isAutocomplete?: boolean;
@@ -73,20 +73,20 @@ const Editor = ({
       type: 'root',
       version: 1,
     },
-  };
+  }
 
-  if (loading) return <EditorPlaceholder header={isRichText} />;
+  if (loading) return <EditorPlaceholder header={isRichText} />
   const initialConfig = {
     nodes: [...nodes],
     // The editor theme
     theme: BaseTheme,
     // Handling of errors during update
     onError(error: Error, editor: LexicalEditor): void {
-      throw error;
+      throw error
     },
     namespace: namespace,
     editorState: JSON.stringify(initialEditorState || baseState),
-  };
+  }
 
   return (
     <LexicalComposer initialConfig={initialConfig}>
@@ -150,7 +150,7 @@ const Editor = ({
         {showTreeView && <TreeViewPlugin />}
       </div>
     </LexicalComposer>
-  );
-};
+  )
+}
 
-export default Editor;
+export default Editor

@@ -7,25 +7,18 @@ const BundleItemPlaceholder = () => {
             <div className="item-card-link">
               <div className="thumbnail-wrapper asset">
                 <div className="thumbnail">
-                  <div className="h-[15rem]">
-
-                  </div>
+                  <div className="h-[15rem]"></div>
                 </div>
               </div>
               <div className="item-card-body">
                 <div className="item-card-content">
                   <div className="item-head">
                     <div className="item-card-title">
-                      {/* <span>------</span> */}
-                      <span className="flex w-[6rem] h-[0.8rem] mt-1 mb-2 rounded-lg bg-neutral-300 dark:bg-neutral-600 animate-pulse" />
-                      <span className="flex w-[3rem] h-[0.8rem] rounded-lg bg-neutral-300 dark:bg-neutral-600 animate-pulse" />
-
+                      <span className="mt-1 mb-2 flex h-[0.8rem] w-[6rem] animate-pulse rounded-lg bg-neutral-300 dark:bg-neutral-600" />
+                      <span className="flex h-[0.8rem] w-[3rem] animate-pulse rounded-lg bg-neutral-300 dark:bg-neutral-600" />
                     </div>
                     <div className="item-price animate-pulse">
-                        {/* 0 ICP */}
-                        <span className="flex w-[2rem] h-[0.8rem] rounded-lg bg-green-600 animate-pulse" />
-                      {/* <span className="w-10 h-3 bg-neutral-300 dark:bg-neutral-600">
-                      </span> */}
+                      <span className="flex h-[0.8rem] w-[2rem] animate-pulse rounded-lg bg-green-600" />
                     </div>
                   </div>
                 </div>
@@ -36,7 +29,7 @@ const BundleItemPlaceholder = () => {
                     className="flex items-center justify-center"
                   >
                     <div>
-                    <span className="flex w-12 h-5 rounded-lg bg-neutral-300 dark:bg-neutral-600"></span>
+                      <span className="flex h-5 w-12 rounded-lg bg-neutral-300 dark:bg-neutral-600"></span>
                     </div>
                   </button>
                 </div>
@@ -46,8 +39,7 @@ const BundleItemPlaceholder = () => {
         </div>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default BundleItemPlaceholder;
-
+export default BundleItemPlaceholder

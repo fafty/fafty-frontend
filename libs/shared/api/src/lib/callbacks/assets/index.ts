@@ -1,10 +1,12 @@
-import api from '../../index';
-import { GetAssetsParamsProps, GetAssetsResponseProps } from './types';
+import api from '../../index'
+import { GetAssetsParamsProps, GetAssetsResponseProps } from './types'
 
-const getAssets = async (params?: GetAssetsParamsProps): Promise<GetAssetsResponseProps> => {
-  const { data } = await api.get(`/assets`, { params });
+const getAssets = async (
+  params?: GetAssetsParamsProps
+): Promise<GetAssetsResponseProps> => {
+  const { data } = await api.get('/assets', { params })
 
-  return data;
-};
+  return data
+}
 
-export default getAssets;
+export default getAssets

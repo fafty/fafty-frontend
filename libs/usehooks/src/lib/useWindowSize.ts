@@ -2,11 +2,6 @@ import { useState } from 'react'
 import useEventListener from './useEventListener'
 import useIsomorphicLayoutEffect from './useIsomorphicLayoutEffect'
 
-// interface WindowSize {
-//   width: number
-//   height: number
-// }
-
 function useWindowSize(): readonly [number, number] {
   const [windowSize, setWindowSize] = useState<readonly [number, number]>([0,0])
 

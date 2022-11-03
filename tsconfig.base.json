@@ -15,15 +15,15 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
-      "@fafty-frontend/notifications": ["libs/notifications/src/index.ts"],
-      "@fafty-frontend/shared/api": ["libs/shared/api/src/index.ts"],
-      "@fafty-frontend/shared/modals": ["libs/shared/modals/src/index.ts"],
-      "@fafty-frontend/shared/theme": ["libs/shared/theme/src/index.ts"],
-      "@fafty-frontend/shared/ui": ["libs/shared/ui/src/index.ts"],
-      "@fafty-frontend/text/editor": ["libs/text/editor/src/index.ts"],
-      "@fafty-frontend/text/viewer": ["libs/text/viewer/src/index.ts"],
-      "@fafty-frontend/uploader": ["libs/uploader/src/index.ts"],
-      "@fafty-frontend/usehooks": ["libs/usehooks/src/index.ts"]
+      "@fafty/notifications": ["libs/notifications/src/index.ts"],
+      "@fafty/shared/api": ["libs/shared/api/src/index.ts"],
+      "@fafty/shared/modals": ["libs/shared/modals/src/index.ts"],
+      "@fafty/shared/theme": ["libs/shared/theme/src/index.ts"],
+      "@fafty/shared/ui": ["libs/shared/ui/src/index.ts"],
+      "@fafty/text/editor": ["libs/text/editor/src/index.ts"],
+      "@fafty/text/viewer": ["libs/text/viewer/src/index.ts"],
+      "@fafty/uploader": ["libs/uploader/src/index.ts"],
+      "@fafty/usehooks": ["libs/usehooks/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]
