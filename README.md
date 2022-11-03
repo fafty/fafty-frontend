@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="https://raw.githubusercontent.com/fafty/fafty-frontend/master/.github/logo.svg" alt="Fafty">
+  <img src="https://raw.githubusercontent.com/fafty/fafty-frontend/master/.github/logo.svg" alt="Fafty" width="120px">
 </p>
 # Fafty Frontend - Monorepo
 [![Continuous Integration](https://github.com/fafty/fafty-frontend/actions/workflows/ci.yml/badge.svg?branch=master)](https://github.com/fafty/fafty-frontend/actions/workflows/ci.yml)
