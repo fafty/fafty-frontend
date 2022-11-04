@@ -1,5 +1,5 @@
-import Link from 'next/link';
-import MainLayout from '../layouts/main';
+import Link from 'next/link'
+import MainLayout from '../layouts/main'
 
 const NotFoundPage = (): JSX.Element => {
   return (
@@ -180,6 +180,6 @@ const NotFoundPage = (): JSX.Element => {
         </div>
       </section>
     </MainLayout>
-  );
-};
-export default NotFoundPage;
+  )
+}
+export default NotFoundPage

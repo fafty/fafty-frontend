@@ -1,34 +1,34 @@
-import { FC, useEffect, useState } from 'react';
-import classNames from 'classnames';
-import { XMarkIcon } from '@heroicons/react/24/outline';
-import { ModalProps } from './types';
-import { AnimatePresence, motion } from 'framer-motion';
+import { FC, useEffect, useState } from 'react'
+import classNames from 'classnames'
+import { XMarkIcon } from '@heroicons/react/24/outline'
+import { ModalProps } from './types'
+import { AnimatePresence, motion } from 'framer-motion'
 
 const useOnEscape = (
   handler: (event: KeyboardEvent) => void,
   active = true
 ) => {
   useEffect(() => {
-    if (!active) return;
+    if (!active) return
     const listener = (event: KeyboardEvent) => {
       // check if key is an Escape
-      if (event.key === 'Escape') handler(event);
-    };
-    document.addEventListener('keyup', listener);
+      if (event.key === 'Escape') handler(event)
+    }
+    document.addEventListener('keyup', listener)
 
     return () => {
-      if (!active) return;
-      document.removeEventListener('keyup', listener);
-    };
-  }, [handler, active]);
-};
+      if (!active) return
+      document.removeEventListener('keyup', listener)
+    }
+  }, [handler, active])
+}
 
 const Modal: FC<ModalProps> = (props) => {
   const { title, open, children, actions, options, onDismiss, className } =
-    props;
+    props
   // const [isOpen, setIsOpen] = useState(true);
 
-  useOnEscape(onDismiss, options?.persist);
+  useOnEscape(onDismiss, options?.persist)
 
   const showInModalVarians = {
     hidden: {
@@ -48,7 +48,7 @@ const Modal: FC<ModalProps> = (props) => {
       y: '20px',
       opacity: 0,
     },
-  };
+  }
   return (
     <AnimatePresence>
       {open && (
@@ -127,7 +127,7 @@ const Modal: FC<ModalProps> = (props) => {
         </div>
       )}
     </AnimatePresence>
-  );
-};
+  )
+}
 
-export default Modal;
+export default Modal

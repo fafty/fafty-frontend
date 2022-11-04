@@ -6,9 +6,9 @@ import {
   useRef,
   MutableRefObject,
   useLayoutEffect,
-} from 'react';
-import Image from 'next/image';
-import { RadioGroup } from '@headlessui/react';
+} from 'react'
+import Image from 'next/image'
+import { RadioGroup } from '@headlessui/react'
 import {
   ChatBubbleOvalLeftEllipsisIcon,
   CogIcon,
@@ -20,12 +20,12 @@ import {
   SunIcon,
   QuestionMarkCircleIcon,
   Squares2X2Icon,
-} from '@heroicons/react/24/outline';
-import { BrushIcon } from '@remixicons/react/line';
-import { useTheme } from '@fafty/shared/theme';
-import classNames from 'classnames';
-import Link from 'next/link';
-import { AnimatePresence, motion } from 'framer-motion';
+} from '@heroicons/react/24/outline'
+import { BrushIcon } from '@remixicons/react/line'
+import { useTheme } from '@fafty/shared/theme'
+import classNames from 'classnames'
+import Link from 'next/link'
+import { AnimatePresence, motion } from 'framer-motion'
 
 const themeOptions = [
   {
@@ -48,7 +48,7 @@ const themeOptions = [
     icon: BrushIcon,
     theme: 'system',
   },
-];
+]
 
 const variants = {
   enter: ({ direction, menu }: { direction: number; menu: string }) => ({
@@ -116,7 +116,7 @@ const variants = {
       },
     },
   }),
-};
+}
 
 function CheckIcon(props: JSX.IntrinsicAttributes & SVGProps<SVGSVGElement>) {
   return (
@@ -136,7 +136,7 @@ function CheckIcon(props: JSX.IntrinsicAttributes & SVGProps<SVGSVGElement>) {
         strokeLinejoin="round"
       />
     </svg>
-  );
+  )
 }
 
 const MainPanel = ({
@@ -150,19 +150,19 @@ const MainPanel = ({
   close: boolean;
   onLogOut: () => void;
 }): JSX.Element => {
-  const [height, setHeight] = useState(0);
-  const refChildren = useRef() as MutableRefObject<HTMLDivElement>;
-  const [activeMenu, setActiveMenu] = useState('main');
-  const { theme, setTheme } = useTheme();
-  const [direction, setDirection] = useState(0);
+  const [height, setHeight] = useState(0)
+  const refChildren = useRef() as MutableRefObject<HTMLDivElement>
+  const [activeMenu, setActiveMenu] = useState('main')
+  const { theme, setTheme } = useTheme()
+  const [direction, setDirection] = useState(0)
 
   const observerSize = new ResizeObserver(([entry]) => {
-    setHeight(entry.contentRect.height);
-  });
+    setHeight(entry.contentRect.height)
+  })
 
   useEffect(() => {
-    setActiveMenu('main');
-  }, [close]);
+    setActiveMenu('main')
+  }, [close])
 
   interface DropdownItemOrBackProps {
     children: ReactNode;
@@ -200,16 +200,16 @@ const MainPanel = ({
           </h3>
         </div>
       </div>
-    );
-  };
+    )
+  }
   const goTo = (goToMenu: string | undefined) => {
     if (goToMenu === 'main') {
-      setDirection(-1);
+      setDirection(-1)
     } else {
-      setDirection(1);
+      setDirection(1)
     }
-    goToMenu && setActiveMenu(goToMenu);
-  };
+    goToMenu && setActiveMenu(goToMenu)
+  }
   const DropdownItem = (props: DropdownItemOrBackProps): JSX.Element => {
     const {
       children,
@@ -217,7 +217,7 @@ const MainPanel = ({
       onClick,
       leftIcon: LeftIcon,
       rightIcon: RightIcon,
-    } = props;
+    } = props
 
     return (
       <div
@@ -238,20 +238,20 @@ const MainPanel = ({
           )}
         </div>
       </div>
-    );
-  };
+    )
+  }
 
   useEffect(() => {
-    observerSize.observe(refChildren.current);
+    observerSize.observe(refChildren.current)
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [])
 
   useLayoutEffect(() => {
     return () => {
-      observerSize.unobserve(refChildren.current);
-    };
+      observerSize.unobserve(refChildren.current)
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [])
 
   return (
     <div className="relative overflow-hidden rounded-lg bg-white p-2 text-gray-500 dark:bg-neutral-800 dark:text-gray-500">
@@ -466,11 +466,11 @@ const MainPanel = ({
                                 <div className="ml-4">
                                   <RadioGroup.Label
                                     as="p"
-                                    className={`font-medium`}
+                                    className={'font-medium'}
                                   >
                                     {theme.name}
                                   </RadioGroup.Label>
-                                  <p className={`text-xs text-neutral-400`}>
+                                  <p className={'text-xs text-neutral-400'}>
                                     {theme.description}
                                   </p>
                                 </div>
@@ -495,7 +495,7 @@ const MainPanel = ({
         </div>
       </motion.div>
     </div>
-  );
-};
+  )
+}
 
-export default MainPanel;
+export default MainPanel

@@ -1,5 +1,5 @@
-import { useLexicalComposerContext } from '@lexical/react/LexicalComposerContext';
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { useLexicalComposerContext } from '@lexical/react/LexicalComposerContext'
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import {
   COMMAND_PRIORITY_CRITICAL,
   INDENT_CONTENT_COMMAND,
@@ -16,53 +16,53 @@ import {
   $isRangeSelection,
   $createParagraphNode,
   $getNodeByKey,
-} from 'lexical';
+} from 'lexical'
 import {
   $isParentElementRTL,
   $wrapLeafNodesInElements,
-} from '@lexical/selection';
-import { $getNearestNodeOfType, mergeRegister } from '@lexical/utils';
+} from '@lexical/selection'
+import { $getNearestNodeOfType, mergeRegister } from '@lexical/utils'
 import {
   INSERT_ORDERED_LIST_COMMAND,
   INSERT_UNORDERED_LIST_COMMAND,
   REMOVE_LIST_COMMAND,
   $isListNode,
   ListNode,
-} from '@lexical/list';
+} from '@lexical/list'
 import {
   $createHeadingNode,
   $createQuoteNode,
   $isHeadingNode,
-} from '@lexical/rich-text';
+} from '@lexical/rich-text'
 import {
   $createCodeNode,
   $isCodeNode,
   // getDefaultCodeLanguage,
   getCodeLanguages,
-} from '@lexical/code';
-import { IS_APPLE } from '../enviroments';
-import { ReactComponent as TextIndentLeft } from '../icons/text-indent-left.svg';
-import { ReactComponent as TextIndentRight } from '../icons/text-indent-right.svg';
-import { ReactComponent as ArrowCounterclockwise } from '../icons/arrow-counterclockwise.svg';
-import { ReactComponent as ArrowClockwise } from '../icons/arrow-clockwise.svg';
-import { ReactComponent as TextParagraph } from '../icons/text-paragraph.svg';
-import { ReactComponent as TypeH1 } from '../icons/type-h1.svg';
-import { ReactComponent as TypeH2 } from '../icons/type-h2.svg';
-import { ReactComponent as TypeH3 } from '../icons/type-h3.svg';
-import { ReactComponent as TypeBold } from '../icons/type-bold.svg';
-import { ReactComponent as TypeItalic } from '../icons/type-italic.svg';
-import { ReactComponent as TypeUnderline } from '../icons/type-underline.svg';
-import { ReactComponent as TypeStrikethrough } from '../icons/type-strikethrough.svg';
-import { ReactComponent as TextLeft } from '../icons/text-left.svg';
-import { ReactComponent as TextRight } from '../icons/text-right.svg';
-import { ReactComponent as TextCenter } from '../icons/text-center.svg';
-import { ReactComponent as Justify } from '../icons/justify.svg';
-import { ReactComponent as ListUl } from '../icons/list-ul.svg';
-import { ReactComponent as ListOl } from '../icons/list-ol.svg';
-import { ReactComponent as ChatSquareQuote } from '../icons/chat-square-quote.svg';
-import { ReactComponent as Code } from '../icons/code.svg';
+} from '@lexical/code'
+import { IS_APPLE } from '../enviroments'
+import { ReactComponent as TextIndentLeft } from '../icons/text-indent-left.svg'
+import { ReactComponent as TextIndentRight } from '../icons/text-indent-right.svg'
+import { ReactComponent as ArrowCounterclockwise } from '../icons/arrow-counterclockwise.svg'
+import { ReactComponent as ArrowClockwise } from '../icons/arrow-clockwise.svg'
+import { ReactComponent as TextParagraph } from '../icons/text-paragraph.svg'
+import { ReactComponent as TypeH1 } from '../icons/type-h1.svg'
+import { ReactComponent as TypeH2 } from '../icons/type-h2.svg'
+import { ReactComponent as TypeH3 } from '../icons/type-h3.svg'
+import { ReactComponent as TypeBold } from '../icons/type-bold.svg'
+import { ReactComponent as TypeItalic } from '../icons/type-italic.svg'
+import { ReactComponent as TypeUnderline } from '../icons/type-underline.svg'
+import { ReactComponent as TypeStrikethrough } from '../icons/type-strikethrough.svg'
+import { ReactComponent as TextLeft } from '../icons/text-left.svg'
+import { ReactComponent as TextRight } from '../icons/text-right.svg'
+import { ReactComponent as TextCenter } from '../icons/text-center.svg'
+import { ReactComponent as Justify } from '../icons/justify.svg'
+import { ReactComponent as ListUl } from '../icons/list-ul.svg'
+import { ReactComponent as ListOl } from '../icons/list-ol.svg'
+import { ReactComponent as ChatSquareQuote } from '../icons/chat-square-quote.svg'
+import { ReactComponent as Code } from '../icons/code.svg'
 
-import Dropdown from '../ui/dropdown';
+import Dropdown from '../ui/dropdown'
 
 const supportedBlockTypes: Set<string> = new Set([
   'paragraph',
@@ -73,19 +73,19 @@ const supportedBlockTypes: Set<string> = new Set([
   'h3',
   'ul',
   'ol',
-]);
+])
 
 const codeLanguageOptions = [
   { value: '', label: 'Select language' },
   { value: 'markdown', label: 'Markdown' },
   { value: 'plain', label: 'Plain Text' },
-];
+]
 
 const codeLanguageMap: object = {
   md: 'markdown',
   plaintext: 'plain',
   text: 'plain',
-};
+}
 
 // Divider between butons and dropdown menus on the toolbar.
 function Divider(): JSX.Element {
@@ -95,7 +95,7 @@ function Divider(): JSX.Element {
         &nbsp;
       </div>
     </div>
-  );
+  )
 }
 
 function Select({
@@ -124,7 +124,7 @@ function Select({
         </option>
       ))}
     </select>
-  );
+  )
 }
 
 // Dropdown list for block types
@@ -140,20 +140,20 @@ function BlockOptionsDropdown({
   const action = ({ type, command }: { type: string; command: any }) => {
     if (blockType !== type) {
       if (['ul', 'ol'].includes(type)) {
-        editor.dispatchCommand(command, null);
+        editor.dispatchCommand(command, null)
       } else {
         editor.update(() => {
-          const selection = $getSelection();
+          const selection = $getSelection()
 
           if ($isRangeSelection(selection)) {
-            $wrapLeafNodesInElements(selection, command);
+            $wrapLeafNodesInElements(selection, command)
           }
-        });
+        })
       }
     } else if (['ul', 'ol'].includes(type)) {
-      editor.dispatchCommand(REMOVE_LIST_COMMAND, undefined);
+      editor.dispatchCommand(REMOVE_LIST_COMMAND, undefined)
     }
-  };
+  }
 
   const blockTypeButtons = [
     {
@@ -214,7 +214,7 @@ function BlockOptionsDropdown({
       icon: <Code className="w-4 h-4" aria-hidden="true" />,
       command: () => $createCodeNode(),
     },
-  ];
+  ]
 
   return (
     <Dropdown
@@ -234,7 +234,7 @@ function BlockOptionsDropdown({
           className="focus:outline-none flex items-center rounded h-7 transition duration-150 ease-in-out text-neutral-700 hover:bg-blue-100 dark:text-neutral-100 dark:hover:bg-neutral-700"
           key={button.type}
           onClick={() => {
-            action({ type: button.type, command: button.command });
+            action({ type: button.type, command: button.command })
           }}
         >
           <div className="ml-2 justify-center">{button.icon}</div>
@@ -242,7 +242,7 @@ function BlockOptionsDropdown({
         </div>
       ))}
     </Dropdown>
-  );
+  )
 }
 
 // Dropdown list for align text
@@ -279,11 +279,11 @@ function AlignOptionsDropdown({
       active: align.justify,
       icon: <Justify className="w-4 h-4" aria-hidden="true" />,
     },
-  ];
+  ]
   const action = (value: string) => {
-    // @ts-ignore Correct types, but since they're dynamic TS doesn't like it.
-    editor?.dispatchCommand(FORMAT_ELEMENT_COMMAND, value);
-  };
+    // @ts-error Correct types, but since they're dynamic TS doesn't like it.
+    editor?.dispatchCommand(FORMAT_ELEMENT_COMMAND, value)
+  }
 
   return (
     <Dropdown
@@ -304,7 +304,7 @@ function AlignOptionsDropdown({
           } focus:outline-none flex items-center rounded h-7 w-7 justify-center transition duration-150 ease-in-out text-neutral-700 hover:bg-blue-100 dark:text-neutral-100 dark:hover:bg-neutral-700`}
           key={button.value}
           onClick={() => {
-            action(button.value);
+            action(button.value)
           }}
         >
           <span
@@ -317,27 +317,27 @@ function AlignOptionsDropdown({
         </div>
       ))}
     </Dropdown>
-  );
+  )
 }
 
 export default function ToolbarPlugin(): JSX.Element {
-  const [editor] = useLexicalComposerContext();
-  const [activeEditor, setActiveEditor] = useState(editor);
-  const toolbarRef = useRef<HTMLDivElement>(null);
+  const [editor] = useLexicalComposerContext()
+  const [activeEditor, setActiveEditor] = useState(editor)
+  const toolbarRef = useRef<HTMLDivElement>(null)
 
-  const [canUndo, setCanUndo] = useState<boolean>(false);
-  const [canRedo, setCanRedo] = useState<boolean>(false);
-  const [blockType, setBlockType] = useState<string>('paragraph');
+  const [canUndo, setCanUndo] = useState<boolean>(false)
+  const [canRedo, setCanRedo] = useState<boolean>(false)
+  const [blockType, setBlockType] = useState<string>('paragraph')
   const [selectedElementKey, setSelectedElementKey] = useState<string | null>(
     null
-  );
-  const [codeLanguage, setCodeLanguage] = useState<string>('');
-  const [isRTL, setIsRTL] = useState(false);
-  const [isBold, setIsBold] = useState<boolean>(false);
-  const [isItalic, setIsItalic] = useState<boolean>(false);
-  const [isUnderline, setIsUnderline] = useState<boolean>(false);
-  const [isStrikethrough, setIsStrikethrough] = useState<boolean>(false);
-  const [isCode, setIsCode] = useState<boolean>(false);
+  )
+  const [codeLanguage, setCodeLanguage] = useState<string>('')
+  const [isRTL, setIsRTL] = useState(false)
+  const [isBold, setIsBold] = useState<boolean>(false)
+  const [isItalic, setIsItalic] = useState<boolean>(false)
+  const [isUnderline, setIsUnderline] = useState<boolean>(false)
+  const [isStrikethrough, setIsStrikethrough] = useState<boolean>(false)
+  const [isCode, setIsCode] = useState<boolean>(false)
 
   const [alignText, setAlignText] = useState<{
     left: boolean;
@@ -349,107 +349,109 @@ export default function ToolbarPlugin(): JSX.Element {
     center: false,
     right: false,
     justify: false,
-  });
+  })
 
   const updateToolbar = useCallback(() => {
-    const selection = $getSelection();
+    const selection = $getSelection()
     if ($isRangeSelection(selection)) {
-      const anchorNode = selection.anchor.getNode();
+      const anchorNode = selection.anchor.getNode()
       const element =
         anchorNode.getKey() === 'root'
           ? anchorNode
-          : anchorNode.getTopLevelElementOrThrow();
-      const elementKey = element.getKey();
-      const elementDOM = activeEditor.getElementByKey(elementKey);
+          : anchorNode.getTopLevelElementOrThrow()
+      const elementKey = element.getKey()
+      const elementDOM = activeEditor.getElementByKey(elementKey)
 
       if (elementDOM !== null) {
-        setSelectedElementKey(elementKey);
+        setSelectedElementKey(elementKey)
         if ($isListNode(element)) {
-          const parentList = $getNearestNodeOfType(anchorNode, ListNode);
-          const type = parentList ? parentList.getTag() : element.getTag();
-          setBlockType(type);
+          const parentList = $getNearestNodeOfType(anchorNode, ListNode)
+          const type = parentList ? parentList.getTag() : element.getTag()
+          setBlockType(type)
         } else {
           const type = $isHeadingNode(element)
             ? element.getTag()
-            : element.getType();
-          setBlockType(type);
+            : element.getType()
+          setBlockType(type)
           if ($isCodeNode(element)) {
-            const language = element.getLanguage();
+            const language = element.getLanguage()
             setCodeLanguage(
               language
                 ? codeLanguageMap[language as keyof typeof codeLanguageMap] ||
                     language
                 : ''
-            );
-            return;
+            )
+            return
           }
         }
       }
       // Update text format
-      setIsBold(selection.hasFormat('bold'));
-      setIsItalic(selection.hasFormat('italic'));
-      setIsUnderline(selection.hasFormat('underline'));
-      setIsStrikethrough(selection.hasFormat('strikethrough'));
-      setIsCode(selection.hasFormat('code'));
-      setIsRTL($isParentElementRTL(selection));
+      setIsBold(selection.hasFormat('bold'))
+      setIsItalic(selection.hasFormat('italic'))
+      setIsUnderline(selection.hasFormat('underline'))
+      setIsStrikethrough(selection.hasFormat('strikethrough'))
+      setIsCode(selection.hasFormat('code'))
+      setIsRTL($isParentElementRTL(selection))
       setAlignText({
         left: element.getFormat() === 1,
         center: element.getFormat() === 2,
         right: element.getFormat() === 3,
         justify: element.getFormat() === 4,
-      });
+      })
     }
-  }, [editor]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [editor])
 
   useEffect(() => {
     return mergeRegister(
       activeEditor.registerUpdateListener(({ editorState }) => {
         editorState.read(() => {
-          updateToolbar();
-        });
+          updateToolbar()
+        })
       }),
       editor.registerCommand(
         SELECTION_CHANGE_COMMAND,
         (_payload, newEditor) => {
-          updateToolbar();
-          setActiveEditor(newEditor);
-          return false;
+          updateToolbar()
+          setActiveEditor(newEditor)
+          return false
         },
         COMMAND_PRIORITY_CRITICAL
       ),
       activeEditor.registerCommand<boolean>(
         CAN_UNDO_COMMAND,
         (payload) => {
-          setCanUndo(payload);
-          return false;
+          setCanUndo(payload)
+          return false
         },
         COMMAND_PRIORITY_CRITICAL
       ),
       activeEditor.registerCommand<boolean>(
         CAN_REDO_COMMAND,
         (payload) => {
-          setCanRedo(payload);
-          return false;
+          setCanRedo(payload)
+          return false
         },
         COMMAND_PRIORITY_CRITICAL
       )
-    );
-  }, [activeEditor, updateToolbar]);
+    )
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [activeEditor, updateToolbar])
 
   // const codeLanguges = useMemo(() => getCodeLanguages(), []);
   const onCodeLanguageSelect = useCallback(
     (e: { target: { value: string } }) => {
       editor.update(() => {
         if (selectedElementKey !== null) {
-          const node = $getNodeByKey(selectedElementKey);
+          const node = $getNodeByKey(selectedElementKey)
           if ($isCodeNode(node)) {
-            node.setLanguage(e.target.value);
+            node.setLanguage(e.target.value)
           }
         }
-      });
+      })
     },
     [editor, selectedElementKey]
-  );
+  )
 
   const historyButtons = [
     {
@@ -468,7 +470,7 @@ export default function ToolbarPlugin(): JSX.Element {
       icon: <ArrowClockwise className="h-4 w-4" aria-hidden="true" />,
       command: REDO_COMMAND,
     },
-  ];
+  ]
   const baseButtons = [
     {
       type: 'bold',
@@ -511,7 +513,7 @@ export default function ToolbarPlugin(): JSX.Element {
       title: IS_APPLE ? 'Code (⌘+K)' : 'Code (Ctrl+K)',
       icon: <Code className="w-4 h-4" aria-hidden="true" />,
     },
-  ];
+  ]
   const additionalButtons = [
     {
       type: 'outdent',
@@ -535,7 +537,7 @@ export default function ToolbarPlugin(): JSX.Element {
       ),
       command: INDENT_CONTENT_COMMAND,
     },
-  ];
+  ]
   return (
     <div
       className="grid grid-flow-col auto-cols-max gap-1 place-items-center bg-white dark:bg-neutral-800 p-2 rounded-t-lg"
@@ -554,7 +556,7 @@ export default function ToolbarPlugin(): JSX.Element {
           key={button.type}
           onClick={() => {
             // @ts-ignore Correct types, but since they're dynamic TS doesn't like it.
-            activeEditor.dispatchCommand(button.command, null);
+            activeEditor.dispatchCommand(button.command, null)
           }}
         >
           {button.icon}
@@ -589,8 +591,9 @@ export default function ToolbarPlugin(): JSX.Element {
               } h-7 w-7 md:h-8 md:w-8 rounded-md lg:rounded-lg hover:bg-blue-100 dark:hover:bg-neutral-600 box-border justify-center p-0 m-0 cursor-pointer flex   dark:text-gray-200 touch-manipulation items-center select-none border-0 list-none outline-none decoration-0 transition duration-250 ease-in-out`}
               key={button.type}
               onClick={() => {
+                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
                 // @ts-ignore Correct types, but since they're dynamic TS doesn't like it.
-                activeEditor.dispatchCommand(FORMAT_TEXT_COMMAND, button.type);
+                activeEditor.dispatchCommand(FORMAT_TEXT_COMMAND, button.type)
               }}
             >
               <span
@@ -613,8 +616,9 @@ export default function ToolbarPlugin(): JSX.Element {
               className="h-7 w-7 md:h-8 md:w-8 rounded-md lg:rounded-lg hover:bg-blue-100 dark:hover:bg-neutral-600 box-border justify-center p-0 m-0 cursor-pointer flex   dark:text-gray-200 touch-manipulation items-center select-none border-0 list-none outline-none decoration-0 transition duration-250 ease-in-out"
               key={button.type}
               onClick={() => {
+                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
                 // @ts-ignore Correct types, but since they're dynamic TS doesn't like it.
-                activeEditor.dispatchCommand(button.command, null);
+                activeEditor.dispatchCommand(button.command, null)
               }}
             >
               {button.icon}
@@ -623,5 +627,5 @@ export default function ToolbarPlugin(): JSX.Element {
         </>
       )}
     </div>
-  );
+  )
 }

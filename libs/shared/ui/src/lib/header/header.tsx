@@ -1,15 +1,15 @@
-import Link from 'next/link';
-import { Fragment } from 'react';
-import { Popover, Transition } from '@headlessui/react';
+import Link from 'next/link'
+import { Fragment } from 'react'
+import { Popover, Transition } from '@headlessui/react'
 import {
   ChartBarIcon,
   Bars3Icon,
   XMarkIcon,
   PlusIcon,
-} from '@heroicons/react/24/outline';
-import { GalleryIcon, ImageAddIcon } from '@remixicons/react/line';
-import ProfileMenu from './components/dropdowns/profile';
-import { Search } from './components/search/main';
+} from '@heroicons/react/24/outline'
+import { GalleryIcon, ImageAddIcon } from '@remixicons/react/line'
+import ProfileMenu from './components/dropdowns/profile'
+import { Search } from './components/search/main'
 
 const pagesLinks = [
   {
@@ -26,7 +26,7 @@ const pagesLinks = [
     href: '/account/assets',
     icon: ChartBarIcon,
   },
-];
+]
 const createButtons = [
   {
     name: 'Add Asset',
@@ -46,7 +46,7 @@ const createButtons = [
     description: 'Description Add Collection',
     icon: GalleryIcon,
   },
-];
+]
 
 type Props = {
   address: string | undefined;
@@ -183,8 +183,8 @@ const Header = ({
                                   type="button"
                                   className="flex items-center rounded-lg p-2 text-neutral-700 transition duration-150 ease-in-out hover:bg-neutral-100 focus:outline-none dark:text-neutral-100 dark:hover:bg-neutral-700"
                                   onClick={() => {
-                                    onCreate?.(item.key);
-                                    close();
+                                    onCreate?.(item.key)
+                                    close()
                                   }}
                                 >
                                   <div className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-full bg-neutral-200 px-1 py-1 text-neutral-700 focus:outline-none dark:bg-neutral-700 dark:fill-neutral-200 dark:text-neutral-200">
@@ -289,7 +289,7 @@ const Header = ({
                       type="button"
                       className="text-base font-medium text-gray-900 hover:text-gray-700"
                       onClick={() => {
-                        onCreate?.(item.key);
+                        onCreate?.(item.key)
                       }}
                     >
                       {item.name}.
@@ -302,7 +302,7 @@ const Header = ({
         </Transition>
       </Popover>
     </header>
-  );
-};
+  )
+}
 
-export default Header;
+export default Header

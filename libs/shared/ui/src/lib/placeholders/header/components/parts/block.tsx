@@ -31,7 +31,7 @@ const Block = ({
         )}
       </div>
     </div>
-  );
-};
+  )
+}
 
 export default Block

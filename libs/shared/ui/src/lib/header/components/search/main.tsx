@@ -4,100 +4,100 @@ import {
   useEffect,
   useRef,
   useState,
-} from 'react';
-import { SearchIcon } from '@remixicons/react/line';
-import { useDebounce, useOnClickOutside } from '@fafty/usehooks';
-import { useAsync, SearchResultResponseProps, getSearchResult } from '@fafty/shared/api';
-import classNames from 'classnames';
-import { useRouter } from 'next/router';
-import Image from 'next/image';
+} from 'react'
+import { SearchIcon } from '@remixicons/react/line'
+import { useDebounce, useOnClickOutside } from '@fafty/usehooks'
+import { useAsync, SearchResultResponseProps, getSearchResult } from '@fafty/shared/api'
+import classNames from 'classnames'
+import { useRouter } from 'next/router'
+import Image from 'next/image'
 
 export const Search = () => {
-  const containerRef = useRef<HTMLDivElement>(null);
-  const [inputValue, setInputValue] = useState('');
-  const debouncedValue = useDebounce(inputValue, 300);
-  const [isOpened, setIsOpened] = useState(false);
-  const [activeIndex, setActiveIndex] = useState(-1);
-  const { push } = useRouter();
+  const containerRef = useRef<HTMLDivElement>(null)
+  const [inputValue, setInputValue] = useState('')
+  const debouncedValue = useDebounce(inputValue, 300)
+  const [isOpened, setIsOpened] = useState(false)
+  const [activeIndex, setActiveIndex] = useState(-1)
+  const { push } = useRouter()
 
   const { data, call } = useAsync<SearchResultResponseProps, string>({
     withMount: false,
     callback: getSearchResult,
-  });
+  })
 
   const onChangeValue = useCallback(
     (e: ChangeEvent<HTMLInputElement>) => {
-      setInputValue(e.target.value);
+      setInputValue(e.target.value)
     },
     [setInputValue]
-  );
+  )
 
   const onFocus = useCallback(() => {
-    setIsOpened(true);
-  }, []);
+    setIsOpened(true)
+  }, [])
 
   const onClickItem = useCallback(() => {
-    const item = data?.records[activeIndex];
+    const item = data?.records[activeIndex]
 
     if (item) {
-      setIsOpened(false);
+      setIsOpened(false)
 
       switch (item.result_type) {
         case 'collection':
-          return push(`/collection/${item?.searchable?.slug}`);
+          return push(`/collection/${item?.searchable?.slug}`)
         case 'bundle':
-          return push(`/bundle/${item?.searchable?.slug}`);
+          return push(`/bundle/${item?.searchable?.slug}`)
         case 'asset':
-          return push(`/asset/${item?.searchable?.slug}`);
+          return push(`/asset/${item?.searchable?.slug}`)
         case 'user':
-          return push(`/account/${item?.searchable?.slug}`);
+          return push(`/account/${item?.searchable?.slug}`)
       }
     }
 
-    return;
+    return
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [activeIndex, data]);
+  }, [activeIndex, data])
 
   const onKeyDown = useCallback(
     (e: KeyboardEvent) => {
-      const maxIndex = data?.records?.length ? data?.records?.length - 1 : -1;
+      const maxIndex = data?.records?.length ? data?.records?.length - 1 : -1
 
       if (e.code === 'ArrowDown') {
-        return setActiveIndex(Math.min(maxIndex, activeIndex + 1));
+        return setActiveIndex(Math.min(maxIndex, activeIndex + 1))
       }
 
       if (e.code === 'ArrowUp') {
-        return setActiveIndex(Math.max(0, activeIndex - 1));
+        return setActiveIndex(Math.max(0, activeIndex - 1))
       }
 
       if (e.code === 'Enter') {
-        return onClickItem();
+        return onClickItem()
       }
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [data, activeIndex, setActiveIndex]
-  );
+  )
 
   useOnClickOutside(containerRef, () => {
-    setIsOpened(false);
-    setActiveIndex(-1);
-  });
+    setIsOpened(false)
+    setActiveIndex(-1)
+  })
 
   useEffect(() => {
     if (inputValue) {
-      call(inputValue);
+      call(inputValue)
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [debouncedValue]);
+  }, [debouncedValue])
 
   useEffect(() => {
-    window.addEventListener('keydown', onKeyDown);
+    window.addEventListener('keydown', onKeyDown)
 
     return () => {
-      window.removeEventListener('keydown', onKeyDown);
-    };
+      window.removeEventListener('keydown', onKeyDown)
+    }
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isOpened, activeIndex, onClickItem]);
+  }, [isOpened, activeIndex, onClickItem])
 
   return (
     <div className="relative w-full mx-4 max-w-[600px]" ref={containerRef}>
@@ -139,7 +139,7 @@ export const Search = () => {
         {!!data?.records?.length && isOpened && (
           <div className="flex flex-col absolute backdrop-blur bg-white/95 dark:bg-neutral-800/95 border-x-2 border-b-2 border-blue-500 shadow transition duration-300 right-0 left-0 top-full rounded-b-xl overflow-hidden">
             {data.records.map(({ result_type, searchable }, index) => {
-              const isActive = index === activeIndex;
+              const isActive = index === activeIndex
 
               return (
                 <div
@@ -171,11 +171,11 @@ export const Search = () => {
                     <p className="text-xs font-medium opacity-50">{result_type}</p>
                   </div>
                 </div>
-              );
+              )
             })}
           </div>
         )}
       </div>
     </div>
-  );
-};
+  )
+}

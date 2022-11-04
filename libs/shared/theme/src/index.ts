@@ -1,6 +1,6 @@
 // export { ThemeProvider, useTheme } from './lib/provider';
-import { getSystemTheme } from './lib/utils';
+import { getSystemTheme } from './lib/utils'
 
-export { default as ThemeProvider } from './lib/provider';
-export { default as useTheme } from './lib/useTheme';
-export { getSystemTheme };
+export { default as ThemeProvider } from './lib/provider'
+export { default as useTheme } from './lib/useTheme'
+export { getSystemTheme }

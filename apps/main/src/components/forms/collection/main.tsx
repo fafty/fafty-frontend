@@ -12,7 +12,6 @@ import dynamic from 'next/dynamic'
 import { AnimatePresence, motion } from 'framer-motion'
 import classNames from 'classnames'
 import { ReactComponent as CompleteIlustation } from '../../../assets/complete.svg'
-// import Link from 'next/link';
 import { FileProps, Props, UploaderProps } from './types'
 import StepsBar from '../common/stepsBar'
 

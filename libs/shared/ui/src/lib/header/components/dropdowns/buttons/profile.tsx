@@ -1,4 +1,4 @@
-import Image from 'next/image';
+import Image from 'next/image'
 interface ButtonProps {
   avatarUrl: string;
   balance: number;
@@ -24,7 +24,7 @@ const ProfileButton = ({
       <span className="pr-3 text-sm dark:text-gray-200">{balance}</span>
       <span className="text-sm text-green-600 pr-2">{ticker}</span>
     </>
-  );
-};
+  )
+}
 
-export default ProfileButton;
+export default ProfileButton

@@ -1,16 +1,16 @@
-import { LexicalComposer } from '@lexical/react/LexicalComposer';
-import { PlainTextPlugin } from '@lexical/react/LexicalPlainTextPlugin';
-import { ContentEditable } from '@lexical/react/LexicalContentEditable';
-import BaseTheme from './themes/base';
-import { EditorState, LexicalEditor } from 'lexical';
-import nodes from './nodes/nodes';
+import { LexicalComposer } from '@lexical/react/LexicalComposer'
+import { PlainTextPlugin } from '@lexical/react/LexicalPlainTextPlugin'
+import { ContentEditable } from '@lexical/react/LexicalContentEditable'
+import BaseTheme from './themes/base'
+import { EditorState, LexicalEditor } from 'lexical'
+import nodes from './nodes/nodes'
 const Placeholder = ({ text }: { text: string }): JSX.Element => {
   return (
     <div className="editor-placeholder absolute text-ellipsis overflow-hidden top-4 left-4 select-none inline-block pointer-events-none text-base text-gray-400 dark:text-gray-500">
       {text}
     </div>
-  );
-};
+  )
+}
 
 interface Props {
   showTreeView?: boolean;
@@ -36,11 +36,11 @@ const Viewer = ({
     editable: false,
     // Handling of errors during update
     onError(error: Error, editor: LexicalEditor): void {
-      throw error;
+      throw error
     },
     namespace: namespace,
     editorState: JSON.stringify(editorState),
-  };
+  }
 
   return (
     <LexicalComposer initialConfig={initialConfig}>
@@ -53,7 +53,7 @@ const Viewer = ({
         />
       {/* {showTreeView && <TreeViewPlugin />} */}
     </LexicalComposer>
-  );
-};
+  )
+}
 
-export default Viewer;
+export default Viewer

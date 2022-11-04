@@ -6,7 +6,7 @@ export function MarketplaceTerms(props: MarketplaceTermsProps) {
     <div>
       <h1>Welcome to MarketplaceTerms!</h1>
     </div>
-  );
+  )
 }
 
-export default MarketplaceTerms;
+export default MarketplaceTerms

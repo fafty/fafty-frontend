@@ -1,6 +1,6 @@
-import Link from 'next/link';
-import Image from 'next/image';
-import { BundleProps } from '@fafty/shared/api';
+import Link from 'next/link'
+import Image from 'next/image'
+import { BundleProps } from '@fafty/shared/api'
 
 type Props = {
   item: BundleProps;
@@ -13,7 +13,7 @@ const Item = ({ item }: Props) => {
         <div className="item-block">
           <div className="item-card">
             <Link
-              href={`/bundle/[slug]`}
+              href={'/bundle/[slug]'}
               as={`/bundle/${encodeURIComponent(item.slug as string)}`}
               className="item-card-link"
             >
@@ -96,7 +96,7 @@ const Item = ({ item }: Props) => {
         </div>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default Item;
+export default Item

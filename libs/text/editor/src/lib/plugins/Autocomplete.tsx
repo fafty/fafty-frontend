@@ -1,7 +1,7 @@
-import type { LexicalEditor, NodeKey } from 'lexical';
+import type { LexicalEditor, NodeKey } from 'lexical'
 
-import { useLexicalComposerContext } from '@lexical/react/LexicalComposerContext';
-import { $rootTextContent } from '@lexical/text';
+import { useLexicalComposerContext } from '@lexical/react/LexicalComposerContext'
+import { $rootTextContent } from '@lexical/text'
 import {
   $getNodeByKey,
   $getRoot,
@@ -10,69 +10,69 @@ import {
   $isRangeSelection,
   $isTextNode,
   TextNode,
-} from 'lexical';
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+} from 'lexical'
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 
-import { $createTypeaheadNode, TypeaheadNode } from '../nodes/TypeaheadNode';
+import { $createTypeaheadNode, TypeaheadNode } from '../nodes/TypeaheadNode'
 
 function useTypeahead(editor: LexicalEditor): void {
-  const typeaheadNodeKey = useRef<NodeKey | null>(null);
+  const typeaheadNodeKey = useRef<NodeKey | null>(null)
   const [text, setText] = useState<string>(
     editor.getEditorState().read($rootTextContent)
-  );
-  const [selectionCollapsed, $setSelectionCollapsed] = useState<boolean>(false);
-  const server = useMemo(() => new TypeaheadServer(), []);
-  const suggestion = useTypeaheadSuggestion(text, server.query);
+  )
+  const [selectionCollapsed, $setSelectionCollapsed] = useState<boolean>(false)
+  const server = useMemo(() => new TypeaheadServer(), [])
+  const suggestion = useTypeaheadSuggestion(text, server.query)
 
   const getTypeaheadTextNode: () => TextNode | null = useCallback(() => {
     if (typeaheadNodeKey.current === null) {
-      return null;
+      return null
     }
-    const node = $getNodeByKey(typeaheadNodeKey.current);
+    const node = $getNodeByKey(typeaheadNodeKey.current)
     if (!$isTextNode(node)) {
-      return null;
+      return null
     }
-    return node;
-  }, []);
+    return node
+  }, [])
 
   // Monitor entered text
   useEffect(() => {
     if (!editor.hasNodes([TypeaheadNode])) {
       throw new Error(
         'AutocompletePlugin: TypeaheadNode not registered on editor'
-      );
+      )
     }
     return editor.registerTextContentListener((_text) => {
-      setText(_text);
-    });
-  }, [editor]);
+      setText(_text)
+    })
+  }, [editor])
 
   const renderTypeahead = useCallback(() => {
     editor.update(
       () => {
-        const currentTypeaheadNode = getTypeaheadTextNode();
+        const currentTypeaheadNode = getTypeaheadTextNode()
 
         function maybeRemoveTypeahead() {
           if (currentTypeaheadNode !== null) {
-            const selection = $getSelection();
+            const selection = $getSelection()
             if ($isRangeSelection(selection)) {
-              const anchor = selection.anchor;
-              const focus = selection.focus;
+              const anchor = selection.anchor
+              const focus = selection.focus
               if (anchor.type === 'text' && focus.type === 'text') {
-                let anchorNode: any | null = anchor.getNode();
-                let anchorNodeOffset = anchor.offset;
+                let anchorNode: any | null = anchor.getNode()
+                let anchorNodeOffset = anchor.offset
                 if (anchorNode.getKey() === currentTypeaheadNode.getKey()) {
-                  anchorNode = anchorNode.getPreviousSibling();
+                  anchorNode = anchorNode.getPreviousSibling()
                   if ($isTextNode(anchorNode)) {
-                    anchorNodeOffset = anchorNode.getTextContent().length;
+                    anchorNodeOffset = anchorNode.getTextContent().length
                   }
                 }
-                let focusNode: any | null = focus.getNode();
-                let focusNodeOffset = focus.offset;
+                let focusNode: any | null = focus.getNode()
+                let focusNodeOffset = focus.offset
                 if (focusNode.getKey() === currentTypeaheadNode.getKey()) {
-                  focusNode = focusNode.getPreviousSibling();
+                  focusNode = focusNode.getPreviousSibling()
                   if ($isTextNode(focusNode)) {
-                    focusNodeOffset = focusNode.getTextContent().length;
+                    focusNodeOffset = focusNode.getTextContent().length
                   }
                 }
                 if ($isTextNode(focusNode) && $isTextNode(anchorNode)) {
@@ -81,44 +81,44 @@ function useTypeahead(editor: LexicalEditor): void {
                     anchorNodeOffset,
                     focusNode,
                     focusNodeOffset
-                  );
+                  )
                 }
               }
             }
-            currentTypeaheadNode.remove();
+            currentTypeaheadNode.remove()
           }
-          typeaheadNodeKey.current = null;
+          typeaheadNodeKey.current = null
         }
 
         function maybeAddOrEditTypeahead() {
           if (currentTypeaheadNode !== null) {
             // Edit
             if (currentTypeaheadNode.getTextContent(true) !== suggestion) {
-              currentTypeaheadNode.setTextContent(suggestion ?? '');
+              currentTypeaheadNode.setTextContent(suggestion ?? '')
             }
-            return;
+            return
           }
           // Add
-          const lastParagraph = $getRoot().getLastChild();
+          const lastParagraph = $getRoot().getLastChild()
           if ($isElementNode(lastParagraph)) {
-            const lastTextNode = lastParagraph.getLastChild();
+            const lastTextNode = lastParagraph.getLastChild()
             if ($isTextNode(lastTextNode)) {
-              const newTypeaheadNode = $createTypeaheadNode(suggestion ?? '');
-              lastTextNode.insertAfter(newTypeaheadNode);
-              typeaheadNodeKey.current = newTypeaheadNode.getKey();
+              const newTypeaheadNode = $createTypeaheadNode(suggestion ?? '')
+              lastTextNode.insertAfter(newTypeaheadNode)
+              typeaheadNodeKey.current = newTypeaheadNode.getKey()
             }
           }
         }
 
-        const selection = $getSelection();
-        let isCaretPositionAtEnd = false;
+        const selection = $getSelection()
+        let isCaretPositionAtEnd = false
 
         if ($isRangeSelection(selection)) {
-          const anchorNode = selection?.anchor.getNode();
-          const anchorOffset = selection?.anchor.offset;
-          const anchorLength = anchorNode?.getTextContentSize();
+          const anchorNode = selection?.anchor.getNode()
+          const anchorOffset = selection?.anchor.offset
+          const anchorLength = anchorNode?.getTextContentSize()
           isCaretPositionAtEnd =
-            anchorLength != null && anchorOffset === anchorLength;
+            anchorLength != null && anchorOffset === anchorLength
         }
 
         if (
@@ -126,21 +126,21 @@ function useTypeahead(editor: LexicalEditor): void {
           !selectionCollapsed ||
           !isCaretPositionAtEnd
         ) {
-          maybeRemoveTypeahead();
+          maybeRemoveTypeahead()
         } else {
-          maybeAddOrEditTypeahead();
+          maybeAddOrEditTypeahead()
         }
       },
       {
         tag: 'history-merge',
       }
-    );
-  }, [editor, getTypeaheadTextNode, selectionCollapsed, suggestion]);
+    )
+  }, [editor, getTypeaheadTextNode, selectionCollapsed, suggestion])
 
   // Rerender on suggestion change
   useEffect(() => {
-    renderTypeahead();
-  }, [renderTypeahead, suggestion]);
+    renderTypeahead()
+  }, [renderTypeahead, suggestion])
 
   // Rerender on editor updates
   useEffect(() => {
@@ -148,61 +148,61 @@ function useTypeahead(editor: LexicalEditor): void {
       editorState.read(() => {
         const typeaheadNode = $getRoot()
           .getAllTextNodes(true)
-          .find((textNode) => textNode instanceof TypeaheadNode);
+          .find((textNode) => textNode instanceof TypeaheadNode)
         if (typeaheadNode instanceof TypeaheadNode) {
-          typeaheadNodeKey.current = typeaheadNode.getKey();
+          typeaheadNodeKey.current = typeaheadNode.getKey()
         }
-      });
-    });
-  }, [editor]);
+      })
+    })
+  }, [editor])
 
   // Handle Keyboard TAB or RIGHT ARROW to complete suggestion
   useEffect(() => {
-    const root = editor.getRootElement();
+    const root = editor.getRootElement()
     if (root != null) {
       const handleEvent = (event: KeyboardEvent) => {
         if (event.key === 'Tab' || event.key === 'ArrowRight') {
           editor.update(() => {
-            const typeaheadTextNode = getTypeaheadTextNode();
-            const prevTextNode = typeaheadTextNode?.getPreviousSibling();
+            const typeaheadTextNode = getTypeaheadTextNode()
+            const prevTextNode = typeaheadTextNode?.getPreviousSibling()
             // Make sure that the Typeahead is visible and previous child writable
             // before calling it a successfully handled event.
             if (typeaheadTextNode !== null && $isTextNode(prevTextNode)) {
-              event.preventDefault();
+              event.preventDefault()
               prevTextNode.setTextContent(
                 prevTextNode.getTextContent() +
                   typeaheadTextNode.getTextContent(true)
-              );
-              prevTextNode.select();
+              )
+              prevTextNode.select()
             }
-            typeaheadTextNode?.remove();
-            typeaheadNodeKey.current = null;
-          });
+            typeaheadTextNode?.remove()
+            typeaheadNodeKey.current = null
+          })
         }
-      };
+      }
 
-      root.addEventListener('keydown', handleEvent);
+      root.addEventListener('keydown', handleEvent)
       return () => {
-        root.removeEventListener('keydown', handleEvent);
-      };
+        root.removeEventListener('keydown', handleEvent)
+      }
     } else {
       // eslint-disable-next-line @typescript-eslint/no-empty-function
-      return () => {};
+      return () => {}
     }
-  }, [editor, getTypeaheadTextNode]);
+  }, [editor, getTypeaheadTextNode])
 
   useEffect(() => {
     const handleEvent = () => {
-      const selection = window.getSelection();
+      const selection = window.getSelection()
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore - Selection is not null
-      $setSelectionCollapsed(selection.isCollapsed);
-    };
-    document.addEventListener('selectionchange', handleEvent);
+      $setSelectionCollapsed(selection.isCollapsed)
+    }
+    document.addEventListener('selectionchange', handleEvent)
     return () => {
-      document.removeEventListener('selectionchange', handleEvent);
-    };
-  }, []);
+      document.removeEventListener('selectionchange', handleEvent)
+    }
+  }, [])
 }
 
 function useTypeaheadSuggestion(
@@ -212,26 +212,26 @@ function useTypeaheadSuggestion(
     promise: () => Promise<string | null>;
   }
 ) {
-  const cancelRequest = useRef<() => void>(() => null);
-  const requestTime = useRef<number>(0);
-  const [suggestion, setSuggestion] = useState<string | null>(null);
+  const cancelRequest = useRef<() => void>(() => null)
+  const requestTime = useRef<number>(0)
+  const [suggestion, setSuggestion] = useState<string | null>(null)
   useEffect(() => {
-    setSuggestion(null);
+    setSuggestion(null)
     cancelRequest.current();
     (async () => {
-      const time = Date.now();
-      requestTime.current = time;
+      const time = Date.now()
+      requestTime.current = time
       try {
-        const request = await query(text);
-        cancelRequest.current = request.cancel;
-        setSuggestion(await request.promise());
+        const request = await query(text)
+        cancelRequest.current = request.cancel
+        setSuggestion(await request.promise())
       } catch (e) {
         // Ignore for this example
       }
-    })();
-  }, [query, text]);
+    })()
+  }, [query, text])
 
-  return suggestion;
+  return suggestion
 }
 
 class TypeaheadServer {
@@ -255,44 +255,44 @@ class TypeaheadServer {
     'hello wor': 'ld',
     faf: 'ty',
     colle: 'ction',
-  };
-  LATENCY = 200;
+  }
+  LATENCY = 200
 
   query = (
     text: string
   ): { cancel: () => void; promise: () => Promise<string | null> } => {
-    let isCancelled = false;
+    let isCancelled = false
 
     const promise = () =>
       new Promise((resolve, reject) => {
         setTimeout(() => {
           const response =
-            this.DATABASE[text as keyof typeof this.DATABASE] ?? null;
+            this.DATABASE[text as keyof typeof this.DATABASE] ?? null
           if (!isCancelled) {
-            resolve(response);
+            resolve(response)
           } else {
-            reject('Cancelled network request');
+            reject('Cancelled network request')
           }
-        }, this.LATENCY);
-      });
+        }, this.LATENCY)
+      })
 
     const cancel = () => {
-      isCancelled = true;
-    };
+      isCancelled = true
+    }
 
     return {
       cancel,
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore - Promise is not null
       promise,
-    };
-  };
+    }
+  }
 }
 
 export default function AutocompletePlugin(): JSX.Element {
-  const [editor] = useLexicalComposerContext();
-  useTypeahead(editor);
+  const [editor] = useLexicalComposerContext()
+  useTypeahead(editor)
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   // @ts-ignore Type 'null' is not assignable to type 'Element'
-  return null;
+  return null
 }

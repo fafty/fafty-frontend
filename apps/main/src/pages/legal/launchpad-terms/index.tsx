@@ -6,7 +6,7 @@ export function LaunchpadTerms(props: LaunchpadTermsProps) {
     <div>
       <h1>Welcome to LaunchpadTerms!</h1>
     </div>
-  );
+  )
 }
 
-export default LaunchpadTerms;
+export default LaunchpadTerms

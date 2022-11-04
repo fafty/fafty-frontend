@@ -1,10 +1,10 @@
 // Create functional component for item  with progress indicator
-import { XMarkIcon } from "@heroicons/react/24/outline"
-import { useEffect, useRef, useState } from "react"
-import ProgressIndicator from "./progressIndicator"
-import { ProgressProps, ThumbnailProps } from "../uploader"
-import classNames from "classnames"
-import { FileRemoveReason } from "@uppy/core"
+import { XMarkIcon } from '@heroicons/react/24/outline'
+import { useEffect, useRef, useState } from 'react'
+import ProgressIndicator from './progressIndicator'
+import { ProgressProps, ThumbnailProps } from '../uploader'
+import classNames from 'classnames'
+import { FileRemoveReason } from '@uppy/core'
 const Label = ({
   item,
   progress,
@@ -13,42 +13,42 @@ const Label = ({
   progress: any;
 }): JSX.Element => {
   const size = (value: number) => {
-    if (value === 0) return 0 + " B"
-    const units: string[] = ["B", "kB", "MB", "GB", "TB"]
+    if (value === 0) return 0 + ' B'
+    const units: string[] = ['B', 'kB', 'MB', 'GB', 'TB']
     const exponent: number = Math.min(
       Math.floor(Math.log(value) / Math.log(1000)),
       units.length - 1
     )
     const unit = units[exponent]
     return (
-      (Number(value / Math.pow(1000, exponent)) * 1).toFixed(1) + " " + unit
+      (Number(value / Math.pow(1000, exponent)) * 1).toFixed(1) + ' ' + unit
     )
-  };
+  }
 
   const calculateProgress = () => {
     const { bytesUploaded, bytesTotal } = progress
-    console.log("calculateProgress", progress)
-    return size(bytesUploaded) + "/" + size(bytesTotal)
-  };
+    console.log('calculateProgress', progress)
+    return size(bytesUploaded) + '/' + size(bytesTotal)
+  }
 
   const Define = () => {
-    if (item.state === "uploading") {
+    if (item.state === 'uploading') {
       return calculateProgress()
-    } else if (item.state === "complete" && item.type === "video") {
-      return "Video"
+    } else if (item.state === 'complete' && item.type === 'video') {
+      return 'Video'
     } else {
       return item.state
     }
   }
 
   return (
-    item.state !== "complete" && (
+    item.state !== 'complete' && (
       <span className="action">
         <Define />
       </span>
     )
   )
-};
+}
 
 const Item = ({
   engine,
@@ -77,12 +77,12 @@ const Item = ({
   })
   const [src, setSrc] = useState<string>()
   engine.on(
-    "upload-progress",
+    'upload-progress',
     (file: { id: string }, progress: ProgressProps) => {
       item.id === file.id
-      console.log("progress", file.id, progress)
+      console.log('progress', file.id, progress)
       setProgress(progress)
-      console.log("item", progress)
+      console.log('item', progress)
     }
   )
 
@@ -116,10 +116,10 @@ const Item = ({
     <div
       className={classNames(
         {
-          error: item.state === "error",
-          complete: item.state === "complete",
+          error: item.state === 'error',
+          complete: item.state === 'complete',
         },
-        "attachment-preview image"
+        'attachment-preview image'
       )}
     >
       <div className="attachment-wrap">
@@ -131,8 +131,8 @@ const Item = ({
             onAction({
               id: item.id,
               globalId: item.id,
-              action: "remove",
-              reason: "removed-by-user",
+              action: 'remove',
+              reason: 'removed-by-user',
             })
           }
           className="delete z-1 absolute top-2 right-2 m-1 hidden rounded-full bg-gray-600 p-1 text-gray-100 hover:bg-gray-500 focus:outline-none dark:bg-neutral-700 dark:hover:bg-neutral-600"
@@ -146,7 +146,7 @@ const Item = ({
             aria-hidden="true"
           />
         </button>
-        {item.state !== "complete" && (
+        {item.state !== 'complete' && (
           <ProgressIndicator
             id={item.id}
             state={item.state as string}
@@ -155,8 +155,8 @@ const Item = ({
           />
         )}
 
-        {item.type === "image" && <img src={src} alt="" />}
-        {item.type === "video" && (
+        {item.type === 'image' && <img src={src} alt="" />}
+        {item.type === 'video' && (
           <video
             id={item.id}
             src={src}
@@ -171,6 +171,6 @@ const Item = ({
       </div>
     </div>
   )
-};
+}
 
 export default Item

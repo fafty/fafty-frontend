@@ -1,5 +1,5 @@
 // import Image from 'next/image'
-import Link from 'next/link';
+import Link from 'next/link'
 
 const Footer = () => {
   const links = {
@@ -65,7 +65,7 @@ const Footer = () => {
         href: '/report-abuse',
       },
     ],
-  };
+  }
 
   const renderLinks = (key: keyof typeof links) => {
     return (
@@ -81,8 +81,8 @@ const Footer = () => {
           </li>
         ))}
       </ul>
-    );
-  };
+    )
+  }
 
   return (
     <footer className="relative border-t border-gray-100 bg-white pt-20 pb-10 text-slate-900 dark:border-neutral-700 dark:bg-neutral-800 dark:text-slate-50 lg:pt-[120px] lg:pb-20">
@@ -270,7 +270,7 @@ const Footer = () => {
         </span>
       </div>
     </footer>
-  );
-};
+  )
+}
 
-export default Footer;
+export default Footer

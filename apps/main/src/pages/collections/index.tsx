@@ -23,7 +23,7 @@ import { lazy, Suspense, useEffect, useMemo, useState } from 'react'
 import dynamic from 'next/dynamic'
 import { InfinityLoadChecker } from '../../components/common/infinityLoadChecker'
 import { Panel } from '../../components/common/panel'
-import { Pills } from '../../components/assets/pills'
+// import { Pills } from '../../components/assets/pills'
 import { useComponentDidUpdate } from '@fafty/usehooks'
 
 export type FiltersValues = {
@@ -139,21 +139,21 @@ const Collections = () => {
     }))
   }
 
-  const onClosePill = (key: keyof FiltersValues) => {
-    const { [key]: ommited, ...rest } = localFiltersState.filters || {}
-    clearAsyncData()
-    setLocalFiltersState((prev) => ({
-      paginate: { ...prev.paginate },
-      filters: { ...rest },
-    }))
-  }
+  // const onClosePill = (key: keyof FiltersValues) => {
+  //   const { [key]: ommited, ...rest } = localFiltersState.filters || {}
+  //   clearAsyncData()
+  //   setLocalFiltersState((prev) => ({
+  //     paginate: { ...prev.paginate },
+  //     filters: { ...rest },
+  //   }))
+  // }
 
-  const onClearFilters = () => {
-    clearAsyncData()
-    setLocalFiltersState((prev) => ({
-      paginate: { ...prev.paginate, offset: 0 },
-    }))
-  }
+  // const onClearFilters = () => {
+  //   clearAsyncData()
+  //   setLocalFiltersState((prev) => ({
+  //     paginate: { ...prev.paginate, offset: 0 },
+  //   }))
+  // }
 
   useEffect(() => {
     const { filters, paginate } = localFiltersState

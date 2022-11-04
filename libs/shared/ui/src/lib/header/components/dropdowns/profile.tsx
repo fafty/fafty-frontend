@@ -1,9 +1,9 @@
-import { Fragment, lazy, Suspense } from 'react';
-import { Popover, Transition } from '@headlessui/react';
-import ProfileButton from './buttons/profile';
-import MainPanelPlaceholder from '../../../placeholders/header/components/dropdowns/panels/main';
-import classNames from 'classnames';
-const MainPanel = lazy(() => import('./panels/main'));
+import { Fragment, lazy, Suspense } from 'react'
+import { Popover, Transition } from '@headlessui/react'
+import ProfileButton from './buttons/profile'
+import MainPanelPlaceholder from '../../../placeholders/header/components/dropdowns/panels/main'
+import classNames from 'classnames'
+const MainPanel = lazy(() => import('./panels/main'))
 
 const ProfileMenu = ({
   address,
@@ -51,10 +51,10 @@ const ProfileMenu = ({
               </Popover.Panel>
             </Transition>
           </>
-        );
+        )
       }}
     </Popover>
-  );
-};
+  )
+}
 
-export default ProfileMenu;
+export default ProfileMenu

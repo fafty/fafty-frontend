@@ -28,7 +28,7 @@ const MainPanelPlaceholder = (): JSX.Element => {
         <Block widthFirst="w-[3rem]" widthSecond="w-[7rem]" />
       </div>
     </div>
-  );
-};
+  )
+}
 
 export default MainPanelPlaceholder
