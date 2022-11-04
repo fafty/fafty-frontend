@@ -16,14 +16,16 @@ import FormCollectionModal from '../components/modals/forms/collection'
 import { GalleryIcon } from '@remixicons/react/line'
 import classNames from 'classnames'
 import { useRouter } from 'next/router'
+import { motion } from 'framer-motion'
 
 type Props = {
   children: ReactNode;
   title: string;
   description: string;
+  className?: string;
 };
 
-const AccountLayout = ({ children, title, description }: Props) => {
+const AccountLayout = ({ children, title, description, className }: Props) => {
   const [collapseShow, setCollapseShow] = useState('hidden')
   const [openedFormAssetModal, setOpenedFormAssetModal] = useState(false)
   const [openedFormCollectionModal, setOpenedFormCollectionModal] =
@@ -177,7 +179,37 @@ const AccountLayout = ({ children, title, description }: Props) => {
           </div>
         </nav>
       </>
-      <main className="relative md:ml-[15.5rem]">{children}</main>
+      <motion.main
+        initial="hidden"
+        animate="enter"
+        exit="exit"
+        variants={{
+          hidden: {
+            opacity: 0,
+            transition: {
+              duration: 0.2,
+            },
+          },
+          enter: {
+            opacity: 1,
+            transition: {
+              duration: 0.2,
+              delay: 0.1,
+            },
+          },
+          exit: {
+            opacity: 0,
+            transition: {
+              duration: 0.2,
+            },
+          },
+        }}
+        transition={{ type: 'linear' }}
+        className={classNames(className, 'relative md:ml-[15.5rem]')}
+      >
+        {children}
+      </motion.main>
+      {/* <main className="relative md:ml-[15.5rem]">{children}</main> */}
       {openedFormAssetModal && (
         <FormAssetModal
           title="Create Your Asset"

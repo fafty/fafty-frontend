@@ -238,7 +238,7 @@ const FormAsset = ({
 
   if (finished) {
     return (
-      <AnimatePresence exitBeforeEnter={true}>
+      <AnimatePresence mode="wait">
         <motion.div
           variants={{
             initial: {
@@ -328,7 +328,7 @@ const FormAsset = ({
           )}
         >
           {!onlyUploader && (
-            <AnimatePresence exitBeforeEnter={true}>
+            <AnimatePresence mode="wait">
               <motion.div
                 variants={{
                   initial: {

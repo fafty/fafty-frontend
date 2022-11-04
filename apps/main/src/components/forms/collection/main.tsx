@@ -232,7 +232,7 @@ const FormCollection = ({
 
   if (finished) {
     return (
-      <AnimatePresence exitBeforeEnter={true}>
+      <AnimatePresence mode="wait">
         <motion.div
           variants={{
             initial: {
@@ -318,7 +318,7 @@ const FormCollection = ({
           )}
         >
           {!onlyUploader && (
-            <AnimatePresence exitBeforeEnter={true}>
+            <AnimatePresence mode="wait">
               <motion.div
                 variants={{
                   initial: {

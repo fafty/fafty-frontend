@@ -4,19 +4,27 @@ import { ThemeProvider } from '@fafty/shared/theme'
 import { NotificationProvider } from '@fafty/notifications'
 import { Listeners } from '../layouts/Listeners'
 import { ProvideAuth } from '../utils/auth'
+import { AnimatePresence } from 'framer-motion'
 
-function FaftyMainApp({ Component, pageProps }: AppProps) {
+function FaftyMainApp({ Component, pageProps, router}: AppProps) {
+  const url = router.route
   return (
     <>
-      <ThemeProvider defaultTheme="system" attribute="class">
-        <NotificationProvider>
-          <ProvideAuth>
-            <Listeners>
-              <Component {...pageProps} />
-            </Listeners>
-          </ProvideAuth>
-        </NotificationProvider>
-      </ThemeProvider>
+      <AnimatePresence
+        initial={false}
+        mode="wait"
+        onExitComplete={() => window.scrollTo(0, 0)}
+      >
+        <ThemeProvider defaultTheme="system" attribute="class">
+          <NotificationProvider>
+            <ProvideAuth>
+              <Listeners>
+                <Component {...pageProps} canonical={url} key={url} />
+              </Listeners>
+            </ProvideAuth>
+          </NotificationProvider>
+        </ThemeProvider>
+      </AnimatePresence>
     </>
   )
 }

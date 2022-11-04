@@ -7,6 +7,7 @@ import FormCollectionModal from '../components/modals/forms/collection'
 
 import { getAccountId } from '../utils/account'
 import classNames from 'classnames'
+import { motion } from 'framer-motion'
 
 type Props = {
   children: ReactNode;
@@ -58,9 +59,36 @@ const MainLayout = ({ children, title, description, className }: Props) => {
         balance={balance}
         isAuth={!!auth?.principal?.toString()}
       />
-      <main className={classNames(className, 'relative mx-auto px-8')}>
+      <motion.main
+        initial="hidden"
+        animate="enter"
+        exit="exit"
+        variants={{
+          hidden: {
+            opacity: 0,
+            transition: {
+              duration: 0.2,
+            },
+          },
+          enter: {
+            opacity: 1,
+            transition: {
+              duration: 0.2,
+              delay: 0.1,
+            },
+          },
+          exit: {
+            opacity: 0,
+            transition: {
+              duration: 0.2,
+            },
+          },
+        }}
+        transition={{ type: 'linear' }}
+        className={classNames(className, 'relative mx-auto px-8')}
+      >
         {children}
-      </main>
+      </motion.main>
       <Footer />
       {openedAuthModal && (
         <AuthModal

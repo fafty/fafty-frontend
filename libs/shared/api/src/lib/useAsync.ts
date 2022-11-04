@@ -50,6 +50,8 @@ function useAsync<D, P>({
       } catch (error) {
         if (error instanceof AxiosError || error instanceof Error) {
           if (!axios.isCancel(error)) {
+            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+            // @ts-ignore - AxiosError has a message property but it's not in the type
             setErrorMessage(error?.message)
 
             setState((prev) => ({
