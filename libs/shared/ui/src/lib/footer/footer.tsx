@@ -112,9 +112,11 @@ const Footer = () => {
                 </div>
               </Link>
               <p className="text-body-color mb-7 text-base">
-                Sed ut perspiciatis undmnis is iste natus error sit amet
-                voluptatem totam rem aperiam.
+                Marketplace for crypto collectibles and non-fungible tokens (NFTs).
               </p>
+              <span className="flex flex-row font-medium my-3">
+                Made with <span className="text-red-500 mx-1">♥</span> in Ukraine
+              </span>
             </div>
           </div>
           <div className="w-full px-4 sm:w-1/2 lg:w-2/12">

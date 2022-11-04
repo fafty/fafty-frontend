@@ -10,6 +10,7 @@ import { ChevronRightIcon, HomeIcon } from '@heroicons/react/24/outline'
 import Link from 'next/link'
 import { Viewer } from '@fafty/text/viewer'
 import classNames from 'classnames'
+import { motion } from 'framer-motion'
 
 const isObjectEmpty = (value: object | string) =>
   typeof value === 'object' ? Object.keys(value).length === 0 : !value
@@ -54,6 +55,7 @@ export default function Asset() {
   const param = useRouter()
   const { slug } = param.query
   const breadcrumb: BreadcrumbProps[] = useMemo(() => [], [])
+  const [isHovered, setHovered] = useState(false)
 
   const [detail, setDetail] = useState<AssetProps | null>(null)
   // const [isLoading, setLoading] = useState(false);
@@ -182,9 +184,15 @@ export default function Asset() {
         <div className="2xl:gap-x-13 grid gap-y-16 py-24 px-4 sm:grid-cols-1 sm:gap-x-2 md:grid-cols-[1fr,350px] md:gap-x-4 lg:grid-cols-[1fr,400px]  lg:gap-x-8 xl:gap-x-10">
           <div className="col-span-full row-start-1">{renderBreadcrumb}</div>
           <div className="row-span-2 row-start-2 lg:mr-10">
-            <div className="group flex h-full w-full overflow-hidden rounded-2xl bg-gray-200">
-              <div className="flex items-center justify-center bg-gray-50" />
+           
+            <motion.div
+              onMouseEnter={() => setHovered(true)}
+              onMouseLeave={() => setHovered(false)}
+              className="flex relative h-full w-full"
+            >
+              <div className="relative h-full w-full flex items-center justify-center overflow-hidden rounded-2xl bg-gray-50 dark:bg-neutral-800" />
               {detail?.media?.src && (
+                <>
                 <Image
                   src={detail.media.src}
                   style={{
@@ -193,13 +201,43 @@ export default function Asset() {
                   alt={detail.name}
                   width={400}
                   height={400}
-                  className="h-full w-full object-cover object-center"
+                  className="absolute  z-1 h-full w-full overflow-hidden rounded-2xl object-cover object-center"
                 />
+                <motion.div
+                  initial={'visible'}
+                  variants={{
+                    visible: { opacity: 1, transition: { delay: 1 } },
+                    hidden: { opacity: 0 },
+                  }}
+                  
+                  animate={isHovered ? 'hidden' : 'visible'}
+                  exit={'visible'} 
+                  className="duration-750 z-10 absolute ml-5 mt-5 transition delay-300 ease-in-out group-hover:opacity-0 motion-reduce:transition-none motion-reduce:hover:translate-y-0">
+                  {renderTags}
+                </motion.div>
+                <motion.div 
+                  initial={'hidden'}
+                  variants={{
+                    visible: { opacity: 0.5, transition: { delay: .3 } },
+                    hidden: { opacity: 0 },
+                  }}
+                  
+                  animate={isHovered ? 'visible' : 'hidden'}
+                  exit={'hidden'}
+                  className="absolute inset-0 group-hover:opacity-0 flex items-center justify-center"
+                >
+                  <Image
+                    src={detail.media.src}
+                    alt={detail.name}
+                    width={400}
+                    height={400}
+                    className="absolute inset-0 z-0 h-full w-full blur-xl rounded-2xl overflow-hidden  object-cover object-center"
+                  />
+                </motion.div>
+                </>
               )}
-              <div className="duration-750 group-hover:delay-1 absolute ml-5 mt-5 transition delay-300 ease-in-out group-hover:opacity-0 motion-reduce:transition-none motion-reduce:hover:translate-y-0">
-                {renderTags}
-              </div>
-            </div>
+              
+            </motion.div>
           </div>
           <div className="row-start-2 row-end-4">
             <div className="grid grid-cols-1 gap-y-7">
