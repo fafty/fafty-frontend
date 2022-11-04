@@ -1,10 +1,12 @@
+import { EditorState } from 'lexical'
+
 type SearchableProps = {
   image: {
     src: string;
     dominant_color: string;
   };
   name: string;
-  description: null | string;
+  description: string | EditorState | null;
   slug: string;
 };
 

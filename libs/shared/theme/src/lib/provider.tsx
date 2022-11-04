@@ -65,6 +65,7 @@ const ThemeProvider: React.FC<ThemeProviderProps> = ({
     }
 
     enable?.()
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   const setTheme = useCallback((theme: string) => {
@@ -74,6 +75,7 @@ const ThemeProvider: React.FC<ThemeProviderProps> = ({
     } catch (e) {
       // Unsupported
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   const handleMediaQuery = useCallback(
@@ -85,6 +87,7 @@ const ThemeProvider: React.FC<ThemeProviderProps> = ({
         applyTheme('system')
       }
     },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     [theme] // [theme, forcedTheme]
   )
 
@@ -112,11 +115,13 @@ const ThemeProvider: React.FC<ThemeProviderProps> = ({
 
     window.addEventListener('storage', handleStorage)
     return () => window.removeEventListener('storage', handleStorage)
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [setTheme])
 
   // Whenever theme or forcedTheme changes, apply it
   useEffect(() => {
     theme && applyTheme(theme)
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [theme])
 
   const contextValue: ProviderContextProps = {

@@ -254,7 +254,7 @@ const MainPanel = ({
   }, [])
 
   return (
-    <div className="relative overflow-hidden rounded-lg bg-white p-2 text-gray-500 dark:bg-neutral-800 dark:text-gray-500">
+    <div className="relative overflow-hidden bg-white p-2 text-gray-500 dark:bg-neutral-800 dark:text-gray-500">
       <motion.div
         animate={{
           height: height || 'auto',
@@ -276,7 +276,7 @@ const MainPanel = ({
               // layout={false}
               key={activeMenu}
               custom={{ direction: direction, menu: activeMenu }}
-              // @ts-ignore
+              // @ts-ignore 
               variants={variants}
               initial="enter"
               animate="center"

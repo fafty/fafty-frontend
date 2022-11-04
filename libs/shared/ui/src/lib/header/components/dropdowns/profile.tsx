@@ -44,7 +44,7 @@ const ProfileMenu = ({
               leaveFrom="opacity-100 translate-y-0"
               leaveTo="opacity-0 translate-y-1"
             >
-              <Popover.Panel className="absolute z-10 right-0 origin-top-right mt-4 px-2 w-screen max-w-xs max-h-[calc(100vh_-_60px)] sm:px-0 drop-shadow-lg">
+              <Popover.Panel className="absolute z-10 right-0 origin-top-right mt-4 px-2 w-screen max-w-xs max-h-[calc(100vh_-_90px)] rounded-lg overflow-x-scroll sm:px-0 drop-shadow-lg">
                 <Suspense fallback={<MainPanelPlaceholder />}>
                   <MainPanel address={address} onLogOut={onLogOut} open close />
                 </Suspense>
