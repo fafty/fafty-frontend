@@ -56,6 +56,7 @@ export default function Asset() {
   const { slug } = param.query
   const breadcrumb: BreadcrumbProps[] = useMemo(() => [], [])
   const [isHovered, setHovered] = useState(false)
+  const [tagsZoneHovered, setTagsZoneHovered] = useState(false)
 
   const [detail, setDetail] = useState<AssetProps | null>(null)
   // const [isLoading, setLoading] = useState(false);
@@ -156,7 +157,8 @@ export default function Asset() {
     return (
       <div className="inline-flex items-start justify-start space-x-2">
         {detail?.tags?.map((tag) => (
-          <div
+          <Link
+            href={`/tag/${tag.slug}`}
             key={tag.slug}
             className={classNames(
               randomColor(),
@@ -166,7 +168,7 @@ export default function Asset() {
             <p className="text-xs font-bold uppercase leading-3 text-gray-50">
               {tag.name}
             </p>
-          </div>
+          </Link>
         ))}
       </div>
     )
@@ -184,7 +186,6 @@ export default function Asset() {
         <div className="2xl:gap-x-13 grid gap-y-16 py-24 px-4 sm:grid-cols-1 sm:gap-x-2 md:grid-cols-[1fr,350px] md:gap-x-4 lg:grid-cols-[1fr,400px]  lg:gap-x-8 xl:gap-x-10">
           <div className="col-span-full row-start-1">{renderBreadcrumb}</div>
           <div className="row-span-2 row-start-2 lg:mr-10">
-           
             <motion.div
               onMouseEnter={() => setHovered(true)}
               onMouseLeave={() => setHovered(false)}
@@ -206,13 +207,15 @@ export default function Asset() {
                 <motion.div
                   initial={'visible'}
                   variants={{
-                    visible: { opacity: 1, transition: { delay: 1 } },
+                    visible: { opacity: 1, transition: { delay: 0.3 } },
                     hidden: { opacity: 0 },
                   }}
-                  
-                  animate={isHovered ? 'hidden' : 'visible'}
+                  animate={isHovered && !tagsZoneHovered ? 'hidden' : 'visible'}
                   exit={'visible'} 
-                  className="duration-750 z-10 absolute ml-5 mt-5 transition delay-300 ease-in-out group-hover:opacity-0 motion-reduce:transition-none motion-reduce:hover:translate-y-0">
+                  onMouseEnter={() => setTagsZoneHovered(true)}
+                  onMouseLeave={() => setTagsZoneHovered(false)}
+                  className="z-10 absolute flex w-full flex-shrink-0 px-5 pt-5 pb-10 motion-reduce:transition-none motion-reduce:hover:translate-y-0"
+                >
                   {renderTags}
                 </motion.div>
                 <motion.div 
@@ -221,7 +224,6 @@ export default function Asset() {
                     visible: { opacity: 0.5, transition: { delay: .3 } },
                     hidden: { opacity: 0 },
                   }}
-                  
                   animate={isHovered ? 'visible' : 'hidden'}
                   exit={'hidden'}
                   className="absolute inset-0 group-hover:opacity-0 flex items-center justify-center"

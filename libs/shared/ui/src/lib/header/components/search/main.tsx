@@ -10,6 +10,7 @@ import classNames from 'classnames'
 import { useRouter } from 'next/router'
 import Image from 'next/image'
 import { Viewer } from '@fafty/text/viewer'
+import { motion } from 'framer-motion'
 const isObjectEmpty = (value: object | string | null) => {
   return (
     (!value && value == null) ||
@@ -23,9 +24,12 @@ const isObjectEmpty = (value: object | string | null) => {
 }
 export const Search = () => {
   const containerRef = useRef<HTMLDivElement>(null)
+  const inputRef = useRef<HTMLInputElement>(null)
+
   const [inputValue, setInputValue] = useState('')
   const debouncedValue = useDebounce(inputValue, 300)
   const [isOpened, setIsOpened] = useState(false)
+  const [focused, setFocused] = useState(false)
   const [activeIndex, setActiveIndex] = useState(-1)
   const { push } = useRouter()
 
@@ -42,7 +46,12 @@ export const Search = () => {
   )
 
   const onFocus = useCallback(() => {
+    setFocused(true)
     setIsOpened(true)
+  }, [])
+
+  const onBlur = useCallback(() => {
+    setFocused(false)
   }, [])
 
   const onClickItem = useCallback(() => {
@@ -82,10 +91,27 @@ export const Search = () => {
       if (e.code === 'Enter') {
         return onClickItem()
       }
+
+      if (e.code === 'Slash') {
+        e.preventDefault()
+        return inputRef.current?.focus() 
+      }
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [data, activeIndex, setActiveIndex]
   )
+
+  const onKeyDownSlash = useCallback(
+    (e: KeyboardEvent) => {
+      if (e.code === 'Slash') {
+        e.preventDefault()
+        return inputRef.current?.focus() 
+      }
+    },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    []
+  )
+
 
   useOnClickOutside(containerRef, () => {
     setIsOpened(false)
@@ -108,11 +134,20 @@ export const Search = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isOpened, activeIndex, onClickItem])
 
+  useEffect(() => {
+    window.addEventListener('keydown', onKeyDownSlash)
+
+    return () => {
+      window.removeEventListener('keydown', onKeyDownSlash)
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
+
   return (
     <div className="relative mx-4 w-full max-w-[600px]" ref={containerRef}>
       <div className="flex items-center">
         <div className="h-[50px] w-full">
-          <div className=" pointer-events-none absolute inset-y-0 left-0 flex items-center p-2 pl-3 pr-5">
+          <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center p-2 pl-3 pr-5">
             <span
               className={classNames(
                 {
@@ -126,7 +161,9 @@ export const Search = () => {
             </span>
           </div>
           <input
+            ref={inputRef}
             onFocus={onFocus}
+            onBlur={onBlur}
             onChange={onChangeValue}
             value={inputValue}
             autoComplete="off"
@@ -136,6 +173,8 @@ export const Search = () => {
             autoCapitalize="off"
             name="search"
             id="search"
+            aria-label="Search Fafty"
+            aria-multiline="false"
             className={classNames(
               !!data?.records?.length && isOpened
                 ? 'rounded-t-xl border-b-0 border-blue-500'
@@ -144,6 +183,34 @@ export const Search = () => {
             )}
             placeholder="Search for Assets, Collections, Users, Bundles etc."
           />
+          {/* { !focused && ( */}
+            <motion.div
+              initial="visible"
+              animate={!focused && inputValue.length === 0 ? 'visible' : 'hidden'}
+              exit="hidden"
+              variants={{
+                hidden: {
+                  opacity: 0,
+                  transition: {
+                    duration: 0.2,
+                  },
+                },
+                visible: {
+                  opacity: 1,
+                  transition: {
+                    duration: 0.2,
+                    delay: 0.2,
+                  },
+                }
+              }}
+              transition={{ type: 'linear' }}
+              className="pointer-events-none absolute inset-y-0 right-0 flex items-center p-2 pl-3 pr-5"
+            >
+              <kbd className="font-sans font-semibold flex items-baseline rounded-sm px-2.5 border-[1px] border-gray-200 bg-gray-50 dark:border-neutral-700 dark:bg-neutral-600/50">
+                <abbr aria-label="Open using /" title="Command" className="no-underline opacity-80">∕</abbr>
+              </kbd>
+            </motion.div>
+          {/* )} */}
         </div>
         {!!data?.records?.length && isOpened && (
           <div className="absolute right-0 left-0 top-full z-10 flex max-h-[calc(100vh_-_80px)] flex-col overflow-hidden overflow-x-scroll overflow-y-scroll rounded-b-xl border-x-2 border-b-2 border-blue-500 bg-white/95  shadow drop-shadow-lg     backdrop-blur  transition duration-300 dark:bg-neutral-800/95">

@@ -1,5 +1,5 @@
-import { useState, useEffect, useCallback } from "react"
-import axios, { AxiosError } from "axios"
+import { useState, useEffect, useCallback } from 'react'
+import axios, { AxiosError } from 'axios'
 
 type useAsyncParams<D, P> = (params?: P) => Promise<D>;
 
@@ -15,7 +15,7 @@ function useAsync<D, P>({
   withMount = false,
 }: RequestParams<D, P>) {
   const [data, setData] = useState<D>()
-  const [errorMessage, setErrorMessage] = useState("")
+  const [errorMessage, setErrorMessage] = useState('')
   const [state, setState] = useState({
     isSuccess: false,
     isError: false,
@@ -53,7 +53,6 @@ function useAsync<D, P>({
             // eslint-disable-next-line @typescript-eslint/ban-ts-comment
             // @ts-ignore - AxiosError has a message property but it's not in the type
             setErrorMessage(error?.message)
-
             setState((prev) => ({
               ...prev,
               isError: true,
@@ -81,7 +80,7 @@ function useAsync<D, P>({
     }
 
     return
-  };
+  }
 
   const clearAsyncData = () => {
     setState({
@@ -90,10 +89,10 @@ function useAsync<D, P>({
       isLoading: false,
     })
 
-    setErrorMessage("")
+    setErrorMessage('')
 
     setData(undefined)
-  };
+  }
 
   return {
     data,
