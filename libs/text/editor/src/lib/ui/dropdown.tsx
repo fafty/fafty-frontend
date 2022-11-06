@@ -78,7 +78,7 @@ export default function Dropdown({
             <span className="mx-1 hidden lg:block">{buttonLabel}</span>
           )}
           <ArrowDropDownIcon
-            className="w-4 h-4 fill-gray-600 dark:fill-gray-50"
+            className="h-4 w-4 fill-gray-600 dark:fill-gray-50"
             aria-hidden="true"
           />
         </div>
@@ -87,14 +87,14 @@ export default function Dropdown({
       {showDropDown &&
         element &&
         createPortal(
-          <div className="absolute z-20 left-1/2 transform -translate-x-1/2 mt-1">
+          <div className="absolute left-1/2 z-20 mt-1 -translate-x-1/2 transform">
             <div
               aria-label="Format text"
               role="dialog"
               className="dropdown z-10"
               ref={dropDownRef}
             >
-              <div className="relative rounded overflow-scroll drop-shadow shadow w-max max-w-max bg-white dark:bg-neutral-800">
+              <div className="relative w-max max-w-max overflow-scroll rounded bg-white shadow drop-shadow dark:bg-neutral-800">
                 <div className="relative max-h-[calc(100vh_-_150px)] overflow-y-auto">
                   <div className={dropdownBlockClassName}>{children}</div>
                 </div>

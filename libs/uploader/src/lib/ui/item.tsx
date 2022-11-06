@@ -4,14 +4,15 @@ import { useEffect, useRef, useState } from 'react'
 import ProgressIndicator from './progressIndicator'
 import { ProgressProps, ThumbnailProps } from '../uploader'
 import classNames from 'classnames'
-import { FileRemoveReason } from '@uppy/core'
+import Uppy, { FileRemoveReason } from '@uppy/core'
+
 const Label = ({
   item,
   progress,
 }: {
-  item: any;
-  progress: any;
-}): JSX.Element => {
+  item: ThumbnailProps;
+  progress: ProgressProps;
+}): null | JSX.Element => {
   const size = (value: number) => {
     if (value === 0) return 0 + ' B'
     const units: string[] = ['B', 'kB', 'MB', 'GB', 'TB']
@@ -31,22 +32,20 @@ const Label = ({
     return size(bytesUploaded) + '/' + size(bytesTotal)
   }
 
-  const Define = () => {
-    if (item.state === 'uploading') {
-      return calculateProgress()
-    } else if (item.state === 'complete' && item.type === 'video') {
-      return 'Video'
-    } else {
-      return item.state
-    }
-  }
-
+  // return null if state is complete and type is not video
+  if (item.state === 'complete' && item.type !== 'video') return null
+  // return label html with state
   return (
-    item.state !== 'complete' && (
-      <span className="action">
-        <Define />
-      </span>
-    )
+    <div className="action">
+       {item.state === 'uploading' && (
+        calculateProgress()
+      )}
+      {item.state === 'complete' && item.type === 'video' && (
+        <span>
+          Video
+        </span>
+      )}
+    </div>
   )
 }
 
@@ -56,7 +55,7 @@ const Item = ({
   // previewHeight,
   onAction,
 }: {
-  engine: any;
+  engine: Uppy
   item: ThumbnailProps;
   // previewHeight: number,
   onAction: ({
@@ -78,15 +77,14 @@ const Item = ({
   const [src, setSrc] = useState<string>()
   engine.on(
     'upload-progress',
-    (file: { id: string }, progress: ProgressProps) => {
-      item.id === file.id
-      console.log('progress', file.id, progress)
-      setProgress(progress)
-      console.log('item', progress)
+    (file, progress: ProgressProps) => {
+      if (file && item && item.id === file.id) {
+        setProgress(progress)
+      }
     }
   )
 
-  const assetsVideoRef: any = useRef<HTMLVideoElement>()
+  const assetsVideoRef = useRef<HTMLVideoElement>(null)
   // const onScreen: boolean = useOnScreen<HTMLVideoElement>(assetsVideoRef, '-10px');
 
   // useEffect(() => {
@@ -110,6 +108,7 @@ const Item = ({
     } else if (item.src) {
       setSrc(item.src)
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   return (

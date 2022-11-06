@@ -35,7 +35,7 @@ import {
   $createCodeNode,
   $isCodeNode,
   // getDefaultCodeLanguage,
-  getCodeLanguages,
+  // getCodeLanguages,
 } from '@lexical/code'
 import { IS_APPLE } from '../enviroments'
 import { ReactComponent as TextIndentLeft } from '../icons/text-indent-left.svg'
@@ -88,7 +88,7 @@ const codeLanguageMap: object = {
 function Divider(): JSX.Element {
   return (
     <div className="flex items-center justify-center">
-      <div className="max-h-2.5 w-[1px] opacity-15 bg-gray-300 dark:bg-neutral-700">
+      <div className="opacity-15 max-h-2.5 w-[1px] bg-gray-300 dark:bg-neutral-700">
         &nbsp;
       </div>
     </div>
@@ -157,28 +157,28 @@ function BlockOptionsDropdown({
       type: 'paragraph',
       label: 'Paragraph',
       ariaLabel: 'Paragraph',
-      icon: <TextParagraph className="w-4 h-4" aria-hidden="true" />,
+      icon: <TextParagraph className="h-4 w-4" aria-hidden="true" />,
       command: () => $createParagraphNode(),
     },
     {
       type: 'h1',
       label: 'Large Heading',
       ariaLabel: 'Large Heading',
-      icon: <TypeH1 className="w-4 h-4" aria-hidden="true" />,
+      icon: <TypeH1 className="h-4 w-4" aria-hidden="true" />,
       command: () => $createHeadingNode('h1'),
     },
     {
       type: 'h2',
       label: 'Small Heading',
       ariaLabel: 'Small Heading',
-      icon: <TypeH2 className="w-4 h-4" aria-hidden="true" />,
+      icon: <TypeH2 className="h-4 w-4" aria-hidden="true" />,
       command: () => $createHeadingNode('h2'),
     },
     {
       type: 'h3',
       label: 'Heading',
       ariaLabel: 'Heading',
-      icon: <TypeH3 className="w-4 h-4" aria-hidden="true" />,
+      icon: <TypeH3 className="h-4 w-4" aria-hidden="true" />,
       command: () => $createHeadingNode('h3'),
     },
     {
@@ -186,7 +186,7 @@ function BlockOptionsDropdown({
       label: 'Bullet List',
       ariaLabel: 'Bullet List',
       title: 'Bullet List',
-      icon: <ListUl className="w-4 h-4" aria-hidden="true" />,
+      icon: <ListUl className="h-4 w-4" aria-hidden="true" />,
       command: INSERT_UNORDERED_LIST_COMMAND,
     },
     {
@@ -194,21 +194,21 @@ function BlockOptionsDropdown({
       label: 'Numbered List',
       ariaLabel: 'Numbered List',
       title: 'Numbered List',
-      icon: <ListOl className="w-4 h-4" aria-hidden="true" />,
+      icon: <ListOl className="h-4 w-4" aria-hidden="true" />,
       command: INSERT_ORDERED_LIST_COMMAND,
     },
     {
       type: 'quote',
       label: 'Quote',
       ariaLabel: 'Quote',
-      icon: <ChatSquareQuote className="w-4 h-4" aria-hidden="true" />,
+      icon: <ChatSquareQuote className="h-4 w-4" aria-hidden="true" />,
       command: () => $createQuoteNode(),
     },
     {
       type: 'code',
       label: 'Code Block',
       ariaLabel: 'Code Block',
-      icon: <Code className="w-4 h-4" aria-hidden="true" />,
+      icon: <Code className="h-4 w-4" aria-hidden="true" />,
       command: () => $createCodeNode(),
     },
   ]
@@ -228,7 +228,7 @@ function BlockOptionsDropdown({
         <div
           role="button"
           aria-label={button.ariaLabel}
-          className="focus:outline-none flex items-center rounded h-7 transition duration-150 ease-in-out text-neutral-700 hover:bg-blue-100 dark:text-neutral-100 dark:hover:bg-neutral-700"
+          className="flex h-7 items-center rounded text-neutral-700 transition duration-150 ease-in-out hover:bg-blue-100 focus:outline-none dark:text-neutral-100 dark:hover:bg-neutral-700"
           key={button.type}
           onClick={() => {
             action({ type: button.type, command: button.command })
@@ -256,25 +256,25 @@ function AlignOptionsDropdown({
       value: 'left',
       ariaLabel: 'Left',
       active: align.left,
-      icon: <TextLeft className="w-4 h-4" aria-hidden="true" />,
+      icon: <TextLeft className="h-4 w-4" aria-hidden="true" />,
     },
     {
       value: 'center',
       ariaLabel: 'Align Center',
       active: align.center,
-      icon: <TextCenter className="w-4 h-4" aria-hidden="true" />,
+      icon: <TextCenter className="h-4 w-4" aria-hidden="true" />,
     },
     {
       value: 'right',
       ariaLabel: 'Align Right',
       active: align.right,
-      icon: <TextRight className="w-4 h-4" aria-hidden="true" />,
+      icon: <TextRight className="h-4 w-4" aria-hidden="true" />,
     },
     {
       value: 'justify',
       ariaLabel: 'Justify',
       active: align.justify,
-      icon: <Justify className="w-4 h-4" aria-hidden="true" />,
+      icon: <Justify className="h-4 w-4" aria-hidden="true" />,
     },
   ]
   const action = (value: string) => {
@@ -299,7 +299,7 @@ function AlignOptionsDropdown({
           title={button.ariaLabel}
           className={`${
             button.active ? 'bg-blue-100 dark:bg-neutral-700' : ''
-          } focus:outline-none flex items-center rounded h-7 w-7 justify-center transition duration-150 ease-in-out text-neutral-700 hover:bg-blue-100 dark:text-neutral-100 dark:hover:bg-neutral-700`}
+          } flex h-7 w-7 items-center justify-center rounded text-neutral-700 transition duration-150 ease-in-out hover:bg-blue-100 focus:outline-none dark:text-neutral-100 dark:hover:bg-neutral-700`}
           key={button.value}
           onClick={() => {
             action(button.value)
@@ -397,6 +397,7 @@ export default function ToolbarPlugin(): JSX.Element {
         justify: element.getFormat() === 4,
       })
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [editor])
 
   useEffect(() => {
@@ -432,6 +433,7 @@ export default function ToolbarPlugin(): JSX.Element {
         COMMAND_PRIORITY_CRITICAL
       )
     )
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [activeEditor, updateToolbar])
 
   // const codeLanguges = useMemo(() => getCodeLanguages(), []);
@@ -473,7 +475,7 @@ export default function ToolbarPlugin(): JSX.Element {
       ariaLabel: `Format text as bold. Shortcut: ${IS_APPLE ? '⌘B' : 'Ctrl+B'}`,
       active: isBold,
       title: IS_APPLE ? 'Bold (⌘+B)' : 'Bold (Ctrl+B)',
-      icon: <TypeBold className="w-4 h-4" aria-hidden="true" />,
+      icon: <TypeBold className="h-4 w-4" aria-hidden="true" />,
     },
     {
       type: 'italic',
@@ -482,7 +484,7 @@ export default function ToolbarPlugin(): JSX.Element {
       }`,
       active: isItalic,
       title: IS_APPLE ? 'Italic (⌘+I)' : 'Italic (Ctrl+I)',
-      icon: <TypeItalic className="w-4 h-4" aria-hidden="true" />,
+      icon: <TypeItalic className="h-4 w-4" aria-hidden="true" />,
     },
     {
       type: 'underline',
@@ -491,7 +493,7 @@ export default function ToolbarPlugin(): JSX.Element {
       }`,
       active: isUnderline,
       title: IS_APPLE ? 'Underline (⌘+U)' : 'Underline (Ctrl+U)',
-      icon: <TypeUnderline className="w-4 h-4" aria-hidden="true" />,
+      icon: <TypeUnderline className="h-4 w-4" aria-hidden="true" />,
     },
     {
       type: 'strikethrough',
@@ -500,14 +502,14 @@ export default function ToolbarPlugin(): JSX.Element {
       }`,
       active: isStrikethrough,
       title: IS_APPLE ? 'Strikethrough (⌘+S)' : 'Strikethrough (Ctrl+S)',
-      icon: <TypeStrikethrough className="w-4 h-4" aria-hidden="true" />,
+      icon: <TypeStrikethrough className="h-4 w-4" aria-hidden="true" />,
     },
     {
       type: 'code',
       ariaLabel: `Format text as code. Shortcut: ${IS_APPLE ? '⌘K' : 'Ctrl+K'}`,
       active: isCode,
       title: IS_APPLE ? 'Code (⌘+K)' : 'Code (Ctrl+K)',
-      icon: <Code className="w-4 h-4" aria-hidden="true" />,
+      icon: <Code className="h-4 w-4" aria-hidden="true" />,
     },
   ]
   const additionalButtons = [
@@ -516,9 +518,9 @@ export default function ToolbarPlugin(): JSX.Element {
       ariaLabel: 'Outdent',
       title: 'Outdent',
       icon: isRTL ? (
-        <TextIndentLeft className="w-4 h-4" aria-hidden="true" />
+        <TextIndentLeft className="h-4 w-4" aria-hidden="true" />
       ) : (
-        <TextIndentRight className="w-4 h-4" aria-hidden="true" />
+        <TextIndentRight className="h-4 w-4" aria-hidden="true" />
       ),
       command: OUTDENT_CONTENT_COMMAND,
     },
@@ -527,16 +529,16 @@ export default function ToolbarPlugin(): JSX.Element {
       ariaLabel: 'Indent',
       title: 'Indent',
       icon: isRTL ? (
-        <TextIndentRight className="w-4 h-4" aria-hidden="true" />
+        <TextIndentRight className="h-4 w-4" aria-hidden="true" />
       ) : (
-        <TextIndentLeft className="w-4 h-4" aria-hidden="true" />
+        <TextIndentLeft className="h-4 w-4" aria-hidden="true" />
       ),
       command: INDENT_CONTENT_COMMAND,
     },
   ]
   return (
     <div
-      className="grid grid-flow-col auto-cols-max gap-1 place-items-center bg-white dark:bg-neutral-800 p-2 rounded-t-lg"
+      className="grid auto-cols-max grid-flow-col place-items-center gap-1 rounded-t-lg bg-white p-2 dark:bg-neutral-800"
       ref={toolbarRef}
     >
       {historyButtons.map((button) => (
@@ -548,7 +550,7 @@ export default function ToolbarPlugin(): JSX.Element {
             button.disabled
               ? 'cursor-not-allowed opacity-50'
               : 'hover:bg-blue-100 dark:hover:bg-neutral-600'
-          } disabled:opacity-75 h-7 w-7 md:h-8 md:w-8 rounded-lg box-border justify-center p-0 m-0 cursor-pointer flex   dark:text-gray-200 touch-manipulation items-center select-none border-0 list-none outline-none decoration-0 transition duration-250 ease-in-out`}
+          } duration-250 m-0 box-border flex h-7 w-7 cursor-pointer touch-manipulation select-none list-none items-center justify-center   rounded-lg border-0 p-0 decoration-0 outline-none transition ease-in-out disabled:opacity-75 dark:text-gray-200 md:h-8 md:w-8`}
           key={button.type}
           onClick={() => {
             // eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -569,7 +571,7 @@ export default function ToolbarPlugin(): JSX.Element {
       {blockType === 'code' ? (
         <>
           <Select
-            className="toolbar-item code-language h-8 rounded-lg hover:bg-blue-100 dark:hover:bg-neutral-600 box-border justify-center p-0 m-0 cursor-pointer flex   dark:text-gray-200 touch-manipulation items-center select-none border-0 list-none outline-none decoration-0 transition duration-250 ease-in-out"
+            className="toolbar-item code-language duration-250 m-0 box-border flex h-8 cursor-pointer touch-manipulation select-none list-none items-center   justify-center rounded-lg border-0 p-0 decoration-0 outline-none transition ease-in-out hover:bg-blue-100 dark:text-gray-200 dark:hover:bg-neutral-600"
             onChange={onCodeLanguageSelect}
             options={codeLanguageOptions}
             value={codeLanguage}
@@ -585,7 +587,7 @@ export default function ToolbarPlugin(): JSX.Element {
               aria-label={button.ariaLabel}
               className={`${
                 button.active ? 'bg-blue-100 dark:bg-neutral-700' : ''
-              } h-7 w-7 md:h-8 md:w-8 rounded-md lg:rounded-lg hover:bg-blue-100 dark:hover:bg-neutral-600 box-border justify-center p-0 m-0 cursor-pointer flex   dark:text-gray-200 touch-manipulation items-center select-none border-0 list-none outline-none decoration-0 transition duration-250 ease-in-out`}
+              } duration-250 m-0 box-border flex h-7 w-7 cursor-pointer touch-manipulation select-none list-none items-center justify-center rounded-md border-0   p-0 decoration-0 outline-none transition ease-in-out hover:bg-blue-100 dark:text-gray-200 dark:hover:bg-neutral-600 md:h-8 md:w-8 lg:rounded-lg`}
               key={button.type}
               onClick={() => {
                 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -610,7 +612,7 @@ export default function ToolbarPlugin(): JSX.Element {
               role="button"
               title={button.title}
               aria-label={button.ariaLabel}
-              className="h-7 w-7 md:h-8 md:w-8 rounded-md lg:rounded-lg hover:bg-blue-100 dark:hover:bg-neutral-600 box-border justify-center p-0 m-0 cursor-pointer flex   dark:text-gray-200 touch-manipulation items-center select-none border-0 list-none outline-none decoration-0 transition duration-250 ease-in-out"
+              className="duration-250 m-0 box-border flex h-7 w-7 cursor-pointer touch-manipulation select-none list-none items-center justify-center rounded-md border-0   p-0 decoration-0 outline-none transition ease-in-out hover:bg-blue-100 dark:text-gray-200 dark:hover:bg-neutral-600 md:h-8 md:w-8 lg:rounded-lg"
               key={button.type}
               onClick={() => {
                 // eslint-disable-next-line @typescript-eslint/ban-ts-comment

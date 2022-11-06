@@ -115,7 +115,7 @@ const Footer = () => {
                 Marketplace for crypto collectibles and non-fungible tokens (NFTs).
               </p>
               <span className="flex flex-row font-medium my-3">
-                Made with <span className="text-red-500 mx-1">♥</span> in Ukraine
+                Made with <span className="text-yellow-500 mx-1">♥</span> in Ukraine
               </span>
             </div>
           </div>

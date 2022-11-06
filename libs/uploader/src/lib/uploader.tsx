@@ -18,8 +18,7 @@ import classNames from 'classnames'
 import { useIsomorphicLayoutEffect } from '@fafty/usehooks'
 import Sortable from 'sortablejs'
 import { gsap } from 'gsap'
-import axios from 'axios'
-import qs from 'qs'
+import { getPresignFile, GetPresignFileCallbackProps, GetPresignFileResponseProps, useAsync } from '@fafty/shared/api'
 
 export interface ExistingFileProps {
   id: string;
@@ -117,6 +116,7 @@ const Uploader = ({
     '.mpeg',
     '.m4v',
     '.mkv',
+    '.*'
   ],
   style = {},
   presignEndpoint = 'assets/presign',
@@ -126,22 +126,24 @@ const Uploader = ({
   const [isMounted, setIsMounted] = useState(false)
   const [files, setFiles] = useState<FileProps[]>([])
   const [thumbnails, setThumbnails] = useState<ThumbnailProps[]>([])
-  // const [notifications, setNotifications] = useState<any[]>([]);
-  const [isSorting, setIsSorting] = useState(false)
+  // const [isSorting, setIsSorting] = useState(false)
   const [isDraggingOver, setIsDraggingOver] = useState(false)
   const [isDragging, setIsDragging] = useState(false)
   const [dragDropSupported] = useState(isDragDropSupported)
   // const removeDragOverClassTimeout = useRef<setTimeout | undefined>(undefined)
   const [isLoading, setIsLoading] = useState(true)
-  const inputFilesRef: any = useRef<HTMLInputElement>()
+  const inputFilesRef = useRef<HTMLInputElement>(null)
 
   const mainTextRef = useRef<HTMLDivElement>(null)
   const tipTextRef = useRef<HTMLDivElement>(null)
   const uploadIconRef = useRef<SVGSVGElement>(null)
 
-  const api = axios.create({
-    baseURL: process.env['NEXT_PUBLIC_API_URL'],
-    paramsSerializer: (params) => qs.stringify(params, { encode: false }),
+
+  const { call } = useAsync<
+    GetPresignFileResponseProps,
+    GetPresignFileCallbackProps
+  >({
+    callback: getPresignFile,
   })
 
   useEffect(() => {
@@ -308,33 +310,12 @@ const Uploader = ({
           limit: 2,
           async getUploadParameters(file) {
             // Send a request to our signing endpoint.
-            // const base = process.env['NEXT_PUBLIC_API_URL'];
-            // const url = `${base}/${presignEndpoint}`;
-            const data = await api
-              .post(
-                presignEndpoint,
-                {
-                  filename: file.name,
-                  type: file.type,
-                },
-                {
-                  headers: {
-                    accept: 'application/json',
-                    'content-type': 'application/json',
-                  },
-                }
-              )
-              .then((res) => {
-                return res.data
-              })
-              .catch((err) => {
-                console.log(err)
-              })
-            return {
-              method: data.method,
-              url: data.url,
-              fields: data.fields,
-            }
+            const data = await call({
+              params: { filename: file.name, type: file?.type },
+              endpoint: presignEndpoint
+            })
+            // Return the presigned URL and other data to the client.
+            return data as GetPresignFileResponseProps
           },
         })
         .use(Compressor, {
@@ -469,12 +450,12 @@ const Uploader = ({
   // return () => engine.close();
   // }, [engine]);
 
-  useEffect(() => {
-    console.log('isDragging', isDragging)
-    console.log('isDraggingOver', isDraggingOver)
-    console.log('isSorting', isSorting)
-    console.log('isSorting', isSorting)
-  }, [isDraggingOver, isDragging, isSorting])
+  // useEffect(() => {
+  //   console.log('isDragging', isDragging)
+  //   console.log('isDraggingOver', isDraggingOver)
+  //   console.log('isSorting', isSorting)
+  //   console.log('isSorting', isSorting)
+  // }, [isDraggingOver, isDragging, isSorting])
 
   // functions -------
 
@@ -612,9 +593,9 @@ const Uploader = ({
     stopPropagation: () => void;
     dataTransfer: { dropEffect?: any; types?: any };
   }) => {
-    if (isSorting) {
-      return
-    }
+    // if (isSorting) {
+    //   return
+    // }
     if (thumbnails.length > 0 && maxNumberOfFiles !== 1) {
       return
     }
@@ -734,7 +715,7 @@ const Uploader = ({
             className={classNames(
               'attachment-container-preview flex flex-wrap',
               {
-                draggable: isSorting,
+                // draggable: isSorting,
                 attachments: maxNumberOfFiles > 1,
                 cover: maxNumberOfFiles === 1,
               }
@@ -775,7 +756,7 @@ const Uploader = ({
                 'border-red-500 ': hasError && !isDraggingOver,
               }
             )}
-            onClick={() => inputFilesRef.current.click()}
+            onClick={() => inputFilesRef.current?.click()}
           >
             <div className="flex flex-1 flex-col items-center">
               <svg
@@ -827,7 +808,7 @@ const Uploader = ({
               tabIndex={thumbnails.length !== 0 ? 1 : -1}
               name="files[]"
               multiple={true}
-              accept={allowedFileTypes.join(', ')}
+              // accept={allowedFileTypes.join(', ')}
               onChange={(e) => onInputChange(e)}
             />
             <label className="custom-file-label" htmlFor="customFile">

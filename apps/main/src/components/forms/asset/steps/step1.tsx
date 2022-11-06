@@ -12,7 +12,7 @@ import { EditorPlaceholder } from '@fafty/shared/ui'
 import dynamic from 'next/dynamic'
 import { motion } from 'framer-motion'
 import { childVariants, variants } from '../constants'
-// import classNames from 'classnames';
+import classNames from 'classnames'
 import { EditorState } from 'lexical'
 import { ContextProps, Step1Props } from '../types'
 import { useComponentDidUpdate } from '@fafty/usehooks'
@@ -144,7 +144,7 @@ const SelectStep1 = ({ Context }: { Context: Context<ContextProps> }) => {
         >
           Name
         </label>
-        {/* <Controller
+        <Controller
           name="name"
           control={control}
           defaultValue={formFields.name}
@@ -154,11 +154,11 @@ const SelectStep1 = ({ Context }: { Context: Context<ContextProps> }) => {
               type="text"
               id="item-name"
               className={classNames(
-                'text-gray-700 dark:text-gray-100 dark:bg-neutral-900/90 mt-1 border focus:outline-none rounded-md shadow-sm focus:border-gray-500 focus:shadow w-full p-3 h-12',
+                'mt-1 h-12 w-full rounded-md border p-3 text-gray-700 shadow-sm focus:border-gray-500 focus:shadow focus:outline-none dark:bg-neutral-900/90 dark:text-gray-100',
                 {
                   'border-red-500': errors.name,
                   'border-gray-200 dark:border-neutral-800': !errors.name,
-                },
+                }
               )}
               placeholder="Enter name"
               {...(errors.name && { 'aria-invalid': true })}
@@ -166,7 +166,7 @@ const SelectStep1 = ({ Context }: { Context: Context<ContextProps> }) => {
               {...field}
             />
           )}
-        /> */}
+        />
         <motion.div
           initial={'hidden'}
           variants={variants}

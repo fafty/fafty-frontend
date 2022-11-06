@@ -108,6 +108,7 @@ const Editor = ({
             <>
               <HistoryPlugin />
               <RichTextPlugin
+                ErrorBoundary={()=> { return <div>error</div> }}
                 contentEditable={
                   <ContentEditable
                     {...(hasError && { 'aria-invalid': true })}
@@ -124,6 +125,7 @@ const Editor = ({
           ) : (
             <>
               <PlainTextPlugin
+                ErrorBoundary={()=> { return <div>error</div> }}
                 contentEditable={
                   <ContentEditable
                     {...(hasError && { 'aria-invalid': true })}

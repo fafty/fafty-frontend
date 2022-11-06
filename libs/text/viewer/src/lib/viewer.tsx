@@ -45,6 +45,7 @@ const Viewer = ({
   return (
     <LexicalComposer initialConfig={initialConfig}>
         <PlainTextPlugin
+          ErrorBoundary={()=> { return <div>error</div> }}
           contentEditable={
             <ContentEditable
             />

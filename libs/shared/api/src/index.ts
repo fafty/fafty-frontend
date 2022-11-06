@@ -26,6 +26,7 @@ export { default as getUserBundles } from './lib/callbacks/user/bundles'
 
 export { default as getSearchResult } from './lib/callbacks/search'
 export { getPopularTags, getTagsBySearch } from './lib/callbacks/tags'
+export { default as getPresignFile } from './lib/callbacks/presignFile'
 export type {
   BundleProps,
   GetBundleResponseProps,
@@ -84,3 +85,4 @@ export type {
   GetPopularTagsResponseProps,
 } from './lib/callbacks/tags/types'
 export type { SearchResultResponseProps } from './lib/callbacks/search/types'
+export type { GetPresignFileCallbackProps, GetPresignFileResponseProps } from './lib/callbacks/presignFile/types'

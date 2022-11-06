@@ -276,6 +276,7 @@ const MainPanel = ({
               // layout={false}
               key={activeMenu}
               custom={{ direction: direction, menu: activeMenu }}
+              // eslint-disable-next-line @typescript-eslint/ban-ts-comment
               // @ts-ignore 
               variants={variants}
               initial="enter"

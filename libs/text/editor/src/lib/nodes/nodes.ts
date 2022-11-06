@@ -1,9 +1,9 @@
-import { CodeHighlightNode, CodeNode } from '@lexical/code';
-import { AutoLinkNode, LinkNode } from '@lexical/link';
-import { ListItemNode, ListNode } from '@lexical/list';
-import { HeadingNode, QuoteNode } from '@lexical/rich-text';
+import { CodeHighlightNode, CodeNode } from '@lexical/code'
+import { AutoLinkNode, LinkNode } from '@lexical/link'
+import { ListItemNode, ListNode } from '@lexical/list'
+import { HeadingNode, QuoteNode } from '@lexical/rich-text'
 // import { TableCellNode, TableNode, TableRowNode } from '@lexical/table';
-import { TypeaheadNode } from './TypeaheadNode';
+// import { TypeaheadNode } from './TypeaheadNode'
 
 const nodes = [
   HeadingNode,
@@ -18,6 +18,6 @@ const nodes = [
   AutoLinkNode,
   LinkNode,
   // TypeaheadNode
-];
+]
 
-export default nodes;
+export default nodes
