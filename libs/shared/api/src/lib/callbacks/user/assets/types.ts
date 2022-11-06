@@ -1,4 +1,4 @@
-import { AssetProps } from '../../asset/types'
+import { AssetProps } from '../../asset/types';
 
 type PaginateProps = {
   count: number;
@@ -13,18 +13,33 @@ export type GetUserAssetsResponseProps = {
 
 export type BillingTypeValue = 'fixed_price' | 'auction' | null;
 
-export type GetUserAssetsParamsProps = {
+//TODO do types together with components
+type VisibilityValues = 'public' | 'draft' | 'private';
+type RestrictionsValues =
+  | 'sensitive'
+  | 'sensitive_auto'
+  | 'complaint_copyright';
+
+type BlockchainValues = 'dfinity' | 'ethereum' | 'solana' | 'near';
+
+type ContentTypeValues = 'image' | 'video' | 'sound';
+
+type FiltersPrice = {
+  min?: number;
+  max?: number;
+};
+
+type FiltersState = {
+  visibility?: VisibilityValues[];
+  restrictions?: RestrictionsValues[];
+  blockchain?: BlockchainValues[];
+  type?: ContentTypeValues[];
+  price?: FiltersPrice;
+};
+
+export type GetUserAssetsParamsProps = FiltersState & {
   limit: number;
   offset: number;
-  filters?: {
-    currency?: string;
-    price?: {
-      lg?: number | string;
-      ge?: number | string;
-    };
-    billing_type?: BillingTypeValue;
-  };
-  sort?: string;
 };
 
 export type GetUserAssetsCallbackProps = {

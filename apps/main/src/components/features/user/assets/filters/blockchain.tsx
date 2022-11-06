@@ -1,16 +1,16 @@
 import { Fragment, useState } from 'react';
 import { Transition } from '@headlessui/react';
+import { BLOCKCHAIN_CHECKS } from './constants';
 import { Checkbox } from '../../../../common/checkbox';
-import { VisibilityValues } from './types';
-import { VISIBILITY_CHECKS } from './constants';
+import { BlockchainValues } from './types';
 
 type Props = {
-  value: VisibilityValues[];
-  onChange: (value: VisibilityValues[]) => void;
+  value: BlockchainValues[];
+  onChange: (value: BlockchainValues[]) => void;
 };
 
-export const Visibility = ({ value = [], onChange }: Props) => {
-  const [localValue, setLocalValue] = useState<VisibilityValues[]>(value);
+export const Blockchain = ({ value = [], onChange }: Props) => {
+  const [localValue, setLocalValue] = useState<BlockchainValues[]>(value);
 
   const onChangeCheckbox = (checkboxValue) => () => {
     const isIncludes = localValue.includes(checkboxValue);
@@ -42,15 +42,15 @@ export const Visibility = ({ value = [], onChange }: Props) => {
       <div className="absolute left-0 z-10 mt-14 flex w-auto w-screen transform items-center sm:px-0">
         <div className="flex w-[150px] flex-col items-center overflow-hidden rounded-lg bg-white shadow-lg ring-1 ring-black ring-opacity-5 drop-shadow-lg dark:bg-neutral-800">
           <div className="flex w-full flex-col justify-start gap-2.5 p-3">
-            {VISIBILITY_CHECKS.map((check) => (
+            {BLOCKCHAIN_CHECKS.map((check) => (
               <div className="flex" key={check.title}>
                 <Checkbox
                   onChange={onChangeCheckbox(check.value)}
                   checked={localValue?.includes(
-                    check.value as VisibilityValues
+                    check.value as BlockchainValues
                   )}
                   title={check.title}
-                  namespace={`filters_visibillity_assets_${check.title}`}
+                  namespace={`filters_restrictions_assets_${check.title}`}
                 />
               </div>
             ))}
