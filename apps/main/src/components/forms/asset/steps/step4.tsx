@@ -1,4 +1,4 @@
-import React, { useContext, Context, useEffect } from 'react'
+import { useContext, Context, useEffect } from 'react'
 import { ContextProps } from '../types'
 import { CheckIcon } from '@remixicons/react/fill'
 

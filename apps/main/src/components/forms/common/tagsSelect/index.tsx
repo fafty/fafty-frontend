@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react'
+import { useMemo } from 'react'
 import { useAsync } from '@fafty/shared/api'
 import { getPopularTags } from '@fafty/shared/api'
 import { TagProps } from '@fafty/shared/api'

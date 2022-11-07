@@ -26,7 +26,7 @@ export default function Hero() {
                 href="/collections"
                 className="relative z-10 inline-block rounded-md border border-transparent bg-blue-600 py-3 px-8 text-center font-medium text-white hover:bg-blue-700"
               >
-                See Collection
+                See Collections
               </Link>
               <div
                 aria-hidden="true"

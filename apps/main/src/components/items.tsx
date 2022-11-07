@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react'
+import { useState, useRef, useEffect } from 'react'
 import { default as AssetItem } from './items/asset/item'
 import { default as BundleItem } from './items/bundle/item'
 import { default as CollectionItem } from './items/collection/item'

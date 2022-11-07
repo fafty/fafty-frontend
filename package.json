@@ -42,6 +42,7 @@
   "devDependencies": {
     "@headlessui/react": "^1.7.3",
     "@heroicons/react": "^2.0.13",
+    "@next/bundle-analyzer": "^13.0.2",
     "@nrwl/cli": "15.0.7",
     "@nrwl/cypress": "15.0.7",
     "@nrwl/eslint-plugin-nx": "15.0.7",

@@ -8,8 +8,8 @@ const CURRENCY_OPTIONS = [
     value: 'icp',
   },
   {
-    title: 'XTC',
-    value: 'xtc',
+    title: 'WICP',
+    value: 'wicp',
   },
 ]
 

@@ -18,7 +18,12 @@ import classNames from 'classnames'
 import { useIsomorphicLayoutEffect } from '@fafty/usehooks'
 import Sortable from 'sortablejs'
 import { gsap } from 'gsap'
-import { getPresignFile, GetPresignFileCallbackProps, GetPresignFileResponseProps, useAsync } from '@fafty/shared/api'
+import {
+  getPresignFile,
+  GetPresignFileCallbackProps,
+  GetPresignFileResponseProps,
+  useAsync,
+} from '@fafty/shared/api'
 
 export interface ExistingFileProps {
   id: string;
@@ -116,7 +121,7 @@ const Uploader = ({
     '.mpeg',
     '.m4v',
     '.mkv',
-    '.*'
+    '.*',
   ],
   style = {},
   presignEndpoint = 'assets/presign',
@@ -137,7 +142,6 @@ const Uploader = ({
   const mainTextRef = useRef<HTMLDivElement>(null)
   const tipTextRef = useRef<HTMLDivElement>(null)
   const uploadIconRef = useRef<SVGSVGElement>(null)
-
 
   const { call } = useAsync<
     GetPresignFileResponseProps,
@@ -312,7 +316,7 @@ const Uploader = ({
             // Send a request to our signing endpoint.
             const data = await call({
               params: { filename: file.name, type: file?.type },
-              endpoint: presignEndpoint
+              endpoint: presignEndpoint,
             })
             // Return the presigned URL and other data to the client.
             return data as GetPresignFileResponseProps
@@ -808,7 +812,7 @@ const Uploader = ({
               tabIndex={thumbnails.length !== 0 ? 1 : -1}
               name="files[]"
               multiple={true}
-              // accept={allowedFileTypes.join(', ')}
+              accept={allowedFileTypes.join(', ')}
               onChange={(e) => onInputChange(e)}
             />
             <label className="custom-file-label" htmlFor="customFile">

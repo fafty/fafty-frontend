@@ -1,7 +1,7 @@
-import { FunnelIcon } from '@heroicons/react/24/outline';
-import React, { Fragment, useMemo, useRef, useState } from 'react';
-import { Popover, Transition } from '@headlessui/react';
-import { useOnClickOutside } from '@fafty/usehooks';
+import { Fragment, useMemo, useRef, useState } from 'react'
+import { Popover, Transition } from '@headlessui/react'
+import { useOnClickOutside } from '@fafty/usehooks'
+import { FunnelIcon } from '@heroicons/react/24/outline'
 import {
   FiltersPrice,
   FiltersProps,
@@ -10,14 +10,14 @@ import {
   ContentTypeValues,
   RestrictionsValues,
   FiltersState,
-} from './types';
-import { Visibility } from './visibility';
-import { Restrictions } from './restrictions';
-import { Blockchain } from './blockchain';
-import { ContentType } from './contentType';
-import { Price } from './price';
-import classNames from 'classnames';
-import { CloseIcon } from '@remixicons/react/fill';
+} from './types'
+import { Visibility } from './visibility'
+import { Restrictions } from './restrictions'
+import { Blockchain } from './blockchain'
+import { ContentType } from './contentType'
+import { Price } from './price'
+import classNames from 'classnames'
+import { CloseIcon } from '@remixicons/react/fill'
 
 const FILTERS = [
   {
@@ -40,15 +40,15 @@ const FILTERS = [
     title: 'Type',
     value: 'type',
   },
-];
+]
 
 export const Filters = ({
   values = {},
   onChange,
   onCloseTag,
 }: FiltersProps) => {
-  const [activeFilter, setActiveFilter] = useState('');
-  const filterContainerRef = useRef<HTMLDivElement | null>(null);
+  const [activeFilter, setActiveFilter] = useState('')
+  const filterContainerRef = useRef<HTMLDivElement | null>(null)
 
   const renderActiveFilter = useMemo(() => {
     switch (activeFilter) {
@@ -57,66 +57,66 @@ export const Filters = ({
           <Visibility
             value={values?.visibility}
             onChange={(value: VisibilityValues[]) => {
-              setActiveFilter('');
-              onChange('visibility', value);
+              setActiveFilter('')
+              onChange('visibility', value)
             }}
           />
-        );
+        )
       case 'restrictions':
         return (
           <Restrictions
             value={values?.restrictions}
             onChange={(value: RestrictionsValues[]) => {
-              setActiveFilter('');
-              onChange('restrictions', value);
+              setActiveFilter('')
+              onChange('restrictions', value)
             }}
           />
-        );
+        )
       case 'blockchain':
         return (
           <Blockchain
             value={values?.blockchain}
             onChange={(value: BlockchainValues[]) => {
-              setActiveFilter('');
-              onChange('blockchain', value);
+              setActiveFilter('')
+              onChange('blockchain', value)
             }}
           />
-        );
+        )
       case 'type':
         return (
           <ContentType
             value={values?.type}
             onChange={(value: ContentTypeValues[]) => {
-              setActiveFilter('');
-              onChange('type', value);
+              setActiveFilter('')
+              onChange('type', value)
             }}
           />
-        );
+        )
       case 'price':
         return (
           <Price
             value={values?.price}
             onChange={(value: FiltersPrice) => {
-              setActiveFilter('');
-              onChange('price', value);
+              setActiveFilter('')
+              onChange('price', value)
             }}
           />
-        );
+        )
       default:
-        return null;
+        return null
     }
-  }, [activeFilter, values, onChange]);
+  }, [activeFilter, values, onChange])
 
   useOnClickOutside(filterContainerRef, () => {
-    setActiveFilter('');
-  });
+    setActiveFilter('')
+  })
 
   const renderTags = useMemo(() => {
     return Object.keys(values).map((valueKey: keyof FiltersState) => {
       if (Array.isArray(values[valueKey])) {
-        const currentValue = values[valueKey] as Array<FiltersState>;
+        const currentValue = values[valueKey] as Array<FiltersState>
 
-        const { title } = FILTERS.find((filter) => filter.value === valueKey);
+        const { title } = FILTERS.find((filter) => filter.value === valueKey)
 
         return (
           <div
@@ -129,17 +129,17 @@ export const Filters = ({
             {title} : {currentValue.join(', ').trim()}
             <CloseIcon
               onClick={(e) => {
-                e.stopPropagation();
-                onCloseTag(valueKey);
+                e.stopPropagation()
+                onCloseTag(valueKey)
               }}
               className="ml-1 h-4 w-4 fill-white"
             />
           </div>
-        );
+        )
       }
 
       if (valueKey === 'price') {
-        const currentValue = (values[valueKey] as FiltersPrice) ?? {};
+        const currentValue = (values[valueKey] as FiltersPrice) ?? {}
 
         return (
           <div
@@ -154,18 +154,18 @@ export const Filters = ({
             </>
             <CloseIcon
               onClick={(e) => {
-                e.stopPropagation();
-                onCloseTag(valueKey);
+                e.stopPropagation()
+                onCloseTag(valueKey)
               }}
               className="ml-1 h-4 w-4 fill-white"
             />
           </div>
-        );
+        )
       }
 
-      return null;
-    });
-  }, [values]);
+      return null
+    })
+  }, [values])
 
   return (
     <div className="ml-8 flex flex-col">
@@ -173,7 +173,7 @@ export const Filters = ({
         <Popover>
           {({ open, close }) => {
             if (open) {
-              setActiveFilter('');
+              setActiveFilter('')
             }
 
             return (
@@ -204,8 +204,8 @@ export const Filters = ({
                             type="button"
                             className="flex items-center rounded-lg p-2 text-neutral-700 transition duration-150 ease-in-out hover:bg-neutral-100 focus:outline-none dark:text-neutral-100 dark:hover:bg-neutral-700"
                             onClick={() => {
-                              setActiveFilter(item.value);
-                              close();
+                              setActiveFilter(item.value)
+                              close()
                             }}
                           >
                             <div className="text-left">
@@ -220,7 +220,7 @@ export const Filters = ({
                   </Popover.Panel>
                 </Transition>
               </>
-            );
+            )
           }}
         </Popover>
         <div
@@ -247,5 +247,5 @@ export const Filters = ({
         </div>
       </div>
     </div>
-  );
-};
+  )
+}
