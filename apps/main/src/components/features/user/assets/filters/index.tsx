@@ -1,5 +1,5 @@
 import { FunnelIcon } from '@heroicons/react/24/outline';
-import React, { Fragment, useMemo, useRef, useState } from 'react';
+import React, { Fragment, useEffect, useMemo, useRef, useState } from 'react';
 import { Popover, Transition } from '@headlessui/react';
 import { useOnClickOutside } from '@fafty/usehooks';
 import {
@@ -18,6 +18,12 @@ import { ContentType } from './contentType';
 import { Price } from './price';
 import classNames from 'classnames';
 import { CloseIcon } from '@remixicons/react/fill';
+import {
+  BLOCKCHAIN_CHECKS,
+  CONTENT_TYPE_CHECKS,
+  RESTRICTIONS_CHECKS,
+  VISIBILITY_CHECKS,
+} from './constants';
 
 const FILTERS = [
   {
@@ -49,15 +55,22 @@ export const Filters = ({
 }: FiltersProps) => {
   const [activeFilter, setActiveFilter] = useState('');
   const filterContainerRef = useRef<HTMLDivElement | null>(null);
+  const buttonRef = useRef<HTMLDivElement | null>(null);
+  const popoverRef = useRef();
+  const [filterPosition, setFilterPosition] = useState({
+    x: 0,
+    y: 0,
+  });
 
-  const renderActiveFilter = useMemo(() => {
+  const getRenderActiveFilter = (close: VoidFunction) => {
     switch (activeFilter) {
       case 'visibility':
         return (
           <Visibility
             value={values?.visibility}
             onChange={(value: VisibilityValues[]) => {
-              setActiveFilter('');
+              close();
+              // setActiveFilter('');
               onChange('visibility', value);
             }}
           />
@@ -67,7 +80,8 @@ export const Filters = ({
           <Restrictions
             value={values?.restrictions}
             onChange={(value: RestrictionsValues[]) => {
-              setActiveFilter('');
+              close();
+              // setTimeout(() => setActiveFilter(''), 0);
               onChange('restrictions', value);
             }}
           />
@@ -77,7 +91,8 @@ export const Filters = ({
           <Blockchain
             value={values?.blockchain}
             onChange={(value: BlockchainValues[]) => {
-              setActiveFilter('');
+              close();
+              // setActiveFilter('');
               onChange('blockchain', value);
             }}
           />
@@ -87,7 +102,8 @@ export const Filters = ({
           <ContentType
             value={values?.type}
             onChange={(value: ContentTypeValues[]) => {
-              setActiveFilter('');
+              close();
+              // setActiveFilter('');
               onChange('type', value);
             }}
           />
@@ -97,21 +113,62 @@ export const Filters = ({
           <Price
             value={values?.price}
             onChange={(value: FiltersPrice) => {
-              setActiveFilter('');
+              close();
+              // setActiveFilter('');
               onChange('price', value);
             }}
           />
         );
       default:
-        return null;
+        return (
+          <div className="flex items-center overflow-hidden rounded-lg bg-white p-2 shadow-lg ring-1 ring-black ring-opacity-5 drop-shadow-lg dark:bg-neutral-800">
+            <div className="relative flex flex-col gap-1 p-1">
+              {FILTERS.map((item) => (
+                <button
+                  key={item.title}
+                  type="button"
+                  className="flex items-center rounded-lg p-2 text-neutral-700 transition duration-150 ease-in-out hover:bg-neutral-100 focus:outline-none dark:text-neutral-100 dark:hover:bg-neutral-700"
+                  onClick={() => {
+                    // close();
+                    setActiveFilter(item.value);
+                  }}
+                >
+                  <div className="text-left">
+                    <p className="mx-4 text-base font-medium">{item.title}</p>
+                  </div>
+                </button>
+              ))}
+            </div>
+          </div>
+        );
     }
-  }, [activeFilter, values, onChange]);
+  };
 
-  useOnClickOutside(filterContainerRef, () => {
-    setActiveFilter('');
-  });
+  // useOnClickOutside(filterContainerRef, () => {
+  //   setActiveFilter('');
+  // });
+
+  const onClickTag =
+    (valueKey: keyof FiltersState) =>
+    (e: React.MouseEvent<HTMLElement, MouseEvent>) => {
+      e.stopPropagation();
+      const node = e.target as HTMLElement;
+      const { x, y } = node.getBoundingClientRect();
+
+      setFilterPosition({ x, y });
+      setActiveFilter(valueKey);
+    };
 
   const renderTags = useMemo(() => {
+    const allKeyValuesTitle = [
+      ...RESTRICTIONS_CHECKS,
+      ...VISIBILITY_CHECKS,
+      ...CONTENT_TYPE_CHECKS,
+      ...BLOCKCHAIN_CHECKS,
+    ].reduce((total, current) => {
+      return { ...total, [current.value]: current.title };
+    }, {});
+
     return Object.keys(values).map((valueKey: keyof FiltersState) => {
       if (Array.isArray(values[valueKey])) {
         const currentValue = values[valueKey] as Array<FiltersState>;
@@ -119,14 +176,20 @@ export const Filters = ({
         const { title } = FILTERS.find((filter) => filter.value === valueKey);
 
         return (
-          <div
-            onClick={() => setActiveFilter(valueKey)}
+          <Popover.Button
+            onClick={onClickTag(valueKey)}
             key={valueKey}
             className={classNames(
               'flex flex-shrink-0 cursor-pointer items-center justify-center rounded bg-blue-600 p-1 text-sm text-white dark:text-slate-50'
             )}
           >
-            {title} : {currentValue.join(', ').trim()}
+            {title} :{' '}
+            {currentValue
+              .map((item) =>
+                allKeyValuesTitle[item as keyof FiltersState].toLowerCase()
+              )
+              .join(', ')
+              .trim()}
             <CloseIcon
               onClick={(e) => {
                 e.stopPropagation();
@@ -134,7 +197,7 @@ export const Filters = ({
               }}
               className="ml-1 h-4 w-4 fill-white"
             />
-          </div>
+          </Popover.Button>
         );
       }
 
@@ -142,8 +205,8 @@ export const Filters = ({
         const currentValue = (values[valueKey] as FiltersPrice) ?? {};
 
         return (
-          <div
-            onClick={() => setActiveFilter(valueKey)}
+          <Popover.Button
+            onClick={onClickTag(valueKey)}
             key={valueKey}
             className={classNames(
               'flex flex-shrink-0 cursor-pointer items-center justify-center rounded bg-blue-600 p-1 text-sm text-white dark:text-slate-50'
@@ -159,27 +222,38 @@ export const Filters = ({
               }}
               className="ml-1 h-4 w-4 fill-white"
             />
-          </div>
+          </Popover.Button>
         );
       }
 
       return null;
     });
-  }, [values]);
+  }, [onClickTag, onCloseTag, values]);
+
+  useEffect(() => {
+    if (!activeFilter) {
+      const { x, y } = buttonRef.current.getBoundingClientRect();
+
+      setFilterPosition({ x, y });
+    }
+  }, [activeFilter]);
 
   return (
     <div className="ml-8 flex flex-col">
-      <div className="relative flex h-[50px] w-full flex-row">
-        <Popover>
-          {({ open, close }) => {
-            if (open) {
-              setActiveFilter('');
-            }
-
-            return (
+      <Popover ref={popoverRef}>
+        {({ open, close }) => {
+          return (
+            <div className="relative flex h-[50px] w-full flex-row">
               <>
                 <Popover.Button className="inset-0 left-0 flex h-12 w-8 items-center py-2">
-                  <div className="duration-250 relative m-0 box-border flex h-8 w-8 cursor-pointer touch-manipulation select-none list-none items-center justify-center rounded-full border-0 bg-neutral-200 p-0 decoration-0 outline-none transition ease-in-out hover:bg-blue-100 dark:bg-neutral-700 dark:text-gray-200 dark:hover:bg-neutral-600">
+                  <div
+                    onClick={() => {
+                      setActiveFilter('');
+                      close();
+                    }}
+                    ref={buttonRef}
+                    className="duration-250 relative m-0 box-border flex h-8 w-8 cursor-pointer touch-manipulation select-none list-none items-center justify-center rounded-full border-0 bg-neutral-200 p-0 decoration-0 outline-none transition ease-in-out hover:bg-blue-100 dark:bg-neutral-700 dark:text-gray-200 dark:hover:bg-neutral-600"
+                  >
                     <FunnelIcon
                       strokeWidth="2"
                       className="h-5 w-5 touch-manipulation select-none"
@@ -195,57 +269,38 @@ export const Filters = ({
                   leaveFrom="opacity-100 translate-y-0"
                   leaveTo="opacity-0 translate-y-1"
                 >
-                  <Popover.Panel className="absolute left-0 z-10 flex w-screen max-w-xs transform items-center sm:px-0">
-                    <div className="flex items-center overflow-hidden rounded-lg bg-white p-2 shadow-lg ring-1 ring-black ring-opacity-5 drop-shadow-lg dark:bg-neutral-800">
-                      <div className="relative flex flex-col gap-1 p-1">
-                        {FILTERS.map((item) => (
-                          <button
-                            key={item.title}
-                            type="button"
-                            className="flex items-center rounded-lg p-2 text-neutral-700 transition duration-150 ease-in-out hover:bg-neutral-100 focus:outline-none dark:text-neutral-100 dark:hover:bg-neutral-700"
-                            onClick={() => {
-                              setActiveFilter(item.value);
-                              close();
-                            }}
-                          >
-                            <div className="text-left">
-                              <p className="mx-4 text-base font-medium">
-                                {item.title}
-                              </p>
-                            </div>
-                          </button>
-                        ))}
-                      </div>
-                    </div>
+                  <Popover.Panel
+                    className="fixed z-10 mt-14 flex transform items-center sm:px-0"
+                    style={{ left: filterPosition.x, top: filterPosition.y }}
+                  >
+                    {getRenderActiveFilter(close)}
                   </Popover.Panel>
                 </Transition>
               </>
-            );
-          }}
-        </Popover>
-        <div
-          ref={filterContainerRef}
-          className="relative ml-2.5 flex w-full flex-1"
-        >
-          <div className="absolute flex justify-center">
-            {renderActiveFilter}
-          </div>
-          <div className="flex flex-1 items-center">
-            {renderTags}
-            <input
-              autoComplete="off"
-              spellCheck="false"
-              type="search"
-              autoCorrect="off"
-              autoCapitalize="off"
-              name="search"
-              id="search"
-              className="block w-full border-2 border-transparent bg-transparent p-3 ring-0 transition duration-200 hover:border-transparent focus:border-transparent focus:ring-0 focus:ring-offset-0 dark:border-transparent dark:hover:border-transparent dark:focus:border-transparent sm:text-sm md:text-base"
-              placeholder="Filter"
-            />
-          </div>
-        </div>
-      </div>
+
+              <div
+                ref={filterContainerRef}
+                className="ml-2.5 flex w-full flex-1"
+              >
+                <div className="flex flex-1 flex-wrap items-center gap-2">
+                  {renderTags}
+                  <input
+                    autoComplete="off"
+                    spellCheck="false"
+                    type="search"
+                    autoCorrect="off"
+                    autoCapitalize="off"
+                    name="search"
+                    id="search"
+                    className="block w-full max-w-[220px] border-2 border-transparent bg-transparent p-3 ring-0 transition duration-200 hover:border-transparent focus:border-transparent focus:ring-0 focus:ring-offset-0 dark:border-transparent dark:hover:border-transparent dark:focus:border-transparent sm:text-sm md:text-base"
+                    placeholder="Filter"
+                  />
+                </div>
+              </div>
+            </div>
+          );
+        }}
+      </Popover>
     </div>
   );
 };

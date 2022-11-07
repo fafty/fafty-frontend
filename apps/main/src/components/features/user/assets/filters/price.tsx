@@ -33,7 +33,7 @@ export const Price = ({ value = {}, onChange }: Props) => {
       leaveFrom="opacity-100 translate-y-0"
       leaveTo="opacity-0 translate-y-1"
     >
-      <div className="absolute left-0 z-10 mt-14 flex w-auto w-screen transform items-center sm:px-0">
+      <div className="flex w-auto transform items-center sm:px-0">
         <div className="flex w-[250px] flex-col items-center overflow-hidden rounded-lg bg-white shadow-lg ring-1 ring-black ring-opacity-5 drop-shadow-lg dark:bg-neutral-800">
           <div className="flex w-full justify-start p-3">
             <input

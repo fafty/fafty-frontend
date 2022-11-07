@@ -39,7 +39,7 @@ export const Restrictions = ({ value = [], onChange }: Props) => {
       leaveFrom="opacity-100 translate-y-0"
       leaveTo="opacity-0 translate-y-1"
     >
-      <div className="absolute left-0 z-10 mt-14 flex w-auto w-screen transform items-center sm:px-0">
+      <div className="flex w-auto w-screen transform items-center sm:px-0">
         <div className="flex w-[150px] flex-col items-center overflow-hidden rounded-lg bg-white shadow-lg ring-1 ring-black ring-opacity-5 drop-shadow-lg dark:bg-neutral-800">
           <div className="flex w-full flex-col justify-start gap-2.5 p-3">
             {RESTRICTIONS_CHECKS.map((check) => (
@@ -55,7 +55,7 @@ export const Restrictions = ({ value = [], onChange }: Props) => {
               </div>
             ))}
           </div>
-          <div className=" flex w-full justify-end border-t border-white p-1">
+          <div className="flex w-full justify-end border-t border-white p-1">
             <button
               type="button"
               className="relative mt-2 inline-block rounded-md border border-transparent bg-blue-600 py-1 px-3 text-center font-medium text-white hover:bg-blue-700"
