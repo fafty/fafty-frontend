@@ -278,7 +278,7 @@ const FormCollection = ({
               Congratulations! Your Collection is{' '}
               {defaultCover?.file_id ? 'updated!' : 'uploaded!'}
             </div>
-            {/* //TODO: response of backend store on context for dysplay results on this page */}
+            {/* //TODO: response of backend store on context for display results on this page */}
             {/* <div className="mt-4">
               <Link
                 href={`/collection/[slug]`}

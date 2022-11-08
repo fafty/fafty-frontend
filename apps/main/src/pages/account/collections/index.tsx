@@ -211,7 +211,7 @@ const AccountCollections = () => {
       >
         <div className="z-2 ml-7 flex w-full flex-row items-center overflow-hidden p-1">
           <div
-            className="h-17 w-17 relative flex flex-shrink-0 items-center justify-center rounded bg-neutral-200 focus:outline-none dark:bg-neutral-700"
+            className="h-17 w-17 relative flex flex-shrink-0 items-center justify-center rounded bg-neutral-200 dark:bg-neutral-700 border-2 group-hover:border-white dark:group-hover:border-neutral-800/95 dark:border-neutral-900/95"
             style={{ backgroundColor: item.cover.dominant_color || '' }}
           >
             <Image
@@ -322,7 +322,7 @@ const AccountCollections = () => {
               {item.preview_assets?.slice(0, 3).map((asset, index) => (
                 <div
                   key={index}
-                  className="flex-inline relative overflow-hidden rounded-full border-2"
+                  className="flex-inline relative overflow-hidden rounded-full border-2 group-hover:border-white dark:group-hover:border-neutral-800/95 dark:border-neutral-900/95"
                 >
                   <div
                     className="bg-base-300 h-8 w-8"
@@ -331,7 +331,7 @@ const AccountCollections = () => {
                     }}
                   >
                     <Image
-                      className="relative inline-block h-9 w-9 rounded-full ring-1 ring-white"
+                      className="relative inline-block h-9 w-9 rounded-full"
                       src={asset.media.src || ''}
                       alt=""
                       width={36}
@@ -341,7 +341,7 @@ const AccountCollections = () => {
                 </div>
               ))}
               {item.total_assets_count > 3 && (
-                <div className="flex-inline relative overflow-hidden rounded-full border-2">
+                <div className="flex-inline relative overflow-hidden rounded-full border-2 group-hover:border-white dark:group-hover:border-neutral-800/95 dark:border-neutral-900/95">
                   <div className="flex h-full w-8 items-center justify-center bg-neutral-200 dark:bg-neutral-700">
                     <div className="font-bold">
                       +{item.total_assets_count - 3}
@@ -350,6 +350,7 @@ const AccountCollections = () => {
                 </div>
               )}
             </div>
+            
           </div>
         ) : (
           <div className="justify-left flex items-center">Without Assets</div>
@@ -370,7 +371,7 @@ const AccountCollections = () => {
 
   const ItemPlaceholder = () => {
     return (
-      <div className="relative mx-auto grid h-[6rem] w-full grid-cols-[minmax(300px,_400px)_minmax(100px,_120px)_minmax(100px,_120px)_minmax(100px,_120px)_minmax(100px,_120px)] gap-x-1 hover:bg-white dark:hover:bg-neutral-800/95">
+      <div className="relative mx-auto grid h-[6rem] w-full grid-cols-[minmax(300px,_400px)_minmax(100px,_120px)_minmax(100px,_120px)_minmax(100px,_120px)_minmax(100px,_120px)] gap-x-1 hover:bg-white dark:hover:bg-neutral-800/95 group">
         <div className="z-2 ml-7 flex w-full flex-row items-center overflow-hidden p-1">
           <div className="h-17 w-17 relative flex flex-shrink-0 animate-pulse items-center justify-center rounded bg-neutral-300 focus:outline-none dark:bg-neutral-700">
             <span className="relative inline-block h-16 w-16 rounded"></span>
@@ -385,9 +386,9 @@ const AccountCollections = () => {
             {Array.from({ length: 4 }, (_, index) => (
               <div
                 key={index}
-                className="flex-inline relative overflow-hidden rounded-full"
+                className="flex-inline relative overflow-hidden rounded-full border-2 group-hover:border-white dark:group-hover:border-neutral-800/95 dark:border-neutral-900/95"
               >
-                <div className="h-9 w-9 animate-pulse rounded-sm bg-neutral-300 dark:bg-neutral-700"></div>
+                <div className="h-9 w-9 rounded-sm bg-neutral-300 dark:bg-neutral-700"></div>
               </div>
             ))}
           </div>

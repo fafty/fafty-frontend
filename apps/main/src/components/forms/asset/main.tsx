@@ -186,7 +186,7 @@ const FormAsset = ({
       error: data?.step1.error,
     },
     {
-      name: 'Assosiation',
+      name: 'Association',
       active: activeStep === 1,
       completed: data?.step2.solved,
       optional: true,
@@ -284,7 +284,7 @@ const FormAsset = ({
               Congratulations! Your asset is{' '}
               {defaultAsset?.file_id ? 'updated!' : 'uploaded!'}
             </div>
-            {/* //TODO: response of backend store on context for dysplay results on this page */}
+            {/* //TODO: response of backend store on context for display results on this page */}
             {/* <div className="mt-4">
               <Link href="/asset">
                 <a className="relative inline-block text-center bg-blue-600 border border-transparent rounded-md py-2 px-4 font-medium text-white hover:bg-blue-700 mr-4">

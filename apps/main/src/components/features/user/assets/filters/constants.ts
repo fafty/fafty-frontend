@@ -11,7 +11,7 @@ export const VISIBILITY_CHECKS = [
     title: 'Private',
     value: 'private',
   },
-];
+]
 
 export const RESTRICTIONS_CHECKS = [
   {
@@ -26,7 +26,7 @@ export const RESTRICTIONS_CHECKS = [
     title: 'Complaint copyright',
     value: 'complaint_copyright',
   },
-];
+]
 
 export const BLOCKCHAIN_CHECKS = [
   {
@@ -45,7 +45,7 @@ export const BLOCKCHAIN_CHECKS = [
     title: 'Near',
     value: 'near',
   },
-];
+]
 
 export const CONTENT_TYPE_CHECKS = [
   {
@@ -60,4 +60,4 @@ export const CONTENT_TYPE_CHECKS = [
     title: 'Sound',
     value: 'sound',
   },
-];
+]

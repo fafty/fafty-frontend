@@ -1,8 +1,8 @@
-import { Fragment, useState } from 'react';
-import { Transition } from '@headlessui/react';
-import { Checkbox } from '../../../../common/checkbox';
-import { VisibilityValues } from './types';
-import { VISIBILITY_CHECKS } from './constants';
+import { Fragment, useState } from 'react'
+import { Transition } from '@headlessui/react'
+import { Checkbox } from '../../../../common/checkbox'
+import { VisibilityValues } from './types'
+import { VISIBILITY_CHECKS } from './constants'
 
 type Props = {
   value: VisibilityValues[];
@@ -10,23 +10,23 @@ type Props = {
 };
 
 export const Visibility = ({ value = [], onChange }: Props) => {
-  const [localValue, setLocalValue] = useState<VisibilityValues[]>(value);
+  const [localValue, setLocalValue] = useState<VisibilityValues[]>(value)
 
   const onChangeCheckbox = (checkboxValue) => () => {
-    const isIncludes = localValue.includes(checkboxValue);
+    const isIncludes = localValue.includes(checkboxValue)
 
     if (isIncludes) {
       setLocalValue(
         localValue.filter((filterValue) => filterValue !== checkboxValue)
-      );
+      )
     } else {
-      setLocalValue([...localValue, checkboxValue]);
+      setLocalValue([...localValue, checkboxValue])
     }
-  };
+  }
 
   const onSaveFilters = () => {
-    onChange(localValue);
-  };
+    onChange(localValue)
+  }
 
   return (
     <Transition
@@ -39,7 +39,7 @@ export const Visibility = ({ value = [], onChange }: Props) => {
       leaveFrom="opacity-100 translate-y-0"
       leaveTo="opacity-0 translate-y-1"
     >
-      <div className="absolute left-0 z-10 mt-14 flex w-auto w-screen transform items-center sm:px-0">
+      <div className="flex w-auto w-screen transform items-center sm:px-0">
         <div className="flex w-[150px] flex-col items-center overflow-hidden rounded-lg bg-white shadow-lg ring-1 ring-black ring-opacity-5 drop-shadow-lg dark:bg-neutral-800">
           <div className="flex w-full flex-col justify-start gap-2.5 p-3">
             {VISIBILITY_CHECKS.map((check) => (
@@ -67,5 +67,5 @@ export const Visibility = ({ value = [], onChange }: Props) => {
         </div>
       </div>
     </Transition>
-  );
-};
+  )
+}

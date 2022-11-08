@@ -8,7 +8,7 @@ type Props = {
 
 const Item = ({ item }: Props) => {
   return (
-    <div className="item">
+    <div className="item group">
       <div className="item-wrapper">
         <div className="item-block">
           <div className="item-card">
@@ -56,7 +56,7 @@ const Item = ({ item }: Props) => {
                               .map((asset, index) => (
                                 <div
                                   key={index}
-                                  className="flex-inline relative overflow-hidden rounded-full border-2"
+                                  className="flex-inline relative overflow-hidden rounded-full border-2 transition duration-150 ease-in-out group-hover:border-white dark:border-neutral-800 dark:group-hover:border-[#2f2f2f]"
                                 >
                                   <div
                                     className="bg-base-300 h-8 w-8"
@@ -66,7 +66,7 @@ const Item = ({ item }: Props) => {
                                     }}
                                   >
                                     <Image
-                                      className="relative inline-block h-9 w-9 rounded-full ring-1 ring-white"
+                                      className="relative inline-block h-9 w-9 rounded-full"
                                       src={asset.media.src || ''}
                                       alt=""
                                       width={36}
@@ -76,9 +76,9 @@ const Item = ({ item }: Props) => {
                                 </div>
                               ))}
                             {item.total_assets_count > 3 && (
-                              <div className="flex-inline relative overflow-hidden rounded-full border-2">
+                              <div className="flex-inline relative overflow-hidden rounded-full border-2 transition duration-150 ease-in-out group-hover:border-white dark:border-neutral-800 dark:group-hover:border-[#2f2f2f]">
                                 <div className="flex h-full w-8 items-center justify-center bg-neutral-200 dark:bg-neutral-700">
-                                  <div className="font-bold">
+                                  <div className="text-sm font-bold">
                                     +{item.total_assets_count - 3}
                                   </div>
                                 </div>

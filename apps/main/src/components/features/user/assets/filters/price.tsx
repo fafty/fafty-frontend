@@ -1,6 +1,6 @@
-import { ChangeEvent, Fragment, useState } from 'react';
-import { Transition } from '@headlessui/react';
-import { FiltersPrice } from './types';
+import { ChangeEvent, Fragment, useState } from 'react'
+import { Transition } from '@headlessui/react'
+import { FiltersPrice } from './types'
 
 type Props = {
   value?: FiltersPrice;
@@ -8,19 +8,19 @@ type Props = {
 };
 
 export const Price = ({ value = {}, onChange }: Props) => {
-  const [localPriceValue, setLocalPriceValue] = useState<FiltersPrice>(value);
+  const [localPriceValue, setLocalPriceValue] = useState<FiltersPrice>(value)
 
   const onChangePriceLocalValue =
     (key: string) => (changeValue: ChangeEvent<HTMLInputElement>) => {
       setLocalPriceValue((prev) => ({
         ...prev,
         [key]: changeValue.target.value,
-      }));
-    };
+      }))
+    }
 
   const onSaveFilters = () => {
-    onChange(localPriceValue);
-  };
+    onChange(localPriceValue)
+  }
 
   return (
     <Transition
@@ -33,7 +33,7 @@ export const Price = ({ value = {}, onChange }: Props) => {
       leaveFrom="opacity-100 translate-y-0"
       leaveTo="opacity-0 translate-y-1"
     >
-      <div className="absolute left-0 z-10 mt-14 flex w-auto w-screen transform items-center sm:px-0">
+      <div className="flex w-auto transform items-center sm:px-0">
         <div className="flex w-[250px] flex-col items-center overflow-hidden rounded-lg bg-white shadow-lg ring-1 ring-black ring-opacity-5 drop-shadow-lg dark:bg-neutral-800">
           <div className="flex w-full justify-start p-3">
             <input
@@ -65,5 +65,5 @@ export const Price = ({ value = {}, onChange }: Props) => {
         </div>
       </div>
     </Transition>
-  );
-};
+  )
+}
