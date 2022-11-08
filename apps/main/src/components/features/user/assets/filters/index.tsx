@@ -214,6 +214,7 @@ export const Filters = ({
             <CloseIcon
               onClick={(e) => {
                 e.stopPropagation();
+                setIsOpenedPopover(false);
                 onCloseTag(valueKey);
               }}
               className="ml-1 h-4 w-4 fill-white"
