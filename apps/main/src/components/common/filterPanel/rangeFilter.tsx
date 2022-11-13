@@ -1,14 +1,26 @@
-import { ChangeEvent, Fragment, useState } from 'react';
-import { Transition } from '@headlessui/react';
-import { FiltersPrice } from './types';
+import { ChangeEvent, useState } from 'react';
+import { motion } from 'framer-motion';
+import { RangeFilterValue } from './types';
 
 type Props = {
-  value?: FiltersPrice;
-  onChange: (value: FiltersPrice) => void;
+  value?: RangeFilterValue;
+  onChange: (value: RangeFilterValue) => void;
+  params: {
+    firstTitle: string;
+    secondTitle: string;
+    firstKey: string;
+    secondKey: string;
+  };
 };
 
-export const Price = ({ value = {}, onChange }: Props) => {
-  const [localPriceValue, setLocalPriceValue] = useState<FiltersPrice>(value);
+export const RangeFilter = ({
+  value = { from: '', to: '' },
+  onChange,
+  params,
+}: Props) => {
+  const [localPriceValue, setLocalPriceValue] = useState(value);
+
+  console.log(value, localPriceValue);
 
   const onChangePriceLocalValue =
     (key: string) => (changeValue: ChangeEvent<HTMLInputElement>) => {
@@ -22,34 +34,31 @@ export const Price = ({ value = {}, onChange }: Props) => {
     onChange(localPriceValue);
   };
 
+  console.log(params);
+
   return (
-    <Transition
-      as={Fragment}
-      show
-      enter="transition ease-out duration-200"
-      enterFrom="opacity-0 translate-y-1"
-      enterTo="opacity-100 translate-y-0"
-      leave="transition ease-in duration-150"
-      leaveFrom="opacity-100 translate-y-0"
-      leaveTo="opacity-0 translate-y-1"
+    <motion.div
+      initial={{ opacity: 0, scale: 0.5 }}
+      animate={{ opacity: 1, scale: 1 }}
+      transition={{ duration: 0.5 }}
     >
       <div className="flex w-auto transform items-center sm:px-0">
         <div className="flex w-[250px] flex-col items-center overflow-hidden rounded-lg bg-white shadow-lg ring-1 ring-black ring-opacity-5 drop-shadow-lg dark:bg-neutral-800">
           <div className="flex w-full justify-start p-3">
             <input
               type="number"
-              title="min"
+              title={params.firstTitle}
               placeholder="From"
-              value={localPriceValue.min}
-              onChange={onChangePriceLocalValue('min')}
+              value={localPriceValue[params.firstTitle]}
+              onChange={onChangePriceLocalValue(params.firstKey)}
               className="mt-1 w-full rounded-md border border-gray-200 p-3 text-gray-700 shadow-sm focus:border-gray-500 focus:shadow focus:outline-none dark:border-neutral-800 dark:bg-neutral-900/90 dark:text-gray-100"
             />
             <input
               type="number"
-              title="max"
+              title={params.secondTitle}
               placeholder="To"
-              value={localPriceValue.max}
-              onChange={onChangePriceLocalValue('max')}
+              value={localPriceValue[params.secondKey]}
+              onChange={onChangePriceLocalValue(params.secondKey)}
               className="ml-2.5 mt-1 w-full rounded-md border border-gray-200 p-3 text-gray-700 shadow-sm focus:border-gray-500 focus:shadow focus:outline-none dark:border-neutral-800 dark:bg-neutral-900/90 dark:text-gray-100"
             />
           </div>
@@ -64,6 +73,6 @@ export const Price = ({ value = {}, onChange }: Props) => {
           </div>
         </div>
       </div>
-    </Transition>
+    </motion.div>
   );
 };
