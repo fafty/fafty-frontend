@@ -20,8 +20,6 @@ export const RangeFilter = ({
 }: Props) => {
   const [localPriceValue, setLocalPriceValue] = useState(value);
 
-  console.log(value, localPriceValue);
-
   const onChangePriceLocalValue =
     (key: string) => (changeValue: ChangeEvent<HTMLInputElement>) => {
       setLocalPriceValue((prev) => ({
