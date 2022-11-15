@@ -3,18 +3,18 @@ import { motion } from 'framer-motion'
 import { RangeFilterValueProps } from '../types'
 
 type Props = {
-  value?: RangeFilterValueProps;
-  onChange: (value: RangeFilterValueProps) => void;
+  value?: RangeFilterValueProps
+  onChange: (value: RangeFilterValueProps) => void
   params: {
-    firstTitle: string;
-    secondTitle: string;
-    firstKey: string;
-    secondKey: string;
-  };
-};
+    firstTitle: string
+    secondTitle: string
+    firstKey: string
+    secondKey: string
+  }
+}
 
 /**
- * 
+ *
  * @name RangeFilter
  * @description Range filter component for filter panel component.
  * @param {Props} props
@@ -28,20 +28,29 @@ type Props = {
 const RangeFilter = ({
   value = { from: '', to: '' },
   onChange,
-  params,
+  params
 }: Props): JSX.Element => {
-  const [localPriceValue, setLocalPriceValue] = useState(value)
+  const [localPriceValue, setLocalPriceValue] = useState(
+    value || { [params.firstKey]: '', [params.secondKey]: '' }
+  )
 
   const onChangePriceLocalValue =
     (key: string) => (changeValue: ChangeEvent<HTMLInputElement>) => {
       setLocalPriceValue((prev) => ({
         ...prev,
-        [key]: changeValue.target.value,
+        [key]: changeValue.target.value
       }))
     }
 
   const onSaveFilters = () => {
-    onChange(localPriceValue)
+    if (
+      !localPriceValue[params.firstKey] &&
+      !localPriceValue[params.secondKey]
+    ) {
+      onChange(undefined)
+    } else {
+      onChange(localPriceValue)
+    }
   }
 
   return (

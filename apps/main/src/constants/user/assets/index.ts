@@ -1,63 +1,63 @@
 export const VISIBILITY_CHECKS = [
   {
     title: 'Public',
-    value: 'public',
+    value: 'public'
   },
   {
     title: 'Draft',
-    value: 'draft',
+    value: 'draft'
   },
   {
     title: 'Private',
-    value: 'private',
-  },
+    value: 'private'
+  }
 ]
 
 export const RESTRICTIONS_CHECKS = [
   {
     title: 'Sensitive',
-    value: 'sensitive',
+    value: 'sensitive'
   },
   {
     title: 'Sensitive auto',
-    value: 'sensitive_auto',
+    value: 'sensitive_auto'
   },
   {
     title: 'Complaint copyright',
-    value: 'complaint_copyright',
-  },
+    value: 'complaint_copyright'
+  }
 ]
 
 export const BLOCKCHAIN_CHECKS = [
   {
     title: 'Dfinity',
-    value: 'dfinity',
+    value: 'dfinity'
   },
   {
     title: 'Ethereum',
-    value: 'ethereum',
+    value: 'ethereum'
   },
   {
     title: 'Solana',
-    value: 'solana',
+    value: 'solana'
   },
   {
     title: 'Near',
-    value: 'near',
-  },
+    value: 'near'
+  }
 ]
 
 export const CONTENT_TYPE_CHECKS = [
   {
     title: 'Image',
-    value: 'image',
+    value: 'image'
   },
   {
     title: 'Video',
-    value: 'video',
+    value: 'video'
   },
   {
     title: 'Sound',
-    value: 'sound',
-  },
+    value: 'sound'
+  }
 ]

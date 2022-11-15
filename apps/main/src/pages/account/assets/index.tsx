@@ -73,10 +73,10 @@ const LIMIT = 10
 
 type QueryFiltersProps = AssetsUserFilterStateType & {
   paginate: {
-    limit: number;
-    offset: number;
-  };
-};
+    limit: number
+    offset: number
+  }
+}
 
 const ASSETS_FILTERS = [
   {
@@ -135,6 +135,8 @@ const AccountAssets = () => {
   )
 
   const onChangeFilters = (key: string, value: OnChangeValueProps) => {
+    clearAsyncData()
+
     setLocalFiltersState((prev) => ({
       ...prev,
       paginate: { limit: LIMIT, offset: 0 },
@@ -144,6 +146,7 @@ const AccountAssets = () => {
 
   const onCloseTag = (key: keyof AssetsUserFilterStateType) => {
     const { [key]: deletedProp, ...rest } = localFiltersState
+    clearAsyncData()
 
     setLocalFiltersState({ ...rest, paginate: { limit: LIMIT, offset: 0 } })
   }
@@ -174,7 +177,6 @@ const AccountAssets = () => {
 
   useEffect(() => {
     const { paginate, ...restFilters } = localFiltersState
-    clearAsyncData()
 
     call({
       address: 'abcd',
@@ -204,8 +206,8 @@ const AccountAssets = () => {
     visibility,
     date,
   }: {
-    visibility: string | undefined;
-    date: string;
+    visibility: string | undefined
+    date: string
   }) => {
     switch (visibility) {
       case 'public':
@@ -253,7 +255,7 @@ const AccountAssets = () => {
   const Restrictions = ({
     restrictions,
   }: {
-    restrictions: string | undefined;
+    restrictions: string | undefined
   }) => {
     switch (restrictions) {
       case 'none':
@@ -270,8 +272,8 @@ const AccountAssets = () => {
   }
 
   type Props = {
-    item: AssetProps;
-  };
+    item: AssetProps
+  }
 
   const Item = ({ item }: Props) => {
     const [isHovered, setIsHovered] = useState(false)
@@ -448,7 +450,7 @@ const AccountAssets = () => {
    * @description Item placeholder component.
    * @returns {JSX.Element}
    */
-  const ItemPlaceholder = ():JSX.Element => {
+  const ItemPlaceholder = (): JSX.Element => {
     return (
       <div className="duration-350 group relative mx-auto grid h-[6rem] w-full grid-cols-[minmax(300px,_400px)_minmax(100px,_120px)_minmax(100px,_120px)_minmax(100px,_120px)_minmax(100px,_120px)_minmax(100px,_120px)] gap-x-1 py-1 text-sm transition hover:bg-white dark:hover:bg-neutral-800/95">
         <div className="z-2 ml-7 flex w-full flex-row items-center overflow-hidden p-1">

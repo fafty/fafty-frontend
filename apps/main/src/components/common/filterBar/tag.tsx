@@ -7,12 +7,17 @@ import {
   RangeProps,
   TypeProps,
   RangeFilterValueProps,
-  TagProps,
+  TagProps
 } from './types'
 import ArrayFilter from './filters/array'
 import RangeFilter from './filters/range'
 
-const Tag = <T,>({ onClickClose, value, filter, onChange }: TagProps<T>): JSX.Element => {
+const Tag = <T,>({
+  onClickClose,
+  value,
+  filter,
+  onChange
+}: TagProps<T>): JSX.Element => {
   const tagRef = useRef(null)
   const [openedFilterTag, setOpenedFilterTag] = useState(false)
 
@@ -74,12 +79,24 @@ const Tag = <T,>({ onClickClose, value, filter, onChange }: TagProps<T>): JSX.El
     if (filter.type === TypeProps.RANGE) {
       const currentFilter = filter as RangeProps
       const currentValue = value as RangeFilterValueProps
+      const firstValue = currentValue[currentFilter.params.firstKey]
+      const secondValue = currentValue[currentFilter.params.secondKey]
 
-      return `${currentFilter.title}: ${currentFilter.params.firstTitle}: ${
-        currentValue[currentFilter.params.firstKey]
-      } - ${currentFilter.params.secondTitle}: ${
-        currentValue[currentFilter.params.secondKey]
-      }`
+      const firstTitle = firstValue
+        ? `${currentFilter.params.firstTitle}: ${
+            currentValue[currentFilter.params.firstKey]
+          }`
+        : ''
+
+      const secondTitle = secondValue
+        ? `${currentFilter.params.secondTitle}: ${
+            currentValue[currentFilter.params.secondKey]
+          }`
+        : ''
+
+      return `${currentFilter.title}: ${firstTitle} ${
+        firstValue && secondValue ? '-' : ''
+      } ${secondTitle}`
     }
   }, [filter, value])
 

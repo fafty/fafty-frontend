@@ -3,15 +3,15 @@ import { Checkbox } from '../../checkbox'
 import { motion } from 'framer-motion'
 
 type ArrayFilterOptionsProps = {
-  title: string;
-  value: string;
-};
+  title: string
+  value: string
+}
 
 type Props = {
-  options: ArrayFilterOptionsProps[];
-  value: string[];
-  onChange: (value: string[]) => void;
-};
+  options: ArrayFilterOptionsProps[]
+  value: string[]
+  onChange: (value: string[]) => void
+}
 
 /**
  * @name ArrayFilter
