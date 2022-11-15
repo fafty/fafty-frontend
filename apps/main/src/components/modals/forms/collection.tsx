@@ -1,6 +1,6 @@
 import { Modal } from '@fafty/shared/modals'
 import FormCollection from '../../forms/collection/main'
-import { FormCollectionContextProvider } from '../../forms/collection/provider'
+import FormCollectionContextProvider from '../../forms/collection/provider'
 import { useEffect, useState } from 'react'
 import {
   api,
@@ -12,7 +12,6 @@ import {
   GetCollectionParamsProps,
 } from '@fafty/shared/api'
 import { useNotifications } from '@fafty/notifications'
-
 import { FormProps } from '../../forms/collection/types'
 
 type Props = {
@@ -22,7 +21,20 @@ type Props = {
   isOpened: boolean;
 };
 
-const FormCollectionModal = ({ title, isOpened, onClose, slug }: Props) => {
+/**
+ * @name FormCollectionModal
+ * @description Modal for creating and editing collections.
+ * @param {Props} props
+ * @param {string} props.title
+ * @param {string} props.slug
+ * @param {() => void} props.onClose
+ * @param {boolean} props.isOpened
+ * @returns {JSX.Element}
+ * @category Components / Modals
+ * @example
+ * <FormCollectionModal title="Create collection" onClose={onClose} isOpened={isOpened} />
+ */
+const FormCollectionModal = ({ title, isOpened, onClose, slug }: Props): JSX.Element => {
   const {
     data: preloadedCollection,
     call: callPreloadCollection,
@@ -38,7 +50,7 @@ const FormCollectionModal = ({ title, isOpened, onClose, slug }: Props) => {
     callback: (params?: PutCollectionParamsProps) => putCollection(params),
   })
 
-  const [submiting, setSubmiting] = useState(false)
+  const [submitting, setSubmitting] = useState(false)
   const [dismissibleData, setDismissibleData] = useState({
     title: 'Close',
     disabled: false,
@@ -48,7 +60,7 @@ const FormCollectionModal = ({ title, isOpened, onClose, slug }: Props) => {
   const { enqueueNotification } = useNotifications()
 
   const onSubmit = async (data: FormProps) => {
-    if (submiting) {
+    if (submitting) {
       return
     }
 
@@ -58,7 +70,7 @@ const FormCollectionModal = ({ title, isOpened, onClose, slug }: Props) => {
       return
     }
 
-    setSubmiting(true)
+    setSubmitting(true)
 
     try {
       if (slug) {
@@ -70,7 +82,7 @@ const FormCollectionModal = ({ title, isOpened, onClose, slug }: Props) => {
     } catch (err) {
       throw err
     } finally {
-      setSubmiting(false)
+      setSubmitting(false)
       if (drafted && !slug) {
         onClose()
         setDrafted(false)
@@ -84,11 +96,11 @@ const FormCollectionModal = ({ title, isOpened, onClose, slug }: Props) => {
     }
   }
 
-  const onChangeDismiss = (data: { title: string; disabled: boolean }) => {
+  const onChangeDismiss = (data: { title: string; disabled: boolean }): void => {
     setDismissibleData(data)
   }
 
-  const dismiss = () => {
+  const dismiss = (): void => {
     if (isOpened && !finished) {
       setDrafted(true)
     } else {
@@ -133,7 +145,7 @@ const FormCollectionModal = ({ title, isOpened, onClose, slug }: Props) => {
             <FormCollection
               defaultCover={preloadedCollection?.record?.cover}
               onSubmit={onSubmit}
-              submiting={submiting}
+              submitting={submitting}
             />
           </FormCollectionContextProvider>
         )}

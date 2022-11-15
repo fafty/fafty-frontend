@@ -136,7 +136,7 @@ const SelectStep1 = ({ Context }: { Context: Context<ContextProps> }) => {
 
   return (
     <div className="flex flex-col">
-      <h4 className="font-bold">Infomation</h4>
+      <h4 className="font-bold">Information</h4>
       <div className="mb-5 mt-1 relative">
         <label
           htmlFor="item-name"

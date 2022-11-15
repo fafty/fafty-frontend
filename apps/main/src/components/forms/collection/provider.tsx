@@ -52,7 +52,7 @@ const defaultStepsData: StepsProps = {
   },
 }
 
-export const FormCollectionContextProvider = ({
+const FormCollectionContextProvider = ({
   onChangeDismiss,
   rawDataCallback,
   onRawDataCallback,
@@ -195,3 +195,5 @@ export const FormCollectionContextProvider = ({
 
   return <Context.Provider value={contextValues}>{children}</Context.Provider>
 }
+
+export default FormCollectionContextProvider

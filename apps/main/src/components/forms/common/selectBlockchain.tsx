@@ -16,7 +16,7 @@ interface CollectionProps {
 }
 
 interface Props {
-  current: string;
+  initial: string;
   onChange: (value: string) => void;
 }
 declare global {
@@ -86,8 +86,8 @@ const collections: CollectionProps[] = [
   },
 ]
 
-const SelectBlockchain = ({ current, onChange }: Props): JSX.Element => {
-  const defaultSelected = collections.find((b) => b.id === current)
+const SelectBlockchain = ({ initial, onChange }: Props): JSX.Element => {
+  const defaultSelected = collections.find((b) => b.id === initial)
   const [selected, setSelected] = useState(defaultSelected?.id || 'dfinity')
   const [previousSelected, setPreviousSelected] = useState(
     defaultSelected?.id || null
@@ -112,7 +112,7 @@ const SelectBlockchain = ({ current, onChange }: Props): JSX.Element => {
       right: hasScrollbar && !scrolledToRight,
     })
   }
-  const debouncedtoggleArrow = useDebouncedCallback(() => {
+  const debouncedToggleArrow = useDebouncedCallback(() => {
     toggleArrow()
   }, 100)
 
@@ -127,8 +127,8 @@ const SelectBlockchain = ({ current, onChange }: Props): JSX.Element => {
     const refCurrent = itemsContainerRef.current
     // Add event listener
     const events = [
-      { event: 'resize', callback: debouncedtoggleArrow },
-      { event: 'scroll', callback: debouncedtoggleArrow },
+      { event: 'resize', callback: debouncedToggleArrow },
+      { event: 'scroll', callback: debouncedToggleArrow },
     ]
     if (refCurrent) {
       events.forEach(({ event, callback }) => {
@@ -167,9 +167,9 @@ const SelectBlockchain = ({ current, onChange }: Props): JSX.Element => {
   }, [selected])
 
   useEffect(() => {
-    const defaultSelected = collections.find((b) => b.id === current)
+    const defaultSelected = collections.find((b) => b.id === initial)
     setSelected(defaultSelected?.id || 'dfinity')
-  }, [current])
+  }, [initial])
 
   /**
    * Increase/decrease the current page value

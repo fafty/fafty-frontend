@@ -1,6 +1,6 @@
 import { Modal } from '@fafty/shared/modals'
 import FormAsset from '../../forms/asset/main'
-import { FormAssetContextProvider } from '../../forms/asset/provider'
+import FormAssetContextProvider from '../../forms/asset/provider'
 import { useEffect, useState } from 'react'
 import {
   api,
@@ -21,7 +21,20 @@ type Props = {
   isOpened: boolean;
 };
 
-const FormAssetModal = ({ title, isOpened, onClose, slug }: Props) => {
+/**
+ * @name FormAssetModal
+ * @description Modal for creating and editing assets.
+ * @param {Props} props
+ * @param {string} props.title
+ * @param {string} props.slug
+ * @param {() => void} props.onClose
+ * @param {boolean} props.isOpened
+ * @returns {JSX.Element}
+ * @category Components / Modals
+ * @example
+ * <FormAssetModal title="Create asset" onClose={onClose} isOpened={isOpened} />
+*/ 
+const FormAssetModal = ({ title, slug, onClose, isOpened }: Props): JSX.Element => {
   const {
     data: preloadedAsset,
     call: callPreloadAsset,
@@ -34,7 +47,7 @@ const FormAssetModal = ({ title, isOpened, onClose, slug }: Props) => {
     callback: (params?: AssetPutParamsProps) => putAsset(params),
   })
 
-  const [submiting, setSubmiting] = useState(false)
+  const [submitting, setSubmitting] = useState(false)
   const [dismissibleData, setDismissibleData] = useState({
     title: 'Close',
     disabled: false,
@@ -44,7 +57,7 @@ const FormAssetModal = ({ title, isOpened, onClose, slug }: Props) => {
   const { enqueueNotification } = useNotifications()
 
   const onSubmit = async (data: FormProps) => {
-    if (submiting) {
+    if (submitting) {
       return
     }
 
@@ -54,7 +67,7 @@ const FormAssetModal = ({ title, isOpened, onClose, slug }: Props) => {
       return
     }
 
-    setSubmiting(true)
+    setSubmitting(true)
 
     try {
       if (slug) {
@@ -66,7 +79,7 @@ const FormAssetModal = ({ title, isOpened, onClose, slug }: Props) => {
     } catch (err) {
       throw err
     } finally {
-      setSubmiting(false)
+      setSubmitting(false)
       if (drafted && !slug) {
         onClose()
         setDrafted(false)
@@ -129,7 +142,7 @@ const FormAssetModal = ({ title, isOpened, onClose, slug }: Props) => {
             <FormAsset
               defaultAsset={preloadedAsset?.record?.media}
               onSubmit={onSubmit}
-              submiting={submiting}
+              submitting={submitting}
             />
           </FormAssetContextProvider>
         )}

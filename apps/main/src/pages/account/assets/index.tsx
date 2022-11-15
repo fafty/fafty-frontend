@@ -1,39 +1,39 @@
-import { format } from 'date-fns';
+import { format } from 'date-fns'
 
-import AccountLayout from '../../../layouts/account';
-import Image from 'next/image';
-import { useRouter } from 'next/router';
-import { Viewer } from '@fafty/text/viewer';
+import AccountLayout from '../../../layouts/account'
+import Image from 'next/image'
+import { useRouter } from 'next/router'
+import { Viewer } from '@fafty/text/viewer'
 import {
   useAsync,
   getUserAssets,
   GetUserAssetsResponseProps,
   AssetProps,
   GetUserAssetsCallbackProps,
-} from '@fafty/shared/api';
-import { List } from 'masonic';
+} from '@fafty/shared/api'
+import { List } from 'masonic'
 
-import { useEffect, useMemo, useState } from 'react';
-import { useComponentDidUpdate } from '@fafty/usehooks';
+import { useEffect, useMemo, useState } from 'react'
+import { useComponentDidUpdate } from '@fafty/usehooks'
 import {
   EyeIcon,
   ChatBubbleBottomCenterTextIcon,
   PencilSquareIcon,
   DocumentIcon,
-} from '@heroicons/react/24/outline';
-import Link from 'next/link';
-import { motion } from 'framer-motion';
+} from '@heroicons/react/24/outline'
+import Link from 'next/link'
+import { motion } from 'framer-motion'
 import {
   childVariants,
   variants,
-} from '../../../components/forms/asset/constants';
-import FormAssetModal from '../../../components/modals/forms/asset';
-import { Filters } from '../../../components/features/user/assets';
-import { InfinityLoadChecker } from '../../../components/common/infinityLoadChecker';
+} from '../../../components/forms/asset/constants'
+import FormAssetModal from '../../../components/modals/forms/asset'
+import { Filters } from '../../../components/features/user/assets'
+import { InfinityLoadChecker } from '../../../components/common/infinityLoadChecker'
 import {
   FiltersState,
   onChangeFiltersValues,
-} from '../../../components/features/user/assets/filters/types';
+} from '../../../components/features/user/assets/filters/types'
 
 const isObjectEmpty = (value: object | string | null) => {
   return (
@@ -44,21 +44,21 @@ const isObjectEmpty = (value: object | string | null) => {
     (typeof value === 'object' &&
       Object.keys(value).length === 0 &&
       Object.getPrototypeOf(value) === Object.prototype)
-  );
-};
+  )
+}
 
 const mapper = (
   data: GetUserAssetsResponseProps,
   prev?: GetUserAssetsResponseProps
 ): GetUserAssetsResponseProps => {
   if (prev && Object.keys(prev).length) {
-    return { ...prev, ...data, records: [...prev.records, ...data.records] };
+    return { ...prev, ...data, records: [...prev.records, ...data.records] }
   }
 
-  return data;
-};
+  return data
+}
 
-const LIMIT = 10;
+const LIMIT = 10
 
 type QueryFiltersProps = FiltersState & {
   paginate: {
@@ -68,14 +68,14 @@ type QueryFiltersProps = FiltersState & {
 };
 
 const AccountAssets = () => {
-  const { asPath } = useRouter();
+  const { asPath } = useRouter()
   const [openedFormAssetModal, setOpenedFormAssetModal] = useState({
     open: false,
     slug: '',
     title: '',
-  });
+  })
 
-  const search = asPath.split('?')[1];
+  const search = asPath.split('?')[1]
   const [localFiltersState, setLocalFiltersState] = useState<QueryFiltersProps>(
     {
       paginate: {
@@ -83,21 +83,21 @@ const AccountAssets = () => {
         offset: 0,
       },
     }
-  );
+  )
 
   const onChangeFilters = (key: string, value: onChangeFiltersValues) => {
     setLocalFiltersState((prev) => ({
       ...prev,
       paginate: { limit: LIMIT, offset: 0 },
       [key]: value,
-    }));
-  };
+    }))
+  }
 
   const onCloseTag = (key: keyof FiltersState) => {
-    const { [key]: deletedProp, ...rest } = localFiltersState;
+    const { [key]: deletedProp, ...rest } = localFiltersState
 
-    setLocalFiltersState({ ...rest, paginate: { limit: LIMIT, offset: 0 } });
-  };
+    setLocalFiltersState({ ...rest, paginate: { limit: LIMIT, offset: 0 } })
+  }
 
   const { data, call, isLoading, isSuccess, clearAsyncData } = useAsync<
     GetUserAssetsResponseProps,
@@ -105,11 +105,11 @@ const AccountAssets = () => {
   >({
     callback: getUserAssets,
     mapper,
-  });
+  })
 
   const allowLoad = data
     ? !isLoading && data?.records.length < data?.paginate?.count
-    : false;
+    : false
 
   const loadMore = () => {
     setLocalFiltersState((prev) => ({
@@ -118,12 +118,12 @@ const AccountAssets = () => {
         ...prev.paginate,
         offset: prev.paginate.offset + LIMIT,
       },
-    }));
-  };
+    }))
+  }
 
   useEffect(() => {
-    const { paginate, ...restFilters } = localFiltersState;
-    clearAsyncData();
+    const { paginate, ...restFilters } = localFiltersState
+    clearAsyncData()
 
     call({
       address: 'abcd',
@@ -132,22 +132,22 @@ const AccountAssets = () => {
         limit: LIMIT,
         offset: paginate.offset,
       },
-    });
+    })
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [localFiltersState]);
+  }, [localFiltersState])
 
   useComponentDidUpdate(
     (prev) => {
       if (!!prev.search && !search) {
-        clearAsyncData();
+        clearAsyncData()
 
         setLocalFiltersState((prev) => ({
           paginate: { ...prev.paginate, offset: 0 },
-        }));
+        }))
       }
     },
     { search }
-  );
+  )
 
   const Visibility = ({
     visibility,
@@ -171,7 +171,7 @@ const AccountAssets = () => {
               </span>
             </div>
           </>
-        );
+        )
       case 'draft':
         return (
           <>
@@ -186,18 +186,18 @@ const AccountAssets = () => {
               </span>
             </div>
           </>
-        );
+        )
       case 'private':
         return (
           <div className="flex items-center">
             <EyeIcon className="mr-1 h-4 w-4 text-gray-500" />
             <span className="text-gray-500">Private</span>
           </div>
-        );
+        )
       default:
-        return null;
+        return null
     }
-  };
+  }
 
   const Restrictions = ({
     restrictions,
@@ -206,24 +206,24 @@ const AccountAssets = () => {
   }) => {
     switch (restrictions) {
       case 'none':
-        return <span>None</span>;
+        return <span>None</span>
       case 'sensitive':
-        return <span>Sensitive content {/* (set by you) */}</span>;
+        return <span>Sensitive content {/* (set by you) */}</span>
       case 'sensitive_auto':
-        return <span>Sensitive content {/* (set automatically) */}</span>;
+        return <span>Sensitive content {/* (set automatically) */}</span>
       case 'complaint_copyright':
-        return <span className="text-red-500">Complaint (copyright)</span>;
+        return <span className="text-red-500">Complaint (copyright)</span>
       default:
-        return null;
+        return null
     }
-  };
+  }
 
   type Props = {
     item: AssetProps;
   };
 
   const Item = ({ item }: Props) => {
-    const [isHovered, setIsHovered] = useState(false);
+    const [isHovered, setIsHovered] = useState(false)
     return (
       <div
         className="duration-350 group relative mx-auto grid h-[6rem] w-full grid-cols-[minmax(300px,_400px)_minmax(100px,_120px)_minmax(100px,_120px)_minmax(100px,_120px)_minmax(100px,_120px)_minmax(100px,_120px)] gap-x-1 py-1 text-sm transition hover:bg-white dark:hover:bg-neutral-800/95"
@@ -231,7 +231,6 @@ const AccountAssets = () => {
         onMouseLeave={() => setIsHovered(false)}
       >
         <div className="z-2 ml-7 flex w-full flex-row items-center overflow-hidden p-1">
-          {/* bg-neutral-300 dark:bg-neutral-700 */}
           <div
             className="h-17 w-17 relative flex flex-shrink-0 items-center justify-center rounded bg-neutral-200 focus:outline-none dark:bg-neutral-700"
             style={{ backgroundColor: item.media.dominant_color || '' }}
@@ -380,7 +379,7 @@ const AccountAssets = () => {
         </div>
         <div className="justify-left flex items-center">
           <div className="flex flex-col space-x-1">
-            <span className="opacity-50">Aviable:</span>
+            <span className="opacity-50">Available:</span>
             <div className="flex flex-row space-x-1">
               <span>{item.available_supply_units}</span>
               <span className="opacity-50">of</span>
@@ -390,10 +389,15 @@ const AccountAssets = () => {
         </div>
         <div className="justify-left flex items-center">{item.blockchain}</div>
       </div>
-    );
-  };
+    )
+  }
 
-  const ItemPlaceholder = () => {
+  /**
+   * @name ItemPlaceholder
+   * @description Item placeholder component.
+   * @returns {JSX.Element}
+   */
+  const ItemPlaceholder = ():JSX.Element => {
     return (
       <div className="duration-350 group relative mx-auto grid h-[6rem] w-full grid-cols-[minmax(300px,_400px)_minmax(100px,_120px)_minmax(100px,_120px)_minmax(100px,_120px)_minmax(100px,_120px)_minmax(100px,_120px)] gap-x-1 py-1 text-sm transition hover:bg-white dark:hover:bg-neutral-800/95">
         <div className="z-2 ml-7 flex w-full flex-row items-center overflow-hidden p-1">
@@ -424,21 +428,21 @@ const AccountAssets = () => {
           <div className="h-[0.75rem] w-[2rem] animate-pulse rounded-sm bg-neutral-300 dark:bg-neutral-700" />
         </div>
       </div>
-    );
-  };
+    )
+  }
 
   // TODO: update record on changes on modal saves.
   const items = useMemo(() => {
     const count = Math.min(
       localFiltersState.paginate.offset + LIMIT,
       data?.paginate?.count ?? 0
-    );
+    )
 
     return Array.from(
       { length: count },
       (_, index) => data?.records[index] ?? {}
-    );
-  }, [data?.paginate?.count, data?.records, localFiltersState.paginate.offset]);
+    )
+  }, [data?.paginate?.count, data?.records, localFiltersState.paginate.offset])
 
   const renderMasonry = useMemo(() => {
     if (!isSuccess && !data?.paginate?.count) {
@@ -448,7 +452,7 @@ const AccountAssets = () => {
             <ItemPlaceholder key={index} />
           ))}
         </div>
-      );
+      )
     }
 
     return (
@@ -459,15 +463,15 @@ const AccountAssets = () => {
         rowGutter={0}
         render={({ data }) => {
           if (!Object.keys(data).length) {
-            return <ItemPlaceholder />;
+            return <ItemPlaceholder />
           }
 
-          return <Item item={data as AssetProps} />;
+          return <Item item={data as AssetProps} />
         }}
       />
-    );
+    )
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [data?.paginate?.count, isSuccess, items]);
+  }, [data?.paginate?.count, isSuccess, items])
 
   return (
     <>
@@ -518,7 +522,7 @@ const AccountAssets = () => {
         />
       )}
     </>
-  );
-};
+  )
+}
 
-export default AccountAssets;
+export default AccountAssets

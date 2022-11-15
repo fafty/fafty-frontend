@@ -15,7 +15,7 @@ type Props = {
   onChange: (value: TagProps) => void;
 };
 
-export const TagsInput = ({ tags, onChange, onDelete }: Props) => {
+const TagsInput = ({ tags, onChange, onDelete }: Props) => {
   const inputRef = useRef<HTMLInputElement>(null)
   const [inputValue, setInputValue] = useState('')
   const [isFocused, setIsFocused] = useState(false)
@@ -33,7 +33,14 @@ export const TagsInput = ({ tags, onChange, onDelete }: Props) => {
     callback: (query?: string) => getTagsBySearch(query),
   })
 
-  const onKeyDown = (e: { key: string }) => {
+  /**
+   * 
+   * @param e KeyboardEvent<HTMLInputElement>
+   * @returns {void}
+   * @example
+   * <input onKeyDown={handleOnKeyDown} />
+   */
+  const handleOnKeyDown = (e: { key: string }): void => {
     const currentIndex = tags.length - 1
 
     if (e.key === 'Backspace' && tags.length && !inputValue) {
@@ -121,7 +128,7 @@ export const TagsInput = ({ tags, onChange, onDelete }: Props) => {
           ref={inputRef}
           className={classNames('border-0 outline-0 bg-transparent p-2 text-sm')}
           value={inputValue}
-          onKeyDown={onKeyDown}
+          onKeyDown={handleOnKeyDown}
           onFocus={() => setIsFocused(true)}
           onChange={(e) => setInputValue(e.target.value)}
         />
@@ -156,3 +163,5 @@ export const TagsInput = ({ tags, onChange, onDelete }: Props) => {
     </div>
   )
 }
+
+export default TagsInput

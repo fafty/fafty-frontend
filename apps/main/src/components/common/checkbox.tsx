@@ -6,8 +6,8 @@ export type CheckboxProps = {
 
 export const Checkbox = ({ checked, namespace, title, onChange }) => {
   const onChangeCheckbox = (e) => {
-    onChange(e.target.checked);
-  };
+    onChange(e.target.checked)
+  }
 
   return (
     <>
@@ -25,5 +25,5 @@ export const Checkbox = ({ checked, namespace, title, onChange }) => {
         {title}
       </label>
     </>
-  );
-};
+  )
+}

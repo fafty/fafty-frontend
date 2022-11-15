@@ -17,6 +17,9 @@ interface Props<T> {
   items: T;
 }
 
+/**
+ * @description - Grid component
+ */
 const Items = <T extends AssetProps[] | BundleProps[] | CollectionProps[]>({
   type,
   items,
@@ -41,7 +44,7 @@ const Items = <T extends AssetProps[] | BundleProps[] | CollectionProps[]>({
       right: hasScrollbar && !scrolledToRight,
     })
   }
-  const debouncedtoggleArrow = useDebouncedCallback(() => {
+  const debouncedToggleArrow = useDebouncedCallback(() => {
     toggleArrow()
   }, 100)
 
@@ -56,8 +59,8 @@ const Items = <T extends AssetProps[] | BundleProps[] | CollectionProps[]>({
     const refCurrent = itemsContainerRef.current
     // Add event listener
     const events = [
-      { event: 'resize', callback: debouncedtoggleArrow },
-      { event: 'scroll', callback: debouncedtoggleArrow },
+      { event: 'resize', callback: debouncedToggleArrow },
+      { event: 'scroll', callback: debouncedToggleArrow },
     ]
     if (refCurrent) {
       events.forEach(({ event, callback }) => {
@@ -112,7 +115,7 @@ const Items = <T extends AssetProps[] | BundleProps[] | CollectionProps[]>({
             className="button"
             {...{
               'aria-label':
-                direction === 'rught' ? 'Next Items' : 'Previous Items',
+                direction === 'right' ? 'Next Items' : 'Previous Items',
             }}
             role="button"
             {...(!isVisible && { 'aria-hidden': true, 'aria-disabled': true })}

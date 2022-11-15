@@ -6,7 +6,15 @@ type Props = {
   item: AssetProps;
 };
 
-const Item = ({ item }: Props) => {
+/**
+ * @name Item component for Asset
+ * @param {Props} props
+ * @param {AssetProps} props.item
+ * @returns {JSX.Element}
+ * @example
+ * <Item item={item} />
+ */
+const Item = ({ item }: Props): JSX.Element => {
   return (
     <div className="item">
       <div className="item-wrapper">

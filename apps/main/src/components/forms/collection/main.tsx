@@ -11,7 +11,7 @@ import { UploaderPlaceholder } from '@fafty/shared/ui'
 import dynamic from 'next/dynamic'
 import { AnimatePresence, motion } from 'framer-motion'
 import classNames from 'classnames'
-import { ReactComponent as CompleteIlustation } from '../../../assets/complete.svg'
+import { ReactComponent as CompleteIllustration } from '../../../assets/complete.svg'
 import { FileProps, Props, UploaderProps } from './types'
 import StepsBar from '../common/stepsBar'
 
@@ -20,9 +20,21 @@ const Uploader = dynamic<UploaderProps>(
   { ssr: false, loading: () => <UploaderPlaceholder /> }
 )
 
+/**
+ * @name FormCollection - Form to create or edit a collection
+ * @description Form to create or edit a collection with 4 steps
+ * @param {Props} props
+ * @param {boolean} props.submitting - Submitting state.
+ * @param {AssetMedia} props.defaultCover - Default cover for collection.
+ * @param {() => void} props.onSubmit - Callback function to submit the form.
+ * @returns {JSX.Element}
+ * @category Components / Forms
+ * @example
+ * <FormCollection submitting={submitting} onSubmit={onSubmit} />
+ */
 const FormCollection = ({
   onSubmit,
-  submiting,
+  submitting,
   defaultCover,
 }: Props): JSX.Element => {
   /*
@@ -172,7 +184,7 @@ const FormCollection = ({
 
   const StepsList = [
     {
-      name: 'Informations',
+      name: 'Information\'s',
       active: activeStep === 0,
       completed: data?.step1.solved,
       optional: false,
@@ -272,7 +284,7 @@ const FormCollection = ({
             className="flex flex-col justify-center items-center"
           >
             <div className="justify-center mb-5">
-              <CompleteIlustation width={300} height={300} />
+              <CompleteIllustration width={300} height={300} />
             </div>
             <div className="text-lg font-bold">
               Congratulations! Your Collection is{' '}
@@ -441,7 +453,7 @@ const FormCollection = ({
                 }
                 hasError={false}
                 onChange={onChangeFile}
-                OnGenetatedThumbnail={() => {
+                OnGeneratedThumbnail={() => {
                   setOnlyUploader(false)
                 }}
               />
@@ -451,7 +463,7 @@ const FormCollection = ({
         {!onlyUploader && (
           <div className="flex justify-end sticky bottom-0 pt-4 bg-slate-50 dark:bg-neutral-800 border-t border-gray-100 dark:border-neutral-700">
             <div className="flex gap-x-2">
-              {!submiting && activeStep > 0 && (
+              {!submitting && activeStep > 0 && (
                 <>
                   <button
                     disabled={activeStep === 0 || isDisabledNextStep}
@@ -463,7 +475,7 @@ const FormCollection = ({
                 </>
               )}
               <div />
-              {!submiting && isStepOptional(activeStep) && (
+              {!submitting && isStepOptional(activeStep) && (
                 <>
                   {allowSkip && (
                     <button
@@ -475,7 +487,7 @@ const FormCollection = ({
                   )}
                 </>
               )}
-              {submiting ? (
+              {submitting ? (
                 <button
                   type="button"
                   className="inline-flex items-center px-4 py-2 font-semibold leading-6 text-sm shadow rounded-md text-white bg-blue-600 hover:bg-blue-500 transition ease-in-out duration-150 cursor-not-allowed"

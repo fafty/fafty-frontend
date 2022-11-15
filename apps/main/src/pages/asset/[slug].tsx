@@ -47,7 +47,7 @@ interface AssetProps {
   updated_at: string;
 }
 
-interface ResponceProps {
+interface ResponseProps {
   record: AssetProps;
 }
 
@@ -79,7 +79,7 @@ export default function Asset() {
     const fetchData = async () => {
       // setLoading(true);
       if (slug) {
-        const response = await api.get<ResponceProps>(`asset/${slug}`)
+        const response = await api.get<ResponseProps>(`asset/${slug}`)
         if (response.status === 200 && response.data) {
           const { data } = response
           breadcrumb.push(

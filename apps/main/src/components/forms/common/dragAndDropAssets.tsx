@@ -5,19 +5,17 @@ import {
   GetUserAssetsResponseProps,
   useAsync,
 } from '@fafty/shared/api'
-import { useEffect, useMemo, useRef, useState } from 'react'
+import { SVGProps, useEffect, useMemo, useState } from 'react'
 import {
+  // DragStartEvent,
+  DragEndEvent,
+  closestCenter,
   DndContext,
-  DragOverlay,
   KeyboardSensor,
   MouseSensor,
   TouchSensor,
   useSensor,
   useSensors,
-  useDraggable,
-  useDroppable,
-  DragStartEvent,
-  DragEndEvent
 } from '@dnd-kit/core'
 import {
   arrayMove,
@@ -26,48 +24,132 @@ import {
   sortableKeyboardCoordinates,
   rectSortingStrategy,
 } from '@dnd-kit/sortable'
-import {
-  restrictToWindowEdges,
-} from '@dnd-kit/modifiers'
-import { CSS } from '@dnd-kit/utilities'
 
 import { InfinityLoadChecker } from '../../common/infinityLoadChecker'
 import Image from 'next/image'
-import { FunnelIcon } from '@heroicons/react/24/outline'
+import { FunnelIcon, PlusIcon, XMarkIcon } from '@heroicons/react/24/outline'
+import { AssetItemPlaceholder } from '@fafty/shared/ui'
+import { motion } from 'framer-motion'
 import classNames from 'classnames'
-// import Sortable from 'sortablejs'
 
-interface DragAndDropAssetsProps {
-  current: AssetProps[];
-  onChange: (assets: AssetProps[]) => void;
-  onDragStart: () => void;
-  onDragEnd: () => void;
-  hasError: boolean;
+interface ActionButtonProps {
+  title: string;
+  Icon: (props: SVGProps<SVGSVGElement>) => JSX.Element;
+  onAction: () => void;
+  className?: string;
 }
-
+/**
+ * Action button for add or remove asset.
+ * @param {ActionButtonProps} props
+ * @param {SVGProps<SVGSVGElement>} props.Icon - Icon component.
+ * @param {() => void} props.onAction - Click event handler.
+ * @param {string} props.className - Class names.
+ * @returns {JSX.Element}
+ * @example
+ * <ActionButton title="Add" Icon={PlusIcon} onAction={() => {}} />
+ * <ActionButton title="Remove" Icon={XMarkIcon} onAction={() => {}} />
+ */
+const ActionButton = ({
+  title,
+  Icon,
+  onAction,
+  className,
+}: ActionButtonProps): JSX.Element => {
+  return (
+    <button
+      title={title}
+      type="button"
+      className={classNames(
+        'w-full rounded-full bg-gray-600 px-1 py-1 text-gray-100 hover:bg-gray-500 focus:outline-none dark:bg-neutral-700 dark:hover:bg-neutral-600',
+        className
+      )}
+      onClick={onAction}
+    >
+      <span className="sr-only">{title}</span>
+      <Icon
+        className="h-4 w-4"
+        strokeWidth="2"
+        width={16}
+        height={16}
+        aria-hidden="true"
+      />
+    </button>
+  )
+}
 type Props = {
   item: AssetProps;
+  addable?: boolean;
+  removable?: boolean;
+  onAdd?: (token: string) => void;
+  onRemove?: (token: string) => void;
 };
 
-const Item = ({ item }: Props): JSX.Element => {
-  const { attributes, listeners, setNodeRef, transform, transition } =
-    useSortable({ id: item.token })
+/**
+ * Asset item component for drag and drop. useSortable hook is used for drag and drop.
+ * @param {Props} props
+ * @param {AssetProps} props.item - Asset item.
+ * @param {boolean} props.addable - Addable flag.
+ * @param {boolean} props.removable - Removable flag.
+ * @param {(token: string) => void} props.onAdd - Add event handler.
+ * @param {(token: string) => void} props.onRemove - Remove event handler.
+ * @returns {JSX.Element}
+ * @example
+ * <Item item={asset} addable={true} removable={false} onAdd={() => {}} onRemove={() => {}} />
+*/
+const Item = ({
+  item,
+  addable = false,
+  removable = false,
+  onAdd,
+  onRemove,
+}: Props): JSX.Element => {
+  const { isDragging, attributes, listeners, setNodeRef, transform } =
+    useSortable({ id: item?.token, transition: null })
 
-  const style = {
-    transform: CSS.Transform.toString(transform),
-    transition
+  const initialStyles = {
+    x: 0,
+    y: 0,
+    scale: 1,
   }
   return (
-    <div
+    <motion.div
+      layoutId={item?.token}
+      animate={
+        transform
+          ? {
+              x: transform.x,
+              y: transform.y,
+              scale: isDragging ? 1.05 : 1,
+              zIndex: isDragging ? 1000 : 0,
+              boxShadow: isDragging
+                ? '0 0 0 1px rgba(63, 63, 68, 0.05), 0px 15px 15px 0 rgba(34, 33, 81, 0.25)'
+                : undefined,
+            }
+          : initialStyles
+      }
+      transition={{
+        duration: !isDragging ? 0.25 : 0,
+        easings: {
+          type: 'spring',
+        },
+        scale: {
+          duration: 0.25,
+        },
+        zIndex: {
+          delay: isDragging ? 0 : 0.25,
+        },
+      }}
       className="item"
-      data-token={item.token}
       ref={setNodeRef}
-      style={style}
       {...attributes}
       {...listeners}
     >
       <div className="item-wrapper">
         <div className="item-block">
+          <span className="z-1 absolute right-1 top-1 mt-1 mr-1">
+            {addable && <ActionButton title={`Add ${item?.name} to collection`} Icon={PlusIcon} onAction={() => onAdd?.(item?.token)} />}
+            {removable && <ActionButton title={`Remove ${item?.name} from collection`} Icon={XMarkIcon} onAction={() => onRemove?.(item?.token)} />}
+          </span>
           <div className="item-card">
             <div className="item-card-link">
               <div className="thumbnail-wrapper asset">
@@ -102,17 +184,36 @@ const Item = ({ item }: Props): JSX.Element => {
           </div>
         </div>
       </div>
-    </div>
+    </motion.div>
   )
 }
 
-// Component for drag and drop based sortablejs with two columns
-const DragAndDropAssets = (props: DragAndDropAssetsProps) => {
-  const { current, onDragStart, onDragEnd, onChange, hasError } = props
+interface DragAndDropAssetsProps {
+  initial: AssetProps[];
+  onChange: (assets: AssetProps[]) => void;
+  onDragStart: () => void;
+  onDragEnd: () => void;
+  hasError: boolean;
+}
+/**
+ * Drag and drop assets component.
+ * @param {DragAndDropAssetsProps} props
+ * @param {AssetProps[]} props.initial - Initial assets.
+ * @param {(assets: AssetProps[]) => void} props.onChange - Change event handler.
+ * @param {() => void} props.onDragStart - Drag start event handler.
+ * @param {() => void} props.onDragEnd - Drag end event handler.
+ * @param {boolean} props.hasError - Error flag.
+ * @returns {JSX.Element}
+ * @example
+ * <DragAndDropAssets initial={assets} onChange={() => {}} onDragStart={() => {}} onDragEnd={() => {}} hasError={false} />
+*/
+const DragAndDropAssets = ({ initial, onDragStart, onDragEnd, onChange, hasError }: DragAndDropAssetsProps): JSX.Element => {
+  const [assets, setAssets] = useState<AssetProps[]>(initial || [])
 
-  const [sortedAssetsTokens, setSortedAssetsTokens] = useState<string[]>([])
-  const [assets, setAssets] = useState<AssetProps[]>(current || [])
-  const [activeAssetToken, setActiveAssetToken] = useState<string | number | null>(null)
+  // const [activeAssetToken, setActiveAssetToken] = useState<
+  //   string | number | null
+  // >(null)
+
   const sensors = useSensors(
     useSensor(MouseSensor, {
       // Require the mouse to move by 10 pixels before activating
@@ -121,9 +222,9 @@ const DragAndDropAssets = (props: DragAndDropAssetsProps) => {
       },
     }),
     useSensor(TouchSensor, {
-      // Press delay of 250ms, with tolerance of 5px of movement
+      // Press delay of 150ms, with tolerance of 5px of movement
       activationConstraint: {
-        delay: 250,
+        delay: 150,
         tolerance: 5,
       },
     }),
@@ -131,48 +232,14 @@ const DragAndDropAssets = (props: DragAndDropAssetsProps) => {
       coordinateGetter: sortableKeyboardCoordinates,
     })
   )
-  
-  const Droppable = ({ children, id }) =>{
-    const { isOver, setNodeRef } = useDroppable({
-      id,
-      data: {
-        supports: ['type1', 'type2'],
-      },
-    })
-    const style = { backgroundColor: isOver ? 'green' : undefined }
-  
-    return (
-      <div ref={setNodeRef} style={style}>
-        {children}
-      </div>
-    )
-  }
-  
-  const Draggable = ({ children, id }) => {
-    const { attributes, listeners, setNodeRef, transform } = useDraggable({
-      id,
-      data: {
-        type: ['type1', 'type2'],
-        supports: ['type1', 'type2'],
-      }
-    })
-    const style = { transform: CSS.Translate.toString(transform) }
-  
-    return (
-      <div ref={setNodeRef} style={style} {...listeners} {...attributes}>
-        {children}
-      </div>
-    )
-  }
-  
-  const handleDragStart = (event: DragStartEvent) => {
-    const { active } = event
-    setActiveAssetToken(active.id)
-  }
+
+  // const handleDragStart = (event: DragStartEvent) => {
+  //   const { active } = event
+  //   setActiveAssetToken(active.id)
+  // }
 
   const handleDragEnd = (event: DragEndEvent) => {
     const { active, over } = event
-    console.log('over', over)
     if (over && active.id !== over.id) {
       setAssets((a) => {
         const oldIndex = a.findIndex((item) => item.token === active.id)
@@ -181,9 +248,9 @@ const DragAndDropAssets = (props: DragAndDropAssetsProps) => {
         return arrayMove(a, oldIndex, newIndex)
       })
     }
-    setActiveAssetToken(null)
+    // setActiveAssetToken(null)
+    onChange(assets)
   }
-
 
   const mapper = (
     data: GetUserAssetsResponseProps,
@@ -246,10 +313,9 @@ const DragAndDropAssets = (props: DragAndDropAssetsProps) => {
         offset: paginate.offset,
       },
     })
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [localFiltersState])
+  }, [call, localFiltersState])
 
-  const aviableItems = useMemo(() => {
+  const availableAssets = useMemo(() => {
     const count = Math.min(
       localFiltersState.paginate.offset + LIMIT,
       data?.paginate?.count ?? 0
@@ -259,15 +325,37 @@ const DragAndDropAssets = (props: DragAndDropAssetsProps) => {
       { length: count },
       (_, index) => data?.records[index] ?? {}
     ).filter(
-      (item) =>
-        !current.find((currentItem) => {
-          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-          //@ts-ignore
-          return currentItem.token === item?.token
+      (item: AssetProps) =>
+        !assets.find((asset) => {
+          return asset?.token === item?.token
         })
     ) as AssetProps[]
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [data?.paginate?.count, data?.records, localFiltersState.paginate.offset])
+  }, [
+    data?.paginate?.count,
+    data?.records,
+    localFiltersState.paginate.offset,
+    assets,
+  ])
+
+  // 
+  const handleRemove = (token: string) => {
+    setAssets((assets) => assets.filter((item) => item.token !== token))
+  }
+
+  // Add available assets to the assets and remove from available assets
+  const handleAdd = (token: string) => {
+    const asset = availableAssets.find((item) => item.token === token)
+    if (asset) {
+      setAssets((assets) => [...assets, asset])
+    }
+  }
+
+  //  Block displaying sum of added assets based price.
+  const total = useMemo(() => {
+    return assets.reduce((acc, item) => {
+      return acc + Number(item.price)
+    }, 0)
+  }, [assets])
 
   return (
     <div className="my-5 flex flex-col">
@@ -297,73 +385,75 @@ const DragAndDropAssets = (props: DragAndDropAssetsProps) => {
         </div>
       </div>
       <div className="grid grid-cols-[repeat(2,_minmax(100px,_1fr))] gap-4">
-        <DndContext sensors={sensors} onDragStart={handleDragStart} onDragEnd={handleDragEnd}>
-          <div>
-            <div>
-              <h3 className="font-semibold">
-                Your aviable assets for adding to collection.
-              </h3>
-            </div>
-            <div className="h-full min-h-full w-full min-w-full rounded-md border-[2px] border-gray-200 bg-gray-100 dark:border-neutral-900 dark:bg-neutral-900/50">
-              <Draggable id="assets-aviable">
-                <Droppable id="assets-aviable"> 
-                  <SortableContext items={aviableItems.map((item) => item.token)} strategy={rectSortingStrategy}>
-                    <div className="grid-items">
-                      <div className="wrapper-items">
-                        <div className="items grided small">
-                          {!isSuccess && !data?.paginate?.count
-                            ? Array.from({ length: 24 }, (_, index) => (
-                                // <ItemPlaceholder key={index} />
-                                <div key={index}>ascsc</div>
-                              ))
-                            : aviableItems.map((item) => (
-                                <Item key={item.token} item={item} />
-                              ))}
-                        </div>
-                      </div>
-                      <InfinityLoadChecker
-                        allowLoad={allowLoad}
-                        isLoading={isLoading}
-                        loadMore={loadMore}
-                      />
-                    </div>
-                  </SortableContext>
-                </Droppable>
-              </Draggable>
-            </div>
-          </div>
-          <div>
-            <div>
-              <h3 className="font-semibold">
-                Items draged here will be apper in your collection.
-              </h3>
-            </div>
-            <Draggable id="assets-collection">
-              <Droppable id="assets-collection"> 
-                <SortableContext items={assets.map((item) => item.token)} strategy={rectSortingStrategy}>
-                  <div className="h-full min-h-full w-full min-w-full rounded-md border-[2px] border-gray-200 bg-gray-100 dark:border-neutral-900 dark:bg-neutral-900/50">
-                    <div className="wrapper-items h-full min-h-full w-full min-w-full">
-                      <div className="items grided small h-full min-h-full w-full min-w-full">
-                        {assets &&
-                          assets.map((item) => (
-                            <Item key={item.token} item={item} />
-                          ))}
-                      </div>
-                    </div>
-                  </div>
+        <DndContext
+          sensors={sensors}
+          collisionDetection={closestCenter}
+          // onDragStart={handleDragStart}
+          onDragEnd={handleDragEnd}
+        >
+          <div className="h-full w-full min-w-full rounded-md border-[2px] border-gray-200 bg-gray-100 dark:border-neutral-900 dark:bg-neutral-900/50">
+            <div className="wrapper-items h-full w-full min-w-full">
+              <div className="items grided small -my-2 h-full w-full min-w-full">
+                <SortableContext
+                  items={availableAssets.map((item) => item?.token)}
+                  strategy={rectSortingStrategy}
+                >
+                  {!isSuccess && !data?.paginate?.count
+                    ? Array.from({ length: 24 }, (_, index) => (
+                        <AssetItemPlaceholder
+                          key={index}
+                          size="small"
+                          action={false}
+                        />
+                      ))
+                    : availableAssets.map((item) => (
+                        <Item
+                          key={item.token}
+                          item={item}
+                          addable={true}
+                          onAdd={handleAdd}
+                        />
+                      ))}
                 </SortableContext>
-              </Droppable>
-            </Draggable>
-          </div>
-          <DragOverlay modifiers={[restrictToWindowEdges]}>
-            {activeAssetToken && (
-              <div className="wrapper-items">
-                <div className="items grided small">
-                  <Item item={[...aviableItems, ...assets].find((item) => item.token === activeAssetToken)} />
-                </div>
               </div>
+              <InfinityLoadChecker
+                allowLoad={allowLoad}
+                isLoading={isLoading}
+                loadMore={loadMore}
+              />
+            </div>
+          </div>
+          <div
+            className={classNames(
+              'h-full w-full min-w-full rounded-md border-[2px] bg-gray-100 dark:bg-neutral-900/50',
+              {
+                'border-gray-200 dark:border-neutral-900': !hasError,
+                'border-red-500': hasError,
+              }
             )}
-          </DragOverlay>
+          >
+            <div className="w-full">
+              <span>Added to collection {assets.length} Items with sum {total} </span>
+            </div>
+            <div className="wrapper-items h-full w-full min-w-full">
+              <div className="items grided small -my-2 h-full w-full min-w-full">
+                <SortableContext
+                  items={assets.map((item) => item?.token)}
+                  strategy={rectSortingStrategy}
+                >
+                  {assets &&
+                    assets.map((item) => (
+                      <Item
+                        key={item.token}
+                        item={item}
+                        removable={true}
+                        onRemove={handleRemove}
+                      />
+                    ))}
+                </SortableContext>
+              </div>
+            </div>
+          </div>
         </DndContext>
       </div>
     </div>

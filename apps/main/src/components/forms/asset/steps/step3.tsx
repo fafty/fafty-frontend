@@ -16,7 +16,7 @@ import {
 import classNames from 'classnames'
 import { motion, AnimatePresence } from 'framer-motion'
 import { ArrowDownSIcon } from '@remixicons/react/line'
-import { TagsSelect } from '../../common/tagsSelect'
+import TagsSelect from '../../common/tagsSelect'
 import { useComponentDidUpdate } from '@fafty/usehooks'
 import { ContextProps } from '../types'
 

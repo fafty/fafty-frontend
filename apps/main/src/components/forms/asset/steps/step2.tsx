@@ -85,7 +85,7 @@ const SelectStep2 = ({ Context }: { Context: Context<ContextProps> }) => {
 
   return (
     <div className="flex flex-col">
-      <h4 className="font-bold">Assosiation</h4>
+      <h4 className="font-bold">Association</h4>
       <div className="relative mb-5 mt-1">
         <div className="justify-left flex">
           <div className="flex flex-col">
@@ -103,7 +103,7 @@ const SelectStep2 = ({ Context }: { Context: Context<ContextProps> }) => {
               render={({ field }) => (
                 <CounterInput
                   {...field}
-                  current={field.value}
+                  initial={field.value}
                   hasError={errors.supply_units as unknown as boolean}
                 />
               )}
@@ -148,7 +148,7 @@ const SelectStep2 = ({ Context }: { Context: Context<ContextProps> }) => {
           control={control}
           defaultValue={formFields.blockchain}
           render={({ field }) => (
-            <SelectBlockchain {...field} current={field.value} />
+            <SelectBlockchain {...field} initial={field.value} />
           )}
         />
       </div>
@@ -164,7 +164,7 @@ const SelectStep2 = ({ Context }: { Context: Context<ContextProps> }) => {
         defaultValue={formFields.collection_token}
         rules={{ required: true }}
         render={({ field }) => (
-          <SelectCollection {...field} current={field.value} />
+          <SelectCollection {...field} initial={field.value} />
         )}
       />
       <motion.div

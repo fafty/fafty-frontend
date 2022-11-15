@@ -15,7 +15,7 @@ export const COMMENTS_MODERATION_OPTIONS = [
     title: 'Disabled',
     value: 'disabled',
   },
-];
+]
 
 export const COMMENTS_ORDER_OPTIONS = [
   {
@@ -26,7 +26,7 @@ export const COMMENTS_ORDER_OPTIONS = [
     title: 'New',
     value: 'newest',
   },
-];
+]
 
 export const variants = {
   visible: {
@@ -48,7 +48,7 @@ export const variants = {
       // staggerDirection: -1,
     },
   },
-};
+}
 
 export const childVariants = {
   visible: {
@@ -66,4 +66,4 @@ export const childVariants = {
       delay: 0.1,
     },
   },
-};
+}

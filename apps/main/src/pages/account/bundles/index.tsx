@@ -201,6 +201,15 @@ const AccountBundles = () => {
     item: BundleProps;
   };
 
+  /**
+   * @name Item
+   * @description Render a single item in the list.
+   * @param {Props} props
+   * @param {BundleProps} props.item
+   * @returns {JSX.Element}
+   * @example
+   * <Item item={item} />
+   */
   const Item = ({ item }: Props) => {
     const [isHovered, setIsHovered] = useState(false)
     return (
@@ -211,7 +220,7 @@ const AccountBundles = () => {
       >
         <div className="z-2 ml-7 flex w-full flex-row items-center overflow-hidden p-1">
           <div
-            className="h-17 w-17 justify-cente relative flex flex-shrink-0 items-center rounded bg-neutral-200 focus:outline-none dark:bg-neutral-700"
+            className="h-17 w-17 justify-center relative flex flex-shrink-0 items-center rounded bg-neutral-200 focus:outline-none dark:bg-neutral-700"
             style={{ backgroundColor: item.cover.dominant_color || '' }}
           >
             <Image
@@ -316,7 +325,7 @@ const AccountBundles = () => {
             </motion.div>
           </div>
         </div>
-        {item.total_assets_count != null && item.total_assets_count > 0 ? (
+        {item.items_count != null && item.items_count > 0 ? (
           <div className="justify-left flex flex-row items-center">
             <div className="flex -space-x-4 overflow-hidden">
               {item.preview_assets?.slice(0, 3).map((asset, index) => (
@@ -340,11 +349,11 @@ const AccountBundles = () => {
                   </div>
                 </div>
               ))}
-              {item.total_assets_count > 3 && (
+              {item.items_count > 3 && (
                 <div className="flex-inline relative overflow-hidden rounded-full border-2">
                   <div className="flex h-full w-8 items-center justify-center bg-neutral-200 dark:bg-neutral-700">
                     <div className="font-bold">
-                      +{item.total_assets_count - 3}
+                      +{item.items_count - 3}
                     </div>
                   </div>
                 </div>
@@ -368,7 +377,12 @@ const AccountBundles = () => {
     )
   }
 
-  const ItemPlaceholder = () => {
+  /**
+   * @name ItemPlaceholder
+   * @description Item placeholder component.
+   * @returns {JSX.Element}
+   */
+  const ItemPlaceholder = (): JSX.Element => {
     return (
       <div className="relative mx-auto grid h-[6rem] w-full grid-cols-[minmax(300px,_400px)_minmax(100px,_120px)_minmax(100px,_120px)_minmax(100px,_120px)_minmax(100px,_120px)] gap-x-1 hover:bg-white dark:hover:bg-neutral-800/95">
         <div className="z-2 ml-7 flex w-full flex-row items-center overflow-hidden p-1">

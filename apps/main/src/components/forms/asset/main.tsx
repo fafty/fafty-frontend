@@ -11,7 +11,7 @@ import { UploaderPlaceholder } from '@fafty/shared/ui'
 import dynamic from 'next/dynamic'
 import { AnimatePresence, motion } from 'framer-motion'
 import classNames from 'classnames'
-import { ReactComponent as CompleteIlustation } from '../../../assets/complete.svg'
+import { ReactComponent as CompleteIllustration } from '../../../assets/complete.svg'
 import { FileProps, Props, UploaderProps } from './types'
 import StepsBar from '../common/stepsBar'
 
@@ -20,9 +20,21 @@ const Uploader = dynamic<UploaderProps>(
   { ssr: false, loading: () => <UploaderPlaceholder /> }
 )
 
+/**
+ * @name FormAsset
+ * @description Form to create a new asset or edit an existing one with a step by step process.
+ * @param {Props} props
+ * @param {boolean} props.submitting
+ * @param {AssetMedia} props.defaultAsset
+ * @param {(data: FormProps) => Promise<void>} props.onSubmit
+ * @returns {JSX.Element}
+ * @category Components / Forms
+ * @example
+ * <FormAsset submitting={submitting} defaultAsset={defaultAsset} onSubmit={onSubmit} />
+ */
 const FormAsset = ({
   onSubmit,
-  submiting,
+  submitting,
   defaultAsset,
 }: Props): JSX.Element => {
   /*
@@ -178,7 +190,7 @@ const FormAsset = ({
 
   const StepsList = [
     {
-      name: 'Informations',
+      name: 'Information\'s',
       active: activeStep === 0,
       completed: data?.step1.solved,
       optional: false,
@@ -278,7 +290,7 @@ const FormAsset = ({
             className="flex flex-col justify-center items-center"
           >
             <div className="justify-center mb-5">
-              <CompleteIlustation width={300} height={300} />
+              <CompleteIllustration width={300} height={300} />
             </div>
             <div className="text-lg font-bold">
               Congratulations! Your asset is{' '}
@@ -414,9 +426,10 @@ const FormAsset = ({
         {!onlyUploader && (
           <div className="flex justify-end sticky bottom-0 pt-4 bg-slate-50 dark:bg-neutral-800 border-t border-gray-100 dark:border-neutral-700">
             <div className="flex gap-x-2">
-              {!submiting && activeStep > 0 && (
+              {!submitting && activeStep > 0 && (
                 <>
                   <button
+                    type="button"
                     disabled={activeStep === 0 || isDisabledNextStep}
                     onClick={handleBack}
                     className="inline-flex items-center px-4 py-2 font-semibold leading-6 text-sm shadow rounded-md text-white bg-gray-500 hover:bg-gray-400"
@@ -426,7 +439,7 @@ const FormAsset = ({
                 </>
               )}
               <div />
-              {!submiting && isStepOptional(activeStep) && (
+              {!submitting && isStepOptional(activeStep) && (
                 <>
                   {allowSkip && (
                     <button
@@ -439,7 +452,7 @@ const FormAsset = ({
                   )}
                 </>
               )}
-              {submiting ? (
+              {submitting ? (
                 <button
                   type="button"
                   className="inline-flex items-center px-4 py-2 font-semibold leading-6 text-sm shadow rounded-md text-white bg-blue-600 hover:bg-blue-500 transition ease-in-out duration-150 cursor-not-allowed"

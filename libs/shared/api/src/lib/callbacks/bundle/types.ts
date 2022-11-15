@@ -26,7 +26,7 @@ export type BundleProps = {
   slug: string;
   name: string;
   description: string | EditorState | null;
-  total_assets_count?: number;
+  items_count?: number;
   blockchain?: string;
   visibility?: string;
   restrictions?: string;

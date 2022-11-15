@@ -50,7 +50,7 @@ export const Visibility = ({ value = [], onChange }: Props) => {
                     check.value as VisibilityValues
                   )}
                   title={check.title}
-                  namespace={`filters_visibillity_assets_${check.title}`}
+                  namespace={`filters_visibility_assets_${check.title}`}
                 />
               </div>
             ))}
@@ -62,6 +62,7 @@ export const Visibility = ({ value = [], onChange }: Props) => {
               onClick={onSaveFilters}
             >
               Save
+              filters_visibility_assets_
             </button>
           </div>
         </div>

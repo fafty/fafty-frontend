@@ -6,7 +6,15 @@ type Props = {
   item: CollectionProps;
 };
 
-const Item = ({ item }: Props) => {
+/**
+ * @name Item component for Collection
+ * @param {Props} props
+ * @param {CollectionProps} props.item
+ * @returns {JSX.Element}
+ * @example
+ * <Item item={item} />
+ */
+const Item = ({ item }: Props): JSX.Element => {
   return (
     <div className="item group">
       <div className="item-wrapper">
@@ -40,15 +48,21 @@ const Item = ({ item }: Props) => {
                       </div>
                     </div>
                     <div>
-                      <span>{item.total_assets_count} Items</span>
+                      <span>Total Items: {item.supply}</span>
+                    </div>
+                    <div>
+                      <span>Listed Items: {item.listed_count}</span>
+                    </div>
+                    <div>
+                      <span>Sales Volume: {item.sales_volume} ICP</span>
                     </div>
                     <div>
                       <span>Blockchain: {item.blockchain || 'Undefined'}</span>
                     </div>
                   </div>
                   <div className="item-card-action">
-                    {item.total_assets_count != null &&
-                      item.total_assets_count > 0 && (
+                    {item.supply != null &&
+                      item.supply > 0 && (
                         <div className="pb-3 pt-1">
                           <div className="flex -space-x-4 overflow-hidden">
                             {item.preview_assets
@@ -75,11 +89,11 @@ const Item = ({ item }: Props) => {
                                   </div>
                                 </div>
                               ))}
-                            {item.total_assets_count > 3 && (
+                            {item.supply > 3 && (
                               <div className="flex-inline relative overflow-hidden rounded-full border-2 group-hover:border-white dark:group-hover:border-[#2f2f2f] dark:border-neutral-800 transition duration-150 ease-in-out">
                                 <div className="flex h-full w-8 items-center justify-center bg-neutral-200 dark:bg-neutral-700">
                                   <div className="text-sm font-bold">
-                                    +{item.total_assets_count - 3}
+                                    +{item.supply - 3}
                                   </div>
                                 </div>
                               </div>

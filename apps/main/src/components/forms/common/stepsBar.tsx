@@ -17,7 +17,18 @@ interface Props {
   setActive: (step: number) => void;
 }
 
-const StepsBar = ({ active, disabled, steps, setActive }: Props) => {
+/**
+ * Stepbar component
+ * @name StepsBar
+ * @param {number} active - active step
+ * @param {boolean} disabled - disable step
+ * @param {StepbarProps[]} steps - steps
+ * @param {(step: number) => void} setActive - set active step
+ * @returns {JSX.Element} - Stepbar component
+ * @example
+ * <StepsBar active={active} disabled={disabled} steps={steps} setActive={setActive} />
+ */
+const StepsBar = ({ active, disabled, steps, setActive }: Props): JSX.Element => {
   return (
     <div className="w-full pb-4">
       <div className="flex justify-center w-full">

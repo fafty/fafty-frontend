@@ -128,13 +128,22 @@ const AccountCollections = () => {
     { search }
   )
 
+  interface VisibilityProps {
+    visibility: CollectionProps['visibility']
+    date: string | undefined;
+  }
+
+  /**
+   * @name Visibility
+   * @description This is a component to display if the collection is Public, Draft or Private
+   * @param {string} visibility - The visibility of the collection (public, draft or private).
+   * @param {string | undefined} props.date - Date of the collection creation or update.
+   * @returns {JSX.Element}
+   */
   const Visibility = ({
     visibility,
     date,
-  }: {
-    visibility: string | undefined;
-    date: string | undefined;
-  }) => {
+  }: VisibilityProps): JSX.Element => {
     switch (visibility) {
       case 'public':
         return (
@@ -178,11 +187,20 @@ const AccountCollections = () => {
     }
   }
 
+  interface RestrictionsProps {
+    restrictions: string | undefined;
+  }
+  /**
+   * @name Restrictions
+   * @description This is a component to display if the collection is restricted or not.
+   * @param {string | undefined} props.restrictions - The restrictions of the collection.
+   * @returns {JSX.Element}
+   * @example
+   * <Restrictions restrictions="sensitive" />
+   */
   const Restrictions = ({
     restrictions,
-  }: {
-    restrictions: string | undefined;
-  }) => {
+  }: RestrictionsProps): JSX.Element => {
     switch (restrictions) {
       case 'none':
         return <span>None</span>
@@ -200,8 +218,16 @@ const AccountCollections = () => {
   type Props = {
     item: CollectionProps;
   };
-
-  const Item = ({ item }: Props) => {
+  /**
+   * @name Item
+   * @description Render a single item in the list.
+   * @param {Props} props
+   * @param {CollectionProps} props.item
+   * @returns {JSX.Element}
+   * @example
+   * <Item item={item} />
+   */
+  const Item = ({ item }: Props): JSX.Element => {
     const [isHovered, setIsHovered] = useState(false)
     return (
       <div
@@ -316,7 +342,7 @@ const AccountCollections = () => {
             </motion.div>
           </div>
         </div>
-        {item.total_assets_count != null && item.total_assets_count > 0 ? (
+        {item.supply != null && item.supply > 0 ? (
           <div className="justify-left flex flex-row items-center">
             <div className="flex -space-x-4 overflow-hidden">
               {item.preview_assets?.slice(0, 3).map((asset, index) => (
@@ -340,11 +366,11 @@ const AccountCollections = () => {
                   </div>
                 </div>
               ))}
-              {item.total_assets_count > 3 && (
+              {item.supply > 3 && (
                 <div className="flex-inline relative overflow-hidden rounded-full border-2 group-hover:border-white dark:group-hover:border-neutral-800/95 dark:border-neutral-900/95">
                   <div className="flex h-full w-8 items-center justify-center bg-neutral-200 dark:bg-neutral-700">
                     <div className="font-bold">
-                      +{item.total_assets_count - 3}
+                      +{item.supply - 3}
                     </div>
                   </div>
                 </div>
@@ -369,7 +395,12 @@ const AccountCollections = () => {
     )
   }
 
-  const ItemPlaceholder = () => {
+  /**
+   * @name ItemPlaceholder
+   * @description Item placeholder component.
+   * @returns {JSX.Element}
+   */
+  const ItemPlaceholder = (): JSX.Element => {
     return (
       <div className="relative mx-auto grid h-[6rem] w-full grid-cols-[minmax(300px,_400px)_minmax(100px,_120px)_minmax(100px,_120px)_minmax(100px,_120px)_minmax(100px,_120px)] gap-x-1 hover:bg-white dark:hover:bg-neutral-800/95 group">
         <div className="z-2 ml-7 flex w-full flex-row items-center overflow-hidden p-1">
@@ -416,7 +447,7 @@ const AccountCollections = () => {
     return Array.from(
       { length: count },
       (_, index) => data?.records[index] ?? {}
-    )
+    ) as CollectionProps[]
   }, [data?.paginate?.count, data?.records, localFiltersState.paginate.offset])
 
   const renderMasonry = useMemo(() => {
@@ -440,7 +471,7 @@ const AccountCollections = () => {
           if (!Object.keys(data).length) {
             return <ItemPlaceholder />
           }
-          return <Item item={data as CollectionProps} />
+          return <Item item={data} />
         }}
       />
     )

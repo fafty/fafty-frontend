@@ -65,7 +65,6 @@ export default function Hero() {
                           src="/images/card-pic-3.jpeg"
                           loading="eager"
                           alt={'Card 2'}
-                          // layout="fill"
                           width={440}
                           height={640}
                           className="h-full w-full object-cover object-center"
@@ -76,7 +75,6 @@ export default function Hero() {
                           src="/images/card-pic-4.jpeg"
                           loading="eager"
                           alt={'Card 4'}
-                          // layout="fill"
                           width={440}
                           height={640}
                           className="h-full w-full object-cover object-center"
@@ -87,7 +85,6 @@ export default function Hero() {
                           src="/images/card-pic-5.jpeg"
                           loading="eager"
                           alt={'Card 2'}
-                          // layout="fill"
                           width={440}
                           height={640}
                           className="h-full w-full object-cover object-center"
@@ -100,7 +97,6 @@ export default function Hero() {
                           src="/images/card-pic-6.jpeg"
                           loading="eager"
                           alt={'Card 1'}
-                          // layout="fill"
                           width={440}
                           height={640}
                           className="h-full w-full object-cover object-center"
@@ -111,7 +107,6 @@ export default function Hero() {
                           src="/images/card-pic-7.jpeg"
                           loading="eager"
                           alt={'Card 2'}
-                          // layout="fill"
                           width={440}
                           height={640}
                           className="h-full w-full object-cover object-center"

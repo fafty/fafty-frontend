@@ -9,11 +9,12 @@ import classNames from 'classnames'
 import Image from 'next/image'
 import { MutableRefObject, SVGProps, useEffect, useRef, useState } from 'react'
 
+// TODO extend exist types from @fafty/shared/api
 interface CollectionProps {
   token: string;
   name: string;
   description: string;
-  total_assets_count: number;
+  supply: number;
   cover?: {
     src: string;
     dominant_color: string;
@@ -28,11 +29,19 @@ interface ResponceProps {
 }
 
 interface Props {
-  current: string;
+  initial: string;
   onChange: (value: string) => void;
 }
 
-function CheckIcon(props: JSX.IntrinsicAttributes & SVGProps<SVGSVGElement>) {
+/**
+ * @name CheckIcon
+ * @description - On select collection item mark it as selected by icon.
+ * @param {JSX.IntrinsicAttributes & SVGProps<SVGSVGElement} props
+ * @returns {JSX.Element}
+ * @example
+ * <CheckIcon className="w-5 h-5 text-white" />
+ */
+function CheckIcon(props: JSX.IntrinsicAttributes & SVGProps<SVGSVGElement>): JSX.Element {
   return (
     <svg viewBox="0 0 24 24" fill="none" {...props}>
       <circle className="fill-blue-600" cx={12} cy={12} r={12} />
@@ -47,13 +56,24 @@ function CheckIcon(props: JSX.IntrinsicAttributes & SVGProps<SVGSVGElement>) {
   )
 }
 
-const SelectCollection = ({ current, onChange }: Props): JSX.Element => {
+/**
+ * Select collection component
+ * @name SelectCollection
+ * @description Select collection component.
+ * @param props
+ * @param {string} props.initial - initial collections
+ * @param {(collection: CollectionProps) => void} props.onChange - Change event handler.
+ * @returns {JSX.Element}
+ * @example
+ * <SelectCollection initial={initial} onChange={onChange} />
+ */
+const SelectCollection = ({ initial, onChange }: Props): JSX.Element => {
   const [data, setData] = useState<CollectionProps[] | null>(null)
   const [loading, setLoading] = useState(false)
   const defaultSelected =
-    current === 'none'
-      ? { token: current }
-      : data && data.find((b) => b.token === current)
+    initial === 'none'
+      ? { token: initial }
+      : data && data.find((b) => b.token === initial)
   const [selected, setSelected] = useState(defaultSelected?.token || '')
   const [previousSelected, setPreviousSelected] = useState(
     defaultSelected?.token || null
@@ -137,12 +157,12 @@ const SelectCollection = ({ current, onChange }: Props): JSX.Element => {
   }, [selected])
 
   useEffect(() => {
-    if (current !== 'none') {
-      const defaultSelected = data && data.find((b) => b.token === current)
+    if (initial !== 'none') {
+      const defaultSelected = data && data.find((b) => b.token === initial)
       setSelected(defaultSelected?.token || '')
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [current, loading])
+  }, [initial, loading])
 
   const fetchData = async () => {
     setLoading(true)
@@ -157,6 +177,7 @@ const SelectCollection = ({ current, onChange }: Props): JSX.Element => {
   /**
    * Increase/decrease the current page value
    * @param {String} direction (Optional) The direction to advance
+   * @returns {void}
    */
   const scrollItems = (direction: string): void => {
     if (itemsContainerRef.current === null) return
@@ -178,6 +199,7 @@ const SelectCollection = ({ current, onChange }: Props): JSX.Element => {
   /**
    * Scroll to the center of the selected item
    * @param {String} id The id of item to scroll to
+   * @returns {void}
    */
   const scrollItemsToCenterSelected = (id: string, delay: number): void => {
     const item = document.getElementById(id)
@@ -198,6 +220,15 @@ const SelectCollection = ({ current, onChange }: Props): JSX.Element => {
     }
   }
 
+  /**
+   * Button Arrow left or right.
+   * @param {string} direction - left or right
+   * @returns {JSX.Element}
+   * @example
+   * <Button direction="left" />
+   * <Button direction="right" />
+   * 
+  */
   const Button = ({ direction }: { direction: string }): JSX.Element => {
     const isVisible = direction === 'right' ? arrows.right : arrows.left
     return (
@@ -340,7 +371,7 @@ const SelectCollection = ({ current, onChange }: Props): JSX.Element => {
                           <div className="flex flex-row space-x-4 mt-1">
                             <span className="text-[0.70rem] text-slate-500 dark:text-slate-400">
                               <span className="font-medium">
-                                {collection.total_assets_count}
+                                {collection.supply}
                               </span>
                               <span className="ml-1">Items</span>
                             </span>

@@ -39,7 +39,7 @@ export interface UploaderProps {
   style?: CSSProperties;
   presignEndpoint?: string;
   onChange: (value: FileProps | FileProps[]) => void;
-  OnGenetatedThumbnail: () => void;
+  OnGeneratedThumbnail: () => void;
 }
 
 export interface FormProps {
@@ -59,7 +59,7 @@ export interface FormProps {
 
 export interface Props {
   onSubmit: (data: FormProps) => Promise<void>;
-  submiting: boolean;
+  submitting: boolean;
   defaultAsset?: AssetMedia;
 }
 

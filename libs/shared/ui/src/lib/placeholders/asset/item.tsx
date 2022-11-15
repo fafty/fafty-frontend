@@ -1,4 +1,11 @@
-const AssetItemPlaceholder = () => {
+type Props = {
+  size?: string;
+  action?: boolean;
+}
+const AssetItemPlaceholder = ({
+  size,
+  action = true,
+}: Props) => {
   return (
     <div className="item">
       <div className="item-wrapper">
@@ -14,25 +21,36 @@ const AssetItemPlaceholder = () => {
                 <div className="item-card-content">
                   <div className="item-head">
                     <div className="item-card-title">
-                      <span className="mt-1 mb-2 flex h-[0.8rem] w-[6rem] animate-pulse rounded-lg bg-neutral-300 dark:bg-neutral-600" />
-                      <span className="flex h-[0.8rem] w-[3rem] animate-pulse rounded-lg bg-neutral-300 dark:bg-neutral-600" />
+                      {size === 'small' ? (
+                        <span>
+                          <span className="mt-1 mb-2 flex h-[0.7rem] w-[3rem] animate-pulse rounded-lg bg-neutral-300 dark:bg-neutral-600" />
+                          <span className="flex h-[0.7rem] w-[1.5rem] animate-pulse rounded-lg bg-neutral-300 dark:bg-neutral-600" />
+                        </span>
+                      ) : (
+                        <span>
+                          <span className="mt-1 mb-2 flex h-[0.8rem] w-[6rem] animate-pulse rounded-lg bg-neutral-300 dark:bg-neutral-600" />
+                          <span className="flex h-[0.8rem] w-[3rem] animate-pulse rounded-lg bg-neutral-300 dark:bg-neutral-600" />
+                        </span>
+                      )}
                     </div>
                     <div className="item-price animate-pulse">
                       <span className="flex h-[0.8rem] w-[3rem] animate-pulse rounded-lg bg-green-600" />
                     </div>
                   </div>
                 </div>
-                <div className="item-card-action animate-pulse">
-                  <button
-                    title="View"
-                    type="button"
-                    className="flex items-center justify-center"
-                  >
-                    <div>
-                      <span className="flex h-5 w-12 rounded-lg bg-neutral-300 dark:bg-neutral-600" />
-                    </div>
-                  </button>
-                </div>
+                {action && (
+                  <div className="item-card-action animate-pulse">
+                    <button
+                      title="View"
+                      type="button"
+                      className="flex items-center justify-center"
+                    >
+                      <div>
+                        <span className="flex h-5 w-12 rounded-lg bg-neutral-300 dark:bg-neutral-600" />
+                      </div>
+                    </button>
+                  </div>
+                )}
               </div>
             </div>
           </div>

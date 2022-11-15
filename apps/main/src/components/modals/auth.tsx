@@ -32,7 +32,20 @@ const List = [
   },
 ]
 
-export const AuthModal = ({ isOpened, onClose }: Props) => {
+/**
+ * @name AuthModal
+ * @description This component is responsible for rendering the authentication modal.
+ * @param {Props} props
+ * @param {boolean} props.isOpened
+ * @param {() => void} props.onClose
+ * @returns {JSX.Element}
+ * @example
+ * <AuthModal isOpened={isOpened} onClose={onClose} />
+ * @component AuthModal
+ * @category Components / Modals
+ * @subcategory Auth
+ */
+export const AuthModal = ({ isOpened, onClose }: Props): JSX.Element => {
   const auth = useAuth()
 
   const onClickAuth = (key: string) => () => {
@@ -59,6 +72,7 @@ export const AuthModal = ({ isOpened, onClose }: Props) => {
       }}
       className="w-[700px]"
     >
+      {/* TODO: export to public files */}
       <div className="flex h-full w-full flex-row p-5">
         <div className="hidden border-r border-gray-100 pr-5 pl-5 dark:border-neutral-700 lg:block">
           <svg

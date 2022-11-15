@@ -56,21 +56,43 @@ const defaultStepsData: StepsProps = {
   },
 }
 
-export const FormAssetContextProvider = ({
+interface Props {
+  children: ReactNode;
+  onChangeDismiss: (data: { title: string; disabled: boolean }) => void;
+  rawDataCallback: boolean;
+  defaultData?: AssetProps;
+  onRawDataCallback: (data: FormProps) => void;
+  onFinished: () => void;
+}
+
+/**
+ * @name FormAssetContextProvider
+ * @description Context provider for the asset form.
+ * @param {Props} props
+ * @param {ReactNode} props.children
+ * @param {boolean} props.rawDataCallback
+ * @param {AssetProps} props.defaultData
+ * @param {Function} props.onRawDataCallback
+ * @param {Function} props.onFinished
+ * @returns {JSX.Element}
+ * @example
+ * <FormAssetContextProvider
+ *  onChangeDismiss={onChangeDismiss}
+ *  rawDataCallback={rawDataCallback}
+ *  onRawDataCallback={onRawDataCallback}
+ *  onFinished={onFinished}
+ *  defaultData={defaultData}
+ * />
+ * 
+ */
+const FormAssetContextProvider = ({
   onChangeDismiss,
   rawDataCallback,
   onRawDataCallback,
   onFinished,
   defaultData,
   children,
-}: {
-  onChangeDismiss: (data: { title: string; disabled: boolean }) => void;
-  rawDataCallback: boolean;
-  defaultData?: AssetProps;
-  onRawDataCallback: (data: FormProps) => void;
-  onFinished: () => void;
-  children: ReactNode;
-}) => {
+}: Props): JSX.Element => {
   const [step1Answered, setStep1Answered] = useState(false)
   const [step2Answered, setStep2Answered] = useState(false)
   const [step3Answered, setStep3Answered] = useState(false)
@@ -213,3 +235,5 @@ export const FormAssetContextProvider = ({
 
   return <Context.Provider value={contextValues}>{children}</Context.Provider>
 }
+
+export default FormAssetContextProvider

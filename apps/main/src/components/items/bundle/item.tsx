@@ -6,7 +6,15 @@ type Props = {
   item: BundleProps;
 };
 
-const Item = ({ item }: Props) => {
+/**
+ * @name Item component for Bundle
+ * @param {Props} props
+ * @param {BundleProps} props.item
+ * @returns {JSX.Element}
+ * @example
+ * <Item item={item} />
+ */
+const Item = ({ item }: Props): JSX.Element => {
   return (
     <div className="item group">
       <div className="item-wrapper">
@@ -40,15 +48,15 @@ const Item = ({ item }: Props) => {
                       </div>
                     </div>
                     <div>
-                      <span>{item.total_assets_count} Items</span>
+                      <span>{item.items_count} Items</span>
                     </div>
                     <div>
                       <span>Blockchain: {item.blockchain || 'Undefined'}</span>
                     </div>
                   </div>
                   <div className="item-card-action">
-                    {item.total_assets_count != null &&
-                      item.total_assets_count > 0 && (
+                    {item.items_count != null &&
+                      item.items_count > 0 && (
                         <div className="pb-3 pt-1">
                           <div className="flex -space-x-4 overflow-hidden">
                             {item.preview_assets
@@ -75,11 +83,11 @@ const Item = ({ item }: Props) => {
                                   </div>
                                 </div>
                               ))}
-                            {item.total_assets_count > 3 && (
+                            {item.items_count > 3 && (
                               <div className="flex-inline relative overflow-hidden rounded-full border-2 transition duration-150 ease-in-out group-hover:border-white dark:border-neutral-800 dark:group-hover:border-[#2f2f2f]">
                                 <div className="flex h-full w-8 items-center justify-center bg-neutral-200 dark:bg-neutral-700">
                                   <div className="text-sm font-bold">
-                                    +{item.total_assets_count - 3}
+                                    +{item.items_count - 3}
                                   </div>
                                 </div>
                               </div>

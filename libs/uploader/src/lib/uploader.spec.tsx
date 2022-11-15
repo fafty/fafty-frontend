@@ -6,7 +6,7 @@ describe("Uploader", () => {
   it("should render successfully", () => {
     const { baseElement } = render(<Uploader onChange={function (value: AttachmentProps | AttachmentProps[]): void {
       throw new Error("Function not implemented.")
-    } } OnGenetatedThumbnail={function (): void {
+    } } OnGeneratedThumbnail={function (): void {
       throw new Error("Function not implemented.")
     } } />)
     expect(baseElement).toBeTruthy()

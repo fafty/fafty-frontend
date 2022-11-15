@@ -1,4 +1,4 @@
-import { FC, useEffect, useState } from 'react'
+import { FC, useEffect } from 'react'
 import classNames from 'classnames'
 import { XMarkIcon } from '@heroicons/react/24/outline'
 import { ModalProps } from './types'
@@ -26,29 +26,17 @@ const useOnEscape = (
 const Modal: FC<ModalProps> = (props) => {
   const { title, open, children, actions, options, onDismiss, className } =
     props
-  // const [isOpen, setIsOpen] = useState(true);
 
   useOnEscape(onDismiss, options?.persist)
 
-  const showInModalVarians = {
-    hidden: {
-      y: '20px',
-      opacity: 0,
-    },
-    visible: {
-      y: '0px',
-      opacity: 1,
-      transition: {
-        duration: 0.2,
-        ease: 'easeInOut',
-        delay: 0.48,
-      },
-    },
-    exit: {
-      y: '20px',
-      opacity: 0,
-    },
-  }
+  // Set document body to overflow hidden when modal is open.
+  useEffect(() => {
+    if (open) {
+      document.body.style.overflow = 'hidden'
+    } else {
+      document.body.style.overflow = 'unset'
+    }
+  }, [open])
   return (
     <AnimatePresence>
       {open && (
@@ -57,7 +45,7 @@ const Modal: FC<ModalProps> = (props) => {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 backdrop-blur bg-white/50 dark:bg-neutral-800/50 transition-opacity"
+            className="fixed inset-0 bg-white/50 backdrop-blur transition-opacity dark:bg-neutral-800/50"
             onClick={() => onDismiss()}
           ></motion.div>
           <motion.div
@@ -66,16 +54,34 @@ const Modal: FC<ModalProps> = (props) => {
             className="fixed inset-0 flex items-center justify-center"
           >
             <motion.div
-              variants={showInModalVarians}
+              variants={{
+                hidden: {
+                  y: '20px',
+                  opacity: 0,
+                },
+                visible: {
+                  y: '0px',
+                  opacity: 1,
+                  transition: {
+                    duration: 0.2,
+                    ease: 'easeInOut',
+                    delay: 0.48,
+                  },
+                },
+                exit: {
+                  y: '20px',
+                  opacity: 0,
+                },
+              }}
               initial="hidden"
               animate="visible"
               exit="exit"
               className={classNames(
                 className,
-                'relative flex flex-col antialiased m-3 p-3 h-auto text-stone-700 dark:text-gray-200 focus:outline-none bg-slate-50 dark:bg-neutral-800 border-1 border-gray-100 dark:border-neutral-700 shadow rounded-lg max-w-screen-lg'
+                'border-1 relative m-3 flex h-auto max-w-screen-lg flex-col rounded-lg border-gray-100 bg-slate-50 p-3 text-stone-700 antialiased shadow focus:outline-none dark:border-neutral-700 dark:bg-neutral-800 dark:text-gray-200'
               )}
             >
-              <div className="flex justify-between items-start">
+              <div className="flex items-start justify-between">
                 {title && <div className="text-base font-bold">{title}</div>}
                 {options?.dismissible?.active && (
                   <span className="dismiss">
@@ -84,7 +90,7 @@ const Modal: FC<ModalProps> = (props) => {
                       type="button"
                       disabled={options?.dismissible?.disabled}
                       onClick={() => onDismiss()}
-                      className="mb-1 w-full bg-gray-600 text-gray-100 rounded-full hover:bg-gray-500 px-1 py-1 focus:outline-none dark:bg-neutral-700 dark:hover:bg-neutral-600"
+                      className="mb-1 w-full rounded-full bg-gray-600 px-1 py-1 text-gray-100 hover:bg-gray-500 focus:outline-none dark:bg-neutral-700 dark:hover:bg-neutral-600"
                     >
                       <span className="sr-only">Close menu</span>
                       <XMarkIcon
@@ -98,7 +104,6 @@ const Modal: FC<ModalProps> = (props) => {
                   </span>
                 )}
               </div>
-              {/* h-[calc(70vh)] overflow-y-hidden */}
               <div className="flex flex-1 flex-col">
                 <div className="mt-2">{children}</div>
                 {actions && (

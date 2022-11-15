@@ -63,6 +63,7 @@ const SelectStep2 = ({ Context }: { Context: Context<ContextProps> }) => {
     } else {
       setStep2Answered(false)
     }
+    console.log('formFields.assets ', formFields.assets)
   }, [formFields, isValid, setStep2Answered])
 
   const storeData = async () => {
@@ -96,7 +97,7 @@ const SelectStep2 = ({ Context }: { Context: Context<ContextProps> }) => {
               onDragEnd={() => console.log('onDragEnd')}
               hasError={errors.assets?.type === 'required'}
               {...field}
-              current={field.value}
+              initial={field.value}
             />
           )}
         />

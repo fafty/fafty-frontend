@@ -22,7 +22,12 @@ export type CollectionProps = {
   slug: string;
   name: string;
   description: string | EditorState | null;
-  total_assets_count?: number;
+  supply?: number;
+  owners_count?: number;
+  floor_price?: number;
+  listed_count?: number;
+  sales_count?: number;
+  sales_volume?: number;
   blockchain?: string;
   visibility?: string;
   restrictions?: string;

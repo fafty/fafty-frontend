@@ -152,7 +152,7 @@ const Assets = () => {
   }
 
   const onClosePill = (key: keyof FiltersValues) => {
-    const { [key]: ommited, ...rest } = localFiltersState.filters || {}
+    const { [key]: omitted, ...rest } = localFiltersState.filters || {}
     clearAsyncData()
 
     setLocalFiltersState((prev) => ({

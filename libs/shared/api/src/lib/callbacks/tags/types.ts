@@ -3,9 +3,9 @@ export type TagProps = {
   name: string;
   slug: string;
   description: string;
-  total_bundles_count: number;
-  total_collections_count: number;
-  total_assets_count: number;
+  bundles_count: number;
+  collections_count: number;
+  assets_count: number;
   updated_at: string;
   created_at: string;
 };

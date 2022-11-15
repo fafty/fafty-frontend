@@ -27,7 +27,7 @@ const SelectStep4 = ({ Context }: { Context: Context<ContextProps> }) => {
         </p>
       </div>
         
-      <div className="flex space-beetwen items-center justify-center my-8">
+      <div className="flex space-between items-center justify-center my-8">
         <div className="flex items-center justify-center">
           <div className="relative focus:outline-none flex items-center rounded-lg p-2 transition duration-150 ease-in-out text-neutral-700 bg-neutral-100 dark:text-neutral-100 dark:bg-neutral-700">
             <div className="relative flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-full px-1 py-1 focus:outline-none bg-neutral-200 text-neutral-700 dark:text-neutral-200 dark:bg-neutral-600">
