@@ -13,6 +13,7 @@ import {
 import { Tag } from './tag'
 import { ArrayFilter } from './arrayFilter'
 import { RangeFilter } from './rangeFilter'
+import { isEmpty } from '../../../utils/helpers'
 
 export const FilterPanel = <T,>({
   filters,
@@ -102,30 +103,32 @@ export const FilterPanel = <T,>({
   }, [activeFilter, actualFilters, filters, onChange, values])
 
   const renderTags = useMemo(() => {
-    return Object.keys(values).map((valueKey) => {
-      const filter = filters.find((filter) => filter.value === valueKey)
+    return Object.keys(values)
+      .filter((valueKey) => !isEmpty(values[valueKey]))
+      .map((valueKey) => {
+        const filter = filters.find((filter) => filter.value === valueKey)
 
-      if (filter) {
-        return (
-          <Tag<typeof filter.type>
-            key={valueKey}
-            onClickClose={() => {
-              setIsOpenedPopover(false)
-              onCloseTag(valueKey)
-            }}
-            filter={filter}
-            value={values[valueKey]}
-            onChange={(value: FilterItemValue<typeof filter.type>) => {
-              setInputValue('')
-              onChange(activeFilter, value)
-            }}
-          />
-        )
-      }
+        if (filter) {
+          return (
+            <Tag<typeof filter.type>
+              key={valueKey}
+              onClickClose={() => {
+                setIsOpenedPopover(false)
+                onCloseTag(valueKey)
+              }}
+              filter={filter}
+              value={values[valueKey]}
+              onChange={(value: FilterItemValue<typeof filter.type>) => {
+                setInputValue('')
+                onChange(valueKey, value)
+              }}
+            />
+          )
+        }
 
-      return null
-    })
-  }, [activeFilter, filters, onChange, onCloseTag, values])
+        return null
+      })
+  }, [filters, onChange, onCloseTag, values])
 
   useOnClickOutside(buttonRef, () => {
     setIsOpenedPopover(false)
@@ -153,7 +156,10 @@ export const FilterPanel = <T,>({
               <div ref={buttonRef} className="relative">
                 <input
                   onChange={(e) => setInputValue(e.target.value)}
-                  onFocus={() => setIsOpenedPopover(true)}
+                  onFocus={() => {
+                    setActiveFilter('')
+                    setIsOpenedPopover(true)
+                  }}
                   value={inputValue}
                   autoComplete="off"
                   spellCheck="false"

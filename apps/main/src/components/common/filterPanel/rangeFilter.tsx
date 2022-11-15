@@ -3,22 +3,20 @@ import { motion } from 'framer-motion'
 import { RangeFilterValue } from './types'
 
 type Props = {
-  value?: RangeFilterValue;
-  onChange: (value: RangeFilterValue) => void;
+  value?: RangeFilterValue
+  onChange: (value: RangeFilterValue) => void
   params: {
-    firstTitle: string;
-    secondTitle: string;
-    firstKey: string;
-    secondKey: string;
-  };
-};
+    firstTitle: string
+    secondTitle: string
+    firstKey: string
+    secondKey: string
+  }
+}
 
-export const RangeFilter = ({
-  value = { from: '', to: '' },
-  onChange,
-  params,
-}: Props) => {
-  const [localPriceValue, setLocalPriceValue] = useState(value)
+export const RangeFilter = ({ value, onChange, params }: Props) => {
+  const [localPriceValue, setLocalPriceValue] = useState(
+    value || { [params.firstKey]: '', [params.secondKey]: '' }
+  )
 
   const onChangePriceLocalValue =
     (key: string) => (changeValue: ChangeEvent<HTMLInputElement>) => {
@@ -29,10 +27,15 @@ export const RangeFilter = ({
     }
 
   const onSaveFilters = () => {
-    onChange(localPriceValue)
+    if (
+      !localPriceValue[params.firstKey] &&
+      !localPriceValue[params.secondKey]
+    ) {
+      onChange(undefined)
+    } else {
+      onChange(localPriceValue)
+    }
   }
-
-  console.log(params)
 
   return (
     <motion.div

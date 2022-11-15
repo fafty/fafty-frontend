@@ -74,12 +74,24 @@ export function Tag<T>({ onClickClose, value, filter, onChange }: TagProps<T>) {
     if (filter.type === FilterTypes.RANGE) {
       const currentFilter = filter as FilterTypeRange
       const currentValue = value as RangeFilterValue
+      const firstValue = currentValue[currentFilter.params.firstKey]
+      const secondValue = currentValue[currentFilter.params.secondKey]
 
-      return `${currentFilter.title}: ${currentFilter.params.firstTitle}: ${
-        currentValue[currentFilter.params.firstKey]
-      } - ${currentFilter.params.secondTitle}: ${
-        currentValue[currentFilter.params.secondKey]
-      }`
+      const firstTitle = firstValue
+        ? `${currentFilter.params.firstTitle}: ${
+            currentValue[currentFilter.params.firstKey]
+          }`
+        : ''
+
+      const secondTitle = secondValue
+        ? `${currentFilter.params.secondTitle}: ${
+            currentValue[currentFilter.params.secondKey]
+          }`
+        : ''
+
+      return `${currentFilter.title}: ${firstTitle} ${
+        firstValue && secondValue ? '-' : ''
+      } ${secondTitle}`
     }
   }, [filter, value])
 
