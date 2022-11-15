@@ -3,16 +3,16 @@ import classNames from 'classnames'
 import { CloseIcon } from '@remixicons/react/fill'
 import { useOnClickOutside } from '@fafty/usehooks'
 import {
-  FilterTypeArray,
-  FilterTypeRange,
-  FilterTypes,
-  RangeFilterValue,
+  ArrayProps,
+  RangeProps,
+  TypeProps,
+  RangeFilterValueProps,
   TagProps,
 } from './types'
-import { ArrayFilter } from './arrayFilter'
-import { RangeFilter } from './rangeFilter'
+import ArrayFilter from './filters/array'
+import RangeFilter from './filters/range'
 
-export function Tag<T>({ onClickClose, value, filter, onChange }: TagProps<T>) {
+const Tag = <T,>({ onClickClose, value, filter, onChange }: TagProps<T>): JSX.Element => {
   const tagRef = useRef(null)
   const [openedFilterTag, setOpenedFilterTag] = useState(false)
 
@@ -21,8 +21,8 @@ export function Tag<T>({ onClickClose, value, filter, onChange }: TagProps<T>) {
   })
 
   const renderAbsoluteContent = useMemo(() => {
-    if (filter.type === FilterTypes.ARRAY) {
-      const currentFilter = filter as FilterTypeArray
+    if (filter.type === TypeProps.ARRAY) {
+      const currentFilter = filter as ArrayProps
 
       return (
         <ArrayFilter
@@ -36,12 +36,12 @@ export function Tag<T>({ onClickClose, value, filter, onChange }: TagProps<T>) {
       )
     }
 
-    if (filter.type === FilterTypes.RANGE) {
-      const currentFilter = filter as FilterTypeRange
+    if (filter.type === TypeProps.RANGE) {
+      const currentFilter = filter as RangeProps
 
       return (
         <RangeFilter
-          value={value as RangeFilterValue}
+          value={value as RangeFilterValueProps}
           params={currentFilter.params}
           onChange={(value) => {
             setOpenedFilterTag(false)
@@ -53,8 +53,8 @@ export function Tag<T>({ onClickClose, value, filter, onChange }: TagProps<T>) {
   }, [filter, onChange, value])
 
   const renderTitle = useMemo(() => {
-    if (filter.type === FilterTypes.ARRAY) {
-      const currentFilter = filter as FilterTypeArray
+    if (filter.type === TypeProps.ARRAY) {
+      const currentFilter = filter as ArrayProps
       const currentValue = value as string[]
       const totalTitles = currentValue.reduce((total, current) => {
         const optionTitle = currentFilter.options.find(
@@ -71,9 +71,9 @@ export function Tag<T>({ onClickClose, value, filter, onChange }: TagProps<T>) {
       return `${currentFilter.title}: ${totalTitles.join(', ').trim()}`
     }
 
-    if (filter.type === FilterTypes.RANGE) {
-      const currentFilter = filter as FilterTypeRange
-      const currentValue = value as RangeFilterValue
+    if (filter.type === TypeProps.RANGE) {
+      const currentFilter = filter as RangeProps
+      const currentValue = value as RangeFilterValueProps
 
       return `${currentFilter.title}: ${currentFilter.params.firstTitle}: ${
         currentValue[currentFilter.params.firstKey]
@@ -108,3 +108,5 @@ export function Tag<T>({ onClickClose, value, filter, onChange }: TagProps<T>) {
     </div>
   )
 }
+
+export default Tag

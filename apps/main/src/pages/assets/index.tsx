@@ -19,7 +19,7 @@ import {
 } from '../../components/assets/filters'
 import { lazy, Suspense, useEffect, useMemo, useState } from 'react'
 import dynamic from 'next/dynamic'
-import { Panel } from '../../components/common/panel'
+import { Panel } from '../../components/common/bar'
 import { Pills } from '../../components/assets/pills'
 import { useComponentDidUpdate } from '@fafty/usehooks'
 import { InfinityLoadChecker } from '../../components/common/infinityLoadChecker'

@@ -1,5 +1,4 @@
 import { format } from 'date-fns'
-
 import AccountLayout from '../../../layouts/account'
 import Image from 'next/image'
 import { useRouter } from 'next/router'
@@ -12,7 +11,6 @@ import {
   GetUserBundlesCallbackProps,
 } from '@fafty/shared/api'
 import { List } from 'masonic'
-
 import { useEffect, useMemo, useState } from 'react'
 import { useComponentDidUpdate } from '@fafty/usehooks'
 import { InfinityLoadChecker } from '../../../components/common/infinityLoadChecker'

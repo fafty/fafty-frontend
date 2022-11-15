@@ -1,22 +1,33 @@
 import { useState } from 'react'
-import { Checkbox } from '../checkbox'
+import { Checkbox } from '../../checkbox'
 import { motion } from 'framer-motion'
 
-type ArrayFilterOptions = {
+type ArrayFilterOptionsProps = {
   title: string;
   value: string;
 };
 
 type Props = {
-  options: ArrayFilterOptions[];
+  options: ArrayFilterOptionsProps[];
   value: string[];
   onChange: (value: string[]) => void;
 };
 
-export const ArrayFilter = ({ value = [], onChange, options }: Props) => {
+/**
+ * @name ArrayFilter
+ * @description Array filter component for filter panel component (filter panel component is a component that is used for filtering data in a lists)
+ * @param {Props} props
+ * @param {ArrayFilterOptionsProps[]} props.options
+ * @param {string[]} props.value
+ * @param {(value: string[]) => void} props.onChange
+ * @returns {JSX.Element}
+ * @example
+ * <ArrayFilter options={options} value={value} onChange={onChange} />
+ */
+const ArrayFilter = ({ value = [], onChange, options }: Props): JSX.Element => {
   const [localValue, setLocalValue] = useState<string[]>(value)
 
-  const onChangeCheckbox = (checkboxValue) => () => {
+  const onChangeCheckbox = (checkboxValue: string) => () => {
     const isIncludes = localValue.includes(checkboxValue)
 
     if (isIncludes) {
@@ -66,3 +77,5 @@ export const ArrayFilter = ({ value = [], onChange, options }: Props) => {
     </motion.div>
   )
 }
+
+export default ArrayFilter

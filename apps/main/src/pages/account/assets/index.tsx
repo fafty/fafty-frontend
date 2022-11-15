@@ -28,12 +28,12 @@ import {
   variants,
 } from '../../../components/forms/asset/constants'
 import FormAssetModal from '../../../components/modals/forms/asset'
-import { FilterPanel } from '../../../components/common/filterPanel'
+import FilterBar from '../../../components/common/filterBar'
 import { InfinityLoadChecker } from '../../../components/common/infinityLoadChecker'
 import {
-  FilterTypes,
-  OnChangeValue,
-} from '../../../components/common/filterPanel/types'
+  TypeProps,
+  OnChangeValueProps,
+} from '../../../components/common/filterBar/types'
 
 import {
   BLOCKCHAIN_CHECKS,
@@ -82,25 +82,25 @@ const ASSETS_FILTERS = [
   {
     title: 'Visibility',
     value: 'visibility',
-    type: FilterTypes.ARRAY,
+    type: TypeProps.ARRAY,
     options: VISIBILITY_CHECKS,
   },
   {
     title: 'Restrictions',
     value: 'restrictions',
-    type: FilterTypes.ARRAY,
+    type: TypeProps.ARRAY,
     options: RESTRICTIONS_CHECKS,
   },
   {
     title: 'Blockchain',
     value: 'blockchain',
-    type: FilterTypes.ARRAY,
+    type: TypeProps.ARRAY,
     options: BLOCKCHAIN_CHECKS,
   },
   {
     title: 'Price',
     value: 'price',
-    type: FilterTypes.RANGE,
+    type: TypeProps.RANGE,
     params: {
       firstTitle: 'min',
       secondTitle: 'max',
@@ -111,7 +111,7 @@ const ASSETS_FILTERS = [
   {
     title: 'Type',
     value: 'type',
-    type: FilterTypes.ARRAY,
+    type: TypeProps.ARRAY,
     options: CONTENT_TYPE_CHECKS,
   },
 ]
@@ -134,7 +134,7 @@ const AccountAssets = () => {
     }
   )
 
-  const onChangeFilters = (key: string, value: OnChangeValue) => {
+  const onChangeFilters = (key: string, value: OnChangeValueProps) => {
     setLocalFiltersState((prev) => ({
       ...prev,
       paginate: { limit: LIMIT, offset: 0 },
@@ -539,7 +539,7 @@ const AccountAssets = () => {
             className="relative mx-auto mb-10 flex w-full flex-col"
           >
             <div className="z-1 sticky top-[82px] mx-auto flex w-full flex-col bg-white shadow-[0_10px_5px_-10px_rgba(0,0,0,0.2)] dark:bg-neutral-800">
-              <FilterPanel<AssetsUserFilterStateType>
+              <FilterBar<AssetsUserFilterStateType>
                 filters={ASSETS_FILTERS}
                 onCloseTag={onCloseTag}
                 values={panelFilterState}

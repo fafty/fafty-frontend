@@ -7,6 +7,18 @@ interface Props {
   hasError?: boolean;
   onChange: (value: number) => void;
 }
+/**
+ * @name CounterInput
+ * @description Counter input component with plus and minus buttons to increase or decrease the value by 1.
+ * @param {Props} props
+ * @param {number} props.initial - initial value
+ * @param {boolean} props.hasError - has error
+ * @param {Function} props.onChange - on change callback
+ * @param {(value: number) => void} props.onChange - on change callback
+ * @returns {JSX.Element} - CounterInput component
+ * @example
+ * <CounterInput initial={initial} hasError={hasError} onChange={onChange} />
+ */
 const CounterInput = ({ initial, onChange, hasError }: Props): JSX.Element => {
 
   const [value, setValue] = useState(initial)

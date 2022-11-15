@@ -22,7 +22,7 @@ import {
 import { lazy, Suspense, useEffect, useMemo, useState } from 'react'
 import dynamic from 'next/dynamic'
 import { InfinityLoadChecker } from '../../components/common/infinityLoadChecker'
-import { Panel } from '../../components/common/panel'
+import { Panel } from '../../components/common/bar'
 // import { Pills } from '../../components/assets/pills'
 import { useComponentDidUpdate } from '@fafty/usehooks'
 

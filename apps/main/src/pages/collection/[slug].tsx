@@ -27,7 +27,7 @@ import { useComponentDidUpdate } from '@fafty/usehooks'
 import dynamic from 'next/dynamic'
 import qs from 'qs'
 import { Pills } from '../../components/assets/pills'
-import { Panel } from '../../components/common/panel'
+import { Panel } from '../../components/common/bar'
 
 export type FiltersValues = {
   price?: PriceFiltersValue;

@@ -4,22 +4,22 @@ import { motion } from 'framer-motion'
 
 import { useOnClickOutside } from '@fafty/usehooks'
 import {
-  FilterItemValue,
-  FiltersProps,
-  FilterTypeArray,
-  FilterTypeRange,
-  FilterTypes,
+  ItemValueProps,
+  ArrayProps,
+  RangeProps,
+  TypeProps,
+  Props,
 } from './types'
-import { Tag } from './tag'
-import { ArrayFilter } from './arrayFilter'
-import { RangeFilter } from './rangeFilter'
+import Tag from './tag'
+import ArrayFilter from './filters/array'
+import RangeFilter from './filters/range'
 
-export const FilterPanel = <T,>({
+const FilterBar = <T,>({
   filters,
   values,
   onChange,
   onCloseTag,
-}: FiltersProps<T>) => {
+}: Props<T>) => {
   const [inputValue, setInputValue] = useState('')
   const [activeFilter, setActiveFilter] = useState('')
   const buttonRef = useRef<HTMLDivElement | null>(null)
@@ -46,8 +46,8 @@ export const FilterPanel = <T,>({
   const renderActiveFilter = useMemo(() => {
     const filter = filters.find(({ value }) => value === activeFilter)
 
-    if (filter?.type === FilterTypes.ARRAY) {
-      const currentFilter = filter as FilterTypeArray
+    if (filter?.type === TypeProps.ARRAY) {
+      const currentFilter = filter as ArrayProps
 
       return (
         <ArrayFilter
@@ -62,8 +62,8 @@ export const FilterPanel = <T,>({
       )
     }
 
-    if (filter?.type === FilterTypes.RANGE) {
-      const currentFilter = filter as FilterTypeRange
+    if (filter?.type === TypeProps.RANGE) {
+      const currentFilter = filter as RangeProps
 
       return (
         <RangeFilter
@@ -115,7 +115,7 @@ export const FilterPanel = <T,>({
             }}
             filter={filter}
             value={values[valueKey]}
-            onChange={(value: FilterItemValue<typeof filter.type>) => {
+            onChange={(value: ItemValueProps<typeof filter.type>) => {
               setInputValue('')
               onChange(activeFilter, value)
             }}
@@ -184,3 +184,5 @@ export const FilterPanel = <T,>({
     </div>
   )
 }
+
+export default FilterBar

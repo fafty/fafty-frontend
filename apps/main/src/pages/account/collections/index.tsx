@@ -12,7 +12,6 @@ import {
   GetUserCollectionsCallbackProps,
 } from '@fafty/shared/api'
 import { List } from 'masonic'
-
 import { useEffect, useMemo, useState } from 'react'
 import { useComponentDidUpdate } from '@fafty/usehooks'
 import { InfinityLoadChecker } from '../../../components/common/infinityLoadChecker'

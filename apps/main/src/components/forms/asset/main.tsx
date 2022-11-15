@@ -417,7 +417,7 @@ const FormAsset = ({
               }
               hasError={false}
               onChange={onChangeFile}
-              OnGenetatedThumbnail={() => {
+              OnGeneratedThumbnail={() => {
                 setOnlyUploader(false)
               }}
             />
