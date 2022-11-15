@@ -28,12 +28,21 @@ import {
   variants,
 } from '../../../components/forms/asset/constants'
 import FormAssetModal from '../../../components/modals/forms/asset'
-import { Filters } from '../../../components/features/user/assets'
+import { FilterPanel } from '../../../components/common/filterPanel'
 import { InfinityLoadChecker } from '../../../components/common/infinityLoadChecker'
 import {
-  FiltersState,
-  onChangeFiltersValues,
-} from '../../../components/features/user/assets/filters/types'
+  FilterTypes,
+  OnChangeValue,
+} from '../../../components/common/filterPanel/types'
+
+import {
+  BLOCKCHAIN_CHECKS,
+  VISIBILITY_CHECKS,
+  RESTRICTIONS_CHECKS,
+  CONTENT_TYPE_CHECKS,
+} from '../../../constants/user/assets'
+
+import { AssetsUserFilterStateType } from '../../../types/user/assets'
 
 const isObjectEmpty = (value: object | string | null) => {
   return (
@@ -60,12 +69,52 @@ const mapper = (
 
 const LIMIT = 10
 
-type QueryFiltersProps = FiltersState & {
+// type FiltersState
+
+type QueryFiltersProps = AssetsUserFilterStateType & {
   paginate: {
     limit: number;
     offset: number;
   };
 };
+
+const ASSETS_FILTERS = [
+  {
+    title: 'Visibility',
+    value: 'visibility',
+    type: FilterTypes.ARRAY,
+    options: VISIBILITY_CHECKS,
+  },
+  {
+    title: 'Restrictions',
+    value: 'restrictions',
+    type: FilterTypes.ARRAY,
+    options: RESTRICTIONS_CHECKS,
+  },
+  {
+    title: 'Blockchain',
+    value: 'blockchain',
+    type: FilterTypes.ARRAY,
+    options: BLOCKCHAIN_CHECKS,
+  },
+  {
+    title: 'Price',
+    value: 'price',
+    type: FilterTypes.RANGE,
+    params: {
+      firstTitle: 'min',
+      secondTitle: 'max',
+      firstKey: 'min',
+      secondKey: 'max',
+    },
+  },
+  {
+    title: 'Type',
+    value: 'type',
+    type: FilterTypes.ARRAY,
+    options: CONTENT_TYPE_CHECKS,
+  },
+]
 
 const AccountAssets = () => {
   const { asPath } = useRouter()
@@ -85,7 +134,7 @@ const AccountAssets = () => {
     }
   )
 
-  const onChangeFilters = (key: string, value: onChangeFiltersValues) => {
+  const onChangeFilters = (key: string, value: OnChangeValue) => {
     setLocalFiltersState((prev) => ({
       ...prev,
       paginate: { limit: LIMIT, offset: 0 },
@@ -93,7 +142,7 @@ const AccountAssets = () => {
     }))
   }
 
-  const onCloseTag = (key: keyof FiltersState) => {
+  const onCloseTag = (key: keyof AssetsUserFilterStateType) => {
     const { [key]: deletedProp, ...rest } = localFiltersState
 
     setLocalFiltersState({ ...rest, paginate: { limit: LIMIT, offset: 0 } })
@@ -106,6 +155,8 @@ const AccountAssets = () => {
     callback: getUserAssets,
     mapper,
   })
+
+  const { paginate, ...panelFilterState } = localFiltersState
 
   const allowLoad = data
     ? !isLoading && data?.records.length < data?.paginate?.count
@@ -488,18 +539,21 @@ const AccountAssets = () => {
             className="relative mx-auto mb-10 flex w-full flex-col"
           >
             <div className="z-1 sticky top-[82px] mx-auto flex w-full flex-col bg-white shadow-[0_10px_5px_-10px_rgba(0,0,0,0.2)] dark:bg-neutral-800">
-              <Filters
+              <FilterPanel<AssetsUserFilterStateType>
+                filters={ASSETS_FILTERS}
                 onCloseTag={onCloseTag}
-                values={localFiltersState}
+                values={panelFilterState}
                 onChange={onChangeFilters}
               />
-              <div className="sticky left-0 mx-auto grid h-[2rem] w-full grid-cols-[minmax(300px,_400px)_minmax(100px,_120px)_minmax(100px,_120px)_minmax(100px,_120px)_minmax(100px,_120px)_minmax(100px,_120px)] gap-x-1 text-sm">
-                <div className="sticky left-0 ml-8">Asset</div>
-                <div className="truncate">Collection</div>
-                <div className="truncate">Access Options</div>
-                <div className="truncate">Restrictions</div>
-                <div className="truncate">Supply</div>
-                <div className="truncate">Blockchain</div>
+              <div className="relative">
+                <div className="sticky left-0 mx-auto grid h-[2rem] w-full grid-cols-[minmax(300px,_400px)_minmax(100px,_120px)_minmax(100px,_120px)_minmax(100px,_120px)_minmax(100px,_120px)_minmax(100px,_120px)] gap-x-1 text-sm">
+                  <div className="sticky left-0 ml-8">Asset</div>
+                  <div className="truncate">Collection</div>
+                  <div className="truncate">Access Options</div>
+                  <div className="truncate">Restrictions</div>
+                  <div className="truncate">Supply</div>
+                  <div className="truncate">Blockchain</div>
+                </div>
               </div>
             </div>
             {renderMasonry}

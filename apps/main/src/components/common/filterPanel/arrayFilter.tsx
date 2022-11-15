@@ -1,16 +1,20 @@
-import { Fragment, useState } from 'react'
-import { Transition } from '@headlessui/react'
-import { Checkbox } from '../../../../common/checkbox'
-import { VisibilityValues } from './types'
-import { VISIBILITY_CHECKS } from './constants'
+import { useState } from 'react'
+import { Checkbox } from '../checkbox'
+import { motion } from 'framer-motion'
 
-type Props = {
-  value: VisibilityValues[];
-  onChange: (value: VisibilityValues[]) => void;
+type ArrayFilterOptions = {
+  title: string;
+  value: string;
 };
 
-export const Visibility = ({ value = [], onChange }: Props) => {
-  const [localValue, setLocalValue] = useState<VisibilityValues[]>(value)
+type Props = {
+  options: ArrayFilterOptions[];
+  value: string[];
+  onChange: (value: string[]) => void;
+};
+
+export const ArrayFilter = ({ value = [], onChange, options }: Props) => {
+  const [localValue, setLocalValue] = useState<string[]>(value)
 
   const onChangeCheckbox = (checkboxValue) => () => {
     const isIncludes = localValue.includes(checkboxValue)
@@ -29,28 +33,21 @@ export const Visibility = ({ value = [], onChange }: Props) => {
   }
 
   return (
-    <Transition
-      as={Fragment}
-      show
-      enter="transition ease-out duration-200"
-      enterFrom="opacity-0 translate-y-1"
-      enterTo="opacity-100 translate-y-0"
-      leave="transition ease-in duration-150"
-      leaveFrom="opacity-100 translate-y-0"
-      leaveTo="opacity-0 translate-y-1"
+    <motion.div
+      initial={{ opacity: 0, scale: 0.5 }}
+      animate={{ opacity: 1, scale: 1 }}
+      transition={{ duration: 0.5 }}
     >
-      <div className="flex w-auto w-screen transform items-center sm:px-0">
+      <div className="flex w-auto transform items-center sm:px-0">
         <div className="flex w-[150px] flex-col items-center overflow-hidden rounded-lg bg-white shadow-lg ring-1 ring-black ring-opacity-5 drop-shadow-lg dark:bg-neutral-800">
           <div className="flex w-full flex-col justify-start gap-2.5 p-3">
-            {VISIBILITY_CHECKS.map((check) => (
+            {options.map((check) => (
               <div className="flex" key={check.title}>
                 <Checkbox
                   onChange={onChangeCheckbox(check.value)}
-                  checked={localValue?.includes(
-                    check.value as VisibilityValues
-                  )}
+                  checked={localValue?.includes(check.value)}
                   title={check.title}
-                  namespace={`filters_visibility_assets_${check.title}`}
+                  namespace={`array_filter_${check.title}`}
                 />
               </div>
             ))}
@@ -62,11 +59,10 @@ export const Visibility = ({ value = [], onChange }: Props) => {
               onClick={onSaveFilters}
             >
               Save
-              filters_visibility_assets_
             </button>
           </div>
         </div>
       </div>
-    </Transition>
+    </motion.div>
   )
 }
