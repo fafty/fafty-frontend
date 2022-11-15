@@ -34,10 +34,12 @@ const FilterBar = <T,>({ filters, values, onChange, onCloseTag }: Props<T>) => {
   }, [activeFilter, isOpenedPopover, togglePopover])
 
   const actualFilters = useMemo(() => {
-    return filters.filter(({ title }) =>
-      title.trim().toLowerCase().includes(inputValue.toLowerCase())
+    return filters.filter(
+      ({ title, value }) =>
+        title.trim().toLowerCase().includes(inputValue.toLowerCase()) &&
+        isEmpty(values[value])
     )
-  }, [filters, inputValue])
+  }, [filters, inputValue, values])
 
   const renderActiveFilter = useMemo(() => {
     const filter = filters.find(({ value }) => value === activeFilter)
