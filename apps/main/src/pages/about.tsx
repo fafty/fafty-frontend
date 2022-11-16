@@ -8,9 +8,10 @@ const AboutPage = (): JSX.Element => {
     url: 'https://www.fafty.com',
     logo: '/assets/shared/ui/images/logo.svg',
     name: 'Fafty',
-    description: 'Fafty is a decentralized, open-source, decentralized identity platform for the Ethereum blockchain.',
+    description:
+      'Fafty is a decentralized, open-source, decentralized identity platform for the Ethereum blockchain.',
     foundingDate: '2021-06-18',
-    foundingLocation: 'Kyiv, Ukraine',
+    foundingLocation: 'Kyiv, Ukraine'
   }
   return (
     <MainLayout title={'About us'} description={'Fafty NFT marketplace'}>

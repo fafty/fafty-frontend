@@ -13,13 +13,13 @@ import {
   GetCollectionAssetsBySlugResponseProps,
   GetCollectionParamsProps,
   GetCollectionResponseProps,
-  AssetProps,
+  AssetProps
 } from '@fafty/shared/api'
 import {
   BillingType,
   BillingTypeValue,
   PriceFilterProps,
-  PriceFiltersValue,
+  PriceFiltersValue
 } from '../../components/assets/filters'
 import { InfinityLoadChecker } from '../../components/common/infinityLoadChecker'
 import { AssetItemPlaceholder, AssetTabsPlaceholder } from '@fafty/shared/ui'
@@ -30,35 +30,35 @@ import { Pills } from '../../components/assets/pills'
 import { Panel } from '../../components/common/bar'
 
 export type FiltersValues = {
-  price?: PriceFiltersValue;
-  sort?: string;
-  billing_type?: BillingTypeValue;
-};
+  price?: PriceFiltersValue
+  sort?: string
+  billing_type?: BillingTypeValue
+}
 
 const TABS = [
   {
     title: 'Newest',
-    value: 'newest',
+    value: 'newest'
   },
   {
     title: 'Oldest',
-    value: 'oldest',
+    value: 'oldest'
   },
   {
     title: 'Min price',
-    value: 'min_price',
+    value: 'min_price'
   },
   {
     title: 'Max price',
-    value: 'max_price',
-  },
+    value: 'max_price'
+  }
 ]
 const Tabs = lazy(() => import('../../components/asset/tabs'))
 const Price = dynamic<PriceFilterProps>(
   () =>
     import('../../components/assets/filters/price').then((mod) => mod.Price),
   {
-    ssr: false,
+    ssr: false
   }
 )
 
@@ -76,10 +76,10 @@ const mapper = (
           paginate: assetsData.record?.assets?.paginate,
           records: [
             ...prev.record.assets.records,
-            ...assetsData.record.assets.records,
-          ],
-        },
-      },
+            ...assetsData.record.assets.records
+          ]
+        }
+      }
     }
   }
 
@@ -90,12 +90,12 @@ const LIMIT = 20
 
 type QueryFiltersProps = {
   paginate: {
-    limit: number;
-    offset: number;
-  };
-  filters?: FiltersValues;
-  sort?: string;
-};
+    limit: number
+    offset: number
+  }
+  filters?: FiltersValues
+  sort?: string
+}
 
 const Collection = () => {
   const { query, isReady, replace, asPath } = useRouter()
@@ -107,9 +107,9 @@ const Collection = () => {
     {
       paginate: {
         limit: LIMIT,
-        offset: 0,
+        offset: 0
       },
-      filters: { ...(qs.parse(search) as FiltersValues) },
+      filters: { ...(qs.parse(search) as FiltersValues) }
     }
   )
 
@@ -119,7 +119,7 @@ const Collection = () => {
 
       setLocalFiltersState((prev) => ({
         paginate: { ...prev.paginate, offset: 0 },
-        filters: { ...prev.filters, [key]: value },
+        filters: { ...prev.filters, [key]: value }
       }))
     }
 
@@ -127,7 +127,7 @@ const Collection = () => {
     GetCollectionResponseProps,
     GetCollectionParamsProps
   >({
-    callback: getCollection,
+    callback: getCollection
   })
 
   //todo add filters
@@ -136,13 +136,13 @@ const Collection = () => {
     call: callAssets,
     isLoading: isAssetsLoading,
     isSuccess: isAssetsSuccess,
-    clearAsyncData,
+    clearAsyncData
   } = useAsync<
     GetCollectionAssetsBySlugResponseProps,
     GetCollectionAssetsBySlugParamsProps
   >({
     callback: getCollectionAssetsBySlug,
-    mapper,
+    mapper
   })
 
   const allowLoad = assetsData
@@ -178,8 +178,8 @@ const Collection = () => {
       ...prev,
       paginate: {
         ...prev.paginate,
-        offset: prev.paginate.offset + LIMIT,
-      },
+        offset: prev.paginate.offset + LIMIT
+      }
     }))
   }
 
@@ -189,7 +189,7 @@ const Collection = () => {
 
     setLocalFiltersState((prev) => ({
       paginate: { ...prev.paginate },
-      filters: { ...rest },
+      filters: { ...rest }
     }))
   }
 
@@ -197,7 +197,7 @@ const Collection = () => {
     clearAsyncData()
 
     setLocalFiltersState((prev) => ({
-      paginate: { ...prev.paginate, offset: 0 },
+      paginate: { ...prev.paginate, offset: 0 }
     }))
   }
 
@@ -216,10 +216,10 @@ const Collection = () => {
         offset: paginate.offset,
         filters: {
           currency: filters?.price?.currency,
-          price: { lg: filters?.price?.from, ge: filters?.price?.to },
+          price: { lg: filters?.price?.from, ge: filters?.price?.to }
           // billing_type: filters?.billing_type,
         },
-        sort: TABS[tabIndex]?.value || TABS[0].value,
+        sort: TABS[tabIndex]?.value || TABS[0].value
       })
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [localFiltersState])
@@ -230,7 +230,7 @@ const Collection = () => {
         clearAsyncData()
 
         setLocalFiltersState((prev) => ({
-          paginate: { ...prev.paginate, offset: 0 },
+          paginate: { ...prev.paginate, offset: 0 }
         }))
       }
     },
@@ -252,7 +252,7 @@ const Collection = () => {
   }, [
     assetsData?.record?.assets?.paginate?.count,
     assetsData?.record?.assets?.records,
-    localFiltersState.paginate.offset,
+    localFiltersState.paginate.offset
   ])
 
   const isObjectEmpty = (value: object | string) =>

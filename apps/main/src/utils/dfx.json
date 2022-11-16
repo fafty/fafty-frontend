@@ -3,9 +3,7 @@
   "dfx": "0.8.4",
   "networks": {
     "ic": {
-      "providers": [
-        "https://boundary.ic0.app/"
-      ],
+      "providers": ["https://boundary.ic0.app/"],
       "type": "persistent"
     },
     "local": {

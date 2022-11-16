@@ -22,7 +22,7 @@ class AuthClientWrapper {
         identityProvider: IDENTITY_URL,
         onSuccess: async () => {
           resolve(this.authClient?.getIdentity())
-        },
+        }
       })
     })
   }

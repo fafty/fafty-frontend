@@ -3,8 +3,8 @@ import Image from 'next/image'
 import { AssetProps } from '@fafty/shared/api'
 
 type Props = {
-  item: AssetProps;
-};
+  item: AssetProps
+}
 
 /**
  * @name Item component for Asset
@@ -31,8 +31,7 @@ const Item = ({ item }: Props): JSX.Element => {
                     <Image
                       src={item.media?.src}
                       style={{
-                        backgroundColor:
-                          item.media?.dominant_color || undefined,
+                        backgroundColor: item.media?.dominant_color || undefined
                       }}
                       width="300"
                       height="300"

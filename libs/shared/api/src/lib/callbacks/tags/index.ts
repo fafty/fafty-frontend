@@ -1,7 +1,7 @@
 import api from '../../index'
 import {
   GetPopularTagsResponseProps,
-  GetSearchTagsResponseProps,
+  GetSearchTagsResponseProps
 } from './types'
 
 const getPopularTags = async (): Promise<GetPopularTagsResponseProps> => {

@@ -1,17 +1,11 @@
-import {
-  useEffect,
-  useContext,
-  useLayoutEffect,
-  useMemo,
-  Context,
-} from 'react'
+import { useEffect, useContext, useLayoutEffect, useMemo, Context } from 'react'
 import { Controller, useForm } from 'react-hook-form'
 import { Switch, RadioGroup, Listbox } from '@headlessui/react'
 import {
   childVariants,
   COMMENTS_MODERATION_OPTIONS,
   COMMENTS_ORDER_OPTIONS,
-  variants,
+  variants
 } from '../constants'
 import classNames from 'classnames'
 import { motion, AnimatePresence } from 'framer-motion'
@@ -36,14 +30,14 @@ const SelectStep3 = ({ Context }: { Context: Context<ContextProps> }) => {
     setValue,
     getValues,
     trigger,
-    formState: { errors, isValid },
+    formState: { errors, isValid }
   } = useForm({
     defaultValues: {
-      ...stepData?.step3?.state,
+      ...stepData?.step3?.state
     },
     mode: 'onChange',
     reValidateMode: 'onChange',
-    shouldFocusError: true,
+    shouldFocusError: true
   })
 
   /**
@@ -72,7 +66,7 @@ const SelectStep3 = ({ Context }: { Context: Context<ContextProps> }) => {
     return () => {
       storeData()
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   /**
@@ -88,7 +82,7 @@ const SelectStep3 = ({ Context }: { Context: Context<ContextProps> }) => {
 
   useEffect(() => {
     storeData()
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isValid])
 
   const storeData = async () => {
@@ -98,8 +92,8 @@ const SelectStep3 = ({ Context }: { Context: Context<ContextProps> }) => {
       step3: {
         solved: isValidStore,
         state: getValues(),
-        error: !isValidStore,
-      },
+        error: !isValidStore
+      }
     })
   }
 
@@ -112,8 +106,8 @@ const SelectStep3 = ({ Context }: { Context: Context<ContextProps> }) => {
   return (
     <div className="flex flex-col">
       <h4 className="font-bold">Add-ons</h4>
-      <div className="mb-5 mt-1 relative">
-        <label htmlFor="item-name" className="block text-sm font-medium mb-3">
+      <div className="relative mb-5 mt-1">
+        <label htmlFor="item-name" className="mb-3 block text-sm font-medium">
           Comments moderation
         </label>
         <Controller
@@ -128,26 +122,26 @@ const SelectStep3 = ({ Context }: { Context: Context<ContextProps> }) => {
                   key={commentsOption.value}
                 >
                   {({ checked }) => (
-                    <div className="flex mb-2.5 items-center cursor-pointer">
+                    <div className="mb-2.5 flex cursor-pointer items-center">
                       <div
                         className={classNames(
                           {
-                            'flex items-center justify-center': checked,
+                            'flex items-center justify-center': checked
                           },
-                          'rounded-full w-4 h-4 mr-2.5 border border-blue-700 dark:border-gray-200'
+                          'mr-2.5 h-4 w-4 rounded-full border border-blue-700 dark:border-gray-200'
                         )}
                       >
                         <AnimatePresence>
                           {checked && (
                             <motion.div
-                              className="flex rounded w-2 h-2 bg-blue-700 dark:bg-gray-200"
+                              className="flex h-2 w-2 rounded bg-blue-700 dark:bg-gray-200"
                               initial={{ opacity: 0 }}
                               animate={{ opacity: 1 }}
                             />
                           )}
                         </AnimatePresence>
                       </div>
-                      <span className="text-sm w-10 whitespace-nowrap">
+                      <span className="w-10 whitespace-nowrap text-sm">
                         {commentsOption.title}
                       </span>
                     </div>
@@ -173,8 +167,8 @@ const SelectStep3 = ({ Context }: { Context: Context<ContextProps> }) => {
           </motion.div>
         </motion.div>
       </div>
-      <div className="mb-5 relative">
-        <label htmlFor="item-name" className="block text-sm font-medium mb-3">
+      <div className="relative mb-5">
+        <label htmlFor="item-name" className="mb-3 block text-sm font-medium">
           Order by
         </label>
         <Controller
@@ -182,12 +176,12 @@ const SelectStep3 = ({ Context }: { Context: Context<ContextProps> }) => {
           control={control}
           render={({ field }) => (
             <Listbox {...field} as="div">
-              <div className="relative inline-block mt-1">
-                <Listbox.Button className="flex w-40 px-5 py-2.5 items-center border text-sm border-stone-700 dark:border-gray-200 rounded-lg justify-between">
+              <div className="relative mt-1 inline-block">
+                <Listbox.Button className="flex w-40 items-center justify-between rounded-lg border border-stone-700 px-5 py-2.5 text-sm dark:border-gray-200">
                   {selectedOrderComments?.title}
-                  <ArrowDownSIcon className="h-4 w-4 fill-stone-700 dark:fill-gray-200 flex-shrink-0" />
+                  <ArrowDownSIcon className="h-4 w-4 flex-shrink-0 fill-stone-700 dark:fill-gray-200" />
                 </Listbox.Button>
-                <Listbox.Options className="absolute z-10 p-2 w-full right-0 origin-top-right rounded-lg text-gray-500 dark:text-gray-500 bg-white dark:bg-neutral-800 overflow-hidden shadow-lg">
+                <Listbox.Options className="absolute right-0 z-10 w-full origin-top-right overflow-hidden rounded-lg bg-white p-2 text-gray-500 shadow-lg dark:bg-neutral-800 dark:text-gray-500">
                   {COMMENTS_ORDER_OPTIONS.map((option) => (
                     <Listbox.Option
                       key={option.value}
@@ -199,9 +193,9 @@ const SelectStep3 = ({ Context }: { Context: Context<ContextProps> }) => {
                           className={classNames(
                             {
                               'bg-neutral-200 dark:bg-neutral-800':
-                                selected || active,
+                                selected || active
                             },
-                            'cursor-pointer focus:outline-none text-sm flex items-center p-2 transition duration-150 ease-in-out text-neutral-700 hover:bg-neutral-100 dark:text-neutral-100 dark:hover:bg-neutral-700'
+                            'flex cursor-pointer items-center p-2 text-sm text-neutral-700 transition duration-150 ease-in-out hover:bg-neutral-100 focus:outline-none dark:text-neutral-100 dark:hover:bg-neutral-700'
                           )}
                         >
                           {option.title}
@@ -215,10 +209,10 @@ const SelectStep3 = ({ Context }: { Context: Context<ContextProps> }) => {
           )}
         />
       </div>
-      <div className="mb-5 relative">
+      <div className="relative mb-5">
         <label
           htmlFor="item-name"
-          className="block text-sm font-medium text-gray-700 dark:text-gray-100 mb-3"
+          className="mb-3 block text-sm font-medium text-gray-700 dark:text-gray-100"
         >
           Allow ratings
         </label>
@@ -236,7 +230,7 @@ const SelectStep3 = ({ Context }: { Context: Context<ContextProps> }) => {
               className={classNames(
                 {
                   'bg-blue-600': formFields.allow_ratings,
-                  'bg-gray-600': !formFields.allow_ratings,
+                  'bg-gray-600': !formFields.allow_ratings
                 },
                 'relative inline-flex h-6 w-11 items-center rounded-full'
               )}
@@ -245,7 +239,7 @@ const SelectStep3 = ({ Context }: { Context: Context<ContextProps> }) => {
                 className={classNames(
                   {
                     'translate-x-6': formFields.allow_ratings,
-                    'translate-x-1': !formFields.allow_ratings,
+                    'translate-x-1': !formFields.allow_ratings
                   },
                   'inline-block h-4 w-4 transform rounded-full bg-white'
                 )}
@@ -254,10 +248,10 @@ const SelectStep3 = ({ Context }: { Context: Context<ContextProps> }) => {
           )}
         />
       </div>
-      <div className="mb-5 relative">
+      <div className="relative mb-5">
         <label
           htmlFor="item-name"
-          className="block text-sm font-medium text-gray-700 dark:text-gray-100 mb-3"
+          className="mb-3 block text-sm font-medium text-gray-700 dark:text-gray-100"
         >
           Tags
         </label>

@@ -5,9 +5,9 @@ import { ReactComponent as PlugLogo } from '../../assets/plug.svg'
 import { ReactComponent as InternetIdentityLogo } from '../../assets/internet-identity.svg'
 
 type Props = {
-  onClose: () => void;
-  isOpened: boolean;
-};
+  onClose: () => void
+  isOpened: boolean
+}
 
 const List = [
   {
@@ -17,8 +17,8 @@ const List = [
     value: 'plug',
     logo: {
       src: PlugLogo,
-      fill: null,
-    },
+      fill: null
+    }
   },
   {
     name: 'Internet identity',
@@ -27,9 +27,9 @@ const List = [
     value: 'ii',
     logo: {
       src: InternetIdentityLogo,
-      fill: 'fill-[#23262F] dark:fill-[#F4F5F6]',
-    },
-  },
+      fill: 'fill-[#23262F] dark:fill-[#F4F5F6]'
+    }
+  }
 ]
 
 /**
@@ -67,8 +67,8 @@ export const AuthModal = ({ isOpened, onClose }: Props): JSX.Element => {
         dismissible: {
           active: true,
           title: 'Close',
-          disabled: false,
-        },
+          disabled: false
+        }
       }}
       className="w-[700px]"
     >

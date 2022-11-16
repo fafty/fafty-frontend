@@ -5,38 +5,38 @@ import { ChangeEvent, useEffect, useState } from 'react'
 const CURRENCY_OPTIONS = [
   {
     title: 'ICP',
-    value: 'icp',
+    value: 'icp'
   },
   {
     title: 'WICP',
-    value: 'wicp',
-  },
+    value: 'wicp'
+  }
 ]
 
 export type PriceFiltersValue = {
-  currency?: string;
-  from?: string;
-  to?: string;
-};
+  currency?: string
+  from?: string
+  to?: string
+}
 
 export type PriceFilterProps = {
-  value?: PriceFiltersValue;
-  onChange: (value: PriceFiltersValue) => void;
-};
+  value?: PriceFiltersValue
+  onChange: (value: PriceFiltersValue) => void
+}
 
 export const Price = ({ value, onChange }: PriceFilterProps) => {
   const [priceLocalValue, setPriceLocalValue] = useState<PriceFiltersValue>({
     from: '',
     to: '',
     currency: '',
-    ...value,
+    ...value
   })
 
   useEffect(() => {
     setPriceLocalValue((prev) => ({
       ...prev,
       from: value?.from ?? '',
-      to: value?.to ?? '',
+      to: value?.to ?? ''
     }))
   }, [value?.from, value?.to])
 
@@ -44,7 +44,7 @@ export const Price = ({ value, onChange }: PriceFilterProps) => {
     (key: string) => (changeValue: ChangeEvent<HTMLInputElement>) => {
       setPriceLocalValue((prev) => ({
         ...prev,
-        [key]: changeValue.target.value,
+        [key]: changeValue.target.value
       }))
     }
 

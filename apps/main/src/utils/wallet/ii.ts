@@ -5,10 +5,7 @@ import { AuthClient } from '@dfinity/auth-client'
 import { WalletInterface } from './plug'
 
 import ledger_idl from '../canister/ledger.did.js'
-import _SERVICE, {
-  AccountBalanceArgs,
-  SendArgs,
-} from '../canister/ledger_type'
+import _SERVICE, { AccountBalanceArgs, SendArgs } from '../canister/ledger_type'
 import { getCanisterIds } from '../canister/principals'
 import { getAccountId } from '../account'
 
@@ -26,7 +23,7 @@ export default function internetIdentity(): WalletInterface {
 
     const actor = Actor.createActor<Type>(idl, {
       agent,
-      canisterId: canisterId,
+      canisterId: canisterId
     })
 
     return actor
@@ -57,7 +54,7 @@ export default function internetIdentity(): WalletInterface {
         },
         onError: (str) => {
           console.log('Error while logging with II: ' + str)
-        },
+        }
       })
     }
   }
@@ -82,7 +79,7 @@ export default function internetIdentity(): WalletInterface {
         memo: BigInt(0).valueOf(),
         from_subaccount: [],
         created_at_time: [],
-        amount: { e8s: data.amount },
+        amount: { e8s: data.amount }
       }
 
       try {
@@ -110,7 +107,7 @@ export default function internetIdentity(): WalletInterface {
       const accountId = getAccountId(identity.getPrincipal().toString(), 0)
 
       const req: AccountBalanceArgs = {
-        account: accountId,
+        account: accountId
       }
 
       const raw_balance = await ledgerActor?.account_balance_dfx(req)
@@ -129,6 +126,6 @@ export default function internetIdentity(): WalletInterface {
     logOut,
     getActor,
     requestTransfer,
-    getBalance,
+    getBalance
   }
 }

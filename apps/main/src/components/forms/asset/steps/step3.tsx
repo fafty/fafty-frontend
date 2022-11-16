@@ -1,17 +1,11 @@
-import {
-  useEffect,
-  useContext,
-  useLayoutEffect,
-  useMemo,
-  Context,
-} from 'react'
+import { useEffect, useContext, useLayoutEffect, useMemo, Context } from 'react'
 import { Controller, useForm } from 'react-hook-form'
 import { Switch, RadioGroup, Listbox } from '@headlessui/react'
 import {
   childVariants,
   COMMENTS_MODERATION_OPTIONS,
   COMMENTS_ORDER_OPTIONS,
-  variants,
+  variants
 } from '../constants'
 import classNames from 'classnames'
 import { motion, AnimatePresence } from 'framer-motion'
@@ -36,14 +30,14 @@ const SelectStep3 = ({ Context }: { Context: Context<ContextProps> }) => {
     setValue,
     getValues,
     trigger,
-    formState: { errors, isValid },
+    formState: { errors, isValid }
   } = useForm({
     defaultValues: {
-      ...stepData?.step3?.state,
+      ...stepData?.step3?.state
     },
     mode: 'onChange',
     reValidateMode: 'onChange',
-    shouldFocusError: true,
+    shouldFocusError: true
   })
 
   /**
@@ -98,8 +92,8 @@ const SelectStep3 = ({ Context }: { Context: Context<ContextProps> }) => {
       step3: {
         solved: isValidStore,
         state: getValues(),
-        error: !isValidStore,
-      },
+        error: !isValidStore
+      }
     })
   }
 
@@ -133,7 +127,7 @@ const SelectStep3 = ({ Context }: { Context: Context<ContextProps> }) => {
                         <div
                           className={classNames(
                             {
-                              'flex items-center justify-center': checked,
+                              'flex items-center justify-center': checked
                             },
                             'mr-2.5 h-4 w-4 rounded-full border border-blue-700 dark:border-gray-200'
                           )}
@@ -200,7 +194,7 @@ const SelectStep3 = ({ Context }: { Context: Context<ContextProps> }) => {
                             className={classNames(
                               {
                                 'bg-neutral-200 dark:bg-neutral-800':
-                                  selected || active,
+                                  selected || active
                               },
                               'm-2 flex cursor-pointer items-center p-2 text-sm text-neutral-700 transition duration-150 ease-in-out hover:bg-neutral-100 focus:outline-none dark:text-neutral-100 dark:hover:bg-neutral-700'
                             )}
@@ -238,7 +232,7 @@ const SelectStep3 = ({ Context }: { Context: Context<ContextProps> }) => {
               className={classNames(
                 {
                   'bg-blue-600': formFields.allow_ratings,
-                  'bg-gray-600': !formFields.allow_ratings,
+                  'bg-gray-600': !formFields.allow_ratings
                 },
                 'relative inline-flex h-6 w-11 items-center rounded-full'
               )}
@@ -247,7 +241,7 @@ const SelectStep3 = ({ Context }: { Context: Context<ContextProps> }) => {
                 className={classNames(
                   {
                     'translate-x-6': formFields.allow_ratings,
-                    'translate-x-1': !formFields.allow_ratings,
+                    'translate-x-1': !formFields.allow_ratings
                   },
                   'inline-block h-4 w-4 transform rounded-full bg-white'
                 )}

@@ -1,8 +1,5 @@
 import api from '../../index'
-import {
-  GetCollectionsParamsProps,
-  GetCollectionsResponseProps,
-} from './types'
+import { GetCollectionsParamsProps, GetCollectionsResponseProps } from './types'
 
 const getCollections = async (
   params?: GetCollectionsParamsProps

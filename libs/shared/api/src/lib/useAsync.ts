@@ -1,25 +1,25 @@
 import { useState, useEffect, useCallback } from 'react'
 import axios, { AxiosError } from 'axios'
 
-type useAsyncParams<D, P> = (params?: P) => Promise<D>;
+type useAsyncParams<D, P> = (params?: P) => Promise<D>
 
 type RequestParams<D, P> = {
-  callback: useAsyncParams<D, P>;
-  mapper?: (data: D, prev?: D) => D;
-  withMount?: boolean;
-};
+  callback: useAsyncParams<D, P>
+  mapper?: (data: D, prev?: D) => D
+  withMount?: boolean
+}
 
 function useAsync<D, P>({
   callback,
   mapper,
-  withMount = false,
+  withMount = false
 }: RequestParams<D, P>) {
   const [data, setData] = useState<D>()
   const [errorMessage, setErrorMessage] = useState('')
   const [state, setState] = useState({
     isSuccess: false,
     isError: false,
-    isLoading: false,
+    isLoading: false
   })
 
   const getData = useCallback(
@@ -28,7 +28,7 @@ function useAsync<D, P>({
         ...prev,
         isSuccess: false,
         isError: false,
-        isLoading: true,
+        isLoading: true
       }))
 
       try {
@@ -37,7 +37,7 @@ function useAsync<D, P>({
         setState((prev) => ({
           ...prev,
           isSuccess: true,
-          isLoading: false,
+          isLoading: false
         }))
 
         if (mapper) {
@@ -56,7 +56,7 @@ function useAsync<D, P>({
             setState((prev) => ({
               ...prev,
               isError: true,
-              isLoading: false,
+              isLoading: false
             }))
           }
         }
@@ -71,7 +71,7 @@ function useAsync<D, P>({
     if (withMount) {
       getData()
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [withMount])
 
   const call = async (params?: P) => {
@@ -86,7 +86,7 @@ function useAsync<D, P>({
     setState({
       isSuccess: false,
       isError: false,
-      isLoading: false,
+      isLoading: false
     })
 
     setErrorMessage('')
@@ -99,7 +99,7 @@ function useAsync<D, P>({
     call,
     errorMessage,
     clearAsyncData,
-    ...state,
+    ...state
   }
 }
 

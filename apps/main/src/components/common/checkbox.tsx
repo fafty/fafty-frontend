@@ -1,8 +1,8 @@
 export type CheckboxProps = {
-  checked: boolean;
-  namespace: string | number;
-  title: string;
-};
+  checked: boolean
+  namespace: string | number
+  title: string
+}
 
 export const Checkbox = ({ checked, namespace, title, onChange }) => {
   const onChangeCheckbox = (e) => {

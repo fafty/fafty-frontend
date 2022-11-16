@@ -4,7 +4,7 @@ import Items from '../components/items'
 import {
   AssetItemPlaceholder,
   BundleItemPlaceholder,
-  CollectionItemPlaceholder,
+  CollectionItemPlaceholder
 } from '@fafty/shared/ui'
 import {
   getAssets,
@@ -16,7 +16,7 @@ import {
   GetBundlesResponseProps,
   GetCollectionsParamsProps,
   GetCollectionsResponseProps,
-  useAsync,
+  useAsync
 } from '@fafty/shared/api'
 import { MutableRefObject, useEffect, useRef } from 'react'
 import Link from 'next/link'
@@ -33,27 +33,27 @@ export default function Home(): JSX.Element {
     data: assetsData,
     call: assetsCall,
     // isLoading: assetsIsLoading,
-    isSuccess: assetsIsSuccess,
+    isSuccess: assetsIsSuccess
   } = useAsync<GetAssetsResponseProps, GetAssetsParamsProps>({
-    callback: getAssets,
+    callback: getAssets
   })
 
   const {
     data: bundlesData,
     call: bundlesCall,
     // isLoading: bundlesIsLoading,
-    isSuccess: bundlesIsSuccess,
+    isSuccess: bundlesIsSuccess
   } = useAsync<GetBundlesResponseProps, GetBundlesParamsProps>({
-    callback: getBundles,
+    callback: getBundles
   })
 
   const {
     data: collectionsData,
     call: collectionsCall,
     // isLoading: collectionsIsLoading,
-    isSuccess: collectionsIsSuccess,
+    isSuccess: collectionsIsSuccess
   } = useAsync<GetCollectionsResponseProps, GetCollectionsParamsProps>({
-    callback: getCollections,
+    callback: getCollections
   })
 
   // On screen hooks

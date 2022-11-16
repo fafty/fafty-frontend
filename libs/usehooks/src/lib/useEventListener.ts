@@ -5,7 +5,7 @@ import useIsomorphicLayoutEffect from './useIsomorphicLayoutEffect'
 function useEventListener<K extends keyof WindowEventMap>(
   eventName: K,
   handler: (event: WindowEventMap[K]) => void
-): void;
+): void
 function useEventListener<
   K extends keyof HTMLElementEventMap,
   T extends HTMLElement = HTMLDivElement
@@ -13,7 +13,7 @@ function useEventListener<
   eventName: K,
   handler: (event: HTMLElementEventMap[K]) => void,
   element: RefObject<T>
-): void;
+): void
 
 function useEventListener<
   KW extends keyof WindowEventMap,
@@ -41,8 +41,7 @@ function useEventListener<
     }
 
     // Create event listener that calls handler function stored in ref
-    const eventListener: typeof handler = (event) =>
-      savedHandler.current(event)
+    const eventListener: typeof handler = (event) => savedHandler.current(event)
 
     targetElement.addEventListener(eventName, eventListener)
 

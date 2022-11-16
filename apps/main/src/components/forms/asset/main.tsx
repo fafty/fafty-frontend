@@ -4,7 +4,7 @@ import {
   useContext,
   useCallback,
   Suspense,
-  useMemo,
+  useMemo
 } from 'react'
 import Context from './context'
 import { UploaderPlaceholder } from '@fafty/shared/ui'
@@ -35,7 +35,7 @@ const Uploader = dynamic<UploaderProps>(
 const FormAsset = ({
   onSubmit,
   submitting,
-  defaultAsset,
+  defaultAsset
 }: Props): JSX.Element => {
   /*
    * Form Store
@@ -49,7 +49,7 @@ const FormAsset = ({
     stepData: data,
     setStepData,
     setFinished,
-    clearState,
+    clearState
   } = useContext(Context)
 
   /*
@@ -118,14 +118,15 @@ const FormAsset = ({
         media: data.media,
         ...data.step1.state,
         ...data.step2.state,
-        ...data.step3.state,
+        ...data.step3.state
       }).then(() => {
         setFinished?.(true)
       })
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data, setFinished])
 
-  const handleNext = (activeStep: number, steps: number ) => { //any[]
+  const handleNext = (activeStep: number, steps: number) => {
+    //any[]
     if (activeStepNumeric === 4 && step4Answered) {
       return submitData()
     }
@@ -174,11 +175,11 @@ const FormAsset = ({
                 name: formattedFileName,
                 description: null,
                 unlockable_content: null,
-                sensitive_content: false,
+                sensitive_content: false
               },
               solved: true,
-              error: false,
-            },
+              error: false
+            }
           })
         }
       } else if (!values && clearState) {
@@ -195,7 +196,7 @@ const FormAsset = ({
       completed: data?.step1.solved,
       optional: false,
       skipped: isStepSkipped(0),
-      error: data?.step1.error,
+      error: data?.step1.error
     },
     {
       name: 'Association',
@@ -203,7 +204,7 @@ const FormAsset = ({
       completed: data?.step2.solved,
       optional: true,
       skipped: isStepSkipped(1),
-      error: data?.step2.error,
+      error: data?.step2.error
     },
     {
       name: 'Add-ons',
@@ -211,7 +212,7 @@ const FormAsset = ({
       completed: data?.step3.solved,
       optional: false,
       skipped: isStepSkipped(2),
-      error: data?.step3.error,
+      error: data?.step3.error
     },
     {
       name: 'Check media',
@@ -219,8 +220,8 @@ const FormAsset = ({
       completed: data?.step4.solved,
       optional: false,
       skipped: isStepSkipped(3),
-      error: data?.step4.error,
-    },
+      error: data?.step4.error
+    }
   ]
 
   const activeStepNumeric = activeStep + 1
@@ -254,20 +255,20 @@ const FormAsset = ({
         <motion.div
           variants={{
             initial: {
-              height: 'auto',
+              height: 'auto'
             },
             animate: {
               height: 'auto',
               transition: {
-                when: 'beforeChildren',
-              },
+                when: 'beforeChildren'
+              }
             },
             exit: {
               height: 'auto',
               transition: {
-                when: 'afterChildren',
-              },
-            },
+                when: 'afterChildren'
+              }
+            }
           }}
           initial="initial"
           animate="animate"
@@ -278,18 +279,18 @@ const FormAsset = ({
           <motion.div
             variants={{
               initial: {
-                opacity: 0,
+                opacity: 0
               },
               animate: {
-                opacity: 1,
+                opacity: 1
               },
               exit: {
-                opacity: 0,
-              },
+                opacity: 0
+              }
             }}
-            className="flex flex-col justify-center items-center"
+            className="flex flex-col items-center justify-center"
           >
-            <div className="justify-center mb-5">
+            <div className="mb-5 justify-center">
               <CompleteIllustration width={300} height={300} />
             </div>
             <div className="text-lg font-bold">
@@ -319,9 +320,9 @@ const FormAsset = ({
 
   return (
     <>
-      <div className="flex flex-1 flex-col w-full h-[calc(65vh_-_5px)]">
+      <div className="flex h-[calc(65vh_-_5px)] w-full flex-1 flex-col">
         {!onlyUploader && (
-          <div className="flex mx-auto w-full sticky top-0 z-1 bg-slate-50 dark:bg-neutral-800 shadow-[0_10px_5px_-10px_rgba(0,0,0,0.2)]">
+          <div className="z-1 sticky top-0 mx-auto flex w-full bg-slate-50 shadow-[0_10px_5px_-10px_rgba(0,0,0,0.2)] dark:bg-neutral-800">
             <StepsBar
               active={activeStep}
               steps={StepsList}
@@ -333,10 +334,10 @@ const FormAsset = ({
         <div
           className={classNames(
             {
-              'md:grid grid-cols-[minmax(300px,_1fr)_300px]': !onlyUploader,
-              'relative flex flex-1 flex-row': onlyUploader,
+              'grid-cols-[minmax(300px,_1fr)_300px] md:grid': !onlyUploader,
+              'relative flex flex-1 flex-row': onlyUploader
             },
-            'gap-x-4 h-full overflow-y-auto'
+            'h-full gap-x-4 overflow-y-auto'
           )}
         >
           {!onlyUploader && (
@@ -344,20 +345,20 @@ const FormAsset = ({
               <motion.div
                 variants={{
                   initial: {
-                    height: 'auto',
+                    height: 'auto'
                   },
                   animate: {
                     height: 'auto',
                     transition: {
-                      when: 'beforeChildren',
-                    },
+                      when: 'beforeChildren'
+                    }
                   },
                   exit: {
                     height: 'auto',
                     transition: {
-                      when: 'afterChildren',
-                    },
-                  },
+                      when: 'afterChildren'
+                    }
+                  }
                 }}
                 initial="initial"
                 animate="animate"
@@ -368,14 +369,14 @@ const FormAsset = ({
                 <motion.div
                   variants={{
                     initial: {
-                      opacity: 0,
+                      opacity: 0
                     },
                     animate: {
-                      opacity: 1,
+                      opacity: 1
                     },
                     exit: {
-                      opacity: 0,
-                    },
+                      opacity: 0
+                    }
                   }}
                   className=""
                 >
@@ -392,9 +393,9 @@ const FormAsset = ({
             className={classNames(
               {
                 'w-full': onlyUploader,
-                'max-w-[20rem] max-h-[20rem]': !onlyUploader,
+                'max-h-[20rem] max-w-[20rem]': !onlyUploader
               },
-              'flex flex-1 sticky top-5 mx-auto h-full'
+              'sticky top-5 mx-auto flex h-full flex-1'
             )}
           >
             <Uploader
@@ -410,8 +411,8 @@ const FormAsset = ({
                         filename: defaultAsset.filename,
                         storage: defaultAsset.storage,
                         size: defaultAsset.size,
-                        position: 0,
-                      },
+                        position: 0
+                      }
                     ]
                   : undefined
               }
@@ -424,7 +425,7 @@ const FormAsset = ({
           </div>
         </div>
         {!onlyUploader && (
-          <div className="flex justify-end sticky bottom-0 pt-4 bg-slate-50 dark:bg-neutral-800 border-t border-gray-100 dark:border-neutral-700">
+          <div className="sticky bottom-0 flex justify-end border-t border-gray-100 bg-slate-50 pt-4 dark:border-neutral-700 dark:bg-neutral-800">
             <div className="flex gap-x-2">
               {!submitting && activeStep > 0 && (
                 <>
@@ -432,7 +433,7 @@ const FormAsset = ({
                     type="button"
                     disabled={activeStep === 0 || isDisabledNextStep}
                     onClick={handleBack}
-                    className="inline-flex items-center px-4 py-2 font-semibold leading-6 text-sm shadow rounded-md text-white bg-gray-500 hover:bg-gray-400"
+                    className="inline-flex items-center rounded-md bg-gray-500 px-4 py-2 text-sm font-semibold leading-6 text-white shadow hover:bg-gray-400"
                   >
                     Back
                   </button>
@@ -444,7 +445,7 @@ const FormAsset = ({
                   {allowSkip && (
                     <button
                       type="button"
-                      className="inline-flex items-center px-4 py-2 font-semibold leading-6 text-sm shadow rounded-md text-white bg-blue-600 hover:bg-blue-500"
+                      className="inline-flex items-center rounded-md bg-blue-600 px-4 py-2 text-sm font-semibold leading-6 text-white shadow hover:bg-blue-500"
                       onClick={handleSkip}
                     >
                       Skip
@@ -455,11 +456,11 @@ const FormAsset = ({
               {submitting ? (
                 <button
                   type="button"
-                  className="inline-flex items-center px-4 py-2 font-semibold leading-6 text-sm shadow rounded-md text-white bg-blue-600 hover:bg-blue-500 transition ease-in-out duration-150 cursor-not-allowed"
+                  className="inline-flex cursor-not-allowed items-center rounded-md bg-blue-600 px-4 py-2 text-sm font-semibold leading-6 text-white shadow transition duration-150 ease-in-out hover:bg-blue-500"
                   disabled
                 >
                   <svg
-                    className="animate-spin -ml-1 mr-3 h-5 w-5 text-white"
+                    className="-ml-1 mr-3 h-5 w-5 animate-spin text-white"
                     xmlns="http://www.w3.org/2000/svg"
                     fill="none"
                     viewBox="0 0 24 24"
@@ -483,7 +484,7 @@ const FormAsset = ({
               ) : (
                 <button
                   type="button"
-                  className="inline-flex items-center px-4 py-2 font-semibold leading-6 text-sm shadow rounded-md text-white bg-blue-600 hover:bg-blue-500"
+                  className="inline-flex items-center rounded-md bg-blue-600 px-4 py-2 text-sm font-semibold leading-6 text-white shadow hover:bg-blue-500"
                   disabled={isDisabledNextStep} // buttonNextDisabled
                   onClick={() => handleNext(activeStep, 2)}
                 >

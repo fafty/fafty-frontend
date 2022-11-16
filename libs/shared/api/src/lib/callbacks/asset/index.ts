@@ -3,7 +3,7 @@ import {
   AssetInfoResponseProps,
   AssetOwnersResponseProps,
   AssetPutParamsProps,
-  GetAssetResponseProps,
+  GetAssetResponseProps
 } from './types'
 
 export const getAsset = async (
@@ -32,7 +32,7 @@ export const putAsset = async (
   params?: AssetPutParamsProps
 ): Promise<GetAssetResponseProps> => {
   const { data } = await api.put(`/asset/${params?.slug}`, {
-    asset: params?.asset,
+    asset: params?.asset
   })
 
   return data

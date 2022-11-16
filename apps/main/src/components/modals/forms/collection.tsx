@@ -9,17 +9,17 @@ import {
   getCollection,
   GetCollectionResponseProps,
   PutCollectionParamsProps,
-  GetCollectionParamsProps,
+  GetCollectionParamsProps
 } from '@fafty/shared/api'
 import { useNotifications } from '@fafty/notifications'
 import { FormProps } from '../../forms/collection/types'
 
 type Props = {
-  title: string;
-  slug?: string;
-  onClose: () => void;
-  isOpened: boolean;
-};
+  title: string
+  slug?: string
+  onClose: () => void
+  isOpened: boolean
+}
 
 /**
  * @name FormCollectionModal
@@ -34,26 +34,31 @@ type Props = {
  * @example
  * <FormCollectionModal title="Create collection" onClose={onClose} isOpened={isOpened} />
  */
-const FormCollectionModal = ({ title, isOpened, onClose, slug }: Props): JSX.Element => {
+const FormCollectionModal = ({
+  title,
+  isOpened,
+  onClose,
+  slug
+}: Props): JSX.Element => {
   const {
     data: preloadedCollection,
     call: callPreloadCollection,
-    isSuccess,
+    isSuccess
   } = useAsync<GetCollectionResponseProps, GetCollectionParamsProps>({
-    callback: getCollection,
+    callback: getCollection
   })
 
   const { call: putCollectionData } = useAsync<
     GetCollectionResponseProps,
     PutCollectionParamsProps
   >({
-    callback: (params?: PutCollectionParamsProps) => putCollection(params),
+    callback: (params?: PutCollectionParamsProps) => putCollection(params)
   })
 
   const [submitting, setSubmitting] = useState(false)
   const [dismissibleData, setDismissibleData] = useState({
     title: 'Close',
-    disabled: false,
+    disabled: false
   })
   const [finished, setFinished] = useState(false)
   const [drafted, setDrafted] = useState(false)
@@ -90,13 +95,16 @@ const FormCollectionModal = ({ title, isOpened, onClose, slug }: Props): JSX.Ele
           title: `Collection "${data.name}" saved as draft.`,
           position: 'bottom-center',
           message: 'You can continue to edit it at any time.',
-          options: { dismissible: true },
+          options: { dismissible: true }
         })
       }
     }
   }
 
-  const onChangeDismiss = (data: { title: string; disabled: boolean }): void => {
+  const onChangeDismiss = (data: {
+    title: string
+    disabled: boolean
+  }): void => {
     setDismissibleData(data)
   }
 
@@ -128,12 +136,12 @@ const FormCollectionModal = ({ title, isOpened, onClose, slug }: Props): JSX.Ele
         dismissible: {
           active: true,
           title: dismissibleData.title,
-          disabled: dismissibleData.disabled,
-        },
+          disabled: dismissibleData.disabled
+        }
       }}
       className="w-[calc(95vw_-_5px)]"
     >
-      <div className="flex flex-row w-full h-full p-2">
+      <div className="flex h-full w-full flex-row p-2">
         {((isSuccess && !!slug) || !slug) && (
           <FormCollectionContextProvider
             defaultData={preloadedCollection?.record}

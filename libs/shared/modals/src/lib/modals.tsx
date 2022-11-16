@@ -57,7 +57,7 @@ const Modal: FC<ModalProps> = (props) => {
               variants={{
                 hidden: {
                   y: '20px',
-                  opacity: 0,
+                  opacity: 0
                 },
                 visible: {
                   y: '0px',
@@ -65,13 +65,13 @@ const Modal: FC<ModalProps> = (props) => {
                   transition: {
                     duration: 0.2,
                     ease: 'easeInOut',
-                    delay: 0.48,
-                  },
+                    delay: 0.48
+                  }
                 },
                 exit: {
                   y: '20px',
-                  opacity: 0,
-                },
+                  opacity: 0
+                }
               }}
               initial="hidden"
               animate="visible"

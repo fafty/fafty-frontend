@@ -7,7 +7,7 @@ import {
   BarsArrowUpIcon,
   Squares2X2Icon,
   RectangleStackIcon,
-  TagIcon,
+  TagIcon
 } from '@heroicons/react/24/outline'
 import { getAccountId } from '../utils/account'
 import FormAssetModal from '../components/modals/forms/asset'
@@ -19,11 +19,11 @@ import { useRouter } from 'next/router'
 import { motion } from 'framer-motion'
 
 type Props = {
-  children: ReactNode;
-  title: string;
-  description: string;
-  className?: string;
-};
+  children: ReactNode
+  title: string
+  description: string
+  className?: string
+}
 
 const AccountLayout = ({ children, title, description, className }: Props) => {
   const [collapseShow, setCollapseShow] = useState('hidden')
@@ -56,9 +56,9 @@ const AccountLayout = ({ children, title, description, className }: Props) => {
   }
 
   interface MenuItemProps {
-    children: ReactNode;
-    path: string;
-    icon?: (props: SVGProps<SVGSVGElement>) => JSX.Element;
+    children: ReactNode
+    path: string
+    icon?: (props: SVGProps<SVGSVGElement>) => JSX.Element
   }
 
   const MenuItem = (props: MenuItemProps): JSX.Element => {
@@ -71,7 +71,7 @@ const AccountLayout = ({ children, title, description, className }: Props) => {
           'flex cursor-pointer items-center rounded-lg p-2 text-neutral-700 transition duration-150 ease-in-out hover:bg-neutral-100 focus:outline-none dark:text-neutral-100 dark:hover:bg-neutral-700',
           {
             'bg-white bg-opacity-75 text-neutral-700 hover:bg-neutral-100 dark:bg-neutral-700 dark:text-neutral-100 dark:hover:bg-neutral-700':
-              router.pathname === path,
+              router.pathname === path
           }
         )}
       >
@@ -187,22 +187,22 @@ const AccountLayout = ({ children, title, description, className }: Props) => {
           hidden: {
             opacity: 0,
             transition: {
-              duration: 0.2,
-            },
+              duration: 0.2
+            }
           },
           enter: {
             opacity: 1,
             transition: {
               duration: 0.2,
-              delay: 0.1,
-            },
+              delay: 0.1
+            }
           },
           exit: {
             opacity: 0,
             transition: {
-              duration: 0.2,
-            },
-          },
+              duration: 0.2
+            }
+          }
         }}
         transition={{ type: 'linear' }}
         className={classNames(className, 'relative md:ml-[15.5rem]')}

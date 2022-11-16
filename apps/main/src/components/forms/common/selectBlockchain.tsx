@@ -7,21 +7,21 @@ import Image from 'next/image'
 import { MutableRefObject, SVGProps, useEffect, useRef, useState } from 'react'
 
 interface CollectionProps {
-  id: string;
-  name: string;
-  logo: string;
-  speed: string;
-  popularity: string;
-  fees: string;
+  id: string
+  name: string
+  logo: string
+  speed: string
+  popularity: string
+  fees: string
 }
 
 interface Props {
-  initial: string;
-  onChange: (value: string) => void;
+  initial: string
+  onChange: (value: string) => void
 }
 declare global {
   interface Array<T> {
-    move(from: T, to: T): Array<T>;
+    move(from: T, to: T): Array<T>
   }
 }
 Array.prototype.move = function <T>(this: T[], from: number, to: number) {
@@ -50,7 +50,7 @@ const collections: CollectionProps[] = [
     logo: '/images/logos/ethereum.svg',
     speed: 'Low',
     popularity: 'High',
-    fees: 'High',
+    fees: 'High'
   },
   {
     id: 'dfinity',
@@ -58,7 +58,7 @@ const collections: CollectionProps[] = [
     logo: '/images/logos/dfinity.svg',
     speed: 'High',
     popularity: 'Average',
-    fees: 'Low',
+    fees: 'Low'
   },
   {
     id: 'near',
@@ -66,7 +66,7 @@ const collections: CollectionProps[] = [
     logo: '/images/logos/near.svg',
     speed: 'High',
     popularity: 'Average',
-    fees: 'Low',
+    fees: 'Low'
   },
   {
     id: 'solana',
@@ -74,7 +74,7 @@ const collections: CollectionProps[] = [
     logo: '/images/logos/solana.svg',
     speed: 'High',
     popularity: 'Average',
-    fees: 'Low',
+    fees: 'Low'
   },
   {
     id: 'polygon',
@@ -82,8 +82,8 @@ const collections: CollectionProps[] = [
     logo: '/images/logos/polygon.svg',
     speed: 'High',
     popularity: 'Average',
-    fees: 'Low',
-  },
+    fees: 'Low'
+  }
 ]
 
 const SelectBlockchain = ({ initial, onChange }: Props): JSX.Element => {
@@ -109,7 +109,7 @@ const SelectBlockchain = ({ initial, onChange }: Props): JSX.Element => {
 
     setArrows({
       left: hasScrollbar && !scrolledToLeft,
-      right: hasScrollbar && !scrolledToRight,
+      right: hasScrollbar && !scrolledToRight
     })
   }
   const debouncedToggleArrow = useDebouncedCallback(() => {
@@ -128,7 +128,7 @@ const SelectBlockchain = ({ initial, onChange }: Props): JSX.Element => {
     // Add event listener
     const events = [
       { event: 'resize', callback: debouncedToggleArrow },
-      { event: 'scroll', callback: debouncedToggleArrow },
+      { event: 'scroll', callback: debouncedToggleArrow }
     ]
     if (refCurrent) {
       events.forEach(({ event, callback }) => {
@@ -143,7 +143,7 @@ const SelectBlockchain = ({ initial, onChange }: Props): JSX.Element => {
         })
       }
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   const onScreen: boolean = useOnScreen<HTMLDivElement>(
@@ -154,7 +154,7 @@ const SelectBlockchain = ({ initial, onChange }: Props): JSX.Element => {
     if (onScreen) {
       scrollItemsToCenterSelected(selected, 0)
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [onScreen])
 
   useEffect(() => {
@@ -163,7 +163,7 @@ const SelectBlockchain = ({ initial, onChange }: Props): JSX.Element => {
     }
     onChange(selected)
     setPreviousSelected(selected)
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selected])
 
   useEffect(() => {
@@ -188,7 +188,7 @@ const SelectBlockchain = ({ initial, onChange }: Props): JSX.Element => {
     items &&
       items.scroll({
         left: scrollLeft,
-        behavior: 'smooth',
+        behavior: 'smooth'
       })
   }
 
@@ -207,7 +207,7 @@ const SelectBlockchain = ({ initial, onChange }: Props): JSX.Element => {
       setTimeout(function () {
         if (scrollSize?.left && scrollSize.width) {
           itemsContainerRef.current?.scroll({
-            left: parentNode?.offsetLeft - scrollSize.width,
+            left: parentNode?.offsetLeft - scrollSize.width
           })
         }
       }, delay)
@@ -222,7 +222,7 @@ const SelectBlockchain = ({ initial, onChange }: Props): JSX.Element => {
           left: direction === 'left',
           right: direction === 'right',
           'opacity-0': !isVisible,
-          'opacity-100': isVisible,
+          'opacity-100': isVisible
         })}
       >
         <div className="navigation">
@@ -230,7 +230,7 @@ const SelectBlockchain = ({ initial, onChange }: Props): JSX.Element => {
             className="button"
             {...{
               'aria-label':
-                direction === 'right' ? 'Next Items' : 'Previous Items',
+                direction === 'right' ? 'Next Items' : 'Previous Items'
             }}
             role="button"
             {...(!isVisible && { 'aria-hidden': true, 'aria-disabled': true })}
@@ -277,45 +277,45 @@ const SelectBlockchain = ({ initial, onChange }: Props): JSX.Element => {
                 value={collection.id}
                 className={({ checked }) =>
                   classNames(
-                    'item my-2 focus:outline-none flex cursor-pointer rounded-lg overflow-hidden relative shadow',
+                    'item relative my-2 flex cursor-pointer overflow-hidden rounded-lg shadow focus:outline-none',
                     {
                       'ring-2 ring-blue-600': checked,
-                      'bg-white bg-opacity-75 text-slate-900 dark:text-slate-50 dark:bg-neutral-700':
-                        checked,
+                      'bg-white bg-opacity-75 text-slate-900 dark:bg-neutral-700 dark:text-slate-50':
+                        checked
                     }
                   )
                 }
               >
                 {({ checked }) => (
                   <div id={collection.id} className="relative select-none">
-                    <div className="relative max-w-sm mx-auto bg-white shadow-lg ring-1 ring-black/5 rounded-xl flex items-center gap-6 dark:bg-neutral-800 dark:highlight-white/5 transition ease-in-out duration-150 hover:bg-neutral-100 dark:hover:bg-neutral-700">
+                    <div className="dark:highlight-white/5 relative mx-auto flex max-w-sm items-center gap-6 rounded-xl bg-white shadow-lg ring-1 ring-black/5 transition duration-150 ease-in-out hover:bg-neutral-100 dark:bg-neutral-800 dark:hover:bg-neutral-700">
                       <div className="absolute top-[0.3rem] right-[0.3rem]">
                         {checked && <CheckIcon className="h-4 w-4" />}
                       </div>
-                      <div className="absolute -left-6 w-24 h-24 rounded-full shadow-lg bg-blue-100 flex items-center justify-center">
+                      <div className="absolute -left-6 flex h-24 w-24 items-center justify-center rounded-full bg-blue-100 shadow-lg">
                         <Image
                           src={collection.logo}
                           alt={collection.name}
-                          className="w-16 h-16"
+                          className="h-16 w-16"
                           width="24"
                           height="24"
                         />
                       </div>
                       <div className="flex flex-col py-4 pl-20 pr-2">
-                        <strong className="text-slate-900 text-sm font-medium dark:text-slate-200">
+                        <strong className="text-sm font-medium text-slate-900 dark:text-slate-200">
                           {collection.name}
                         </strong>
                         <div className="flex justify-center">
-                          <div className="flex flex-row space-x-4 mt-1 text-xs">
-                            <div className="text-slate-500 dark:text-slate-400 flex flex-col items-center justify-center">
+                          <div className="mt-1 flex flex-row space-x-4 text-xs">
+                            <div className="flex flex-col items-center justify-center text-slate-500 dark:text-slate-400">
                               <div className="">Speed</div>
                               <div className="">{collection.speed}</div>
                             </div>
-                            <div className="text-slate-500 dark:text-slate-400 flex flex-col items-center justify-center">
+                            <div className="flex flex-col items-center justify-center text-slate-500 dark:text-slate-400">
                               <div className=" ">Popularity</div>
                               <div className="">{collection.popularity}</div>
                             </div>
-                            <div className="text-slate-500 dark:text-slate-400 flex flex-col items-center justify-center">
+                            <div className="flex flex-col items-center justify-center text-slate-500 dark:text-slate-400">
                               <div className="">Fees</div>
                               <div className="">{collection.fees}</div>
                             </div>

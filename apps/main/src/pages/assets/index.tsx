@@ -7,7 +7,7 @@ import {
   getAssets,
   GetAssetsParamsProps,
   GetAssetsResponseProps,
-  AssetProps,
+  AssetProps
 } from '@fafty/shared/api'
 // import { useVirtualizer } from '@tanstack/react-virtual';
 import Item from '../../components/items/asset/item'
@@ -15,7 +15,7 @@ import {
   BillingType,
   BillingTypeValue,
   PriceFilterProps,
-  PriceFiltersValue,
+  PriceFiltersValue
 } from '../../components/assets/filters'
 import { lazy, Suspense, useEffect, useMemo, useState } from 'react'
 import dynamic from 'next/dynamic'
@@ -25,28 +25,28 @@ import { useComponentDidUpdate } from '@fafty/usehooks'
 import { InfinityLoadChecker } from '../../components/common/infinityLoadChecker'
 
 export type FiltersValues = {
-  price?: PriceFiltersValue;
-  sort?: string;
-  billing_type?: BillingTypeValue;
-};
+  price?: PriceFiltersValue
+  sort?: string
+  billing_type?: BillingTypeValue
+}
 
 const TABS = [
   {
     title: 'Newest',
-    value: 'newest',
+    value: 'newest'
   },
   {
     title: 'Oldest',
-    value: 'oldest',
+    value: 'oldest'
   },
   {
     title: 'Min price',
-    value: 'min_price',
+    value: 'min_price'
   },
   {
     title: 'Max price',
-    value: 'max_price',
-  },
+    value: 'max_price'
+  }
 ]
 
 // const Tabs = dynamic<TabsProps>(
@@ -64,7 +64,7 @@ const Price = dynamic<PriceFilterProps>(
   () =>
     import('../../components/assets/filters/price').then((mod) => mod.Price),
   {
-    ssr: false,
+    ssr: false
   }
 )
 
@@ -83,12 +83,12 @@ const LIMIT = 20
 
 type QueryFiltersProps = {
   paginate: {
-    limit: number;
-    offset: number;
-  };
-  filters?: FiltersValues;
-  sort?: string;
-};
+    limit: number
+    offset: number
+  }
+  filters?: FiltersValues
+  sort?: string
+}
 
 const Assets = () => {
   const { replace, asPath } = useRouter()
@@ -99,9 +99,9 @@ const Assets = () => {
     {
       paginate: {
         limit: LIMIT,
-        offset: 0,
+        offset: 0
       },
-      filters: { ...(qs.parse(search) as FiltersValues) },
+      filters: { ...(qs.parse(search) as FiltersValues) }
     }
   )
 
@@ -110,7 +110,7 @@ const Assets = () => {
     GetAssetsParamsProps
   >({
     callback: getAssets,
-    mapper,
+    mapper
   })
 
   const allowLoad = data
@@ -123,7 +123,7 @@ const Assets = () => {
 
       setLocalFiltersState((prev) => ({
         paginate: { ...prev.paginate, offset: 0 },
-        filters: { ...prev.filters, [key]: value },
+        filters: { ...prev.filters, [key]: value }
       }))
     }
 
@@ -146,8 +146,8 @@ const Assets = () => {
       ...prev,
       paginate: {
         ...prev.paginate,
-        offset: prev.paginate.offset + LIMIT,
-      },
+        offset: prev.paginate.offset + LIMIT
+      }
     }))
   }
 
@@ -157,7 +157,7 @@ const Assets = () => {
 
     setLocalFiltersState((prev) => ({
       paginate: { ...prev.paginate },
-      filters: { ...rest },
+      filters: { ...rest }
     }))
   }
 
@@ -165,7 +165,7 @@ const Assets = () => {
     clearAsyncData()
 
     setLocalFiltersState((prev) => ({
-      paginate: { ...prev.paginate, offset: 0 },
+      paginate: { ...prev.paginate, offset: 0 }
     }))
   }
 
@@ -183,9 +183,9 @@ const Assets = () => {
       filters: {
         currency: filters?.price?.currency,
         price: { lg: filters?.price?.from, ge: filters?.price?.to },
-        billing_type: filters?.billing_type,
+        billing_type: filters?.billing_type
       },
-      sort: TABS[tabIndex]?.value || TABS[0].value,
+      sort: TABS[tabIndex]?.value || TABS[0].value
     })
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [localFiltersState])
@@ -196,7 +196,7 @@ const Assets = () => {
         clearAsyncData()
 
         setLocalFiltersState((prev) => ({
-          paginate: { ...prev.paginate, offset: 0 },
+          paginate: { ...prev.paginate, offset: 0 }
         }))
       }
     },

@@ -9,7 +9,7 @@ import {
   getUserCollections,
   GetUserCollectionsResponseProps,
   CollectionProps,
-  GetUserCollectionsCallbackProps,
+  GetUserCollectionsCallbackProps
 } from '@fafty/shared/api'
 import { List } from 'masonic'
 import { useEffect, useMemo, useState } from 'react'
@@ -20,13 +20,13 @@ import {
   FunnelIcon,
   ChatBubbleBottomCenterTextIcon,
   PencilSquareIcon,
-  DocumentIcon,
+  DocumentIcon
 } from '@heroicons/react/24/outline'
 import Link from 'next/link'
 import { motion } from 'framer-motion'
 import {
   childVariants,
-  variants,
+  variants
 } from '../../../components/forms/asset/constants'
 import FormCollectionModal from '../../../components/modals/forms/collection'
 
@@ -57,25 +57,25 @@ const LIMIT = 10
 
 type QueryFiltersProps = {
   paginate: {
-    limit: number;
-    offset: number;
-  };
-};
+    limit: number
+    offset: number
+  }
+}
 
 const AccountCollections = () => {
   const { asPath } = useRouter()
   const [openedFormCollectionModal, setOpenedFormCollectionModal] = useState({
     open: false,
     slug: '',
-    title: '',
+    title: ''
   })
   const search = asPath.split('?')[1]
   const [localFiltersState, setLocalFiltersState] = useState<QueryFiltersProps>(
     {
       paginate: {
         limit: LIMIT,
-        offset: 0,
-      },
+        offset: 0
+      }
     }
   )
 
@@ -84,7 +84,7 @@ const AccountCollections = () => {
     GetUserCollectionsCallbackProps
   >({
     callback: getUserCollections,
-    mapper,
+    mapper
   })
 
   const allowLoad = data
@@ -96,8 +96,8 @@ const AccountCollections = () => {
       ...prev,
       paginate: {
         ...prev.paginate,
-        offset: prev.paginate.offset + LIMIT,
-      },
+        offset: prev.paginate.offset + LIMIT
+      }
     }))
   }
 
@@ -108,8 +108,8 @@ const AccountCollections = () => {
       address: 'abcd',
       params: {
         limit: LIMIT,
-        offset: paginate.offset,
-      },
+        offset: paginate.offset
+      }
     })
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [localFiltersState])
@@ -120,7 +120,7 @@ const AccountCollections = () => {
         clearAsyncData()
 
         setLocalFiltersState((prev) => ({
-          paginate: { ...prev.paginate, offset: 0 },
+          paginate: { ...prev.paginate, offset: 0 }
         }))
       }
     },
@@ -129,7 +129,7 @@ const AccountCollections = () => {
 
   interface VisibilityProps {
     visibility: CollectionProps['visibility']
-    date: string | undefined;
+    date: string | undefined
   }
 
   /**
@@ -139,10 +139,7 @@ const AccountCollections = () => {
    * @param {string | undefined} props.date - Date of the collection creation or update.
    * @returns {JSX.Element}
    */
-  const Visibility = ({
-    visibility,
-    date,
-  }: VisibilityProps): JSX.Element => {
+  const Visibility = ({ visibility, date }: VisibilityProps): JSX.Element => {
     switch (visibility) {
       case 'public':
         return (
@@ -187,7 +184,7 @@ const AccountCollections = () => {
   }
 
   interface RestrictionsProps {
-    restrictions: string | undefined;
+    restrictions: string | undefined
   }
   /**
    * @name Restrictions
@@ -197,9 +194,7 @@ const AccountCollections = () => {
    * @example
    * <Restrictions restrictions="sensitive" />
    */
-  const Restrictions = ({
-    restrictions,
-  }: RestrictionsProps): JSX.Element => {
+  const Restrictions = ({ restrictions }: RestrictionsProps): JSX.Element => {
     switch (restrictions) {
       case 'none':
         return <span>None</span>
@@ -215,8 +210,8 @@ const AccountCollections = () => {
   }
 
   type Props = {
-    item: CollectionProps;
-  };
+    item: CollectionProps
+  }
   /**
    * @name Item
    * @description Render a single item in the list.
@@ -236,7 +231,7 @@ const AccountCollections = () => {
       >
         <div className="z-2 ml-7 flex w-full flex-row items-center overflow-hidden p-1">
           <div
-            className="h-17 w-17 relative flex flex-shrink-0 items-center justify-center rounded bg-neutral-200 dark:bg-neutral-700 border-2 group-hover:border-white dark:group-hover:border-neutral-800/95 dark:border-neutral-900/95"
+            className="h-17 w-17 relative flex flex-shrink-0 items-center justify-center rounded border-2 bg-neutral-200 group-hover:border-white dark:border-neutral-900/95 dark:bg-neutral-700 dark:group-hover:border-neutral-800/95"
             style={{ backgroundColor: item.cover.dominant_color || '' }}
           >
             <Image
@@ -260,8 +255,8 @@ const AccountCollections = () => {
                     duration: 0.2,
                     delay: 0.1,
                     when: 'beforeChildren',
-                    staggerChildren: 0.1,
-                  },
+                    staggerChildren: 0.1
+                  }
                 },
                 hidden: {
                   height: '20px',
@@ -269,9 +264,9 @@ const AccountCollections = () => {
                   filter: 'blur(0.6px)',
                   transition: {
                     duration: 0.2,
-                    delay: 0.2,
-                  },
-                },
+                    delay: 0.2
+                  }
+                }
               }}
               animate={isHovered ? 'hidden' : 'visible'}
               exit={'visible'}
@@ -303,7 +298,7 @@ const AccountCollections = () => {
                       setOpenedFormCollectionModal({
                         open: true,
                         slug: item.slug,
-                        title: item.name,
+                        title: item.name
                       })
                     }
                   >
@@ -347,12 +342,12 @@ const AccountCollections = () => {
               {item.preview_assets?.slice(0, 3).map((asset, index) => (
                 <div
                   key={index}
-                  className="flex-inline relative overflow-hidden rounded-full border-2 group-hover:border-white dark:group-hover:border-neutral-800/95 dark:border-neutral-900/95"
+                  className="flex-inline relative overflow-hidden rounded-full border-2 group-hover:border-white dark:border-neutral-900/95 dark:group-hover:border-neutral-800/95"
                 >
                   <div
                     className="bg-base-300 h-8 w-8"
                     style={{
-                      backgroundColor: asset.media.dominant_color || '',
+                      backgroundColor: asset.media.dominant_color || ''
                     }}
                   >
                     <Image
@@ -366,16 +361,13 @@ const AccountCollections = () => {
                 </div>
               ))}
               {item.supply > 3 && (
-                <div className="flex-inline relative overflow-hidden rounded-full border-2 group-hover:border-white dark:group-hover:border-neutral-800/95 dark:border-neutral-900/95">
+                <div className="flex-inline relative overflow-hidden rounded-full border-2 group-hover:border-white dark:border-neutral-900/95 dark:group-hover:border-neutral-800/95">
                   <div className="flex h-full w-8 items-center justify-center bg-neutral-200 dark:bg-neutral-700">
-                    <div className="font-bold">
-                      +{item.supply - 3}
-                    </div>
+                    <div className="font-bold">+{item.supply - 3}</div>
                   </div>
                 </div>
               )}
             </div>
-            
           </div>
         ) : (
           <div className="justify-left flex items-center">Without Assets</div>
@@ -401,7 +393,7 @@ const AccountCollections = () => {
    */
   const ItemPlaceholder = (): JSX.Element => {
     return (
-      <div className="relative mx-auto grid h-[6rem] w-full grid-cols-[minmax(300px,_400px)_minmax(100px,_120px)_minmax(100px,_120px)_minmax(100px,_120px)_minmax(100px,_120px)] gap-x-1 hover:bg-white dark:hover:bg-neutral-800/95 group">
+      <div className="group relative mx-auto grid h-[6rem] w-full grid-cols-[minmax(300px,_400px)_minmax(100px,_120px)_minmax(100px,_120px)_minmax(100px,_120px)_minmax(100px,_120px)] gap-x-1 hover:bg-white dark:hover:bg-neutral-800/95">
         <div className="z-2 ml-7 flex w-full flex-row items-center overflow-hidden p-1">
           <div className="h-17 w-17 relative flex flex-shrink-0 animate-pulse items-center justify-center rounded bg-neutral-300 focus:outline-none dark:bg-neutral-700">
             <span className="relative inline-block h-16 w-16 rounded"></span>
@@ -416,7 +408,7 @@ const AccountCollections = () => {
             {Array.from({ length: 4 }, (_, index) => (
               <div
                 key={index}
-                className="flex-inline relative overflow-hidden rounded-full border-2 group-hover:border-white dark:group-hover:border-neutral-800/95 dark:border-neutral-900/95"
+                className="flex-inline relative overflow-hidden rounded-full border-2 group-hover:border-white dark:border-neutral-900/95 dark:group-hover:border-neutral-800/95"
               >
                 <div className="h-9 w-9 rounded-sm bg-neutral-300 dark:bg-neutral-700"></div>
               </div>

@@ -20,14 +20,14 @@ const SelectStep2 = ({ Context }: { Context: Context<ContextProps> }) => {
     watch,
     getValues,
     trigger,
-    formState: { errors, isValid },
+    formState: { errors, isValid }
   } = useForm({
     defaultValues: {
-      assets: stepData?.step2?.state?.assets || [],
+      assets: stepData?.step2?.state?.assets || []
     },
     mode: 'onChange',
     reValidateMode: 'onChange',
-    shouldFocusError: true,
+    shouldFocusError: true
   } as never)
 
   const formFields = watch()
@@ -73,8 +73,8 @@ const SelectStep2 = ({ Context }: { Context: Context<ContextProps> }) => {
       step2: {
         solved: isValidStore,
         state: getValues() as Step2Props,
-        error: !isValidStore,
-      },
+        error: !isValidStore
+      }
     })
   }
 

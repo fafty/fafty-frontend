@@ -6,7 +6,7 @@ import { Listeners } from '../layouts/Listeners'
 import { ProvideAuth } from '../utils/auth'
 import { AnimatePresence } from 'framer-motion'
 
-function FaftyMainApp({ Component, pageProps, router}: AppProps) {
+function FaftyMainApp({ Component, pageProps, router }: AppProps) {
   const url = router.route
   return (
     <>

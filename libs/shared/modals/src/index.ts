@@ -1,1 +1,1 @@
-export { default as Modal } from './lib/modals';
+export { default as Modal } from './lib/modals'

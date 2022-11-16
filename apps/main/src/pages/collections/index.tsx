@@ -1,7 +1,7 @@
 import { useRouter } from 'next/router'
 import {
   AssetTabsPlaceholder,
-  CollectionItemPlaceholder,
+  CollectionItemPlaceholder
 } from '@fafty/shared/ui'
 import qs from 'qs'
 import MainLayout from '../../layouts/main'
@@ -10,14 +10,14 @@ import {
   getCollections,
   GetCollectionsParamsProps,
   GetCollectionsResponseProps,
-  CollectionProps,
+  CollectionProps
 } from '@fafty/shared/api'
 import Item from '../../components/items/collection/item'
 import {
   BillingType,
   BillingTypeValue,
   PriceFilterProps,
-  PriceFiltersValue,
+  PriceFiltersValue
 } from '../../components/assets/filters'
 import { lazy, Suspense, useEffect, useMemo, useState } from 'react'
 import dynamic from 'next/dynamic'
@@ -27,27 +27,27 @@ import { Panel } from '../../components/common/bar'
 import { useComponentDidUpdate } from '@fafty/usehooks'
 
 export type FiltersValues = {
-  blockchain?: string;
-  sort?: string;
-};
+  blockchain?: string
+  sort?: string
+}
 
 const TABS = [
   {
     title: 'Newest',
-    value: 'newest',
+    value: 'newest'
   },
   {
     title: 'Oldest',
-    value: 'oldest',
+    value: 'oldest'
   },
   {
     title: 'Min price',
-    value: 'min_price',
+    value: 'min_price'
   },
   {
     title: 'Max price',
-    value: 'max_price',
-  },
+    value: 'max_price'
+  }
 ]
 
 const Tabs = lazy(() => import('../../components/asset/tabs'))
@@ -56,7 +56,7 @@ const Price = dynamic<PriceFilterProps>(
   () =>
     import('../../components/assets/filters/price').then((mod) => mod.Price),
   {
-    ssr: false,
+    ssr: false
   }
 )
 
@@ -75,12 +75,12 @@ const LIMIT = 20
 
 type QueryFiltersProps = {
   paginate: {
-    limit: number;
-    offset: number;
-  };
-  filters?: FiltersValues;
-  sort?: string;
-};
+    limit: number
+    offset: number
+  }
+  filters?: FiltersValues
+  sort?: string
+}
 
 const Collections = () => {
   const { replace, asPath } = useRouter()
@@ -89,9 +89,9 @@ const Collections = () => {
     {
       paginate: {
         limit: LIMIT,
-        offset: 0,
+        offset: 0
       },
-      filters: { ...(qs.parse(search) as FiltersValues) },
+      filters: { ...(qs.parse(search) as FiltersValues) }
     }
   )
 
@@ -100,7 +100,7 @@ const Collections = () => {
     GetCollectionsParamsProps
   >({
     callback: getCollections,
-    mapper,
+    mapper
   })
 
   const allowLoad = data
@@ -112,7 +112,7 @@ const Collections = () => {
       clearAsyncData()
       setLocalFiltersState((prev) => ({
         paginate: { ...prev.paginate, offset: 0 },
-        filters: { ...prev.filters, [key]: value },
+        filters: { ...prev.filters, [key]: value }
       }))
     }
 
@@ -134,8 +134,8 @@ const Collections = () => {
       ...prev,
       paginate: {
         ...prev.paginate,
-        offset: prev.paginate.offset + LIMIT,
-      },
+        offset: prev.paginate.offset + LIMIT
+      }
     }))
   }
 
@@ -166,9 +166,9 @@ const Collections = () => {
       limit: LIMIT,
       offset: paginate.offset,
       filters: {
-        blockchain: filters?.blockchain,
+        blockchain: filters?.blockchain
       },
-      sort: TABS[tabIndex]?.value || TABS[0].value,
+      sort: TABS[tabIndex]?.value || TABS[0].value
     })
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [localFiltersState])
@@ -178,7 +178,7 @@ const Collections = () => {
       if (!!prev.search && !search) {
         clearAsyncData()
         setLocalFiltersState((prev) => ({
-          paginate: { ...prev.paginate, offset: 0 },
+          paginate: { ...prev.paginate, offset: 0 }
         }))
       }
     },
@@ -203,15 +203,15 @@ const Collections = () => {
       description={'Collections | Marketplace'}
       className=""
     >
-      <div className="flex items-start py-10 relative">
-        <div className="flex w-[250px]  items-start flex-shrink-0 sticky top-[120px] pr-5">
-          <div className="flex flex-col bg-white dark:bg-neutral-800 p-2.5  rounded w-full">
+      <div className="relative flex items-start py-10">
+        <div className="sticky top-[120px]  flex w-[250px] flex-shrink-0 items-start pr-5">
+          <div className="flex w-full flex-col rounded bg-white  p-2.5 dark:bg-neutral-800">
             <Panel title="Price" initialState>
               <Price
                 value={{
                   currency: '',
                   from: '',
-                  to: '',
+                  to: ''
                 }}
                 onChange={onChangeFiltersByKey('price')}
               />
@@ -224,7 +224,7 @@ const Collections = () => {
             </Panel>
           </div>
         </div>
-        <div className="flex flex-col w-full">
+        <div className="flex w-full flex-col">
           <div className="flex items-center justify-end">
             <div className="flex">
               <Suspense fallback={<AssetTabsPlaceholder />}>
@@ -236,7 +236,7 @@ const Collections = () => {
               </Suspense>
             </div>
           </div>
-          <div className="flex my-4">
+          <div className="my-4 flex">
             {/*<Pills onClosePill={onClosePill} onClearFilters={onClearFilters} />*/}
           </div>
           <div className="wrapper-items">

@@ -8,7 +8,7 @@ import {
   getUserBundles,
   GetUserBundlesResponseProps,
   BundleProps,
-  GetUserBundlesCallbackProps,
+  GetUserBundlesCallbackProps
 } from '@fafty/shared/api'
 import { List } from 'masonic'
 import { useEffect, useMemo, useState } from 'react'
@@ -19,13 +19,13 @@ import {
   FunnelIcon,
   ChatBubbleBottomCenterTextIcon,
   PencilSquareIcon,
-  DocumentIcon,
+  DocumentIcon
 } from '@heroicons/react/24/outline'
 import Link from 'next/link'
 import { motion } from 'framer-motion'
 import {
   childVariants,
-  variants,
+  variants
 } from '../../../components/forms/asset/constants'
 import FormAssetModal from '../../../components/modals/forms/asset'
 
@@ -56,25 +56,25 @@ const LIMIT = 10
 
 type QueryFiltersProps = {
   paginate: {
-    limit: number;
-    offset: number;
-  };
-};
+    limit: number
+    offset: number
+  }
+}
 
 const AccountBundles = () => {
   const { asPath } = useRouter()
   const [openedFormAssetModal, setOpenedFormAssetModal] = useState({
     open: false,
     slug: '',
-    title: '',
+    title: ''
   })
   const search = asPath.split('?')[1]
   const [localFiltersState, setLocalFiltersState] = useState<QueryFiltersProps>(
     {
       paginate: {
         limit: LIMIT,
-        offset: 0,
-      },
+        offset: 0
+      }
     }
   )
 
@@ -83,7 +83,7 @@ const AccountBundles = () => {
     GetUserBundlesCallbackProps
   >({
     callback: getUserBundles,
-    mapper,
+    mapper
   })
 
   const allowLoad = data
@@ -95,8 +95,8 @@ const AccountBundles = () => {
       ...prev,
       paginate: {
         ...prev.paginate,
-        offset: prev.paginate.offset + LIMIT,
-      },
+        offset: prev.paginate.offset + LIMIT
+      }
     }))
   }
 
@@ -107,8 +107,8 @@ const AccountBundles = () => {
       address: 'abcd',
       params: {
         limit: LIMIT,
-        offset: paginate.offset,
-      },
+        offset: paginate.offset
+      }
     })
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [localFiltersState])
@@ -119,7 +119,7 @@ const AccountBundles = () => {
         clearAsyncData()
 
         setLocalFiltersState((prev) => ({
-          paginate: { ...prev.paginate, offset: 0 },
+          paginate: { ...prev.paginate, offset: 0 }
         }))
       }
     },
@@ -128,10 +128,10 @@ const AccountBundles = () => {
 
   const Visibility = ({
     visibility,
-    date,
+    date
   }: {
-    visibility: string | undefined;
-    date: string | undefined;
+    visibility: string | undefined
+    date: string | undefined
   }) => {
     switch (visibility) {
       case 'public':
@@ -177,9 +177,9 @@ const AccountBundles = () => {
   }
 
   const Restrictions = ({
-    restrictions,
+    restrictions
   }: {
-    restrictions: string | undefined;
+    restrictions: string | undefined
   }) => {
     switch (restrictions) {
       case 'none':
@@ -196,8 +196,8 @@ const AccountBundles = () => {
   }
 
   type Props = {
-    item: BundleProps;
-  };
+    item: BundleProps
+  }
 
   /**
    * @name Item
@@ -218,7 +218,7 @@ const AccountBundles = () => {
       >
         <div className="z-2 ml-7 flex w-full flex-row items-center overflow-hidden p-1">
           <div
-            className="h-17 w-17 justify-center relative flex flex-shrink-0 items-center rounded bg-neutral-200 focus:outline-none dark:bg-neutral-700"
+            className="h-17 w-17 relative flex flex-shrink-0 items-center justify-center rounded bg-neutral-200 focus:outline-none dark:bg-neutral-700"
             style={{ backgroundColor: item.cover.dominant_color || '' }}
           >
             <Image
@@ -242,8 +242,8 @@ const AccountBundles = () => {
                     duration: 0.2,
                     delay: 0.1,
                     when: 'beforeChildren',
-                    staggerChildren: 0.1,
-                  },
+                    staggerChildren: 0.1
+                  }
                 },
                 hidden: {
                   height: '20px',
@@ -251,9 +251,9 @@ const AccountBundles = () => {
                   filter: 'blur(0.6px)',
                   transition: {
                     duration: 0.2,
-                    delay: 0.2,
-                  },
-                },
+                    delay: 0.2
+                  }
+                }
               }}
               animate={isHovered ? 'hidden' : 'visible'}
               exit={'visible'}
@@ -285,7 +285,7 @@ const AccountBundles = () => {
                       setOpenedFormAssetModal({
                         open: true,
                         slug: item.slug,
-                        title: item.name,
+                        title: item.name
                       })
                     }
                   >
@@ -334,7 +334,7 @@ const AccountBundles = () => {
                   <div
                     className="bg-base-300 h-8 w-8"
                     style={{
-                      backgroundColor: asset.media.dominant_color || '',
+                      backgroundColor: asset.media.dominant_color || ''
                     }}
                   >
                     <Image
@@ -350,9 +350,7 @@ const AccountBundles = () => {
               {item.items_count > 3 && (
                 <div className="flex-inline relative overflow-hidden rounded-full border-2">
                   <div className="flex h-full w-8 items-center justify-center bg-neutral-200 dark:bg-neutral-700">
-                    <div className="font-bold">
-                      +{item.items_count - 3}
-                    </div>
+                    <div className="font-bold">+{item.items_count - 3}</div>
                   </div>
                 </div>
               )}

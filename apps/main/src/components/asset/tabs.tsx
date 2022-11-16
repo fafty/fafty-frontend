@@ -4,15 +4,15 @@ import { motion } from 'framer-motion'
 import { getSystemTheme, useTheme } from '@fafty/shared/theme'
 
 type TabType = {
-  title: string;
-  value: string;
-};
+  title: string
+  value: string
+}
 
 type TabsProps = {
-  tabIndex: number;
-  setTabIndex: Dispatch<number>;
-  tabs: TabType[];
-};
+  tabIndex: number
+  setTabIndex: Dispatch<number>
+  tabs: TabType[]
+}
 
 const Tabs = ({ tabIndex, setTabIndex, tabs }: TabsProps) => {
   const { theme } = useTheme()
@@ -31,7 +31,7 @@ const Tabs = ({ tabIndex, setTabIndex, tabs }: TabsProps) => {
   const tabStyles = useMemo(() => {
     return {
       background: isDarkMode ? 'rgb(249 250 251)' : 'rgb(55 65 81)',
-      text: isDarkMode ? 'rgb(55 65 81)' : 'rgb(249 250 251)',
+      text: isDarkMode ? 'rgb(55 65 81)' : 'rgb(249 250 251)'
     }
   }, [isDarkMode])
 
@@ -47,10 +47,10 @@ const Tabs = ({ tabIndex, setTabIndex, tabs }: TabsProps) => {
                     <motion.div
                       className="relative flex cursor-pointer items-center justify-center rounded-full px-3 py-1.5 outline-none"
                       initial={{
-                        color: selected ? tabStyles.text : '',
+                        color: selected ? tabStyles.text : ''
                       }}
                       animate={{
-                        color: selected ? tabStyles.text : '',
+                        color: selected ? tabStyles.text : ''
                       }}
                       transition={{ duration: 0.3 }}
                     >
@@ -63,11 +63,11 @@ const Tabs = ({ tabIndex, setTabIndex, tabs }: TabsProps) => {
                           layoutId={tabsTitlesId}
                           initial={{
                             opacity: 0,
-                            backgroundColor: 'transparent',
+                            backgroundColor: 'transparent'
                           }}
                           animate={{
                             opacity: 1,
-                            backgroundColor: tabStyles.background,
+                            backgroundColor: tabStyles.background
                           }}
                           transition={{ duration: 0.3, staggerDirection: -1 }}
                         />

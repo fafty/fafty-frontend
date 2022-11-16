@@ -4,21 +4,21 @@ import { useMemo } from 'react'
 import {
   BILLING_TYPE_OPTIONS,
   BillingTypeValue,
-  PriceFiltersValue,
+  PriceFiltersValue
 } from './filters'
 import { CloseIcon } from '@remixicons/react/fill'
 import { FiltersValues } from '../../pages/assets'
 import { motion } from 'framer-motion'
 
 type Pill = {
-  title: string;
-  value: keyof FiltersValues;
-};
+  title: string
+  value: keyof FiltersValues
+}
 
 type Props = {
-  onClosePill: (key: keyof FiltersValues) => void;
-  onClearFilters: VoidFunction;
-};
+  onClosePill: (key: keyof FiltersValues) => void
+  onClearFilters: VoidFunction
+}
 
 export const Pills = ({ onClosePill, onClearFilters }: Props) => {
   const { asPath } = useRouter()
@@ -44,7 +44,7 @@ export const Pills = ({ onClosePill, onClearFilters }: Props) => {
 
           total.push({
             title,
-            value: 'price',
+            value: 'price'
           })
         }
       }
@@ -58,7 +58,7 @@ export const Pills = ({ onClosePill, onClearFilters }: Props) => {
 
           total.push({
             title: `Billing type: ${optionTitle?.toLowerCase()}`,
-            value: 'billing_type',
+            value: 'billing_type'
           })
         }
       }
@@ -78,8 +78,8 @@ export const Pills = ({ onClosePill, onClearFilters }: Props) => {
         duration: 0.2,
         delay: 0.2,
         when: 'beforeChildren',
-        staggerChildren: 0.1,
-      },
+        staggerChildren: 0.1
+      }
     },
     hidden: {
       height: 0,
@@ -88,9 +88,9 @@ export const Pills = ({ onClosePill, onClearFilters }: Props) => {
         delay: 0.2,
         staggerChildren: 0.3,
         when: 'beforeChildren',
-        staggerDirection: -1,
-      },
-    },
+        staggerDirection: -1
+      }
+    }
   }
 
   const childVariants = {
@@ -98,17 +98,17 @@ export const Pills = ({ onClosePill, onClearFilters }: Props) => {
       opacity: 1,
       transition: {
         duration: 0.3,
-        delay: 0.2,
-      },
+        delay: 0.2
+      }
     },
     hidden: {
       opacity: 0,
       className: 'pointer-events-none',
       transition: {
         duration: 0.3,
-        delay: 0.1,
-      },
-    },
+        delay: 0.1
+      }
+    }
   }
 
   return (

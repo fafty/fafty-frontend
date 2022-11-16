@@ -1,7 +1,7 @@
 import {
   useAsync,
   AssetOwnersResponseProps,
-  getAssetOwners,
+  getAssetOwners
 } from '@fafty/shared/api'
 import { useRouter } from 'next/router'
 
@@ -11,7 +11,7 @@ export const Owners = () => {
 
   const { data } = useAsync<AssetOwnersResponseProps, string>({
     callback: () => getAssetOwners(slug as string),
-    withMount: true,
+    withMount: true
   })
 
   return (

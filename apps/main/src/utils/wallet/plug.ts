@@ -3,22 +3,22 @@ import { auth } from '../auth'
 import { getHost } from '../canister/actor'
 
 export interface PlugWindow extends Window {
-  ic: any;
+  ic: any
 }
 
 declare let window: PlugWindow
 
 export interface WalletInterface {
-  name: string;
+  name: string
 
-  logIn: () => void;
-  logOut: () => void;
+  logIn: () => void
+  logOut: () => void
 
-  requestTransfer: (data: any) => any;
+  requestTransfer: (data: any) => any
 
-  getActor: <Type>(canisterId: string, idl: any) => Promise<Type | undefined>;
+  getActor: <Type>(canisterId: string, idl: any) => Promise<Type | undefined>
 
-  getBalance: () => any;
+  getBalance: () => any
 }
 
 export default function plugWallet(): WalletInterface {
@@ -30,7 +30,7 @@ export default function plugWallet(): WalletInterface {
   ): Promise<Type | undefined> {
     const actor = await window.ic.plug.createActor({
       canisterId,
-      interfaceFactory: idl,
+      interfaceFactory: idl
     })
 
     return actor as Type
@@ -87,6 +87,6 @@ export default function plugWallet(): WalletInterface {
     logOut,
     getActor,
     requestTransfer,
-    getBalance,
+    getBalance
   }
 }

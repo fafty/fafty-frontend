@@ -8,18 +8,18 @@ import {
   putAsset,
   getAsset,
   AssetResponseProps,
-  AssetPutParamsProps,
+  AssetPutParamsProps
 } from '@fafty/shared/api'
 import { useNotifications } from '@fafty/notifications'
 
 import { FormProps } from '../../forms/asset/types'
 
 type Props = {
-  title: string;
-  slug?: string;
-  onClose: () => void;
-  isOpened: boolean;
-};
+  title: string
+  slug?: string
+  onClose: () => void
+  isOpened: boolean
+}
 
 /**
  * @name FormAssetModal
@@ -33,24 +33,32 @@ type Props = {
  * @category Components / Modals
  * @example
  * <FormAssetModal title="Create asset" onClose={onClose} isOpened={isOpened} />
-*/ 
-const FormAssetModal = ({ title, slug, onClose, isOpened }: Props): JSX.Element => {
+ */
+const FormAssetModal = ({
+  title,
+  slug,
+  onClose,
+  isOpened
+}: Props): JSX.Element => {
   const {
     data: preloadedAsset,
     call: callPreloadAsset,
-    isSuccess,
+    isSuccess
   } = useAsync<AssetResponseProps, string>({
-    callback: getAsset,
+    callback: getAsset
   })
 
-  const { call: putAssetData } = useAsync<AssetResponseProps, AssetPutParamsProps>({
-    callback: (params?: AssetPutParamsProps) => putAsset(params),
+  const { call: putAssetData } = useAsync<
+    AssetResponseProps,
+    AssetPutParamsProps
+  >({
+    callback: (params?: AssetPutParamsProps) => putAsset(params)
   })
 
   const [submitting, setSubmitting] = useState(false)
   const [dismissibleData, setDismissibleData] = useState({
     title: 'Close',
-    disabled: false,
+    disabled: false
   })
   const [finished, setFinished] = useState(false)
   const [drafted, setDrafted] = useState(false)
@@ -87,7 +95,7 @@ const FormAssetModal = ({ title, slug, onClose, isOpened }: Props): JSX.Element 
           title: `Asset "${data.name}" saved as draft.`,
           position: 'bottom-center',
           message: 'You can continue to edit it at any time.',
-          options: { dismissible: true },
+          options: { dismissible: true }
         })
       }
     }
@@ -113,7 +121,7 @@ const FormAssetModal = ({ title, slug, onClose, isOpened }: Props): JSX.Element 
     if (slug) {
       callPreloadAsset(slug)
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [slug])
 
   return (
@@ -125,12 +133,12 @@ const FormAssetModal = ({ title, slug, onClose, isOpened }: Props): JSX.Element 
         dismissible: {
           active: true,
           title: dismissibleData.title,
-          disabled: dismissibleData.disabled,
-        },
+          disabled: dismissibleData.disabled
+        }
       }}
       className="w-[calc(95vw_-_5px)]"
     >
-      <div className="flex flex-row w-full h-full p-2">
+      <div className="flex h-full w-full flex-row p-2">
         {((isSuccess && !!slug) || !slug) && (
           <FormAssetContextProvider
             defaultData={preloadedAsset?.record}

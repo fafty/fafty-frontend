@@ -2,7 +2,7 @@ import { useState, ReactNode, useCallback, useEffect } from 'react'
 import {
   CommentsOrderType,
   CommentsModerationType,
-  CollectionProps,
+  CollectionProps
 } from '@fafty/shared/api'
 import Context from './context'
 import { FormProps, SetStepDataProps, StepsProps } from './types'
@@ -15,41 +15,41 @@ const defaultStepsData: StepsProps = {
     metadata: {
       size: 0,
       filename: '',
-      mime_type: '',
-    },
+      mime_type: ''
+    }
   },
   step1: {
     state: {
       name: '',
-      description: null,
+      description: null
     },
     solved: false,
-    error: false,
+    error: false
   },
   step2: {
     state: {
-      assets: [],
+      assets: []
     },
     solved: false,
-    error: false,
+    error: false
   },
   step3: {
     state: {
       allow_ratings: true,
       comments_moderation: '' as CommentsModerationType,
       comments_order: 'newest' as CommentsOrderType,
-      tags: [],
+      tags: []
     },
     solved: false,
-    error: false,
+    error: false
   },
   step4: {
     state: {
-      is_checked: false,
+      is_checked: false
     },
     solved: false,
-    error: false,
-  },
+    error: false
+  }
 }
 
 const FormCollectionContextProvider = ({
@@ -58,14 +58,14 @@ const FormCollectionContextProvider = ({
   onRawDataCallback,
   onFinished,
   defaultData,
-  children,
+  children
 }: {
-  onChangeDismiss: (data: { title: string; disabled: boolean }) => void;
-  rawDataCallback: boolean;
-  defaultData?: CollectionProps;
-  onRawDataCallback: (data: FormProps) => void;
-  onFinished: () => void;
-  children: ReactNode;
+  onChangeDismiss: (data: { title: string; disabled: boolean }) => void
+  rawDataCallback: boolean
+  defaultData?: CollectionProps
+  onRawDataCallback: (data: FormProps) => void
+  onFinished: () => void
+  children: ReactNode
 }) => {
   const [step1Answered, setStep1Answered] = useState(false)
   const [step2Answered, setStep2Answered] = useState(false)
@@ -81,8 +81,8 @@ const FormCollectionContextProvider = ({
       metadata: {
         size: defaultData?.cover?.size || 0,
         filename: defaultData?.cover?.filename || '',
-        mime_type: defaultData?.cover?.mime_type || '',
-      },
+        mime_type: defaultData?.cover?.mime_type || ''
+      }
     },
     step1: {
       state: {
@@ -91,35 +91,35 @@ const FormCollectionContextProvider = ({
           defaultData?.description &&
           Object.keys(defaultData?.description).length
             ? defaultData?.description
-            : '',
+            : ''
       },
       solved: !!defaultData?.description,
-      error: false,
+      error: false
     },
     step2: {
       state: {
-        assets: defaultData?.preview_assets || [],
+        assets: defaultData?.preview_assets || []
       },
       solved: !!defaultData?.preview_assets,
-      error: false,
+      error: false
     },
     step3: {
       state: {
         allow_ratings: false,
         comments_moderation: '' as CommentsModerationType,
         comments_order: 'newest' as CommentsOrderType,
-        tags: [],
+        tags: []
       },
       solved: false,
-      error: false,
+      error: false
     },
     step4: {
       state: {
-        is_checked: !!defaultData,
+        is_checked: !!defaultData
       },
       solved: !!defaultData,
-      error: false,
-    },
+      error: false
+    }
   })
 
   useEffect(() => {
@@ -128,7 +128,7 @@ const FormCollectionContextProvider = ({
         cover: stepData.cover,
         ...stepData.step1.state,
         ...stepData.step2.state,
-        ...stepData.step3.state,
+        ...stepData.step3.state
       })
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -143,20 +143,20 @@ const FormCollectionContextProvider = ({
     if (step1Answered && stepData.cover.id) {
       onChangeDismiss({
         title: 'Close and save as draft',
-        disabled: false,
+        disabled: false
       })
     }
     if (!step1Answered && stepData.cover.id) {
       onChangeDismiss({
         title:
           'The button is not active because there are errors in some fields',
-        disabled: true,
+        disabled: true
       })
     }
     if ((!step1Answered && !stepData.cover.id) || finished) {
       onChangeDismiss({
         title: 'Close',
-        disabled: false,
+        disabled: false
       })
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -190,7 +190,7 @@ const FormCollectionContextProvider = ({
     setFinished,
     stepData,
     setStepData: onSetStepData,
-    clearState,
+    clearState
   }
 
   return <Context.Provider value={contextValues}>{children}</Context.Provider>

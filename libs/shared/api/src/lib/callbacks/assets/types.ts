@@ -1,28 +1,28 @@
 import { AssetProps } from '../asset/types'
 
 type PaginateProps = {
-  count: number;
-  limit: number;
-  offset: number;
-};
+  count: number
+  limit: number
+  offset: number
+}
 
 export type GetAssetsResponseProps = {
-  paginate: PaginateProps;
-  records: AssetProps[];
-};
+  paginate: PaginateProps
+  records: AssetProps[]
+}
 
-type BillingTypeValue = 'fixed_price' | 'auction' | null;
+type BillingTypeValue = 'fixed_price' | 'auction' | null
 
 export type GetAssetsParamsProps = {
-  limit?: number;
-  offset?: number;
+  limit?: number
+  offset?: number
   filters?: {
-    currency?: string;
+    currency?: string
     price?: {
-      lg?: number | string;
-      ge?: number | string;
-    };
-    billing_type?: BillingTypeValue;
-  };
-  sort?: string;
-};
+      lg?: number | string
+      ge?: number | string
+    }
+    billing_type?: BillingTypeValue
+  }
+  sort?: string
+}

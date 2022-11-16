@@ -1,6 +1,6 @@
 import { useEffect, useRef } from 'react'
 
-function useDebouncedCallback<A extends any[]>(
+function useDebouncedCallback<A extends unknown[]>(
   callback: (...args: A) => void,
   wait: number
 ) {

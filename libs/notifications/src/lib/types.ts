@@ -1,4 +1,4 @@
-import { CSSProperties, ReactNode } from 'react';
+import { CSSProperties, ReactNode } from 'react'
 
 interface ActionProps {
   name: string;
@@ -54,6 +54,6 @@ export interface NotificationProviderProps {
 }
 
 export interface ProviderContextProps {
-  enqueueNotification: (Snack: QueueableNotificationProps) => number;
+  enqueueNotification: (notification: QueueableNotificationProps) => void;
   closeNotification: (id: number) => void;
 }

@@ -3,7 +3,7 @@ import {
   getUserAssets,
   GetUserAssetsCallbackProps,
   GetUserAssetsResponseProps,
-  useAsync,
+  useAsync
 } from '@fafty/shared/api'
 import { SVGProps, useEffect, useMemo, useState } from 'react'
 import {
@@ -15,14 +15,14 @@ import {
   MouseSensor,
   TouchSensor,
   useSensor,
-  useSensors,
+  useSensors
 } from '@dnd-kit/core'
 import {
   arrayMove,
   useSortable,
   SortableContext,
   sortableKeyboardCoordinates,
-  rectSortingStrategy,
+  rectSortingStrategy
 } from '@dnd-kit/sortable'
 
 import { InfinityLoadChecker } from '../../common/infinityLoadChecker'
@@ -33,10 +33,10 @@ import { motion } from 'framer-motion'
 import classNames from 'classnames'
 
 interface ActionButtonProps {
-  title: string;
-  Icon: (props: SVGProps<SVGSVGElement>) => JSX.Element;
-  onAction: () => void;
-  className?: string;
+  title: string
+  Icon: (props: SVGProps<SVGSVGElement>) => JSX.Element
+  onAction: () => void
+  className?: string
 }
 /**
  * Action button for add or remove asset.
@@ -53,7 +53,7 @@ const ActionButton = ({
   title,
   Icon,
   onAction,
-  className,
+  className
 }: ActionButtonProps): JSX.Element => {
   return (
     <button
@@ -77,12 +77,12 @@ const ActionButton = ({
   )
 }
 type Props = {
-  item: AssetProps;
-  addable?: boolean;
-  removable?: boolean;
-  onAdd?: (token: string) => void;
-  onRemove?: (token: string) => void;
-};
+  item: AssetProps
+  addable?: boolean
+  removable?: boolean
+  onAdd?: (token: string) => void
+  onRemove?: (token: string) => void
+}
 
 /**
  * Asset item component for drag and drop. useSortable hook is used for drag and drop.
@@ -95,13 +95,13 @@ type Props = {
  * @returns {JSX.Element}
  * @example
  * <Item item={asset} addable={true} removable={false} onAdd={() => {}} onRemove={() => {}} />
-*/
+ */
 const Item = ({
   item,
   addable = false,
   removable = false,
   onAdd,
-  onRemove,
+  onRemove
 }: Props): JSX.Element => {
   const { isDragging, attributes, listeners, setNodeRef, transform } =
     useSortable({ id: item?.token, transition: null })
@@ -109,7 +109,7 @@ const Item = ({
   const initialStyles = {
     x: 0,
     y: 0,
-    scale: 1,
+    scale: 1
   }
   return (
     <motion.div
@@ -123,21 +123,21 @@ const Item = ({
               zIndex: isDragging ? 1000 : 0,
               boxShadow: isDragging
                 ? '0 0 0 1px rgba(63, 63, 68, 0.05), 0px 15px 15px 0 rgba(34, 33, 81, 0.25)'
-                : undefined,
+                : undefined
             }
           : initialStyles
       }
       transition={{
         duration: !isDragging ? 0.25 : 0,
         easings: {
-          type: 'spring',
+          type: 'spring'
         },
         scale: {
-          duration: 0.25,
+          duration: 0.25
         },
         zIndex: {
-          delay: isDragging ? 0 : 0.25,
-        },
+          delay: isDragging ? 0 : 0.25
+        }
       }}
       className="item"
       ref={setNodeRef}
@@ -147,8 +147,20 @@ const Item = ({
       <div className="item-wrapper">
         <div className="item-block">
           <span className="z-1 absolute right-1 top-1 mt-1 mr-1">
-            {addable && <ActionButton title={`Add ${item?.name} to collection`} Icon={PlusIcon} onAction={() => onAdd?.(item?.token)} />}
-            {removable && <ActionButton title={`Remove ${item?.name} from collection`} Icon={XMarkIcon} onAction={() => onRemove?.(item?.token)} />}
+            {addable && (
+              <ActionButton
+                title={`Add ${item?.name} to collection`}
+                Icon={PlusIcon}
+                onAction={() => onAdd?.(item?.token)}
+              />
+            )}
+            {removable && (
+              <ActionButton
+                title={`Remove ${item?.name} from collection`}
+                Icon={XMarkIcon}
+                onAction={() => onRemove?.(item?.token)}
+              />
+            )}
           </span>
           <div className="item-card">
             <div className="item-card-link">
@@ -158,8 +170,7 @@ const Item = ({
                     <Image
                       src={item.media?.src}
                       style={{
-                        backgroundColor:
-                          item.media?.dominant_color || undefined,
+                        backgroundColor: item.media?.dominant_color || undefined
                       }}
                       width={300}
                       height={300}
@@ -189,11 +200,11 @@ const Item = ({
 }
 
 interface DragAndDropAssetsProps {
-  initial: AssetProps[];
-  onChange: (assets: AssetProps[]) => void;
-  onDragStart: () => void;
-  onDragEnd: () => void;
-  hasError: boolean;
+  initial: AssetProps[]
+  onChange: (assets: AssetProps[]) => void
+  onDragStart: () => void
+  onDragEnd: () => void
+  hasError: boolean
 }
 /**
  * Drag and drop assets component.
@@ -206,8 +217,14 @@ interface DragAndDropAssetsProps {
  * @returns {JSX.Element}
  * @example
  * <DragAndDropAssets initial={assets} onChange={() => {}} onDragStart={() => {}} onDragEnd={() => {}} hasError={false} />
-*/
-const DragAndDropAssets = ({ initial, onDragStart, onDragEnd, onChange, hasError }: DragAndDropAssetsProps): JSX.Element => {
+ */
+const DragAndDropAssets = ({
+  initial,
+  onDragStart,
+  onDragEnd,
+  onChange,
+  hasError
+}: DragAndDropAssetsProps): JSX.Element => {
   const [assets, setAssets] = useState<AssetProps[]>(initial || [])
 
   // const [activeAssetToken, setActiveAssetToken] = useState<
@@ -218,18 +235,18 @@ const DragAndDropAssets = ({ initial, onDragStart, onDragEnd, onChange, hasError
     useSensor(MouseSensor, {
       // Require the mouse to move by 10 pixels before activating
       activationConstraint: {
-        distance: 10,
-      },
+        distance: 10
+      }
     }),
     useSensor(TouchSensor, {
       // Press delay of 150ms, with tolerance of 5px of movement
       activationConstraint: {
         delay: 150,
-        tolerance: 5,
-      },
+        tolerance: 5
+      }
     }),
     useSensor(KeyboardSensor, {
-      coordinateGetter: sortableKeyboardCoordinates,
+      coordinateGetter: sortableKeyboardCoordinates
     })
   )
 
@@ -267,17 +284,17 @@ const DragAndDropAssets = ({ initial, onDragStart, onDragEnd, onChange, hasError
 
   type QueryFiltersProps = {
     paginate: {
-      limit: number;
-      offset: number;
-    };
-  };
+      limit: number
+      offset: number
+    }
+  }
 
   const [localFiltersState, setLocalFiltersState] = useState<QueryFiltersProps>(
     {
       paginate: {
         limit: LIMIT,
-        offset: 0,
-      },
+        offset: 0
+      }
     }
   )
 
@@ -286,7 +303,7 @@ const DragAndDropAssets = ({ initial, onDragStart, onDragEnd, onChange, hasError
     GetUserAssetsCallbackProps
   >({
     callback: getUserAssets,
-    mapper,
+    mapper
   })
 
   const allowLoad = data
@@ -298,8 +315,8 @@ const DragAndDropAssets = ({ initial, onDragStart, onDragEnd, onChange, hasError
       ...prev,
       paginate: {
         ...prev.paginate,
-        offset: prev.paginate.offset + LIMIT,
-      },
+        offset: prev.paginate.offset + LIMIT
+      }
     }))
   }
 
@@ -310,8 +327,8 @@ const DragAndDropAssets = ({ initial, onDragStart, onDragEnd, onChange, hasError
       address: 'abcd',
       params: {
         limit: LIMIT,
-        offset: paginate.offset,
-      },
+        offset: paginate.offset
+      }
     })
   }, [call, localFiltersState])
 
@@ -334,10 +351,10 @@ const DragAndDropAssets = ({ initial, onDragStart, onDragEnd, onChange, hasError
     data?.paginate?.count,
     data?.records,
     localFiltersState.paginate.offset,
-    assets,
+    assets
   ])
 
-  // 
+  //
   const handleRemove = (token: string) => {
     setAssets((assets) => assets.filter((item) => item.token !== token))
   }
@@ -428,12 +445,14 @@ const DragAndDropAssets = ({ initial, onDragStart, onDragEnd, onChange, hasError
               'h-full w-full min-w-full rounded-md border-[2px] bg-gray-100 dark:bg-neutral-900/50',
               {
                 'border-gray-200 dark:border-neutral-900': !hasError,
-                'border-red-500': hasError,
+                'border-red-500': hasError
               }
             )}
           >
             <div className="w-full">
-              <span>Added to collection {assets.length} Items with sum {total} </span>
+              <span>
+                Added to collection {assets.length} Items with sum {total}{' '}
+              </span>
             </div>
             <div className="wrapper-items h-full w-full min-w-full">
               <div className="items grided small -my-2 h-full w-full min-w-full">

@@ -10,11 +10,11 @@ import classNames from 'classnames'
 import { motion } from 'framer-motion'
 
 type Props = {
-  children: ReactNode;
-  title: string;
-  description: string;
-  className?: string;
-};
+  children: ReactNode
+  title: string
+  description: string
+  className?: string
+}
 
 const MainLayout = ({ children, title, description, className }: Props) => {
   const [openedAuthModal, setOpenedAuthModal] = useState(false)
@@ -67,22 +67,22 @@ const MainLayout = ({ children, title, description, className }: Props) => {
           hidden: {
             opacity: 0,
             transition: {
-              duration: 0.2,
-            },
+              duration: 0.2
+            }
           },
           enter: {
             opacity: 1,
             transition: {
               duration: 0.2,
-              delay: 0.1,
-            },
+              delay: 0.1
+            }
           },
           exit: {
             opacity: 0,
             transition: {
-              duration: 0.2,
-            },
-          },
+              duration: 0.2
+            }
+          }
         }}
         transition={{ type: 'linear' }}
         className={classNames(className, 'relative mx-auto px-8')}

@@ -1,4 +1,3 @@
-// export { ThemeProvider, useTheme } from './lib/provider';
 import { getSystemTheme } from './lib/utils'
 
 export { default as ThemeProvider } from './lib/provider'

@@ -4,7 +4,7 @@ import {
   GetBundleAssetsBySlugParamsProps,
   GetBundleAssetsBySlugResponseProps,
   GetBundleParamsProps,
-  GetBundleResponseProps,
+  GetBundleResponseProps
 } from './types'
 
 const getBundle = async (
@@ -27,7 +27,7 @@ const putBundle = async (
   params?: PutBundleParamsProps
 ): Promise<GetBundleResponseProps> => {
   const { data } = await api.put(`/bundle/${params?.slug}`, {
-    bundle: params?.bundle,
+    bundle: params?.bundle
   })
 
   return data

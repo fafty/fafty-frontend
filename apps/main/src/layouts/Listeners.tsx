@@ -2,8 +2,8 @@ import { ReactElement, useEffect } from 'react'
 import { useAuth } from '../utils/auth'
 
 type Props = {
-  children: ReactElement | null;
-};
+  children: ReactElement | null
+}
 
 export const Listeners = ({ children }: Props) => {
   const auth = useAuth()
@@ -12,7 +12,7 @@ export const Listeners = ({ children }: Props) => {
     if (!auth.principal && auth.wallet) {
       auth.wallet?.logIn()
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [auth.wallet])
 
   return children

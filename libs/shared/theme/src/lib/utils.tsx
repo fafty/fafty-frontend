@@ -38,7 +38,7 @@ export const getSystemTheme = (e?: MediaQueryList | MediaQueryListEvent) => {
     return isDark ? 'dark' : 'light'
   }
 
-  return 'ligt'
+  return 'light'
 }
 
 export const encodeBase64 = (str: string) => {

@@ -5,7 +5,7 @@ import {
   Suspense,
   useLayoutEffect,
   Context,
-  useState,
+  useState
 } from 'react'
 import { Controller, useForm } from 'react-hook-form'
 import { EditorPlaceholder } from '@fafty/shared/ui'
@@ -18,24 +18,24 @@ import { ContextProps, Step1Props } from '../types'
 import { useComponentDidUpdate } from '@fafty/usehooks'
 
 interface EditorProps {
-  isAutocomplete?: boolean;
-  maxCharacters?: null | number;
-  isRichText?: boolean;
-  showTreeView?: boolean;
-  initialEditorState: null | string | EditorState;
-  placeholder?: string;
-  name: string;
-  hasError: boolean;
-  onChange: ChangeEventHandler;
-  namespace: string;
-  loading?: boolean;
+  isAutocomplete?: boolean
+  maxCharacters?: null | number
+  isRichText?: boolean
+  showTreeView?: boolean
+  initialEditorState: null | string | EditorState
+  placeholder?: string
+  name: string
+  hasError: boolean
+  onChange: ChangeEventHandler
+  namespace: string
+  loading?: boolean
 }
 
 const Editor = dynamic<EditorProps>(
   () => import('@fafty/text/editor').then((mod) => mod.Editor),
   {
     ssr: false,
-    loading: () => <EditorPlaceholder header={true} />,
+    loading: () => <EditorPlaceholder header={true} />
   }
 )
 
@@ -56,14 +56,14 @@ const SelectStep1 = ({ Context }: { Context: Context<ContextProps> }) => {
     reset,
     trigger,
     getValues,
-    formState: { errors, isValid },
+    formState: { errors, isValid }
   } = useForm({
     mode: 'onSubmit',
     reValidateMode: 'onSubmit',
     // shouldFocusError: true,
     defaultValues: {
-      ...stepData?.step1?.state,
-    },
+      ...stepData?.step1?.state
+    }
   } as never)
 
   /**
@@ -75,12 +75,12 @@ const SelectStep1 = ({ Context }: { Context: Context<ContextProps> }) => {
     (prevProps) => {
       if (!prevProps?.media?.id && stepData?.media?.id) {
         reset({
-          name: stepData.step1.state.name,
+          name: stepData.step1.state.name
         })
       }
     },
     {
-      media: stepData?.media,
+      media: stepData?.media
     }
   )
 
@@ -116,8 +116,8 @@ const SelectStep1 = ({ Context }: { Context: Context<ContextProps> }) => {
       step1: {
         state: getValues() as Step1Props,
         solved: isValidForm,
-        error: !isValidForm,
-      },
+        error: !isValidForm
+      }
     })
   }
 
@@ -127,8 +127,8 @@ const SelectStep1 = ({ Context }: { Context: Context<ContextProps> }) => {
         step1: {
           state: getValues() as Step1Props,
           solved: isValid,
-          error: !isValid,
-        },
+          error: !isValid
+        }
       })
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -157,7 +157,7 @@ const SelectStep1 = ({ Context }: { Context: Context<ContextProps> }) => {
                 'mt-1 h-12 w-full rounded-md border p-3 text-gray-700 shadow-sm focus:border-gray-500 focus:shadow focus:outline-none dark:bg-neutral-900/90 dark:text-gray-100',
                 {
                   'border-red-500': errors.name,
-                  'border-gray-200 dark:border-neutral-800': !errors.name,
+                  'border-gray-200 dark:border-neutral-800': !errors.name
                 }
               )}
               placeholder="Enter name"
@@ -234,7 +234,7 @@ const SelectStep1 = ({ Context }: { Context: Context<ContextProps> }) => {
             <Editor
               {...field}
               {...(errors.unlockable_content && {
-                'aria-invalid': true,
+                'aria-invalid': true
               })}
               initialEditorState={field.value}
               name="unlockable_content"

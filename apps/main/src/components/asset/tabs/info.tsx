@@ -2,7 +2,7 @@ import { useRouter } from 'next/router'
 import {
   useAsync,
   getAssetInfo,
-  AssetInfoResponseProps,
+  AssetInfoResponseProps
 } from '@fafty/shared/api'
 
 export const Info = () => {
@@ -11,7 +11,7 @@ export const Info = () => {
 
   const { isLoading, data } = useAsync<AssetInfoResponseProps, string>({
     callback: () => getAssetInfo(slug as string),
-    withMount: true,
+    withMount: true
   })
 
   console.log('info')

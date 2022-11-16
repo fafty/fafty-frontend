@@ -7,22 +7,22 @@ import plugWallet, { WalletInterface } from './wallet/plug'
 import { Principal } from '@dfinity/principal'
 
 export interface AuthContext {
-  isShow: boolean;
-  showModal: (show: boolean) => void;
+  isShow: boolean
+  showModal: (show: boolean) => void
 
-  wallet?: WalletInterface;
-  principal?: Principal;
-  agent?: HttpAgent;
+  wallet?: WalletInterface
+  principal?: Principal
+  agent?: HttpAgent
 
-  balance: bigint | null;
+  balance: bigint | null
 
-  usePlug: () => void;
-  useInternetIdentity: () => void;
+  usePlug: () => void
+  useInternetIdentity: () => void
 
-  setPrincipal: (principal: Principal | undefined) => void;
-  setAgent: (agent: HttpAgent | undefined) => void;
+  setPrincipal: (principal: Principal | undefined) => void
+  setAgent: (agent: HttpAgent | undefined) => void
 
-  setBalance: (data: bigint | null) => void;
+  setBalance: (data: bigint | null) => void
 }
 
 // Provider hook that creates auth object and handles state
@@ -65,7 +65,7 @@ export function useProvideAuth(): AuthContext {
       balance,
       wallet,
       usePlug,
-      useInternetIdentity,
+      useInternetIdentity
     }
   }
 

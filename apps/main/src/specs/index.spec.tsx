@@ -1,4 +1,3 @@
-
 /**
  * @jest-environment ./src/specs/custom-environment-with-textencoder
  */
@@ -11,8 +10,8 @@ mockIntersectionObserver()
 
 jest.mock('next/router', () => ({
   useRouter() {
-    return ({
-      route: '/', 
+    return {
+      route: '/',
       pathname: '',
       query: '',
       asPath: '',
@@ -23,10 +22,9 @@ jest.mock('next/router', () => ({
       },
       beforePopState: jest.fn(() => null),
       prefetch: jest.fn(() => null)
-    })
-  },
+    }
+  }
 }))
-
 
 describe('Index', () => {
   it('should render successfully', () => {

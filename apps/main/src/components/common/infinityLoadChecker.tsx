@@ -2,15 +2,15 @@ import { MutableRefObject, useEffect, useRef } from 'react'
 import { useOnScreen } from '@fafty/usehooks'
 
 type Props = {
-  allowLoad: boolean;
-  isLoading: boolean;
-  loadMore: () => void;
-};
+  allowLoad: boolean
+  isLoading: boolean
+  loadMore: () => void
+}
 
 export const InfinityLoadChecker = ({
   isLoading,
   allowLoad,
-  loadMore,
+  loadMore
 }: Props) => {
   const loaderAreaRef = useRef<HTMLDivElement | null>(null)
   const onScreen = useOnScreen<HTMLDivElement>(

@@ -3,10 +3,10 @@ import { ArrowDownSIcon, ArrowUpSIcon } from '@remixicons/react/line'
 import classNames from 'classnames'
 
 type Props = {
-  title: string;
-  initialState?: boolean;
-  children?: ReactElement;
-};
+  title: string
+  initialState?: boolean
+  children?: ReactElement
+}
 
 export const Panel = ({ children, initialState, title }: Props) => {
   const [isOpened, setIsOpened] = useState(!!initialState)
@@ -18,7 +18,7 @@ export const Panel = ({ children, initialState, title }: Props) => {
         className={classNames(
           'flex cursor-pointer items-center justify-between rounded dark:hover:bg-neutral-700',
           {
-            'mb-2.5': isOpened,
+            'mb-2.5': isOpened
           }
         )}
       >

@@ -6,15 +6,11 @@ import isClient from '../utils/isClient'
 import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/24/outline'
 import classNames from 'classnames'
 import { useDebouncedCallback } from '@fafty/usehooks'
-import {
-  AssetProps,
-  BundleProps,
-  CollectionProps,
-} from '@fafty/shared/api'
+import { AssetProps, BundleProps, CollectionProps } from '@fafty/shared/api'
 
 interface Props<T> {
-  type: 'asset' | 'bundle' | 'collection';
-  items: T;
+  type: 'asset' | 'bundle' | 'collection'
+  items: T
 }
 
 /**
@@ -22,7 +18,7 @@ interface Props<T> {
  */
 const Items = <T extends AssetProps[] | BundleProps[] | CollectionProps[]>({
   type,
-  items,
+  items
 }: Props<T>): JSX.Element => {
   const itemsContainerRef = useRef<HTMLDivElement | null>(null)
   const [arrows, setArrows] = useState({ left: false, right: false })
@@ -41,7 +37,7 @@ const Items = <T extends AssetProps[] | BundleProps[] | CollectionProps[]>({
 
     setArrows({
       left: hasScrollbar && !scrolledToLeft,
-      right: hasScrollbar && !scrolledToRight,
+      right: hasScrollbar && !scrolledToRight
     })
   }
   const debouncedToggleArrow = useDebouncedCallback(() => {
@@ -60,7 +56,7 @@ const Items = <T extends AssetProps[] | BundleProps[] | CollectionProps[]>({
     // Add event listener
     const events = [
       { event: 'resize', callback: debouncedToggleArrow },
-      { event: 'scroll', callback: debouncedToggleArrow },
+      { event: 'scroll', callback: debouncedToggleArrow }
     ]
     if (refCurrent) {
       events.forEach(({ event, callback }) => {
@@ -95,7 +91,7 @@ const Items = <T extends AssetProps[] | BundleProps[] | CollectionProps[]>({
     items &&
       items.scroll({
         left: scrollLeft,
-        behavior: 'smooth',
+        behavior: 'smooth'
       })
   }
 
@@ -107,7 +103,7 @@ const Items = <T extends AssetProps[] | BundleProps[] | CollectionProps[]>({
           left: direction === 'left',
           right: direction === 'right',
           'opacity-0': !isVisible,
-          'opacity-100': isVisible,
+          'opacity-100': isVisible
         })}
       >
         <div className="navigation">
@@ -115,7 +111,7 @@ const Items = <T extends AssetProps[] | BundleProps[] | CollectionProps[]>({
             className="button"
             {...{
               'aria-label':
-                direction === 'right' ? 'Next Items' : 'Previous Items',
+                direction === 'right' ? 'Next Items' : 'Previous Items'
             }}
             role="button"
             {...(!isVisible && { 'aria-hidden': true, 'aria-disabled': true })}
@@ -159,9 +155,7 @@ const Items = <T extends AssetProps[] | BundleProps[] | CollectionProps[]>({
                   case 'asset':
                     return <AssetItem key={index} item={item as AssetProps} />
                   case 'bundle':
-                    return (
-                      <BundleItem key={index} item={item as BundleProps} />
-                    )
+                    return <BundleItem key={index} item={item as BundleProps} />
                   case 'collection':
                     return (
                       <CollectionItem

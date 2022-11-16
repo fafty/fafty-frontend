@@ -1,4 +1,3 @@
-
 export type GetPresignFileResponseProps = {
   // url: string;
   // fields: {
@@ -15,15 +14,14 @@ export type GetPresignFileResponseProps = {
   url: string
   fields: { [type: string]: string }
   headers: { [type: string]: string }
-};
+}
 //UppyFile<Record<string, unknown>, Record<string, unknown>>;
 export type GetPresignFileParamsProps = {
-  filename: string;
-  type?: string;
-};
+  filename: string
+  type?: string
+}
 
 export type GetPresignFileCallbackProps = {
-  endpoint: string;
-  params?: GetPresignFileParamsProps;
-};
-
+  endpoint: string
+  params?: GetPresignFileParamsProps
+}

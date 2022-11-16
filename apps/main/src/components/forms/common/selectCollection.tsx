@@ -11,26 +11,26 @@ import { MutableRefObject, SVGProps, useEffect, useRef, useState } from 'react'
 
 // TODO extend exist types from @fafty/shared/api
 interface CollectionProps {
-  token: string;
-  name: string;
-  description: string;
-  supply: number;
+  token: string
+  name: string
+  description: string
+  supply: number
   cover?: {
-    src: string;
-    dominant_color: string;
-  };
-  speed: string;
-  popularity: string;
-  fees: string;
+    src: string
+    dominant_color: string
+  }
+  speed: string
+  popularity: string
+  fees: string
 }
 
 interface ResponceProps {
-  records: CollectionProps[];
+  records: CollectionProps[]
 }
 
 interface Props {
-  initial: string;
-  onChange: (value: string) => void;
+  initial: string
+  onChange: (value: string) => void
 }
 
 /**
@@ -41,7 +41,9 @@ interface Props {
  * @example
  * <CheckIcon className="w-5 h-5 text-white" />
  */
-function CheckIcon(props: JSX.IntrinsicAttributes & SVGProps<SVGSVGElement>): JSX.Element {
+function CheckIcon(
+  props: JSX.IntrinsicAttributes & SVGProps<SVGSVGElement>
+): JSX.Element {
   return (
     <svg viewBox="0 0 24 24" fill="none" {...props}>
       <circle className="fill-blue-600" cx={12} cy={12} r={12} />
@@ -95,7 +97,7 @@ const SelectCollection = ({ initial, onChange }: Props): JSX.Element => {
 
     setArrows({
       left: hasScrollbar && !scrolledToLeft,
-      right: hasScrollbar && !scrolledToRight,
+      right: hasScrollbar && !scrolledToRight
     })
   }
   const debouncedtoggleArrow = useDebouncedCallback(() => {
@@ -114,7 +116,7 @@ const SelectCollection = ({ initial, onChange }: Props): JSX.Element => {
     // Add event listener
     const events = [
       { event: 'resize', callback: debouncedtoggleArrow },
-      { event: 'scroll', callback: debouncedtoggleArrow },
+      { event: 'scroll', callback: debouncedtoggleArrow }
     ]
     if (refCurrent) {
       events.forEach(({ event, callback }) => {
@@ -133,7 +135,7 @@ const SelectCollection = ({ initial, onChange }: Props): JSX.Element => {
         })
       }
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   const onScreen: boolean = useOnScreen<HTMLDivElement>(
@@ -144,7 +146,7 @@ const SelectCollection = ({ initial, onChange }: Props): JSX.Element => {
     if (onScreen) {
       scrollItemsToCenterSelected(selected, 0)
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [onScreen])
 
   useEffect(() => {
@@ -153,7 +155,7 @@ const SelectCollection = ({ initial, onChange }: Props): JSX.Element => {
     }
     onChange(selected)
     setPreviousSelected(selected)
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selected])
 
   useEffect(() => {
@@ -161,7 +163,7 @@ const SelectCollection = ({ initial, onChange }: Props): JSX.Element => {
       const defaultSelected = data && data.find((b) => b.token === initial)
       setSelected(defaultSelected?.token || '')
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [initial, loading])
 
   const fetchData = async () => {
@@ -192,7 +194,7 @@ const SelectCollection = ({ initial, onChange }: Props): JSX.Element => {
     items &&
       items.scroll({
         left: scrollLeft,
-        behavior: 'smooth',
+        behavior: 'smooth'
       })
   }
 
@@ -213,7 +215,7 @@ const SelectCollection = ({ initial, onChange }: Props): JSX.Element => {
       setTimeout(function () {
         if (scrollSize?.left && scrollSize.width) {
           itemsContainerRef.current?.scroll({
-            left: parentNode?.offsetLeft - scrollSize.width,
+            left: parentNode?.offsetLeft - scrollSize.width
           })
         }
       }, delay)
@@ -227,8 +229,8 @@ const SelectCollection = ({ initial, onChange }: Props): JSX.Element => {
    * @example
    * <Button direction="left" />
    * <Button direction="right" />
-   * 
-  */
+   *
+   */
   const Button = ({ direction }: { direction: string }): JSX.Element => {
     const isVisible = direction === 'right' ? arrows.right : arrows.left
     return (
@@ -237,7 +239,7 @@ const SelectCollection = ({ initial, onChange }: Props): JSX.Element => {
           left: direction === 'left',
           right: direction === 'right',
           'opacity-0': !isVisible,
-          'opacity-100': isVisible,
+          'opacity-100': isVisible
         })}
       >
         <div className="navigation">
@@ -245,7 +247,7 @@ const SelectCollection = ({ initial, onChange }: Props): JSX.Element => {
             className="button"
             {...{
               'aria-label':
-                direction === 'right' ? 'Next Items' : 'Previous Items',
+                direction === 'right' ? 'Next Items' : 'Previous Items'
             }}
             role="button"
             {...(!isVisible && { 'aria-hidden': true, 'aria-disabled': true })}
@@ -289,11 +291,11 @@ const SelectCollection = ({ initial, onChange }: Props): JSX.Element => {
             value="none"
             className={({ checked }) =>
               classNames(
-                'item my-2 focus:outline-none flex cursor-pointer rounded-lg overflow-hidden relative shadow',
+                'item relative my-2 flex cursor-pointer overflow-hidden rounded-lg shadow focus:outline-none',
                 {
                   'ring-2 ring-blue-600': checked,
-                  'bg-white bg-opacity-75 text-slate-900 dark:text-slate-50 dark:bg-neutral-700':
-                    checked,
+                  'bg-white bg-opacity-75 text-slate-900 dark:bg-neutral-700 dark:text-slate-50':
+                    checked
                 }
               )
             }
@@ -301,22 +303,22 @@ const SelectCollection = ({ initial, onChange }: Props): JSX.Element => {
             {({ checked }) => (
               <div
                 id="none"
-                className="w-[15rem] select-none flex items-stretch"
+                className="flex w-[15rem] select-none items-stretch"
               >
-                <div className="max-w-sm mx-auto bg-white shadow-lg ring-1 ring-black/5 rounded-xl flex items-center gap-6 dark:bg-neutral-800 dark:highlight-white/5 transition ease-in-out duration-150 hover:bg-neutral-100 dark:hover:bg-neutral-700 self-end">
+                <div className="dark:highlight-white/5 mx-auto flex max-w-sm items-center gap-6 self-end rounded-xl bg-white shadow-lg ring-1 ring-black/5 transition duration-150 ease-in-out hover:bg-neutral-100 dark:bg-neutral-800 dark:hover:bg-neutral-700">
                   <div className="absolute top-[0.3rem] right-[0.3rem]">
                     {checked && <CheckIcon className="h-4 w-4" />}
                   </div>
-                  <div className="absolute -left-6 w-24 h-24 rounded-full shadow-lg bg-blue-100 flex items-center justify-center">
-                    <ImageIcon strokeWidth="2" className="w-16 h-16" />
+                  <div className="absolute -left-6 flex h-24 w-24 items-center justify-center rounded-full bg-blue-100 shadow-lg">
+                    <ImageIcon strokeWidth="2" className="h-16 w-16" />
                   </div>
                   <div className="flex flex-col py-4 pl-20 pr-2">
-                    <strong className="text-slate-900 text-sm font-medium dark:text-slate-200">
+                    <strong className="text-sm font-medium text-slate-900 dark:text-slate-200">
                       Without Collection
                     </strong>
                     <div className="flex justify-center">
-                      <div className="flex flex-row space-x-4 mt-1">
-                        <span className="text-slate-500 text-xs dark:text-slate-400 flex flex-col items-center justify-center">
+                      <div className="mt-1 flex flex-row space-x-4">
+                        <span className="flex flex-col items-center justify-center text-xs text-slate-500 dark:text-slate-400">
                           You create item not included to the collection.
                         </span>
                       </div>
@@ -334,11 +336,11 @@ const SelectCollection = ({ initial, onChange }: Props): JSX.Element => {
                 value={collection.token}
                 className={({ checked }) =>
                   classNames(
-                    'item my-2 focus:outline-none flex cursor-pointer rounded-lg overflow-hidden relative shadow',
+                    'item relative my-2 flex cursor-pointer overflow-hidden rounded-lg shadow focus:outline-none',
                     {
                       'ring-2 ring-blue-600': checked,
-                      'bg-white bg-opacity-75 text-slate-900 dark:text-slate-50 dark:bg-neutral-700':
-                        checked,
+                      'bg-white bg-opacity-75 text-slate-900 dark:bg-neutral-700 dark:text-slate-50':
+                        checked
                     }
                   )
                 }
@@ -346,29 +348,29 @@ const SelectCollection = ({ initial, onChange }: Props): JSX.Element => {
                 {({ checked }) => (
                   <div
                     id={collection.token}
-                    className="flex items-stretch select-none"
+                    className="flex select-none items-stretch"
                   >
-                    <div className="self-stretch max-w-sm mx-auto bg-white shadow-lg ring-1 ring-black/5 rounded-xl flex items-center gap-6 dark:bg-neutral-800 dark:highlight-white/5 transition ease-in-out duration-150 hover:bg-neutral-100 dark:hover:bg-neutral-700 ">
+                    <div className="dark:highlight-white/5 mx-auto flex max-w-sm items-center gap-6 self-stretch rounded-xl bg-white shadow-lg ring-1 ring-black/5 transition duration-150 ease-in-out hover:bg-neutral-100 dark:bg-neutral-800 dark:hover:bg-neutral-700 ">
                       <div className="absolute top-[0.3rem] right-[0.3rem]">
                         {checked && <CheckIcon className="h-4 w-4" />}
                       </div>
-                      <div className="absolute -left-6 w-24 h-24 rounded-full shadow-lg bg-blue-100 flex items-center justify-center">
+                      <div className="absolute -left-6 flex h-24 w-24 items-center justify-center rounded-full bg-blue-100 shadow-lg">
                         {collection.cover && (
                           <Image
                             src={collection.cover?.src || ''}
                             alt={collection.name}
-                            className="w-24 h-24 inline-block rounded-full"
+                            className="inline-block h-24 w-24 rounded-full"
                             width="96"
                             height="96"
                           />
                         )}
                       </div>
-                      <div className="flex flex-col py-4 pl-20 pr-2 inset-0">
+                      <div className="inset-0 flex flex-col py-4 pl-20 pr-2">
                         <strong className="text-sm font-medium text-slate-900 dark:text-slate-200">
                           {collection.name}
                         </strong>
                         <div className="flex">
-                          <div className="flex flex-row space-x-4 mt-1">
+                          <div className="mt-1 flex flex-row space-x-4">
                             <span className="text-[0.70rem] text-slate-500 dark:text-slate-400">
                               <span className="font-medium">
                                 {collection.supply}

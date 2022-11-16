@@ -9,7 +9,7 @@ import {
   disableAnimation,
   encodeBase64,
   getSystemTheme,
-  getTheme,
+  getTheme
 } from './utils'
 
 const colorSchemes = ['light', 'dark']
@@ -24,14 +24,12 @@ const ThemeProvider: React.FC<ThemeProviderProps> = ({
   attribute = 'data-theme',
   value,
   children,
-  nonce,
+  nonce
 }) => {
   const [theme, setThemeState] = useState(() =>
     getTheme(storageKey, defaultTheme)
   )
-  const [resolvedTheme, setResolvedTheme] = useState(() =>
-    getTheme(storageKey)
-  )
+  const [resolvedTheme, setResolvedTheme] = useState(() => getTheme(storageKey))
   const attrs = !value ? themes : Object.values(value)
 
   const applyTheme = useCallback((theme: string) => {
@@ -56,16 +54,14 @@ const ThemeProvider: React.FC<ThemeProviderProps> = ({
     }
 
     if (enableColorScheme) {
-      const fallback = colorSchemes.includes(defaultTheme)
-        ? defaultTheme
-        : null
+      const fallback = colorSchemes.includes(defaultTheme) ? defaultTheme : null
       const colorScheme = colorSchemes.includes(resolved) ? resolved : fallback
       // @ts-ignore
       d.style.colorScheme = colorScheme
     }
 
     enable?.()
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   const setTheme = useCallback((theme: string) => {
@@ -75,7 +71,7 @@ const ThemeProvider: React.FC<ThemeProviderProps> = ({
     } catch (e) {
       // Unsupported
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   const handleMediaQuery = useCallback(
@@ -115,13 +111,13 @@ const ThemeProvider: React.FC<ThemeProviderProps> = ({
 
     window.addEventListener('storage', handleStorage)
     return () => window.removeEventListener('storage', handleStorage)
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [setTheme])
 
   // Whenever theme or forcedTheme changes, apply it
   useEffect(() => {
     theme && applyTheme(theme)
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [theme])
 
   const contextValue: ProviderContextProps = {
@@ -132,7 +128,7 @@ const ThemeProvider: React.FC<ThemeProviderProps> = ({
     systemTheme: (enableSystem ? resolvedTheme : undefined) as
       | 'light'
       | 'dark'
-      | undefined,
+      | undefined
   }
   return (
     <Context.Provider value={contextValue}>
@@ -148,7 +144,7 @@ const ThemeProvider: React.FC<ThemeProviderProps> = ({
           value,
           children,
           attrs,
-          nonce,
+          nonce
         }}
       />
       {children}
@@ -165,7 +161,7 @@ const ThemeScript = memo(
     defaultTheme,
     value,
     attrs,
-    nonce,
+    nonce
   }: ThemeProviderProps & { attrs: string[]; defaultTheme: string }) => {
     const defaultSystem = defaultTheme === 'system'
 
@@ -187,14 +183,12 @@ const ThemeScript = memo(
         return ''
       }
 
-      const fallback = colorSchemes.includes(defaultTheme)
-        ? defaultTheme
-        : null
+      const fallback = colorSchemes.includes(defaultTheme) ? defaultTheme : null
 
       if (fallback) {
         return `if(e==='light'||e==='dark'||!e)d.style.colorScheme=e||'${defaultTheme}'`
       } else {
-        return 'if(e===\'light\'||e===\'dark\')d.style.colorScheme=e'
+        return "if(e==='light'||e==='dark')d.style.colorScheme=e"
       }
     })()
 
@@ -204,7 +198,7 @@ const ThemeScript = memo(
       setColorScheme = true
     ) => {
       const resolvedName = value ? value[name] : name
-      const val = literal ? name + '|| \'\'' : `'${resolvedName}'`
+      const val = literal ? name + "|| ''" : `'${resolvedName}'`
       let text = ''
 
       // MUCH faster to set colorScheme alongside HTML attribute/class

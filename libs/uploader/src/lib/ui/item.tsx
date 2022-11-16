@@ -8,10 +8,10 @@ import Uppy, { FileRemoveReason } from '@uppy/core'
 
 const Label = ({
   item,
-  progress,
+  progress
 }: {
-  item: ThumbnailProps;
-  progress: ProgressProps;
+  item: ThumbnailProps
+  progress: ProgressProps
 }): null | JSX.Element => {
   const size = (value: number) => {
     if (value === 0) return 0 + ' B'
@@ -37,14 +37,8 @@ const Label = ({
   // return label html with state
   return (
     <div className="action">
-       {item.state === 'uploading' && (
-        calculateProgress()
-      )}
-      {item.state === 'complete' && item.type === 'video' && (
-        <span>
-          Video
-        </span>
-      )}
+      {item.state === 'uploading' && calculateProgress()}
+      {item.state === 'complete' && item.type === 'video' && <span>Video</span>}
     </div>
   )
 }
@@ -53,36 +47,33 @@ const Item = ({
   engine,
   item,
   // previewHeight,
-  onAction,
+  onAction
 }: {
   engine: Uppy
-  item: ThumbnailProps;
+  item: ThumbnailProps
   // previewHeight: number,
   onAction: ({
     id,
     globalId,
-    action,
+    action
   }: {
-    id: string;
-    globalId?: string;
-    action: string;
-    reason: FileRemoveReason;
-  }) => void;
+    id: string
+    globalId?: string
+    action: string
+    reason: FileRemoveReason
+  }) => void
 }) => {
   const [progress, setProgress] = useState<ProgressProps>({
     percentage: 0,
     bytesUploaded: 0,
-    bytesTotal: 0,
+    bytesTotal: 0
   })
   const [src, setSrc] = useState<string>()
-  engine.on(
-    'upload-progress',
-    (file, progress: ProgressProps) => {
-      if (file && item && item.id === file.id) {
-        setProgress(progress)
-      }
+  engine.on('upload-progress', (file, progress: ProgressProps) => {
+    if (file && item && item.id === file.id) {
+      setProgress(progress)
     }
-  )
+  })
 
   const assetsVideoRef = useRef<HTMLVideoElement>(null)
   // const onScreen: boolean = useOnScreen<HTMLVideoElement>(assetsVideoRef, '-10px');
@@ -108,7 +99,7 @@ const Item = ({
     } else if (item.src) {
       setSrc(item.src)
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   return (
@@ -116,7 +107,7 @@ const Item = ({
       className={classNames(
         {
           error: item.state === 'error',
-          complete: item.state === 'complete',
+          complete: item.state === 'complete'
         },
         'attachment-preview image'
       )}
@@ -131,7 +122,7 @@ const Item = ({
               id: item.id,
               globalId: item.id,
               action: 'remove',
-              reason: 'removed-by-user',
+              reason: 'removed-by-user'
             })
           }
           className="delete z-1 absolute top-2 right-2 m-1 hidden rounded-full bg-gray-600 p-1 text-gray-100 hover:bg-gray-500 focus:outline-none dark:bg-neutral-700 dark:hover:bg-neutral-600"

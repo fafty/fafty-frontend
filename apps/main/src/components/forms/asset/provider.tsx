@@ -2,7 +2,7 @@ import { useState, ReactNode, useCallback, useEffect } from 'react'
 import {
   AssetProps,
   CommentsOrderType,
-  CommentsModerationType,
+  CommentsModerationType
 } from '@fafty/shared/api'
 import Context from './context'
 import { FormProps, SetStepDataProps, StepsProps } from './types'
@@ -15,54 +15,54 @@ const defaultStepsData: StepsProps = {
     metadata: {
       size: 0,
       filename: '',
-      mime_type: '',
-    },
+      mime_type: ''
+    }
   },
   step1: {
     state: {
       name: '',
       description: null,
       unlockable_content: null,
-      sensitive_content: false,
+      sensitive_content: false
     },
     solved: false,
-    error: false,
+    error: false
   },
   step2: {
     state: {
       blockchain: 'dfinity',
       supply_units: 1,
-      collection_token: '',
+      collection_token: ''
     },
     solved: false,
-    error: false,
+    error: false
   },
   step3: {
     state: {
       allow_ratings: true,
       comments_moderation: '' as CommentsModerationType,
       comments_order: 'newest' as CommentsOrderType,
-      tags: [],
+      tags: []
     },
     solved: false,
-    error: false,
+    error: false
   },
   step4: {
     state: {
-      is_checked: false,
+      is_checked: false
     },
     solved: false,
-    error: false,
-  },
+    error: false
+  }
 }
 
 interface Props {
-  children: ReactNode;
-  onChangeDismiss: (data: { title: string; disabled: boolean }) => void;
-  rawDataCallback: boolean;
-  defaultData?: AssetProps;
-  onRawDataCallback: (data: FormProps) => void;
-  onFinished: () => void;
+  children: ReactNode
+  onChangeDismiss: (data: { title: string; disabled: boolean }) => void
+  rawDataCallback: boolean
+  defaultData?: AssetProps
+  onRawDataCallback: (data: FormProps) => void
+  onFinished: () => void
 }
 
 /**
@@ -83,7 +83,7 @@ interface Props {
  *  onFinished={onFinished}
  *  defaultData={defaultData}
  * />
- * 
+ *
  */
 const FormAssetContextProvider = ({
   onChangeDismiss,
@@ -91,7 +91,7 @@ const FormAssetContextProvider = ({
   onRawDataCallback,
   onFinished,
   defaultData,
-  children,
+  children
 }: Props): JSX.Element => {
   const [step1Answered, setStep1Answered] = useState(false)
   const [step2Answered, setStep2Answered] = useState(false)
@@ -107,8 +107,8 @@ const FormAssetContextProvider = ({
       metadata: {
         size: defaultData?.media?.size || 0,
         filename: defaultData?.media?.filename || '',
-        mime_type: defaultData?.media?.mime_type || '',
-      },
+        mime_type: defaultData?.media?.mime_type || ''
+      }
     },
     step1: {
       state: {
@@ -119,22 +119,22 @@ const FormAssetContextProvider = ({
             ? defaultData?.description
             : '',
         unlockable_content: null,
-        sensitive_content: !!defaultData?.sensitive_content,
+        sensitive_content: !!defaultData?.sensitive_content
       },
       solved: !!defaultData?.description,
-      error: false,
+      error: false
     },
     step2: {
       state: {
         blockchain: defaultData?.blockchain || 'dfinity',
         supply_units: defaultData?.available_supply_units || 1,
-        collection_token: defaultData?.collection_token || '',
+        collection_token: defaultData?.collection_token || ''
       },
       solved:
         !!defaultData?.available_supply_units &&
         !!defaultData?.collection_token &&
         !!defaultData?.blockchain,
-      error: false,
+      error: false
     },
     step3: {
       state: {
@@ -143,21 +143,21 @@ const FormAssetContextProvider = ({
           defaultData?.comments_moderation || ('' as CommentsModerationType),
         comments_order:
           defaultData?.comments_order || ('newest' as CommentsOrderType),
-        tags: defaultData?.tags || [],
+        tags: defaultData?.tags || []
       },
       solved:
         !!defaultData?.tags?.length &&
         !!defaultData?.comments_moderation &&
         !!defaultData?.comments_order,
-      error: false,
+      error: false
     },
     step4: {
       state: {
-        is_checked: !!defaultData,
+        is_checked: !!defaultData
       },
       solved: !!defaultData,
-      error: false,
-    },
+      error: false
+    }
   })
 
   useEffect(() => {
@@ -166,7 +166,7 @@ const FormAssetContextProvider = ({
         media: stepData.media,
         ...stepData.step1.state,
         ...stepData.step2.state,
-        ...stepData.step3.state,
+        ...stepData.step3.state
       })
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -181,7 +181,7 @@ const FormAssetContextProvider = ({
     if (step1Answered && stepData.media.id) {
       onChangeDismiss({
         title: 'Close and save as draft',
-        disabled: false,
+        disabled: false
       })
     }
 
@@ -189,14 +189,14 @@ const FormAssetContextProvider = ({
       onChangeDismiss({
         title:
           'The button is not active because there are errors in some fields',
-        disabled: true,
+        disabled: true
       })
     }
 
     if ((!step1Answered && !stepData.media.id) || finished) {
       onChangeDismiss({
         title: 'Close',
-        disabled: false,
+        disabled: false
       })
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -230,7 +230,7 @@ const FormAssetContextProvider = ({
     setFinished,
     stepData,
     setStepData: onSetStepData,
-    clearState,
+    clearState
   }
 
   return <Context.Provider value={contextValues}>{children}</Context.Provider>

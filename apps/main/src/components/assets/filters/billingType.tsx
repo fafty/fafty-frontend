@@ -2,27 +2,27 @@ import { RadioGroup } from '@headlessui/react'
 import classNames from 'classnames'
 import { AnimatePresence, motion } from 'framer-motion'
 
-export type BillingTypeValue = 'fixed_price' | 'auction' | null;
+export type BillingTypeValue = 'fixed_price' | 'auction' | null
 
 export const BILLING_TYPE_OPTIONS = [
   {
     title: 'All',
-    value: null,
+    value: null
   },
   {
     title: 'Fixed price',
-    value: 'fixed_price',
+    value: 'fixed_price'
   },
   {
     title: 'Auction',
-    value: 'auction',
-  },
+    value: 'auction'
+  }
 ]
 
 type Props = {
-  value?: BillingTypeValue;
-  onChange: (value: BillingTypeValue) => void;
-};
+  value?: BillingTypeValue
+  onChange: (value: BillingTypeValue) => void
+}
 
 export const BillingType = ({ value = null, onChange }: Props) => {
   return (
@@ -38,7 +38,7 @@ export const BillingType = ({ value = null, onChange }: Props) => {
                 <div
                   className={classNames(
                     {
-                      'flex items-center justify-center': checked,
+                      'flex items-center justify-center': checked
                     },
                     'mr-2.5 h-4 w-4 rounded-full border border-blue-700 dark:border-gray-200'
                   )}

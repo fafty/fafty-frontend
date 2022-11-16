@@ -4,7 +4,7 @@ import {
   GetCollectionAssetsBySlugParamsProps,
   GetCollectionAssetsBySlugResponseProps,
   GetCollectionParamsProps,
-  GetCollectionResponseProps,
+  GetCollectionResponseProps
 } from './types'
 
 const getCollection = async (
@@ -27,7 +27,7 @@ const putCollection = async (
   params?: PutCollectionParamsProps
 ): Promise<GetCollectionResponseProps> => {
   const { data } = await api.put(`/collection/${params?.slug}`, {
-    collection: params?.collection,
+    collection: params?.collection
   })
 
   return data

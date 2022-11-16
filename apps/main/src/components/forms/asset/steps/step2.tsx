@@ -24,16 +24,16 @@ const SelectStep2 = ({ Context }: { Context: Context<ContextProps> }) => {
     watch,
     getValues,
     trigger,
-    formState: { errors, isValid },
+    formState: { errors, isValid }
   } = useForm({
     defaultValues: {
       blockchain: stepData?.step2?.state?.blockchain || 'dfinity',
       collection_token: stepData?.step2?.state?.collection_token,
-      supply_units: stepData?.step2?.state?.supply_units || 1,
+      supply_units: stepData?.step2?.state?.supply_units || 1
     },
     mode: 'onChange',
     reValidateMode: 'onChange',
-    shouldFocusError: true,
+    shouldFocusError: true
   })
 
   const formFields = watch()
@@ -78,8 +78,8 @@ const SelectStep2 = ({ Context }: { Context: Context<ContextProps> }) => {
       step2: {
         solved: isValidStore,
         state: getValues(),
-        error: !isValidStore,
-      },
+        error: !isValidStore
+      }
     })
   }
 

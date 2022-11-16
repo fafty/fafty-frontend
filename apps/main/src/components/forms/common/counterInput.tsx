@@ -1,11 +1,10 @@
-
 import { MinusIcon, PlusIcon } from '@heroicons/react/24/outline'
 import { useCallback, useEffect, useState } from 'react'
 
 interface Props {
-  initial: number;
-  hasError?: boolean;
-  onChange: (value: number) => void;
+  initial: number
+  hasError?: boolean
+  onChange: (value: number) => void
 }
 /**
  * @name CounterInput
@@ -20,35 +19,34 @@ interface Props {
  * <CounterInput initial={initial} hasError={hasError} onChange={onChange} />
  */
 const CounterInput = ({ initial, onChange, hasError }: Props): JSX.Element => {
-
   const [value, setValue] = useState(initial)
 
   const emitOnChange = useCallback(() => {
     onChange(value)
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
-  
+
   useEffect(() => {
     emitOnChange()
   }, [emitOnChange])
-   
+
   return (
     <div className="custom-number-input h-20 w-32">
-      <div className="flex flex-row h-12 w-full item my-2 focus:outline-none cursor-pointer rounded overflow-hidden relative shadow ring-2 ring-blue-600 bg-white  bg-opacity-75 text-slate-900 dark:text-slate-50 dark:bg-neutral-700">
+      <div className="item relative my-2 flex h-12 w-full cursor-pointer flex-row overflow-hidden rounded bg-white bg-opacity-75 text-slate-900 shadow ring-2  ring-blue-600 focus:outline-none dark:bg-neutral-700 dark:text-slate-50">
         <button
           type="button"
           title="Decrement"
-          className="flex items-center justify-center text-blue-600 hover:text-white hover:bg-blue-600 dark:bg-neutral-900/90 h-full w-20 rounded-l cursor-pointer decoration-none"
+          className="decoration-none flex h-full w-20 cursor-pointer items-center justify-center rounded-l text-blue-600 hover:bg-blue-600 hover:text-white dark:bg-neutral-900/90"
           onClick={() => setValue(value > 1 ? value - 1 : 1)}
         >
-          <div className="m-auto text-2xl align-center justify-center font-bold">
+          <div className="align-center m-auto justify-center text-2xl font-bold">
             <MinusIcon className="h6 w-6" strokeWidth={2} />
           </div>
         </button>
         <input
           type="number"
           title="Counter"
-          className="border-transparent focus:border-transparent focus:ring-0 focus:ring-offset-0 outline-none text-blue-600 focus:outline-none text-center w-full font-semibold text-xl dark:bg-neutral-900/90 focus:text-blue-800 md:text-base cursor-default flex items-center decoration-none"
+          className="decoration-none flex w-full cursor-default items-center border-transparent text-center text-xl font-semibold text-blue-600 outline-none focus:border-transparent focus:text-blue-800 focus:outline-none focus:ring-0 focus:ring-offset-0 dark:bg-neutral-900/90 md:text-base"
           name="custom-input-number"
           value={value}
           min="1"
@@ -59,7 +57,7 @@ const CounterInput = ({ initial, onChange, hasError }: Props): JSX.Element => {
           onClick={() => setValue(value + 1)}
           type="button"
           title="Increment"
-          className="flex items-center justify-center text-blue-600 hover:text-white hover:bg-blue-600 dark:bg-neutral-900/90 h-full w-20 rounded-r cursor-pointer decoration-none"
+          className="decoration-none flex h-full w-20 cursor-pointer items-center justify-center rounded-r text-blue-600 hover:bg-blue-600 hover:text-white dark:bg-neutral-900/90"
         >
           <div className="text-2xl font-bold">
             <PlusIcon className="h-6 w-6" strokeWidth={2} />

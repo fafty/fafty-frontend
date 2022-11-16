@@ -7,14 +7,14 @@ import {
   getBundles,
   GetBundlesParamsProps,
   GetBundlesResponseProps,
-  BundleProps,
+  BundleProps
 } from '@fafty/shared/api'
 import Item from '../../components/items/bundle/item'
 import {
   BillingType,
   BillingTypeValue,
   PriceFilterProps,
-  PriceFiltersValue,
+  PriceFiltersValue
 } from '../../components/assets/filters'
 import { lazy, Suspense, useEffect, useMemo, useState } from 'react'
 import dynamic from 'next/dynamic'
@@ -24,35 +24,35 @@ import { Pills } from '../../components/assets/pills'
 import { useComponentDidUpdate } from '@fafty/usehooks'
 
 export type FiltersValues = {
-  price?: PriceFiltersValue;
-  sort?: string;
-  billing_type?: BillingTypeValue;
-};
+  price?: PriceFiltersValue
+  sort?: string
+  billing_type?: BillingTypeValue
+}
 
 const TABS = [
   {
     title: 'Newest',
-    value: 'newest',
+    value: 'newest'
   },
   {
     title: 'Oldest',
-    value: 'oldest',
+    value: 'oldest'
   },
   {
     title: 'Min price',
-    value: 'min_price',
+    value: 'min_price'
   },
   {
     title: 'Max price',
-    value: 'max_price',
-  },
+    value: 'max_price'
+  }
 ]
 const Tabs = lazy(() => import('../../components/asset/tabs'))
 const Price = dynamic<PriceFilterProps>(
   () =>
     import('../../components/assets/filters/price').then((mod) => mod.Price),
   {
-    ssr: false,
+    ssr: false
   }
 )
 
@@ -71,12 +71,12 @@ const LIMIT = 20
 
 type QueryFiltersProps = {
   paginate: {
-    limit: number;
-    offset: number;
-  };
-  filters?: FiltersValues;
-  sort?: string;
-};
+    limit: number
+    offset: number
+  }
+  filters?: FiltersValues
+  sort?: string
+}
 
 const Bundles = () => {
   const { replace, asPath } = useRouter()
@@ -87,9 +87,9 @@ const Bundles = () => {
     {
       paginate: {
         limit: LIMIT,
-        offset: 0,
+        offset: 0
       },
-      filters: { ...(qs.parse(search) as FiltersValues) },
+      filters: { ...(qs.parse(search) as FiltersValues) }
     }
   )
 
@@ -98,7 +98,7 @@ const Bundles = () => {
     GetBundlesParamsProps
   >({
     callback: getBundles,
-    mapper,
+    mapper
   })
 
   const allowLoad = data
@@ -111,7 +111,7 @@ const Bundles = () => {
 
       setLocalFiltersState((prev) => ({
         paginate: { ...prev.paginate, offset: 0 },
-        filters: { ...prev.filters, [key]: value },
+        filters: { ...prev.filters, [key]: value }
       }))
     }
 
@@ -134,8 +134,8 @@ const Bundles = () => {
       ...prev,
       paginate: {
         ...prev.paginate,
-        offset: prev.paginate.offset + LIMIT,
-      },
+        offset: prev.paginate.offset + LIMIT
+      }
     }))
   }
 
@@ -145,7 +145,7 @@ const Bundles = () => {
 
     setLocalFiltersState((prev) => ({
       paginate: { ...prev.paginate },
-      filters: { ...rest },
+      filters: { ...rest }
     }))
   }
 
@@ -153,7 +153,7 @@ const Bundles = () => {
     clearAsyncData()
 
     setLocalFiltersState((prev) => ({
-      paginate: { ...prev.paginate, offset: 0 },
+      paginate: { ...prev.paginate, offset: 0 }
     }))
   }
 
@@ -169,7 +169,7 @@ const Bundles = () => {
       limit: LIMIT,
       offset: paginate.offset,
       filters: {},
-      sort: TABS[tabIndex]?.value || TABS[0].value,
+      sort: TABS[tabIndex]?.value || TABS[0].value
     })
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [localFiltersState])
@@ -180,7 +180,7 @@ const Bundles = () => {
         clearAsyncData()
 
         setLocalFiltersState((prev) => ({
-          paginate: { ...prev.paginate, offset: 0 },
+          paginate: { ...prev.paginate, offset: 0 }
         }))
       }
     },

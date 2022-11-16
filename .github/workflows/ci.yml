@@ -24,7 +24,7 @@ jobs:
         run: yarn nx format:check
       - name: NX lint affected code
         run: yarn nx affected --target=lint --parallel=3
-      - name: NX test affected code and generate code coverage by Instanbul
-        run: yarn nx affected --target=test --parallel=3 --ci --code-coverage
+      - name: NX test affected code and generate code coverage by jest
+        run: yarn nx affected --target=test --parallel=3 --ci --code-coverage  --base=master --head=HEAD
       - name: NX build app with using precached builds
         run: yarn nx affected --target=build --prod --parallel=3

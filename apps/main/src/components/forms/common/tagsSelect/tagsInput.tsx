@@ -6,14 +6,14 @@ import {
   GetSearchTagsResponseProps,
   getTagsBySearch,
   TagProps,
-  useAsync,
+  useAsync
 } from '@fafty/shared/api'
 
 type Props = {
-  tags: TagProps[];
-  onDelete: (value: TagProps) => void;
-  onChange: (value: TagProps) => void;
-};
+  tags: TagProps[]
+  onDelete: (value: TagProps) => void
+  onChange: (value: TagProps) => void
+}
 
 const TagsInput = ({ tags, onChange, onDelete }: Props) => {
   const inputRef = useRef<HTMLInputElement>(null)
@@ -28,13 +28,13 @@ const TagsInput = ({ tags, onChange, onDelete }: Props) => {
   const {
     data: searchResult,
     call: callSearchTags,
-    clearAsyncData,
+    clearAsyncData
   } = useAsync<GetSearchTagsResponseProps, string>({
-    callback: (query?: string) => getTagsBySearch(query),
+    callback: (query?: string) => getTagsBySearch(query)
   })
 
   /**
-   * 
+   *
    * @param e KeyboardEvent<HTMLInputElement>
    * @returns {void}
    * @example
@@ -59,9 +59,7 @@ const TagsInput = ({ tags, onChange, onDelete }: Props) => {
 
     if (searchResult?.records) {
       if (e.key === 'ArrowUp') {
-        setHiddenTagIndex(
-          hiddenTagIsNull ? 0 : Math.max(0, hiddenTagIndex - 1)
-        )
+        setHiddenTagIndex(hiddenTagIsNull ? 0 : Math.max(0, hiddenTagIndex - 1))
       }
 
       if (e.key === 'ArrowDown') {
@@ -90,7 +88,7 @@ const TagsInput = ({ tags, onChange, onDelete }: Props) => {
 
   useEffect(() => {
     callSearchTags(debouncedValue)
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [debouncedValue])
 
   useOnClickOutside(inputRef, () => {
@@ -100,12 +98,12 @@ const TagsInput = ({ tags, onChange, onDelete }: Props) => {
   return (
     <div
       className={classNames(
-        'flex relative flex-wrap rounded border-white border-transparent my-2 border'
+        'relative my-2 flex flex-wrap rounded border border-white border-transparent'
       )}
     >
       <div
         onClick={() => inputRef?.current?.focus?.()}
-        className="flex w-full p-2 rounded-md gap-2 flex-wrap border border-gray-200 dark:border-neutral-700 cursor-pointer"
+        className="flex w-full cursor-pointer flex-wrap gap-2 rounded-md border border-gray-200 p-2 dark:border-neutral-700"
       >
         {!!tags.length &&
           tags.map((tag, tagIndex) => (
@@ -113,20 +111,22 @@ const TagsInput = ({ tags, onChange, onDelete }: Props) => {
               onClick={() => onChange(tag)}
               key={tag.slug}
               className={classNames(
-                'flex items-center justify-center p-2 cursor-pointer text-sm rounded text-white dark:text-slate-50 bg-blue-600',
+                'flex cursor-pointer items-center justify-center rounded bg-blue-600 p-2 text-sm text-white dark:text-slate-50',
                 {
-                  'bg-gray-500': hiddenTagIndex === tagIndex,
+                  'bg-gray-500': hiddenTagIndex === tagIndex
                 }
               )}
             >
               {tag.name}
-              <CloseIcon className="h-4 w-4 ml-1 fill-white" />
+              <CloseIcon className="ml-1 h-4 w-4 fill-white" />
             </div>
           ))}
         <input
           placeholder="Type to search tags"
           ref={inputRef}
-          className={classNames('border-0 outline-0 bg-transparent p-2 text-sm')}
+          className={classNames(
+            'border-0 bg-transparent p-2 text-sm outline-0'
+          )}
           value={inputValue}
           onKeyDown={handleOnKeyDown}
           onFocus={() => setIsFocused(true)}
@@ -134,7 +134,7 @@ const TagsInput = ({ tags, onChange, onDelete }: Props) => {
         />
       </div>
       {!!searchResult?.records?.length && isFocused && (
-        <div className="flex flex-col absolute top-full left-0 right-0 bg-white">
+        <div className="absolute top-full left-0 right-0 flex flex-col bg-white">
           {searchResult?.records.map((searchRecord, searchRecordIndex) => {
             const isHiddenTagIndex = hiddenTagIndex === searchRecordIndex
 
@@ -142,15 +142,15 @@ const TagsInput = ({ tags, onChange, onDelete }: Props) => {
               <div
                 onMouseDown={onMouseDown(searchRecord)}
                 onMouseEnter={() => setHiddenTagIndex(searchRecordIndex)}
-                className={classNames('flex flex-col w-full cursor-pointer', {
-                  'bg-neutral-600': isHiddenTagIndex,
+                className={classNames('flex w-full cursor-pointer flex-col', {
+                  'bg-neutral-600': isHiddenTagIndex
                 })}
                 key={searchRecord.slug}
               >
                 <span
-                  className={classNames('w-full text-base font-bold p-2', {
+                  className={classNames('w-full p-2 text-base font-bold', {
                     'text-white': isHiddenTagIndex,
-                    'text-gray-900': !isHiddenTagIndex,
+                    'text-gray-900': !isHiddenTagIndex
                   })}
                 >
                   {searchRecord.name}

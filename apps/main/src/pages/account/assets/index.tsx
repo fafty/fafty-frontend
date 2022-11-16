@@ -9,7 +9,7 @@ import {
   getUserAssets,
   GetUserAssetsResponseProps,
   AssetProps,
-  GetUserAssetsCallbackProps,
+  GetUserAssetsCallbackProps
 } from '@fafty/shared/api'
 import { List } from 'masonic'
 
@@ -19,27 +19,27 @@ import {
   EyeIcon,
   ChatBubbleBottomCenterTextIcon,
   PencilSquareIcon,
-  DocumentIcon,
+  DocumentIcon
 } from '@heroicons/react/24/outline'
 import Link from 'next/link'
 import { motion } from 'framer-motion'
 import {
   childVariants,
-  variants,
+  variants
 } from '../../../components/forms/asset/constants'
 import FormAssetModal from '../../../components/modals/forms/asset'
 import FilterBar from '../../../components/common/filterBar'
 import { InfinityLoadChecker } from '../../../components/common/infinityLoadChecker'
 import {
   TypeProps,
-  OnChangeValueProps,
+  OnChangeValueProps
 } from '../../../components/common/filterBar/types'
 
 import {
   BLOCKCHAIN_CHECKS,
   VISIBILITY_CHECKS,
   RESTRICTIONS_CHECKS,
-  CONTENT_TYPE_CHECKS,
+  CONTENT_TYPE_CHECKS
 } from '../../../constants/user/assets'
 
 import { AssetsUserFilterStateType } from '../../../types/user/assets'
@@ -83,19 +83,19 @@ const ASSETS_FILTERS = [
     title: 'Visibility',
     value: 'visibility',
     type: TypeProps.ARRAY,
-    options: VISIBILITY_CHECKS,
+    options: VISIBILITY_CHECKS
   },
   {
     title: 'Restrictions',
     value: 'restrictions',
     type: TypeProps.ARRAY,
-    options: RESTRICTIONS_CHECKS,
+    options: RESTRICTIONS_CHECKS
   },
   {
     title: 'Blockchain',
     value: 'blockchain',
     type: TypeProps.ARRAY,
-    options: BLOCKCHAIN_CHECKS,
+    options: BLOCKCHAIN_CHECKS
   },
   {
     title: 'Price',
@@ -105,15 +105,15 @@ const ASSETS_FILTERS = [
       firstTitle: 'min',
       secondTitle: 'max',
       firstKey: 'min',
-      secondKey: 'max',
-    },
+      secondKey: 'max'
+    }
   },
   {
     title: 'Type',
     value: 'type',
     type: TypeProps.ARRAY,
-    options: CONTENT_TYPE_CHECKS,
-  },
+    options: CONTENT_TYPE_CHECKS
+  }
 ]
 
 const AccountAssets = () => {
@@ -121,7 +121,7 @@ const AccountAssets = () => {
   const [openedFormAssetModal, setOpenedFormAssetModal] = useState({
     open: false,
     slug: '',
-    title: '',
+    title: ''
   })
 
   const search = asPath.split('?')[1]
@@ -129,8 +129,8 @@ const AccountAssets = () => {
     {
       paginate: {
         limit: LIMIT,
-        offset: 0,
-      },
+        offset: 0
+      }
     }
   )
 
@@ -140,7 +140,7 @@ const AccountAssets = () => {
     setLocalFiltersState((prev) => ({
       ...prev,
       paginate: { limit: LIMIT, offset: 0 },
-      [key]: value,
+      [key]: value
     }))
   }
 
@@ -156,7 +156,7 @@ const AccountAssets = () => {
     GetUserAssetsCallbackProps
   >({
     callback: getUserAssets,
-    mapper,
+    mapper
   })
 
   const { paginate, ...panelFilterState } = localFiltersState
@@ -170,8 +170,8 @@ const AccountAssets = () => {
       ...prev,
       paginate: {
         ...prev.paginate,
-        offset: prev.paginate.offset + LIMIT,
-      },
+        offset: prev.paginate.offset + LIMIT
+      }
     }))
   }
 
@@ -183,8 +183,8 @@ const AccountAssets = () => {
       params: {
         ...restFilters,
         limit: LIMIT,
-        offset: paginate.offset,
-      },
+        offset: paginate.offset
+      }
     })
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [localFiltersState])
@@ -195,7 +195,7 @@ const AccountAssets = () => {
         clearAsyncData()
 
         setLocalFiltersState((prev) => ({
-          paginate: { ...prev.paginate, offset: 0 },
+          paginate: { ...prev.paginate, offset: 0 }
         }))
       }
     },
@@ -204,7 +204,7 @@ const AccountAssets = () => {
 
   const Visibility = ({
     visibility,
-    date,
+    date
   }: {
     visibility: string | undefined
     date: string
@@ -253,7 +253,7 @@ const AccountAssets = () => {
   }
 
   const Restrictions = ({
-    restrictions,
+    restrictions
   }: {
     restrictions: string | undefined
   }) => {
@@ -309,8 +309,8 @@ const AccountAssets = () => {
                     duration: 0.2,
                     delay: 0.1,
                     when: 'beforeChildren',
-                    staggerChildren: 0.1,
-                  },
+                    staggerChildren: 0.1
+                  }
                 },
                 hidden: {
                   height: '20px',
@@ -318,9 +318,9 @@ const AccountAssets = () => {
                   filter: 'blur(0.6px)',
                   transition: {
                     duration: 0.2,
-                    delay: 0.2,
-                  },
-                },
+                    delay: 0.2
+                  }
+                }
               }}
               animate={isHovered ? 'hidden' : 'visible'}
               exit={'visible'}
@@ -352,7 +352,7 @@ const AccountAssets = () => {
                       setOpenedFormAssetModal({
                         open: true,
                         slug: item.slug,
-                        title: item.name,
+                        title: item.name
                       })
                     }
                   >
@@ -397,7 +397,7 @@ const AccountAssets = () => {
                 <div
                   className="bg-base-300"
                   style={{
-                    backgroundColor: item.collection.cover.dominant_color || '',
+                    backgroundColor: item.collection.cover.dominant_color || ''
                   }}
                 >
                   <Image

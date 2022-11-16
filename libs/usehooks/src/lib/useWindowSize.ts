@@ -3,12 +3,14 @@ import useEventListener from './useEventListener'
 import useIsomorphicLayoutEffect from './useIsomorphicLayoutEffect'
 
 function useWindowSize(): readonly [number, number] {
-  const [windowSize, setWindowSize] = useState<readonly [number, number]>([0,0])
+  const [windowSize, setWindowSize] = useState<readonly [number, number]>([
+    0, 0
+  ])
 
   const handleSize = () => {
     setWindowSize([
       document.documentElement.clientWidth,
-      document.documentElement.clientHeight,
+      document.documentElement.clientHeight
     ])
   }
 

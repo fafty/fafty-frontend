@@ -5,11 +5,11 @@ import { TagProps } from '@fafty/shared/api'
 import TagsInput from './tagsInput'
 
 type Props = {
-  onChange: (value: TagProps[]) => void;
-  value: TagProps[];
-};
+  onChange: (value: TagProps[]) => void
+  value: TagProps[]
+}
 
-/** 
+/**
  * @param {Props} props
  * @param {TagProps[]} props.value
  * @param {(value: TagProps[]) => void} props.onChange
@@ -21,7 +21,7 @@ type Props = {
 const TagsSelect = ({ value, onChange }: Props): JSX.Element => {
   const { data: popularData } = useAsync({
     callback: getPopularTags,
-    withMount: true,
+    withMount: true
   })
 
   /**
@@ -61,18 +61,22 @@ const TagsSelect = ({ value, onChange }: Props): JSX.Element => {
 
   return (
     <div className="flex flex-col">
-      <TagsInput tags={value} onChange={handleOnChangeTag} onDelete={handleOnDelete} />
+      <TagsInput
+        tags={value}
+        onChange={handleOnChangeTag}
+        onDelete={handleOnDelete}
+      />
       {!!filteredPopularTags.length && (
         <div className="flex flex-col">
-          <span className="block text-sm font-medium text-gray-700 dark:text-gray-100 mb-3">
+          <span className="mb-3 block text-sm font-medium text-gray-700 dark:text-gray-100">
             Popular tags
           </span>
-          <div className="flex flex-wrap gap-2.5 col-auto -mt-2.5">
+          <div className="col-auto -mt-2.5 flex flex-wrap gap-2.5">
             {filteredPopularTags?.map((record) => (
               <div
                 key={record.slug}
                 onClick={() => handleOnChangeTag(record)}
-                className="bg-blue-600  rounded text-sm px-4 py-2 cursor-pointer flex text-white dark:text-slate-50"
+                className="flex  cursor-pointer rounded bg-blue-600 px-4 py-2 text-sm text-white dark:text-slate-50"
               >
                 {record.name}
               </div>

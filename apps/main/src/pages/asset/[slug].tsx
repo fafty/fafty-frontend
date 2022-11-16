@@ -19,36 +19,36 @@ const TABS = [
   { title: 'Info', value: 'info' },
   { title: 'Owners', value: 'owners' },
   { title: 'History', value: 'history' },
-  { title: 'Bids', value: 'bids' },
+  { title: 'Bids', value: 'bids' }
 ]
 
 interface BreadcrumbProps {
-  icon?: (props: SVGProps<SVGSVGElement>) => JSX.Element;
-  name: string;
-  href?: string;
+  icon?: (props: SVGProps<SVGSVGElement>) => JSX.Element
+  name: string
+  href?: string
 }
 
 interface AssetProps {
-  category: string;
-  name: string;
-  description: string;
+  category: string
+  name: string
+  description: string
   media: {
-    src: string;
-    dominant_color: string;
-  };
-  slug: string;
-  price: string;
-  ticker: string;
-  tags: TagProps[];
-  owner: string;
-  token: string;
-  available_supply_units: number;
-  created_at: string;
-  updated_at: string;
+    src: string
+    dominant_color: string
+  }
+  slug: string
+  price: string
+  ticker: string
+  tags: TagProps[]
+  owner: string
+  token: string
+  available_supply_units: number
+  created_at: string
+  updated_at: string
 }
 
 interface ResponseProps {
-  record: AssetProps;
+  record: AssetProps
 }
 
 export default function Asset() {
@@ -86,17 +86,17 @@ export default function Asset() {
             {
               icon: HomeIcon,
               name: 'Fafty',
-              href: '/',
+              href: '/'
             },
             {
               icon: ChevronRightIcon,
               name: 'Assets',
-              href: '/assets',
+              href: '/assets'
             },
             {
               icon: ChevronRightIcon,
               name: data.record.name,
-              href: `/asset/${data.record.slug}`,
+              href: `/asset/${data.record.slug}`
             }
           )
           setDetail(data.record)
@@ -150,7 +150,7 @@ export default function Asset() {
         'bg-blue-500',
         'bg-indigo-500',
         'bg-purple-500',
-        'bg-pink-500',
+        'bg-pink-500'
       ]
       return colors[Math.floor(Math.random() * colors.length)]
     }
@@ -189,56 +189,57 @@ export default function Asset() {
             <motion.div
               onMouseEnter={() => setHovered(true)}
               onMouseLeave={() => setHovered(false)}
-              className="flex relative h-full w-full"
+              className="relative flex h-full w-full"
             >
-              <div className="relative h-full w-full flex items-center justify-center overflow-hidden rounded-2xl bg-gray-50 dark:bg-neutral-800" />
+              <div className="relative flex h-full w-full items-center justify-center overflow-hidden rounded-2xl bg-gray-50 dark:bg-neutral-800" />
               {detail?.media?.src && (
                 <>
-                <Image
-                  src={detail.media.src}
-                  style={{
-                    backgroundColor: detail?.media?.dominant_color,
-                  }}
-                  alt={detail.name}
-                  width={400}
-                  height={400}
-                  className="absolute  z-1 h-full w-full overflow-hidden rounded-2xl object-cover object-center"
-                />
-                <motion.div
-                  initial={'visible'}
-                  variants={{
-                    visible: { opacity: 1, transition: { delay: 0.3 } },
-                    hidden: { opacity: 0 },
-                  }}
-                  animate={isHovered && !tagsZoneHovered ? 'hidden' : 'visible'}
-                  exit={'visible'} 
-                  onMouseEnter={() => setTagsZoneHovered(true)}
-                  onMouseLeave={() => setTagsZoneHovered(false)}
-                  className="z-10 absolute flex w-full flex-shrink-0 px-5 pt-5 pb-10 motion-reduce:transition-none motion-reduce:hover:translate-y-0"
-                >
-                  {renderTags}
-                </motion.div>
-                <motion.div 
-                  initial={'hidden'}
-                  variants={{
-                    visible: { opacity: 0.5, transition: { delay: .3 } },
-                    hidden: { opacity: 0 },
-                  }}
-                  animate={isHovered ? 'visible' : 'hidden'}
-                  exit={'hidden'}
-                  className="absolute inset-0 group-hover:opacity-0 flex items-center justify-center"
-                >
                   <Image
                     src={detail.media.src}
+                    style={{
+                      backgroundColor: detail?.media?.dominant_color
+                    }}
                     alt={detail.name}
                     width={400}
                     height={400}
-                    className="absolute inset-0 z-0 h-full w-full blur-xl rounded-2xl overflow-hidden  object-cover object-center"
+                    className="z-1  absolute h-full w-full overflow-hidden rounded-2xl object-cover object-center"
                   />
-                </motion.div>
+                  <motion.div
+                    initial={'visible'}
+                    variants={{
+                      visible: { opacity: 1, transition: { delay: 0.3 } },
+                      hidden: { opacity: 0 }
+                    }}
+                    animate={
+                      isHovered && !tagsZoneHovered ? 'hidden' : 'visible'
+                    }
+                    exit={'visible'}
+                    onMouseEnter={() => setTagsZoneHovered(true)}
+                    onMouseLeave={() => setTagsZoneHovered(false)}
+                    className="absolute z-10 flex w-full flex-shrink-0 px-5 pt-5 pb-10 motion-reduce:transition-none motion-reduce:hover:translate-y-0"
+                  >
+                    {renderTags}
+                  </motion.div>
+                  <motion.div
+                    initial={'hidden'}
+                    variants={{
+                      visible: { opacity: 0.5, transition: { delay: 0.3 } },
+                      hidden: { opacity: 0 }
+                    }}
+                    animate={isHovered ? 'visible' : 'hidden'}
+                    exit={'hidden'}
+                    className="absolute inset-0 flex items-center justify-center group-hover:opacity-0"
+                  >
+                    <Image
+                      src={detail.media.src}
+                      alt={detail.name}
+                      width={400}
+                      height={400}
+                      className="absolute inset-0 z-0 h-full w-full overflow-hidden rounded-2xl object-cover  object-center blur-xl"
+                    />
+                  </motion.div>
                 </>
               )}
-              
             </motion.div>
           </div>
           <div className="row-start-2 row-end-4">
