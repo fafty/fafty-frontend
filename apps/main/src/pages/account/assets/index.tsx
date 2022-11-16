@@ -151,13 +151,29 @@ const AccountAssets = () => {
     setLocalFiltersState({ ...rest, paginate: { limit: LIMIT, offset: 0 } })
   }
 
-  const { data, call, isLoading, isSuccess, clearAsyncData } = useAsync<
-    GetUserAssetsResponseProps,
-    GetUserAssetsCallbackProps
-  >({
-    callback: getUserAssets,
-    mapper
-  })
+  const { data, call, isLoading, isSuccess, clearAsyncData, dataUpdater } =
+    useAsync<GetUserAssetsResponseProps, GetUserAssetsCallbackProps>({
+      callback: getUserAssets,
+      mapper
+    })
+
+  const onUpdateAsset = (putAsset) => {
+    dataUpdater((prev) => {
+      if (prev) {
+        const newRecords = prev.records.map((record) => {
+          if (record.slug === putAsset.record.slug) {
+            return { ...record, ...putAsset.record }
+          }
+
+          return record
+        })
+
+        return { ...prev, records: newRecords }
+      }
+
+      return prev
+    })
+  }
 
   const { paginate, ...panelFilterState } = localFiltersState
 
@@ -569,6 +585,7 @@ const AccountAssets = () => {
       </AccountLayout>
       {openedFormAssetModal.open && (
         <FormAssetModal
+          onPutSuccess={onUpdateAsset}
           title={openedFormAssetModal.title}
           slug={openedFormAssetModal.slug}
           onClose={() =>

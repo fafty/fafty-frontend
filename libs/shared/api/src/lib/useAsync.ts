@@ -94,9 +94,14 @@ function useAsync<D, P>({
     setData(undefined)
   }
 
+  const dataUpdater = (updater: (prev?: D) => D) => {
+    setData((prev) => updater(prev))
+  }
+
   return {
     data,
     call,
+    dataUpdater,
     errorMessage,
     clearAsyncData,
     ...state
