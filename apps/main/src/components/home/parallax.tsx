@@ -71,7 +71,7 @@ const Parallax = () => {
         duration: 2.5, delay: 0.6
       }}
       style={{ height: '100vh' }}
-      className="flex flex-row gap-8"
+      className="flex flex-row gap-8 mx-8"
     >
       <Column baseVelocity={-0.4}>
         <div className="w-max-[12rem] relative h-64 overflow-hidden rounded-lg">
