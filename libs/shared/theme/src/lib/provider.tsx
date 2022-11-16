@@ -188,7 +188,7 @@ const ThemeScript = memo(
       if (fallback) {
         return `if(e==='light'||e==='dark'||!e)d.style.colorScheme=e||'${defaultTheme}'`
       } else {
-        return "if(e==='light'||e==='dark')d.style.colorScheme=e"
+        return 'if(e===\'light\'||e===\'dark\')d.style.colorScheme=e'
       }
     })()
 
@@ -198,7 +198,7 @@ const ThemeScript = memo(
       setColorScheme = true
     ) => {
       const resolvedName = value ? value[name] : name
-      const val = literal ? name + "|| ''" : `'${resolvedName}'`
+      const val = literal ? name + '|| \'\'' : `'${resolvedName}'`
       let text = ''
 
       // MUCH faster to set colorScheme alongside HTML attribute/class

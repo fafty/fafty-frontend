@@ -4,7 +4,7 @@ import {
   useEffect,
   useMemo,
   useRef,
-  useState,
+  useState
 } from 'react'
 import { FileRemoveReason, SuccessResponse, Uppy, UppyFile } from '@uppy/core'
 import Compressor from '@uppy/compressor'
@@ -22,78 +22,78 @@ import {
   getPresignFile,
   GetPresignFileCallbackProps,
   GetPresignFileResponseProps,
-  useAsync,
+  useAsync
 } from '@fafty/shared/api'
 
 export interface ExistingFileProps {
-  id: string;
-  file_id: string;
-  type: string;
-  storage: string;
-  position: number;
-  size: number;
-  filename: string;
-  mime_type: string;
-  src: string;
+  id: string
+  file_id: string
+  type: string
+  storage: string
+  position: number
+  size: number
+  filename: string
+  mime_type: string
+  src: string
 }
 export interface AttachmentProps {
-  id: string;
-  storage: string;
+  id: string
+  storage: string
   metadata: {
-    size: number;
-    filename: string;
-    mime_type: string;
-  };
+    size: number
+    filename: string
+    mime_type: string
+  }
 }
 export interface FileProps {
-  id: string;
-  file_id?: string;
-  type: string;
-  position: number;
-  attachment: AttachmentProps;
+  id: string
+  file_id?: string
+  type: string
+  position: number
+  attachment: AttachmentProps
   meta?: {
-    existing: boolean;
-  };
+    existing: boolean
+  }
 }
 export interface ProgressProps {
   // action?: string
-  percentage: number;
-  bytesUploaded: number;
-  bytesTotal: number;
+  percentage: number
+  bytesUploaded: number
+  bytesTotal: number
   attachment?: {
-    id: string;
-    storage: string;
+    id: string
+    storage: string
     metadata: {
-      size: number;
-      filename: string;
-      mime_type: string;
-    };
-  };
+      size: number
+      filename: string
+      mime_type: string
+    }
+  }
 }
 export interface ThumbnailProps {
-  id: string;
-  file_id?: string;
-  type: string;
-  position: number;
-  state: string;
+  id: string
+  file_id?: string
+  type: string
+  position: number
+  state: string
   // progress: ProgressInterface
   meta?: {
-    existing: boolean;
-  };
-  src?: string;
+    existing: boolean
+  }
+  src?: string
 }
 interface Props {
-  hasError?: boolean;
-  loading?: boolean;
-  type?: string;
-  maxNumberOfFiles?: number;
+  hasError?: boolean
+  loading?: boolean
+  type?: string
+  maxNumberOfFiles?: number
   // previewHeight?: number;
-  existingFiles?: ExistingFileProps[];
-  allowedFileTypes?: string[];
-  style?: CSSProperties;
-  presignEndpoint?: string;
-  onChange: (value: AttachmentProps | AttachmentProps[]) => void;
-  OnGeneratedThumbnail: () => void;
+  existingFiles?: ExistingFileProps[]
+  allowedFileTypes?: string[]
+  style?: CSSProperties
+  presignEndpoint?: string
+  onChange: (value: AttachmentProps | AttachmentProps[]) => void
+  OnGeneratedThumbnail: () => void
 }
 
 const Uploader = ({
@@ -121,12 +121,12 @@ const Uploader = ({
     '.mpeg',
     '.m4v',
     '.mkv',
-    '.*',
+    '.*'
   ],
   style = {},
   presignEndpoint = 'assets/presign',
   onChange,
-  OnGeneratedThumbnail,
+  OnGeneratedThumbnail
 }: Props): JSX.Element => {
   const [isMounted, setIsMounted] = useState(false)
   const [files, setFiles] = useState<FileProps[]>([])
@@ -147,7 +147,7 @@ const Uploader = ({
     GetPresignFileResponseProps,
     GetPresignFileCallbackProps
   >({
-    callback: getPresignFile,
+    callback: getPresignFile
   })
 
   useEffect(() => {
@@ -165,10 +165,10 @@ const Uploader = ({
             metadata: {
               size: file.size,
               filename: file.filename,
-              mime_type: file.mime_type,
-            },
-          },
-        },
+              mime_type: file.mime_type
+            }
+          }
+        }
       ])
       setThumbnails((thumbnails) => [
         ...thumbnails,
@@ -178,8 +178,8 @@ const Uploader = ({
           position: file.position,
           state: 'complete',
           meta: { existing: true },
-          src: file.src,
-        },
+          src: file.src
+        }
       ])
     })
     setIsLoading(false)
@@ -193,49 +193,49 @@ const Uploader = ({
     const tiptl = gsap.timeline({
       delay: 5,
       repeat: 3,
-      repeatDelay: 15,
+      repeatDelay: 15
     })
     const icontl = gsap.timeline({
       delay: 5,
       repeat: 3,
-      repeatDelay: 15,
+      repeatDelay: 15
     })
     tiptl.to(mainTextRef.current, {
       duration: 0.5,
       opacity: 0,
       display: 'none',
-      delay: 0.5,
+      delay: 0.5
     })
     tiptl.to(tipTextRef.current, {
       duration: 0.5,
       opacity: 1,
       display: 'block',
-      delay: 0.5,
+      delay: 0.5
     })
     tiptl.to(tipTextRef.current, {
       duration: 0.5,
       opacity: 0,
       display: 'none',
-      delay: 5,
+      delay: 5
     })
     tiptl.to(mainTextRef.current, {
       duration: 0.5,
       opacity: 1,
       display: 'block',
-      delay: 0.5,
+      delay: 0.5
     })
 
     icontl.to(uploadIconRef.current, {
       duration: 0.5,
       scale: 1.2,
       stroke: 'rgb(59 130 246)',
-      delay: 0.5,
+      delay: 0.5
     })
     icontl.to(uploadIconRef.current, {
       duration: 0.5,
       scale: 1,
       stroke: 'rgb(156 163 175)',
-      delay: 1.2,
+      delay: 1.2
     })
   }, [])
 
@@ -272,7 +272,7 @@ const Uploader = ({
           // evt.newDraggableIndex; // element's new index within new parent, only counting draggable elements
           // evt.clone; // the clone element
           // evt.pullMode; // when item is in another sortable: `"clone"` if cloning, `true` if moving
-        },
+        }
       })
     }
   }, [isLoading])
@@ -289,10 +289,10 @@ const Uploader = ({
           minNumberOfFiles: 1,
           minFileSize: 10 * 1024,
           maxFileSize: 300 * 1024 * 1024,
-          allowedFileTypes: allowedFileTypes,
+          allowedFileTypes: allowedFileTypes
         },
         meta: {
-          username: 'custom meta like address walet',
+          username: 'custom meta like address walet'
         },
         locale: {
           strings: {
@@ -300,14 +300,14 @@ const Uploader = ({
             noInternetConnection: 'No Internet connection',
             connectedToInternet: 'Connected to the Internet',
             noDuplicates:
-              'Cannot add the duplicate file \'%{fileName}\', it already exists',
+              "Cannot add the duplicate file '%{fileName}', it already exists"
             // youCanOnlyUploadFileTypes: 'You can only upload images and videos with extension: .jpeg, .png, .bpm, .mp4, .mov, .webm, .ogg, .avi'
-          },
-        },
+          }
+        }
       })
         .use(ThumbnailGenerator, {
           thumbnailWidth: 600,
-          waitForThumbnailsBeforeUpload: true,
+          waitForThumbnailsBeforeUpload: true
           // queueProcessing: true
         })
         .use(AwsS3, {
@@ -316,15 +316,15 @@ const Uploader = ({
             // Send a request to our signing endpoint.
             const data = await call({
               params: { filename: file.name, type: file?.type },
-              endpoint: presignEndpoint,
+              endpoint: presignEndpoint
             })
             // Return the presigned URL and other data to the client.
             return data as GetPresignFileResponseProps
-          },
+          }
         })
         .use(Compressor, {
           quality: 0.6,
-          limit: 2,
+          limit: 2
         })
         .on('thumbnail:generated', (file, preview) => {
           setThumbnails((thumbnails) => [
@@ -334,10 +334,10 @@ const Uploader = ({
               // global_id: file.meta.key.match(/^cache\/(.+)/)[1],
               type: 'image',
               position: 0,
-              state: 'pending',
+              state: 'pending'
               // meta: file.meta,
               // src: preview
-            },
+            }
           ])
           OnGeneratedThumbnail()
         })
@@ -377,9 +377,9 @@ const Uploader = ({
               metadata: {
                 size: file.size,
                 filename: file.name,
-                mime_type: file.type as string,
-              },
-            },
+                mime_type: file.type as string
+              }
+            }
           }
           // TODO add attachment to object
           setFiles((files) => [...files, object])
@@ -505,7 +505,7 @@ const Uploader = ({
         t.id === id
           ? {
               ...t,
-              state,
+              state
             }
           : t
       )
@@ -522,7 +522,7 @@ const Uploader = ({
         // relativePath: file.relativePath || null
       },
       source: 'Local',
-      isRemote: false,
+      isRemote: false
     }))
 
     try {
@@ -547,8 +547,8 @@ const Uploader = ({
         //   bytesUploaded: 0,
         //   bytesTotal: 0
         // },
-        src: URL.createObjectURL(file.data),
-      },
+        src: URL.createObjectURL(file.data)
+      }
     ])
   }
 
@@ -593,9 +593,9 @@ const Uploader = ({
   }
 
   const handleDragOver = (event: {
-    preventDefault: () => void;
-    stopPropagation: () => void;
-    dataTransfer: { dropEffect?: any; types?: any };
+    preventDefault: () => void
+    stopPropagation: () => void
+    dataTransfer: { dropEffect?: any; types?: any }
   }) => {
     // if (isSorting) {
     //   return
@@ -625,8 +625,8 @@ const Uploader = ({
   }
 
   const handleDragLeave = (event: {
-    preventDefault: () => void;
-    stopPropagation: () => void;
+    preventDefault: () => void
+    stopPropagation: () => void
   }) => {
     event.preventDefault()
     event.stopPropagation()
@@ -634,8 +634,8 @@ const Uploader = ({
   }
 
   const handleDragEnd = (event: {
-    preventDefault: () => void;
-    stopPropagation: () => void;
+    preventDefault: () => void
+    stopPropagation: () => void
   }) => {
     event.preventDefault()
     event.stopPropagation()
@@ -673,12 +673,12 @@ const Uploader = ({
     id,
     globalId,
     action,
-    reason,
+    reason
   }: {
-    id: string;
-    globalId?: string;
-    action: string;
-    reason: FileRemoveReason;
+    id: string
+    globalId?: string
+    action: string
+    reason: FileRemoveReason
   }): void => {
     console.log('action', action)
     switch (action) {
@@ -693,7 +693,7 @@ const Uploader = ({
         break
       default:
         // eslint-disable-next-line no-console
-        console.log('unknown action emited from progress indicator')
+        console.log('unknown action emitted from progress indicator')
     }
   }
 
@@ -709,7 +709,7 @@ const Uploader = ({
       <div
         id="draggable"
         className={classNames({
-          'h-full grow': thumbnails.length > 0,
+          'h-full grow': thumbnails.length > 0
         })}
       >
         {isLoading ? (
@@ -721,7 +721,7 @@ const Uploader = ({
               {
                 // draggable: isSorting,
                 attachments: maxNumberOfFiles > 1,
-                cover: maxNumberOfFiles === 1,
+                cover: maxNumberOfFiles === 1
               }
             )}
           >
@@ -744,7 +744,7 @@ const Uploader = ({
             {
               'absolute left-0 right-0 top-0 bottom-0 z-10 hidden p-5 ':
                 thumbnails.length > 0,
-              'show block': isDraggingOver,
+              'show block': isDraggingOver
             }
           )}
         >
@@ -757,7 +757,7 @@ const Uploader = ({
                 'border-dashed': !isDraggingOver,
                 'border-gray-300 dark:border-neutral-300':
                   !hasError && dragDropSupported && !isDraggingOver,
-                'border-red-500 ': hasError && !isDraggingOver,
+                'border-red-500 ': hasError && !isDraggingOver
               }
             )}
             onClick={() => inputFilesRef.current?.click()}
@@ -767,7 +767,7 @@ const Uploader = ({
                 ref={uploadIconRef}
                 className={classNames('mx-auto h-12 w-12', {
                   'text-blue-500': isDraggingOver,
-                  'text-gray-400': !isDraggingOver,
+                  'text-gray-400': !isDraggingOver
                 })}
                 stroke="currentColor"
                 fill="none"
@@ -806,7 +806,7 @@ const Uploader = ({
               id="customFile"
               ref={inputFilesRef}
               className={classNames('custom-file-input', {
-                show: thumbnails.length !== 0,
+                show: thumbnails.length !== 0
               })}
               type="file"
               tabIndex={thumbnails.length !== 0 ? 1 : -1}
