@@ -21,6 +21,7 @@ import {
 import { MutableRefObject, useEffect, useRef } from 'react'
 import Link from 'next/link'
 import { useOnScreen } from '@fafty/usehooks'
+import { motion } from 'framer-motion'
 
 export default function Home(): JSX.Element {
   // Refs
@@ -94,11 +95,32 @@ export default function Home(): JSX.Element {
     <MainLayout
       title={'undefined'}
       description={'undefined'}
-      // className="container"
+      className="px-0"
     >
       <Hero />
-      <div className="mt-10" ref={collectionsContainerRef}>
-        <div className="flex flex-row items-center justify-center">
+      <div className="pt-10 px-8 bg-[#010d47]" ref={collectionsContainerRef}>
+        <motion.div
+          initial={{ opacity: 0, y: 50, scale: 1.1 }}
+          animate={{ opacity: 1, y: 0, scale: 1 }}
+          transition={{ ease: 'easeOut', duration: 1, delay: 0.3 }}
+          className="z-10 my-[5rem] flex h-full w-full flex-col items-center justify-center"
+        >
+          <h1 className="font text-4xl font-extrabold tracking-tight text-slate-900 dark:text-blue-500 sm:text-8xl">
+            Buy, Hold, Sell, Earn
+          </h1>
+          <p className=" mt-4 text-3xl tracking-tight text-slate-900 dark:text-blue-500">
+            Buy and sell digital collectibles NFTs or earn by creating your own.
+          </p>
+          <div className="mt-10">
+            <Link
+              href="/collections"
+              className="relative inline-block rounded-full border border-transparent bg-blue-600 py-4 px-8 text-center text-2xl font-medium text-white hover:bg-blue-700"
+            >
+              See popular collections
+            </Link>
+          </div>
+        </motion.div>
+        {/* <div className="flex flex-row items-center justify-center">
           <div className="">
             <h3 className="font-semibold">Top Collections</h3>
           </div>
@@ -110,7 +132,7 @@ export default function Home(): JSX.Element {
               See all Collection
             </Link>
           </div>
-        </div>
+        </div> */}
         {!collectionsIsSuccess && !collectionsData?.paginate?.count ? (
           <div className="items-slider">
             <div className="wrapper-items">
@@ -129,7 +151,7 @@ export default function Home(): JSX.Element {
           )
         )}
       </div>
-      <div className="mt-10" ref={bundlesContainerRef}>
+      <div className="mt-10 px-8" ref={bundlesContainerRef}>
         <div className="flex flex-row items-center justify-center">
           <div className="">
             <h3 className="font-semibold">Top Bundles</h3>
@@ -161,7 +183,7 @@ export default function Home(): JSX.Element {
           )
         )}
       </div>
-      <div className="mt-10" ref={assetsContainerRef}>
+      <div className="mt-10 px-8" ref={assetsContainerRef}>
         <div className="flex flex-row items-center justify-center">
           <div className="">
             <h3 className="font-semibold">Top Nfts</h3>

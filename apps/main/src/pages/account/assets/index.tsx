@@ -299,7 +299,7 @@ const AccountAssets = () => {
           <div className="ml-4">
             <p className="text-sm font-medium">{item.name}</p>
             <motion.div
-              className="w-[150px] truncate text-xs  font-medium text-neutral-500"
+              className="w-[150px] truncate text-xs font-medium text-neutral-500"
               initial={'visible'}
               variants={{
                 visible: {

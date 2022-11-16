@@ -1,5 +1,5 @@
 import Link from 'next/link'
-import { Fragment } from 'react'
+import { Fragment, useEffect } from 'react'
 import { Popover, Transition } from '@headlessui/react'
 import {
   ChartBarIcon,
@@ -10,7 +10,7 @@ import {
 import { GalleryIcon, ImageAddIcon } from '@remixicons/react/line'
 import ProfileMenu from './components/dropdowns/profile'
 import { Search } from './components/search/main'
-import { AnimatePresence, motion } from 'framer-motion'
+import { AnimatePresence, motion, usePresence } from 'framer-motion'
 
 const pagesLinks = [
   {
@@ -66,6 +66,13 @@ const Header = ({
   isAuth,
   onLogOut,
 }: Props): JSX.Element => {
+  const [isPresent, safeToRemove] = usePresence()
+
+  useEffect(() => {
+    !isPresent && setTimeout(safeToRemove, 1000)
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isPresent])
+  
   return (
     <header className="header sticky top-0 z-50 bg-white/90 shadow-md backdrop-blur transition duration-300 dark:bg-neutral-800/90">
       <Popover>
@@ -318,7 +325,7 @@ const Header = ({
                       <Link
                         href={item.href}
                         key={item.href}
-                        className="focus:outline-nonedark:hover:bg-stone-600 -m-3 flex w-full items-center rounded-md px-2 py-3 font-medium text-gray-100 hover:bg-gray-500"
+                        className="focus:outline-none dark:hover:bg-stone-600 -m-3 flex w-full items-center rounded-md px-2 py-3 font-medium text-gray-100 hover:bg-gray-500"
                       >
                         <>
                           <item.icon

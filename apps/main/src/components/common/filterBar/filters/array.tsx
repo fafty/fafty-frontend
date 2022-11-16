@@ -45,9 +45,11 @@ const ArrayFilter = ({ value = [], onChange, options }: Props): JSX.Element => {
 
   return (
     <motion.div
-      initial={{ opacity: 0, scale: 0.5 }}
-      animate={{ opacity: 1, scale: 1 }}
-      transition={{ duration: 0.5 }}
+      layout
+      initial={{ opacity: 0, y: 5 }}
+      animate={{ opacity: 1, y: 0 }}
+      exit={{ opacity: 0, y: 5 }}
+      transition={{ duration: 0.2 }}
     >
       <div className="flex w-auto transform items-center sm:px-0">
         <div className="flex w-[150px] flex-col items-center overflow-hidden rounded-lg bg-white shadow-lg ring-1 ring-black ring-opacity-5 drop-shadow-lg dark:bg-neutral-800">
@@ -63,7 +65,7 @@ const ArrayFilter = ({ value = [], onChange, options }: Props): JSX.Element => {
               </div>
             ))}
           </div>
-          <div className=" flex w-full justify-end border-t border-white p-1">
+          <div className="flex w-full justify-end border-t border-white p-1">
             <button
               type="button"
               className="relative mt-2 inline-block rounded-md border border-transparent bg-blue-600 py-1 px-3 text-center font-medium text-white hover:bg-blue-700"

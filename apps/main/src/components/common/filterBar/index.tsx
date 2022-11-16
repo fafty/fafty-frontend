@@ -1,6 +1,6 @@
 import { FunnelIcon } from '@heroicons/react/24/outline'
-import React, { useCallback, useMemo, useRef, useState } from 'react'
-import { motion } from 'framer-motion'
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import { AnimatePresence, motion, usePresence } from 'framer-motion'
 
 import { useOnClickOutside } from '@fafty/usehooks'
 import {
@@ -16,11 +16,18 @@ import RangeFilter from './filters/range'
 import { isEmpty } from '../../../utils/helpers'
 
 const FilterBar = <T,>({ filters, values, onChange, onCloseTag }: Props<T>) => {
+  const [isPresent, safeToRemove] = usePresence()
+
   const [inputValue, setInputValue] = useState('')
   const [activeFilter, setActiveFilter] = useState('')
   const buttonRef = useRef<HTMLDivElement | null>(null)
   const [isOpenedPopover, setIsOpenedPopover] = useState(false)
 
+  useEffect(() => {
+    !isPresent && setTimeout(safeToRemove, 1000)
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isPresent])
+  
   const togglePopover = useCallback(() => {
     setIsOpenedPopover((prev) => !prev)
   }, [setIsOpenedPopover])
@@ -149,9 +156,13 @@ const FilterBar = <T,>({ filters, values, onChange, onCloseTag }: Props<T>) => {
           </div>
 
           <div className="ml-2.5 flex w-full flex-1">
-            <div className="flex flex-1 flex-wrap items-center gap-2">
+            <motion.div className="flex flex-1 flex-wrap items-center gap-2 m-2">
               {renderTags}
-              <div ref={buttonRef} className="relative">
+              <motion.div
+                key='input'
+                layout
+                ref={buttonRef} className="relative w-full flex-1"
+              >
                 <input
                   onChange={(e) => setInputValue(e.target.value)}
                   onFocus={() => {
@@ -166,22 +177,29 @@ const FilterBar = <T,>({ filters, values, onChange, onCloseTag }: Props<T>) => {
                   autoCapitalize="off"
                   name="search"
                   id="search"
-                  className="block w-full max-w-[220px] border-2 border-transparent bg-transparent px-3 py-1 ring-0 transition duration-200 hover:border-transparent focus:border-transparent focus:ring-0 focus:ring-offset-0 dark:border-transparent dark:hover:border-transparent dark:focus:border-transparent sm:text-sm md:text-base"
+                  className="block w-full border-2 border-transparent bg-transparent px-2 py-1 ring-0 transition duration-200 hover:border-transparent focus:border-transparent focus:ring-0 focus:ring-offset-0 dark:border-transparent dark:hover:border-transparent dark:focus:border-transparent sm:text-sm md:text-base"
                   placeholder="Filter"
                 />
-                {isOpenedPopover && (
-                  <motion.div
-                    initial={{ opacity: 0, scale: 0.5 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    transition={{ duration: 0.5 }}
-                  >
-                    <div className="absolute top-full z-10 flex transform items-center sm:px-0">
-                      {renderActiveFilter}
-                    </div>
-                  </motion.div>
-                )}
-              </div>
-            </div>
+                <AnimatePresence
+                  initial={false}
+                  mode="wait"
+                >
+                  {isOpenedPopover && (
+                    <motion.div
+                      layout
+                      initial={{ opacity: 0, y: 5 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: 5 }}
+                      transition={{ duration: 0.2 }}
+                    >
+                      <div className="absolute top-full z-20 flex transform items-center sm:px-0">
+                        {renderActiveFilter}
+                      </div>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </motion.div>
+            </motion.div>
           </div>
         </div>
       </div>
