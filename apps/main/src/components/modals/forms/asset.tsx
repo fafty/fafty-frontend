@@ -19,6 +19,7 @@ type Props = {
   slug?: string
   onClose: () => void
   isOpened: boolean
+  onPutSuccess?: (record: AssetResponseProps) => void
 }
 
 /**
@@ -38,7 +39,8 @@ const FormAssetModal = ({
   title,
   slug,
   onClose,
-  isOpened
+  isOpened,
+  onPutSuccess
 }: Props): JSX.Element => {
   const {
     data: preloadedAsset,
@@ -79,7 +81,14 @@ const FormAssetModal = ({
 
     try {
       if (slug) {
-        await putAssetData({ slug: slug, asset: data })
+        const putResult: AssetResponseProps | void = await putAssetData({
+          slug: slug,
+          asset: data
+        })
+
+        if (putResult) {
+          onPutSuccess(putResult)
+        }
       } else {
         await api.post('/asset', { asset: data })
       }
