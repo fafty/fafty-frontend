@@ -5,6 +5,7 @@ import { NotificationProvider } from '@fafty/notifications'
 import { Listeners } from '../layouts/Listeners'
 import { ProvideAuth } from '../utils/auth'
 import { AnimatePresence } from 'framer-motion'
+import { Analytics } from '@vercel/analytics/react'
 
 function FaftyMainApp({ Component, pageProps, router }: AppProps) {
   const url = router.route
@@ -20,6 +21,7 @@ function FaftyMainApp({ Component, pageProps, router }: AppProps) {
             <ProvideAuth>
               <Listeners>
                 <Component {...pageProps} canonical={url} key={url} />
+                <Analytics />
               </Listeners>
             </ProvideAuth>
           </NotificationProvider>

@@ -1,11 +1,11 @@
-import { ReactElement, useEffect } from 'react'
+import { ReactNode, useEffect } from 'react'
 import { useAuth } from '../utils/auth'
 
 type Props = {
-  children: ReactElement | null
+  children: ReactNode | null
 }
 
-export const Listeners = ({ children }: Props) => {
+export const Listeners = ({ children }: Props): JSX.Element => {
   const auth = useAuth()
 
   useEffect(() => {
@@ -15,5 +15,5 @@ export const Listeners = ({ children }: Props) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [auth.wallet])
 
-  return children
+  return <>{children}</>
 }
