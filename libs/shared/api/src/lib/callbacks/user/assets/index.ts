@@ -1,9 +1,12 @@
 import api from '../../../index'
-import { GetUserAssetsCallbackProps, GetUserAssetsResponseProps } from './types'
+import {
+  GetUserAssetsParamsType,
+  GetUserAssetsResponseType
+} from '@fafty/shared/types'
 
 const getUserAssets = async (
-  props?: GetUserAssetsCallbackProps
-): Promise<GetUserAssetsResponseProps> => {
+  props?: GetUserAssetsParamsType
+): Promise<GetUserAssetsResponseType> => {
   const { data } = await api.get(`/user/${props?.address}/assets`, {
     params: props?.params
   })

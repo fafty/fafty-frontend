@@ -1,12 +1,12 @@
 import { useMemo } from 'react'
 import { useAsync } from '@fafty/shared/api'
 import { getPopularTags } from '@fafty/shared/api'
-import { TagProps } from '@fafty/shared/api'
+import { TagType } from '@fafty/shared/types'
 import TagsInput from './tagsInput'
 
 type Props = {
-  onChange: (value: TagProps[]) => void
-  value: TagProps[]
+  onChange: (value: TagType[]) => void
+  value: TagType[]
 }
 
 /**
@@ -30,7 +30,7 @@ const TagsSelect = ({ value, onChange }: Props): JSX.Element => {
    * @example
    * <TagsInput value={value} onChange={onChange} />
    */
-  const handleOnChangeTag = (tag: TagProps): void => {
+  const handleOnChangeTag = (tag: TagType): void => {
     const isIncludes = value.find((valueTag) => valueTag.slug === tag.slug)
 
     if (isIncludes) {
@@ -47,7 +47,7 @@ const TagsSelect = ({ value, onChange }: Props): JSX.Element => {
    * @example
    * <TagsInput onDelete={handleOnDelete} />
    */
-  const handleOnDelete = (tag: TagProps): void => {
+  const handleOnDelete = (tag: TagType): void => {
     onChange(value.filter((valueTag) => valueTag.slug !== tag.slug))
   }
 

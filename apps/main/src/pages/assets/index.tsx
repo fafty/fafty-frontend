@@ -2,13 +2,12 @@ import { useRouter } from 'next/router'
 import { AssetItemPlaceholder, AssetTabsPlaceholder } from '@fafty/shared/ui'
 import qs from 'qs'
 import MainLayout from '../../layouts/main'
+import { useAsync, getAssets } from '@fafty/shared/api'
 import {
-  useAsync,
-  getAssets,
-  GetAssetsParamsProps,
-  GetAssetsResponseProps,
-  AssetProps
-} from '@fafty/shared/api'
+  AssetType,
+  GetAssetsResponseType,
+  GetAssetsParamsType
+} from '@fafty/shared/types'
 // import { useVirtualizer } from '@tanstack/react-virtual';
 import Item from '../../components/items/asset/item'
 import {
@@ -69,9 +68,9 @@ const Price = dynamic<PriceFilterProps>(
 )
 
 const mapper = (
-  data: GetAssetsResponseProps,
-  prev?: GetAssetsResponseProps
-): GetAssetsResponseProps => {
+  data: GetAssetsResponseType,
+  prev?: GetAssetsResponseType
+): GetAssetsResponseType => {
   if (prev && Object.keys(prev).length) {
     return { ...prev, ...data, records: [...prev.records, ...data.records] }
   }
@@ -106,8 +105,8 @@ const Assets = () => {
   )
 
   const { data, call, isLoading, isSuccess, clearAsyncData } = useAsync<
-    GetAssetsResponseProps,
-    GetAssetsParamsProps
+    GetAssetsResponseType,
+    GetAssetsParamsType
   >({
     callback: getAssets,
     mapper
@@ -212,7 +211,7 @@ const Assets = () => {
     return Array.from(
       { length: count },
       (_, index) => data?.records[index] ?? {}
-    ) as AssetProps[]
+    ) as AssetType[]
   }, [data?.paginate?.count, data?.records, localFiltersState.paginate.offset])
 
   // const groupedItems = useMemo(() => {

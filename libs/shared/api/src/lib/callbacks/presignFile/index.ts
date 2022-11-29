@@ -1,12 +1,12 @@
 import api from '../../index'
 import {
-  GetPresignFileCallbackProps,
-  GetPresignFileResponseProps
-} from './types'
+  GetPresignFileCallbackType,
+  GetPresignFileResponseType
+} from '@fafty/shared/types'
 
 const getPresignFile = async (
-  props?: GetPresignFileCallbackProps
-): Promise<GetPresignFileResponseProps> => {
+  props?: GetPresignFileCallbackType
+): Promise<GetPresignFileResponseType> => {
   const endpoint = props?.endpoint || '/assets/presign'
 
   const { data } = await api.post(endpoint, props?.params)

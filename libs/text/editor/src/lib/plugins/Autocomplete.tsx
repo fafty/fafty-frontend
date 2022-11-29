@@ -9,7 +9,7 @@ import {
   $isElementNode,
   $isRangeSelection,
   $isTextNode,
-  TextNode,
+  TextNode
 } from 'lexical'
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 
@@ -93,7 +93,7 @@ function useTypeahead(editor: LexicalEditor): void {
         function maybeAddOrEditTypeahead() {
           if (currentTypeaheadNode !== null) {
             // Edit
-            if (currentTypeaheadNode.getTextContent(true) !== suggestion) {
+            if (currentTypeaheadNode.getTextContent() !== suggestion) {
               currentTypeaheadNode.setTextContent(suggestion ?? '')
             }
             return
@@ -132,7 +132,7 @@ function useTypeahead(editor: LexicalEditor): void {
         }
       },
       {
-        tag: 'history-merge',
+        tag: 'history-merge'
       }
     )
   }, [editor, getTypeaheadTextNode, selectionCollapsed, suggestion])
@@ -147,7 +147,7 @@ function useTypeahead(editor: LexicalEditor): void {
     return editor.registerUpdateListener(({ editorState }) => {
       editorState.read(() => {
         const typeaheadNode = $getRoot()
-          .getAllTextNodes(true)
+          .getAllTextNodes()
           .find((textNode) => textNode instanceof TypeaheadNode)
         if (typeaheadNode instanceof TypeaheadNode) {
           typeaheadNodeKey.current = typeaheadNode.getKey()
@@ -171,7 +171,7 @@ function useTypeahead(editor: LexicalEditor): void {
               event.preventDefault()
               prevTextNode.setTextContent(
                 prevTextNode.getTextContent() +
-                  typeaheadTextNode.getTextContent(true)
+                  typeaheadTextNode.getTextContent()
               )
               prevTextNode.select()
             }
@@ -208,8 +208,8 @@ function useTypeahead(editor: LexicalEditor): void {
 function useTypeaheadSuggestion(
   text: string,
   query: (text: string) => {
-    cancel: () => void;
-    promise: () => Promise<string | null>;
+    cancel: () => void
+    promise: () => Promise<string | null>
   }
 ) {
   const cancelRequest = useRef<() => void>(() => null)
@@ -217,8 +217,8 @@ function useTypeaheadSuggestion(
   const [suggestion, setSuggestion] = useState<string | null>(null)
   useEffect(() => {
     setSuggestion(null)
-    cancelRequest.current();
-    (async () => {
+    cancelRequest.current()
+    ;(async () => {
       const time = Date.now()
       requestTime.current = time
       try {
@@ -254,7 +254,7 @@ class TypeaheadServer {
     'hello wo': 'rld',
     'hello wor': 'ld',
     faf: 'ty',
-    colle: 'ction',
+    colle: 'ction'
   }
   LATENCY = 200
 
@@ -284,7 +284,7 @@ class TypeaheadServer {
       cancel,
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore - Promise is not null
-      promise,
+      promise
     }
   }
 }

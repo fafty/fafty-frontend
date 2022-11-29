@@ -1,9 +1,9 @@
 import Link from 'next/link'
 import Image from 'next/image'
-import { CollectionProps } from '@fafty/shared/api'
+import { CollectionType } from '@fafty/shared/types'
 
 type Props = {
-  item: CollectionProps
+  item: CollectionType
 }
 
 /**

@@ -1,24 +1,15 @@
 import api from '../../index'
-import { GetBundlesParamsProps, GetBundlesResponseProps } from './types'
+import {
+  GetBundlesParamsType,
+  GetBundlesResponseType
+} from '@fafty/shared/types'
 
 const getBundles = async (
-  params?: GetBundlesParamsProps
-): Promise<GetBundlesResponseProps> => {
+  params?: GetBundlesParamsType
+): Promise<GetBundlesResponseType> => {
   const { data } = await api.get('/bundles', { params })
 
   return data
 }
-
-// const getBundles = async ({
-//   offset,
-//   limit,
-// }: {
-//   limit: number;
-//   offset: number;
-// }): Promise<GetBundlesResponseProps> => {
-//   const { data } = await api.get('/bundles', { params: { offset, limit } });
-
-//   return data;
-// };
 
 export default getBundles

@@ -1,9 +1,9 @@
 import { useState, ReactNode, useCallback, useEffect } from 'react'
 import {
-  AssetProps,
+  AssetType,
   CommentsOrderType,
   CommentsModerationType
-} from '@fafty/shared/api'
+} from '@fafty/shared/types'
 import Context from './context'
 import { FormProps, SetStepDataProps, StepsProps } from './types'
 
@@ -60,7 +60,7 @@ interface Props {
   children: ReactNode
   onChangeDismiss: (data: { title: string; disabled: boolean }) => void
   rawDataCallback: boolean
-  defaultData?: AssetProps
+  defaultData?: AssetType
   onRawDataCallback: (data: FormProps) => void
   onFinished: () => void
 }

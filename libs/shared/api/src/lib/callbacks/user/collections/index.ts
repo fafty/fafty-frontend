@@ -1,14 +1,14 @@
 import api from '../../../index'
 import {
-  GetUserCollectionsCallbackProps,
-  GetUserCollectionsResponseProps,
-} from './types'
+  GetUserCollectionsResponseType,
+  GetUserCollectionsCallbackType
+} from '@fafty/shared/types'
 
 const getUserCollections = async (
-  props?: GetUserCollectionsCallbackProps
-): Promise<GetUserCollectionsResponseProps> => {
+  props?: GetUserCollectionsCallbackType
+): Promise<GetUserCollectionsResponseType> => {
   const { data } = await api.get(`/user/${props?.address}/collections`, {
-    params: props?.params,
+    params: props?.params
   })
 
   return data

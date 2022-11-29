@@ -2,13 +2,12 @@ import { useRouter } from 'next/router'
 import { AssetTabsPlaceholder, BundleItemPlaceholder } from '@fafty/shared/ui'
 import qs from 'qs'
 import MainLayout from '../../layouts/main'
+import { useAsync, getBundles } from '@fafty/shared/api'
 import {
-  useAsync,
-  getBundles,
-  GetBundlesParamsProps,
-  GetBundlesResponseProps,
-  BundleProps
-} from '@fafty/shared/api'
+  BundleType,
+  GetBundlesParamsType,
+  GetBundlesResponseType
+} from '@fafty/shared/types'
 import Item from '../../components/items/bundle/item'
 import {
   BillingType,
@@ -57,9 +56,9 @@ const Price = dynamic<PriceFilterProps>(
 )
 
 const mapper = (
-  data: GetBundlesResponseProps,
-  prev?: GetBundlesResponseProps
-): GetBundlesResponseProps => {
+  data: GetBundlesResponseType,
+  prev?: GetBundlesResponseType
+): GetBundlesResponseType => {
   if (prev && Object.keys(prev).length) {
     return { ...prev, ...data, records: [...prev.records, ...data.records] }
   }
@@ -94,8 +93,8 @@ const Bundles = () => {
   )
 
   const { data, call, isLoading, isSuccess, clearAsyncData } = useAsync<
-    GetBundlesResponseProps,
-    GetBundlesParamsProps
+    GetBundlesResponseType,
+    GetBundlesParamsType
   >({
     callback: getBundles,
     mapper
@@ -196,7 +195,7 @@ const Bundles = () => {
     return Array.from(
       { length: count },
       (_, index) => data?.records[index] ?? {}
-    ) as BundleProps[]
+    ) as BundleType[]
   }, [data?.paginate?.count, data?.records, localFiltersState.paginate.offset])
 
   return (

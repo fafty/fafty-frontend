@@ -20,6 +20,7 @@
       "@fafty/shared/modals": ["libs/shared/modals/src/index.ts"],
       "@fafty/shared/theme": ["libs/shared/theme/src/index.ts"],
       "@fafty/shared/ui": ["libs/shared/ui/src/index.ts"],
+      "@fafty/shared/types": ["libs/shared/types/src/index.ts"],
       "@fafty/text/editor": ["libs/text/editor/src/index.ts"],
       "@fafty/text/viewer": ["libs/text/viewer/src/index.ts"],
       "@fafty/uploader": ["libs/uploader/src/index.ts"],

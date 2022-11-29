@@ -10,14 +10,16 @@ import {
   getAssets,
   getBundles,
   getCollections,
-  GetAssetsParamsProps,
-  GetAssetsResponseProps,
-  GetBundlesParamsProps,
-  GetBundlesResponseProps,
-  GetCollectionsParamsProps,
-  GetCollectionsResponseProps,
   useAsync
 } from '@fafty/shared/api'
+import {
+  GetAssetsParamsType,
+  GetAssetsResponseType,
+  GetCollectionsResponseType,
+  GetCollectionParamsType,
+  GetBundlesResponseType,
+  GetBundlesParamsType
+} from '@fafty/shared/types'
 import { MutableRefObject, useEffect, useRef } from 'react'
 import Link from 'next/link'
 import { useOnScreen } from '@fafty/usehooks'
@@ -35,7 +37,7 @@ export default function Home(): JSX.Element {
     call: assetsCall,
     // isLoading: assetsIsLoading,
     isSuccess: assetsIsSuccess
-  } = useAsync<GetAssetsResponseProps, GetAssetsParamsProps>({
+  } = useAsync<GetAssetsResponseType, GetAssetsParamsType>({
     callback: getAssets
   })
 
@@ -44,7 +46,7 @@ export default function Home(): JSX.Element {
     call: bundlesCall,
     // isLoading: bundlesIsLoading,
     isSuccess: bundlesIsSuccess
-  } = useAsync<GetBundlesResponseProps, GetBundlesParamsProps>({
+  } = useAsync<GetBundlesResponseType, GetBundlesParamsType>({
     callback: getBundles
   })
 
@@ -53,7 +55,7 @@ export default function Home(): JSX.Element {
     call: collectionsCall,
     // isLoading: collectionsIsLoading,
     isSuccess: collectionsIsSuccess
-  } = useAsync<GetCollectionsResponseProps, GetCollectionsParamsProps>({
+  } = useAsync<GetCollectionsResponseType, GetCollectionParamsType>({
     callback: getCollections
   })
 
@@ -92,13 +94,9 @@ export default function Home(): JSX.Element {
   }, [collectionsContainerOnScreen])
 
   return (
-    <MainLayout
-      title={'undefined'}
-      description={'undefined'}
-      className="px-0"
-    >
+    <MainLayout title={'undefined'} description={'undefined'} className="px-0">
       <Hero />
-      <div className="pt-10 px-8 bg-[#010d47]" ref={collectionsContainerRef}>
+      <div className="bg-[#010d47] px-8 pt-10" ref={collectionsContainerRef}>
         <motion.div
           initial={{ opacity: 0, y: 50, scale: 1.1 }}
           animate={{ opacity: 1, y: 0, scale: 1 }}

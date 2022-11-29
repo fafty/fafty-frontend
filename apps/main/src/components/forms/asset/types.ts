@@ -1,9 +1,9 @@
 import {
+  AssetMediaType,
   CommentsModerationType,
   CommentsOrderType,
-  AssetMedia,
-  TagProps
-} from '@fafty/shared/api'
+  TagType
+} from '@fafty/shared/types'
 import { CSSProperties } from 'react'
 import { EditorState } from 'lexical'
 
@@ -54,13 +54,13 @@ export interface FormProps {
   allow_ratings: boolean
   comments_moderation: CommentsModerationType
   comments_order: CommentsOrderType
-  tags: TagProps[] | null
+  tags: TagType[] | null
 }
 
 export interface Props {
   onSubmit: (data: FormProps) => Promise<void>
   submitting: boolean
-  defaultAsset?: AssetMedia
+  defaultAsset?: AssetMediaType
 }
 
 export interface Step1Props {
@@ -80,7 +80,7 @@ export interface Step3Props {
   allow_ratings: boolean
   comments_moderation: CommentsModerationType
   comments_order: CommentsOrderType
-  tags: TagProps[]
+  tags: TagType[]
 }
 
 export interface Step4Props {

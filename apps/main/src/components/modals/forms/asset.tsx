@@ -2,14 +2,8 @@ import { Modal } from '@fafty/shared/modals'
 import FormAsset from '../../forms/asset/main'
 import FormAssetContextProvider from '../../forms/asset/provider'
 import { useEffect, useState } from 'react'
-import {
-  api,
-  useAsync,
-  putAsset,
-  getAsset,
-  AssetResponseProps,
-  AssetPutParamsProps
-} from '@fafty/shared/api'
+import { api, useAsync, putAsset, getAsset } from '@fafty/shared/api'
+import { AssetPutResponseType, AssetPutParamsType } from '@fafty/shared/types'
 import { useNotifications } from '@fafty/notifications'
 
 import { FormProps } from '../../forms/asset/types'
@@ -19,7 +13,7 @@ type Props = {
   slug?: string
   onClose: () => void
   isOpened: boolean
-  onPutSuccess?: (record: AssetResponseProps) => void
+  onPutSuccess?: (record: AssetPutResponseType) => void
 }
 
 /**
@@ -46,15 +40,15 @@ const FormAssetModal = ({
     data: preloadedAsset,
     call: callPreloadAsset,
     isSuccess
-  } = useAsync<AssetResponseProps, string>({
+  } = useAsync<AssetPutResponseType, string>({
     callback: getAsset
   })
 
   const { call: putAssetData } = useAsync<
-    AssetResponseProps,
-    AssetPutParamsProps
+    AssetPutResponseType,
+    AssetPutParamsType
   >({
-    callback: (params?: AssetPutParamsProps) => putAsset(params)
+    callback: (params?: AssetPutParamsType) => putAsset(params)
   })
 
   const [submitting, setSubmitting] = useState(false)
@@ -81,7 +75,7 @@ const FormAssetModal = ({
 
     try {
       if (slug) {
-        const putResult: AssetResponseProps | void = await putAssetData({
+        const putResult: AssetPutResponseType | void = await putAssetData({
           slug: slug,
           asset: data
         })
