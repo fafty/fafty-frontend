@@ -1,5 +1,5 @@
 import { format } from 'date-fns'
-
+import { ReactComponent as EmptyIllustration } from '../../../assets/empty.svg'
 import AccountLayout from '../../../layouts/account'
 import Image from 'next/image'
 import { useRouter } from 'next/router'
@@ -17,7 +17,6 @@ import { useComponentDidUpdate } from '@fafty/usehooks'
 import { InfinityLoadChecker } from '../../../components/common/infinityLoadChecker'
 import {
   EyeIcon,
-  FunnelIcon,
   ChatBubbleBottomCenterTextIcon,
   PencilSquareIcon,
   DocumentIcon
@@ -29,6 +28,18 @@ import {
   variants
 } from '../../../components/forms/asset/constants'
 import FormCollectionModal from '../../../components/modals/forms/collection'
+import {
+  TypeProps,
+  OnChangeValueProps
+} from '../../../components/common/filterBar/types'
+
+import FilterBar from '../../../components/common/filterBar'
+import {
+  BLOCKCHAIN_CHECKS,
+  VISIBILITY_CHECKS,
+  RESTRICTIONS_CHECKS
+} from '../../../constants/user/assets'
+import { AssetsUserFilterStateType } from '../../../types/user/assets'
 
 const isObjectEmpty = (value: object | string | null) => {
   return (
@@ -55,12 +66,44 @@ const mapper = (
 
 const LIMIT = 10
 
-type QueryFiltersProps = {
+type QueryFiltersProps = AssetsUserFilterStateType & {
   paginate: {
     limit: number
     offset: number
   }
 }
+
+const COLLECTIONS_FILTERS = [
+  {
+    title: 'Visibility',
+    value: 'visibility',
+    type: TypeProps.ARRAY,
+    options: VISIBILITY_CHECKS
+  },
+  {
+    title: 'Restrictions',
+    value: 'restrictions',
+    type: TypeProps.ARRAY,
+    options: RESTRICTIONS_CHECKS
+  },
+  {
+    title: 'Blockchain',
+    value: 'blockchain',
+    type: TypeProps.ARRAY,
+    options: BLOCKCHAIN_CHECKS
+  },
+  {
+    title: 'Included Items',
+    value: 'cached_assets_count',
+    type: TypeProps.RANGE,
+    params: {
+      firstTitle: 'min',
+      secondTitle: 'max',
+      firstKey: 'ge',
+      secondKey: 'le'
+    }
+  }
+]
 
 const AccountCollections = () => {
   const { asPath } = useRouter()
@@ -79,6 +122,22 @@ const AccountCollections = () => {
     }
   )
 
+  const onChangeFilters = (key: string, value: OnChangeValueProps) => {
+    clearAsyncData()
+    setLocalFiltersState((prev) => ({
+      ...prev,
+      paginate: { limit: LIMIT, offset: 0 },
+      [key]: value
+    }))
+  }
+
+  const onCloseTag = (key: keyof AssetsUserFilterStateType) => {
+    const { [key]: deletedProp, ...rest } = localFiltersState
+    clearAsyncData()
+
+    setLocalFiltersState({ ...rest, paginate: { limit: LIMIT, offset: 0 } })
+  }
+
   const { data, call, isLoading, isSuccess, clearAsyncData } = useAsync<
     GetUserCollectionsResponseProps,
     GetUserCollectionsCallbackProps
@@ -86,6 +145,7 @@ const AccountCollections = () => {
     callback: getUserCollections,
     mapper
   })
+  const { paginate, ...panelFilterState } = localFiltersState
 
   const allowLoad = data
     ? !isLoading && data?.records.length < data?.paginate?.count
@@ -102,11 +162,12 @@ const AccountCollections = () => {
   }
 
   useEffect(() => {
-    const { paginate } = localFiltersState
+    const { paginate, ...restFilters } = localFiltersState
 
     call({
       address: 'abcd',
       params: {
+        filters: restFilters,
         limit: LIMIT,
         offset: paginate.offset
       }
@@ -452,6 +513,33 @@ const AccountCollections = () => {
       )
     }
 
+    if (isSuccess && items.length === 0) {
+      return (
+        <motion.div
+        variants={{
+          initial: {
+            opacity: 0
+          },
+          animate: {
+            opacity: 1
+          },
+          exit: {
+            opacity: 0
+          }
+        }}
+          // layout="preserve-aspect"
+          className="flex flex-col items-center justify-center w-full h-full p-20"
+        >
+          <div className="w-[25rem] h-[20rem]">
+            <EmptyIllustration />
+          </div>
+          <h2 className="text-2xl font-medium text-neutral-500 dark:text-neutral-50 mt-5">
+            No items found
+          </h2>
+        </motion.div>
+      )
+    }
+
     return (
       <List
         className="relative mx-auto grid w-full grid-cols-[minmax(300px,_400px)_minmax(100px,_120px)_minmax(70px,_100px)_minmax(100px,_120px)_minmax(100px,_120px)] gap-x-1"
@@ -484,31 +572,12 @@ const AccountCollections = () => {
             className="relative mx-auto mb-10 flex w-full flex-col"
           >
             <div className="z-1 sticky top-[82px] mx-auto flex w-full flex-col bg-white shadow-[0_10px_5px_-10px_rgba(0,0,0,0.2)] dark:bg-neutral-800">
-              <div className="relative ml-8 flex flex-col">
-                <div>
-                  <div className="relative flex h-[50px] w-full flex-row">
-                    <div className="pointer-events-none absolute inset-0 left-0 flex items-center py-2 pr-5">
-                      <div className="duration-250 relative m-0 box-border flex h-8 w-8 cursor-pointer touch-manipulation select-none list-none items-center justify-center rounded-full border-0 bg-neutral-200 p-0 decoration-0 outline-none transition ease-in-out hover:bg-blue-100 dark:bg-neutral-700 dark:text-gray-200 dark:hover:bg-neutral-600">
-                        <FunnelIcon
-                          strokeWidth="2"
-                          className="h-5 w-5 touch-manipulation select-none"
-                        />
-                      </div>
-                    </div>
-                    <input
-                      autoComplete="off"
-                      spellCheck="false"
-                      type="search"
-                      autoCorrect="off"
-                      autoCapitalize="off"
-                      name="search"
-                      id="search"
-                      className="block w-full border-2 border-transparent bg-transparent p-3 pl-[2.5rem] pr-3 ring-0 transition duration-200 hover:border-transparent focus:border-transparent focus:ring-0 focus:ring-offset-0 dark:border-transparent dark:hover:border-transparent dark:focus:border-transparent sm:text-sm md:text-base"
-                      placeholder="Filter"
-                    />
-                  </div>
-                </div>
-              </div>
+              <FilterBar<AssetsUserFilterStateType>
+                filters={COLLECTIONS_FILTERS}
+                onCloseTag={onCloseTag}
+                values={panelFilterState}
+                onChange={onChangeFilters}
+              />
               <div className="sticky left-0 mx-auto grid h-[2rem] w-full grid-cols-[minmax(300px,_400px)_minmax(100px,_120px)_minmax(100px,_120px)_minmax(100px,_120px)_minmax(100px,_120px)] gap-x-1 text-sm">
                 <div className="sticky left-0 ml-8">Collection</div>
                 <div className="truncate">Assets</div>

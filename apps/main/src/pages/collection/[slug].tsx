@@ -1,4 +1,5 @@
 import { useRouter } from 'next/router'
+import { ReactComponent as EmptyIllustration } from '../../assets/empty.svg'
 import { lazy, Suspense, useEffect, useMemo, useState } from 'react'
 import MainLayout from '../../layouts/main'
 import Item from '../../components/items/asset/item'
@@ -16,7 +17,7 @@ import {
   AssetProps
 } from '@fafty/shared/api'
 import {
-  BillingType,
+  // BillingType,
   BillingTypeValue,
   PriceFilterProps,
   PriceFiltersValue
@@ -24,11 +25,18 @@ import {
 import { InfinityLoadChecker } from '../../components/common/infinityLoadChecker'
 import { AssetItemPlaceholder, AssetTabsPlaceholder } from '@fafty/shared/ui'
 import { useComponentDidUpdate } from '@fafty/usehooks'
-import dynamic from 'next/dynamic'
+// import dynamic from 'next/dynamic'
 import qs from 'qs'
-import { Pills } from '../../components/assets/pills'
-import { Panel } from '../../components/common/bar'
+// import { Pills } from '../../components/assets/pills'
+// import { Panel } from '../../components/common/bar'
+import {
+  TypeProps,
+  OnChangeValueProps
+} from '../../components/common/filterBar/types'
 
+import FilterBar from '../../components/common/filterBar'
+import { AssetsUserFilterStateType } from '../../types/user/assets'
+import { motion } from 'framer-motion'
 export type FiltersValues = {
   price?: PriceFiltersValue
   sort?: string
@@ -53,14 +61,39 @@ const TABS = [
     value: 'max_price'
   }
 ]
-const Tabs = lazy(() => import('../../components/asset/tabs'))
-const Price = dynamic<PriceFilterProps>(
-  () =>
-    import('../../components/assets/filters/price').then((mod) => mod.Price),
+
+const ASSETS_FILTERS = [
   {
-    ssr: false
+    title: 'Price',
+    value: 'price',
+    type: TypeProps.RANGE,
+    params: {
+      firstTitle: 'min',
+      secondTitle: 'max',
+      firstKey: 'ge',
+      secondKey: 'le'
+    }
+  },
+  {
+    title: 'Included Items',
+    value: 'cached_assets_count',
+    type: TypeProps.RANGE,
+    params: {
+      firstTitle: 'min',
+      secondTitle: 'max',
+      firstKey: 'ge',
+      secondKey: 'le'
+    }
   }
-)
+]
+const Tabs = lazy(() => import('../../components/asset/tabs'))
+// const Price = dynamic<PriceFilterProps>(
+//   () =>
+//     import('../../components/assets/filters/price').then((mod) => mod.Price),
+//   {
+//     ssr: false
+//   }
+// )
 
 const mapper = (
   assetsData: GetCollectionAssetsBySlugResponseProps,
@@ -88,7 +121,7 @@ const mapper = (
 
 const LIMIT = 20
 
-type QueryFiltersProps = {
+type QueryFiltersProps = AssetsUserFilterStateType & {
   paginate: {
     limit: number
     offset: number
@@ -123,6 +156,22 @@ const Collection = () => {
       }))
     }
 
+  const onChangeFilters = (key: string, value: OnChangeValueProps) => {
+    clearAsyncData()
+    setLocalFiltersState((prev) => ({
+      ...prev,
+      paginate: { limit: LIMIT, offset: 0 },
+      [key]: value
+    }))
+  }
+
+  const onCloseTag = (key: keyof AssetsUserFilterStateType) => {
+    const { [key]: deletedProp, ...rest } = localFiltersState
+    clearAsyncData()
+
+    setLocalFiltersState({ ...rest, paginate: { limit: LIMIT, offset: 0 } })
+  }
+
   const { data, call } = useAsync<
     GetCollectionResponseProps,
     GetCollectionParamsProps
@@ -144,6 +193,8 @@ const Collection = () => {
     callback: getCollectionAssetsBySlug,
     mapper
   })
+
+  const { paginate, ...panelFilterState } = localFiltersState
 
   const allowLoad = assetsData
     ? !isAssetsLoading &&
@@ -183,26 +234,26 @@ const Collection = () => {
     }))
   }
 
-  const onClosePill = (key: keyof FiltersValues) => {
-    const { [key]: omitted, ...rest } = localFiltersState.filters || {}
-    clearAsyncData()
+  // const onClosePill = (key: keyof FiltersValues) => {
+  //   const { [key]: omitted, ...rest } = localFiltersState.filters || {}
+  //   clearAsyncData()
 
-    setLocalFiltersState((prev) => ({
-      paginate: { ...prev.paginate },
-      filters: { ...rest }
-    }))
-  }
+  //   setLocalFiltersState((prev) => ({
+  //     paginate: { ...prev.paginate },
+  //     filters: { ...rest }
+  //   }))
+  // }
 
-  const onClearFilters = () => {
-    clearAsyncData()
+  // const onClearFilters = () => {
+  //   clearAsyncData()
 
-    setLocalFiltersState((prev) => ({
-      paginate: { ...prev.paginate, offset: 0 }
-    }))
-  }
+  //   setLocalFiltersState((prev) => ({
+  //     paginate: { ...prev.paginate, offset: 0 }
+  //   }))
+  // }
 
   useEffect(() => {
-    const { filters, paginate } = localFiltersState
+    const { filters, paginate, ...restFilters } = localFiltersState
     const nextQuery = qs.stringify(filters)
 
     if (data && nextQuery !== search) {
@@ -214,11 +265,7 @@ const Collection = () => {
         slug: slug,
         limit: LIMIT,
         offset: paginate.offset,
-        filters: {
-          currency: filters?.price?.currency,
-          price: { lg: filters?.price?.from, ge: filters?.price?.to }
-          // billing_type: filters?.billing_type,
-        },
+        filters: restFilters,
         sort: TABS[tabIndex]?.value || TABS[0].value
       })
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -259,9 +306,9 @@ const Collection = () => {
     typeof value === 'object' ? Object.keys(value).length === 0 : !value
 
   return (
-    <MainLayout title={`Collection ${slug}`} description={`Collection ${slug}`}>
-      <div className="flex h-full w-full flex-col py-10">
-        <div className="flex">
+    <MainLayout title={data?.record.name} description={`Collection ${slug}`} className="px-0">
+      <div className="flex h-full w-full flex-col">
+        <div className="flex m-8">
           {/* <div className="w-48 h-48 bg-neutral-800 shadow rounded-full" /> */}
           <div className="relative flex h-48 w-48 flex-shrink-0 items-center justify-center rounded-full bg-blue-600 hover:bg-blue-500 focus:outline-none dark:bg-neutral-700 dark:hover:bg-neutral-600">
             {data && data?.record.cover && (
@@ -275,7 +322,7 @@ const Collection = () => {
             )}
           </div>
           <div className="ml-5 flex flex-col">
-            <h3 className="text-2xl font-bold">{data?.record.name}</h3>
+            <h1 className="text-2xl font-bold">{data?.record.name}</h1>
             {data?.record?.description &&
             isObjectEmpty(data?.record.description) ? (
               <span className="text-xs font-medium opacity-50">
@@ -289,44 +336,19 @@ const Collection = () => {
                 />
               )
             )}
-            {/* {data?.record &&
-              Object.entries(data.record).map(([key, value]) => (
-                <div key={key} className="flex">
-                  <span className="text-white font-bold text-lg">{key}</span>
-                  <span className="ml-2.5 text-neutral-500 text-lg">
-                    {typeof value === 'string' ? value : ''}
-                  </span>
-                </div>
-              ))} */}
           </div>
         </div>
-        <div className="mt-10 flex w-full">
-          <div className="relative flex w-full items-start py-10 ">
-            <div className="sticky top-[120px] flex w-[250px] flex-shrink-0 items-start pr-5">
-              <div className="flex w-full flex-col rounded bg-white  p-2.5 dark:bg-neutral-800">
-                <Panel
-                  title="Price"
-                  initialState={!!localFiltersState?.filters?.price}
-                >
-                  <Price
-                    value={localFiltersState?.filters?.price}
-                    onChange={onChangeFiltersByKey('price')}
-                  />
-                </Panel>
-                <Panel
-                  title="Billing type"
-                  initialState={!!localFiltersState?.filters?.billing_type}
-                >
-                  <BillingType
-                    value={localFiltersState?.filters?.billing_type}
-                    onChange={onChangeFiltersByKey('billing_type')}
-                  />
-                </Panel>
-              </div>
-            </div>
-            <div className="flex w-full flex-col">
-              <div className="flex items-center justify-end">
-                <div className="flex">
+        <div className="flex w-full flex-col">
+          <div className="z-1 sticky top-[82px] mx-auto flex w-full flex-col bg-white shadow-[0_10px_5px_-10px_rgba(0,0,0,0.2)] dark:bg-neutral-800">
+            <div className="grid grid-flow-col">
+              <FilterBar<AssetsUserFilterStateType>
+                filters={ASSETS_FILTERS}
+                onCloseTag={onCloseTag}
+                values={panelFilterState}
+                onChange={onChangeFilters}
+              />
+              <div className="relative ml-auto mr-8 flex">
+                <div className="mt-2 flex">
                   <Suspense fallback={<AssetTabsPlaceholder />}>
                     <Tabs
                       tabs={TABS}
@@ -336,29 +358,48 @@ const Collection = () => {
                   </Suspense>
                 </div>
               </div>
-              <div className="my-4 flex">
-                <Pills
-                  onClosePill={onClosePill}
-                  onClearFilters={onClearFilters}
-                />
-              </div>
-              <div className="wrapper-items">
-                <div className="items grided">
-                  {!isAssetsSuccess && !assetsData?.record.assets.paginate.count
-                    ? Array.from({ length: 24 }, (_, index) => (
-                        <AssetItemPlaceholder key={index} />
-                      ))
-                    : items.map((item) => (
-                        <Item key={item.token} item={item} />
-                      ))}
-                </div>
-              </div>
-              <InfinityLoadChecker
-                allowLoad={allowLoad}
-                isLoading={isAssetsLoading}
-                loadMore={loadMore}
-              />
             </div>
+          </div>
+          <div className="m-8">
+            <div className="wrapper-items">
+              <div className="items grided">
+                {!isAssetsSuccess && !assetsData?.record.assets.paginate.count
+                  ? Array.from({ length: 24 }, (_, index) => (
+                      <AssetItemPlaceholder key={index} />
+                    ))
+                  : items.map((item) => (
+                      <Item key={item.token} item={item} />
+                    ))}
+                {isAssetsSuccess && items.length === 0 && (
+                  <motion.div
+                    variants={{
+                      initial: {
+                        opacity: 0
+                      },
+                      animate: {
+                        opacity: 1
+                      },
+                      exit: {
+                        opacity: 0
+                      }
+                    }}
+                    className="flex h-full w-full flex-col items-center justify-center p-20"
+                  >
+                    <div className="h-[20rem] w-[25rem]">
+                      <EmptyIllustration />
+                    </div>
+                    <h2 className="mt-5 text-2xl font-medium text-neutral-500 dark:text-neutral-50">
+                      No items found
+                    </h2>
+                  </motion.div>
+                )}
+              </div>
+            </div>
+            <InfinityLoadChecker
+              allowLoad={allowLoad}
+              isLoading={isAssetsLoading}
+              loadMore={loadMore}
+            />
           </div>
         </div>
       </div>

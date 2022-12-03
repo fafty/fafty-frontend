@@ -5,12 +5,12 @@ import {
   ChartBarIcon,
   Bars3Icon,
   XMarkIcon,
-  PlusIcon,
+  PlusIcon
 } from '@heroicons/react/24/outline'
 import { GalleryIcon, ImageAddIcon } from '@remixicons/react/line'
 import ProfileMenu from './components/dropdowns/profile'
 import { Search } from './components/search/main'
-import { AnimatePresence, motion, usePresence } from 'framer-motion'
+import { AnimatePresence, AnimateSharedLayout, motion, usePresence, useWillChange } from 'framer-motion'
 
 const pagesLinks = [
   {
@@ -18,45 +18,45 @@ const pagesLinks = [
     description:
       'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
     href: '/account/assets',
-    icon: ChartBarIcon,
+    icon: ChartBarIcon
   },
   {
     name: 'Assets',
     description:
       'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
     href: '/account/assets',
-    icon: ChartBarIcon,
-  },
+    icon: ChartBarIcon
+  }
 ]
 const createButtons = [
   {
     name: 'Add Asset',
     key: 'asset',
     description: 'Description Add Asset',
-    icon: ImageAddIcon,
+    icon: ImageAddIcon
   },
   {
     name: 'Add Bundle',
     key: 'bundle',
     description: 'Description Add Bundle',
-    icon: GalleryIcon,
+    icon: GalleryIcon
   },
   {
     name: 'Add Collection',
     key: 'collection',
     description: 'Description Add Collection',
-    icon: GalleryIcon,
-  },
+    icon: GalleryIcon
+  }
 ]
 
 type Props = {
-  address: string | undefined;
-  balance: number;
-  isAuth: boolean;
-  onAuth?: () => void;
-  onCreate?: (key: string) => void;
-  onLogOut: () => void;
-};
+  address: string | undefined
+  balance: number
+  isAuth: boolean
+  onAuth?: () => void
+  onCreate?: (key: string) => void
+  onLogOut: () => void
+}
 
 const Header = ({
   onAuth,
@@ -64,15 +64,17 @@ const Header = ({
   balance,
   address,
   isAuth,
-  onLogOut,
+  onLogOut
 }: Props): JSX.Element => {
   const [isPresent, safeToRemove] = usePresence()
 
   useEffect(() => {
     !isPresent && setTimeout(safeToRemove, 1000)
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isPresent])
-  
+
+  const willChange = useWillChange()
+
   return (
     <header className="header sticky top-0 z-50 bg-white/90 shadow-md backdrop-blur transition duration-300 dark:bg-neutral-800/90">
       <Popover>
@@ -124,7 +126,7 @@ const Header = ({
             </div>
             <Popover.Group
               as="nav"
-              className="mr-0 hidden space-x-10 md:mr-auto md:flex"
+              className="mr-0 hidden space-x-10 md:mr-auto md:flex md:space-x-6"
             >
               <Link
                 href={'/bundles'}
@@ -139,10 +141,11 @@ const Header = ({
                 Assets
               </Link>
             </Popover.Group>
-            <AnimatePresence initial={false} mode="wait">
+
+            
               <motion.div
-                layout
-                key={isAuth ? 'auth' : 'noauth'}
+                // layout
+                
                 variants={{
                   enter: () => ({
                     zIndex: 0,
@@ -151,12 +154,12 @@ const Header = ({
                     with: 'auto',
                     transition: {
                       duration: 0.2,
-                      delay: 0.1,
+                      delay: 0.1
                     },
                     transitionBegin: {
                       zIndex: -1,
-                      opacity: 0,
-                    },
+                      opacity: 0
+                    }
                   }),
                   center: () => ({
                     zIndex: 1,
@@ -165,8 +168,8 @@ const Header = ({
                     width: 'auto',
                     transition: {
                       duration: 0.3,
-                      delay: 0.1,
-                    },
+                      delay: 0.1
+                    }
                   }),
                   exit: () => ({
                     zIndex: 1,
@@ -175,23 +178,26 @@ const Header = ({
                     width: 'auto',
                     transition: {
                       duration: 0.2,
-                      delay: 0.1,
-                    },
-                  }),
+                      delay: 0.1
+                    }
+                  })
                 }}
                 initial="enter"
                 animate="center"
                 exit="exit"
+                className="relative"
+                style={{ willChange }}
               >
                 {!isAuth && (
                   <motion.div
                     layout
                     layoutId="noauth"
                     className="flex items-center justify-end"
+                    style={{ willChange }} // Prevents layout animation on initial render
                   >
                     <button
                       type="button"
-                      className="relative inline-block rounded-md border border-transparent bg-blue-600 py-2 px-6 text-center font-medium text-white hover:bg-blue-700"
+                      className="relative ml-5 inline-block rounded-md border border-transparent bg-blue-600 py-2 px-6 text-center font-medium text-white hover:bg-blue-700"
                       onClick={() => onAuth?.()}
                     >
                       Login
@@ -202,7 +208,8 @@ const Header = ({
                   <motion.div
                     layout
                     layoutId="auth"
-                    className="hidden items-center justify-end md:flex"
+                    className="ml-5 hidden items-center justify-end md:flex"
+                    style={{ willChange }} // Prevents layout animation on initial render
                   >
                     <Popover className="align-center relative mr-5 flex rounded-full bg-white/95 backdrop-blur dark:bg-neutral-800/95">
                       {({ open, close }) => (
@@ -278,7 +285,7 @@ const Header = ({
                   </motion.div>
                 )}
               </motion.div>
-            </AnimatePresence>
+            {/* </AnimateSharedLayout> */}
           </div>
         </div>
         <Transition
@@ -325,7 +332,7 @@ const Header = ({
                       <Link
                         href={item.href}
                         key={item.href}
-                        className="focus:outline-none dark:hover:bg-stone-600 -m-3 flex w-full items-center rounded-md px-2 py-3 font-medium text-gray-100 hover:bg-gray-500"
+                        className="-m-3 flex w-full items-center rounded-md px-2 py-3 font-medium text-gray-100 hover:bg-gray-500 focus:outline-none dark:hover:bg-stone-600"
                       >
                         <>
                           <item.icon

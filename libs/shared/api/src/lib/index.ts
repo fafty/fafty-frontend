@@ -1,18 +1,31 @@
 import axios from 'axios'
 // import { getSession } from 'next-auth/react';
-// import qs from 'qs'
+import qs from 'qs'
 
 const api = axios.create({
   baseURL: process.env['NEXT_PUBLIC_API_URL'],
+
   headers: {
     accept: 'application/json',
-    'content-type': 'application/json',
+    'content-type': 'application/json'
   },
   paramsSerializer: {
-    indexes: null // by default: false
+    serialize: (params) =>
+      qs.stringify(
+        params,
+        // find keys ge and le and convert to one string with a .. two dots separator.
+        {
+          filter: (_prefix, value) => {
+            if (Object.keys(value).some((k) => ['ge', 'le'].includes(k))) {
+              return `${value.ge}..${value.le}`
+            }
+            // serialize the usual way
+            return value
+          },
+          arrayFormat: 'comma'
+        }
+      )
   }
-  // paramsSerializer: (params) => qs.stringify(params, { encode: false })
-  // paramsSerializer: (params) => qs.stringify(params, {  encode: false, arrayFormat: 'repeat' })
 })
 
 // api.interceptors.request.use(async config => {

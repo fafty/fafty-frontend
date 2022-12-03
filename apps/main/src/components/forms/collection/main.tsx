@@ -146,7 +146,7 @@ const FormCollection = ({
 
   const handleSkip = () => {
     if (!isStepOptional(activeStep)) {
-      throw new Error("You can't skip a step that isn't optional.")
+      throw new Error('You can\'t skip a step that isn\'t optional.')
     }
 
     setActiveStep((prevActiveStep) => prevActiveStep + 1)
@@ -184,7 +184,7 @@ const FormCollection = ({
 
   const StepsList = [
     {
-      name: "Information's",
+      name: 'Information\'s',
       active: activeStep === 0,
       completed: data?.step1.solved,
       optional: false,

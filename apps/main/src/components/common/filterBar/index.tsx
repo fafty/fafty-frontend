@@ -1,6 +1,6 @@
 import { FunnelIcon } from '@heroicons/react/24/outline'
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
-import { AnimatePresence, motion, usePresence } from 'framer-motion'
+import { motion, usePresence } from 'framer-motion'
 
 import { useOnClickOutside } from '@fafty/usehooks'
 import {
@@ -25,9 +25,9 @@ const FilterBar = <T,>({ filters, values, onChange, onCloseTag }: Props<T>) => {
 
   useEffect(() => {
     !isPresent && setTimeout(safeToRemove, 1000)
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isPresent])
-  
+
   const togglePopover = useCallback(() => {
     setIsOpenedPopover((prev) => !prev)
   }, [setIsOpenedPopover])
@@ -56,12 +56,16 @@ const FilterBar = <T,>({ filters, values, onChange, onCloseTag }: Props<T>) => {
 
       return (
         <ArrayFilter
+          title={currentFilter.title}
           options={currentFilter.options}
           value={values?.[activeFilter]}
           onChange={(value) => {
             setInputValue('')
             setIsOpenedPopover(false)
             onChange(activeFilter, value)
+          }}
+          onDismiss={() => {
+            setIsOpenedPopover(false)
           }}
         />
       )
@@ -72,6 +76,7 @@ const FilterBar = <T,>({ filters, values, onChange, onCloseTag }: Props<T>) => {
 
       return (
         <RangeFilter
+          title={currentFilter.title}
           params={currentFilter.params}
           value={values?.[activeFilter]}
           onChange={(value) => {
@@ -79,13 +84,16 @@ const FilterBar = <T,>({ filters, values, onChange, onCloseTag }: Props<T>) => {
             setIsOpenedPopover(false)
             onChange(activeFilter, value)
           }}
+          onDismiss={() => {
+            setIsOpenedPopover(false)
+          }}
         />
       )
     }
 
     return (
-      <div className="flex items-center overflow-hidden rounded-lg bg-white p-2 shadow-lg ring-1 ring-black ring-opacity-5 drop-shadow-lg dark:bg-neutral-800">
-        <div className="relative flex flex-col gap-1 p-1">
+      <div className="flex flex-1 items-center overflow-hidden rounded-lg bg-white p-2 shadow-lg ring-1 ring-black ring-opacity-5 drop-shadow-lg dark:bg-neutral-800">
+        <div className="relative flex flex-1 flex-col gap-1 p-1">
           {actualFilters.map((item) => (
             <button
               key={item.title}
@@ -154,21 +162,16 @@ const FilterBar = <T,>({ filters, values, onChange, onCloseTag }: Props<T>) => {
               />
             </div>
           </div>
-
           <div className="ml-2.5 flex w-full flex-1">
-            <motion.div className="flex flex-1 flex-wrap items-center gap-2 m-2">
+            <motion.div className="m-2 flex flex-1 flex-wrap items-center gap-2">
               {renderTags}
               <motion.div
-                key='input'
+                key="input"
                 layout
-                ref={buttonRef} className="relative w-full flex-1"
+                ref={buttonRef}
+                className="relative w-full flex-1"
               >
                 <input
-                  onChange={(e) => setInputValue(e.target.value)}
-                  onFocus={() => {
-                    setActiveFilter('')
-                    setIsOpenedPopover(true)
-                  }}
                   value={inputValue}
                   autoComplete="off"
                   spellCheck="false"
@@ -179,25 +182,25 @@ const FilterBar = <T,>({ filters, values, onChange, onCloseTag }: Props<T>) => {
                   id="search"
                   className="block w-full border-2 border-transparent bg-transparent px-2 py-1 ring-0 transition duration-200 hover:border-transparent focus:border-transparent focus:ring-0 focus:ring-offset-0 dark:border-transparent dark:hover:border-transparent dark:focus:border-transparent sm:text-sm md:text-base"
                   placeholder="Filter"
+                  onChange={(e) => setInputValue(e.target.value)}
+                  onFocus={() => {
+                    setActiveFilter('')
+                    setIsOpenedPopover(true)
+                  }}
                 />
-                <AnimatePresence
-                  initial={false}
-                  mode="wait"
-                >
-                  {isOpenedPopover && (
-                    <motion.div
-                      layout
-                      initial={{ opacity: 0, y: 5 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      exit={{ opacity: 0, y: 5 }}
-                      transition={{ duration: 0.2 }}
-                    >
-                      <div className="absolute top-full z-20 flex transform items-center sm:px-0">
-                        {renderActiveFilter}
-                      </div>
-                    </motion.div>
-                  )}
-                </AnimatePresence>
+                {isOpenedPopover && actualFilters.length > 0 && (
+                  <motion.div
+                    layout
+                    initial={{ opacity: 0, y: 5 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: 5 }}
+                    transition={{ duration: 0.2 }}
+                  >
+                    <div className="absolute top-full z-20 flex min-w-[200px] max-w-[300px] transform items-center sm:px-0">
+                      {renderActiveFilter}
+                    </div>
+                  </motion.div>
+                )}
               </motion.div>
             </motion.div>
           </div>

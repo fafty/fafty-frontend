@@ -12,11 +12,13 @@ export type GetUserAssetsResponseProps = {
 }
 
 type AssetsUserFilterStateType = {
-  visibility?: string[]
-  restrictions?: string[]
-  blockchain?: string[]
-  price?: { min: string; max: string }
-  type?: string[]
+  filters: {
+    visibility?: string[]
+    restrictions?: string[]
+    blockchain?: string[]
+    price?: { ge: string; le: string }
+    type?: string[]
+  }
 }
 
 export type GetUserAssetsParamsProps = AssetsUserFilterStateType & {

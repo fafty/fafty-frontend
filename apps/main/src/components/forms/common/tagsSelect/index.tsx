@@ -3,6 +3,7 @@ import { useAsync } from '@fafty/shared/api'
 import { getPopularTags } from '@fafty/shared/api'
 import { TagProps } from '@fafty/shared/api'
 import TagsInput from './tagsInput'
+import { motion } from 'framer-motion'
 
 type Props = {
   onChange: (value: TagProps[]) => void
@@ -71,17 +72,21 @@ const TagsSelect = ({ value, onChange }: Props): JSX.Element => {
           <span className="mb-3 block text-sm font-medium text-gray-700 dark:text-gray-100">
             Popular tags
           </span>
-          <div className="col-auto -mt-2.5 flex flex-wrap gap-2.5">
+          <motion.div layout className="col-auto -mt-2.5 flex flex-wrap gap-2.5">
             {filteredPopularTags?.map((record) => (
-              <div
+              <motion.div
+                layout
                 key={record.slug}
                 onClick={() => handleOnChangeTag(record)}
-                className="flex  cursor-pointer rounded bg-blue-600 px-4 py-2 text-sm text-white dark:text-slate-50"
-              >
-                {record.name}
-              </div>
+                >
+                <div
+                  className="duration-250 cursor-pointer box-border flex flex-shrink-0 touch-manipulation select-none items-center justify-center rounded-full bg-neutral-200 px-3 py-1 decoration-0 outline-none transition ease-in-out hover:bg-blue-100 dark:bg-neutral-700 dark:text-gray-200 dark:hover:bg-neutral-600"
+                >
+                  {record.name}
+                </div>
+              </motion.div>
             ))}
-          </div>
+          </motion.div>
         </div>
       )}
     </div>

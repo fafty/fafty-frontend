@@ -1,5 +1,6 @@
 import classNames from 'classnames'
-import { CloseIcon } from '@remixicons/react/fill'
+import { XMarkIcon } from '@heroicons/react/24/outline'
+
 import React, { useEffect, useRef, useState } from 'react'
 import { useDebounce, useOnClickOutside } from '@fafty/usehooks'
 import {
@@ -8,6 +9,7 @@ import {
   TagProps,
   useAsync
 } from '@fafty/shared/api'
+import { motion } from 'framer-motion'
 
 type Props = {
   tags: TagProps[]
@@ -22,7 +24,6 @@ const TagsInput = ({ tags, onChange, onDelete }: Props) => {
   const debouncedValue = useDebounce(inputValue, 300)
 
   const [hiddenTagIndex, setHiddenTagIndex] = useState<number | null>(null)
-  // const [selectedSearchedTag, setSelectedSearchedTag] = useState(null);
   const tm: { current: NodeJS.Timeout | null } = useRef(null)
 
   const {
@@ -96,43 +97,76 @@ const TagsInput = ({ tags, onChange, onDelete }: Props) => {
   })
 
   return (
-    <div
-      className={classNames(
-        'relative my-2 flex flex-wrap rounded border border-white border-transparent'
-      )}
-    >
-      <div
-        onClick={() => inputRef?.current?.focus?.()}
-        className="flex w-full cursor-pointer flex-wrap gap-2 rounded-md border border-gray-200 p-2 dark:border-neutral-700"
+    <div className={classNames('relative my-2 flex flex-wrap ')}>
+      <motion.div
+        layout
+        className={classNames(
+          'flex w-full flex-wrap gap-2 rounded-md border p-1.5 duration-250 transition ease-in-out',
+          {
+            'dark:border-blue-600': isFocused,
+            'border-neutral-300 dark:border-neutral-700': !isFocused
+          }
+        )}
       >
         {!!tags.length &&
           tags.map((tag, tagIndex) => (
-            <div
-              onClick={() => onChange(tag)}
-              key={tag.slug}
-              className={classNames(
-                'flex cursor-pointer items-center justify-center rounded bg-blue-600 p-2 text-sm text-white dark:text-slate-50',
-                {
-                  'bg-gray-500': hiddenTagIndex === tagIndex
-                }
-              )}
-            >
-              {tag.name}
-              <CloseIcon className="ml-1 h-4 w-4 fill-white" />
-            </div>
+            <motion.div key={tag.slug} layout className="relative z-20">
+              <div
+                className={classNames(
+                  'duration-250  m-0 box-border flex flex-shrink-0 touch-manipulation select-none items-center justify-center rounded-full bg-neutral-200 py-1 pl-2 pr-1 decoration-0 outline-none transition ease-in-out hover:bg-blue-100 dark:bg-neutral-700 dark:text-gray-200 dark:hover:bg-neutral-600',
+                  {
+                    'bg-gray-500': hiddenTagIndex === tagIndex
+                  }
+                )}
+              >
+                {tag.name}
+                <button
+                  title="Remove tag"
+                  type="button"
+                  onClick={(e) => {
+                    e.stopPropagation()
+                    onDelete(tag)
+                  }}
+                  className="ml-1 rounded-full bg-gray-600 px-1 py-1 text-gray-100 hover:bg-gray-500 focus:outline-none dark:bg-neutral-600 dark:hover:bg-neutral-500"
+                >
+                  <span className="sr-only">Remove tag</span>
+                  <XMarkIcon
+                    className="h-3 w-3"
+                    strokeWidth="2"
+                    width={14}
+                    height={14}
+                    aria-hidden="true"
+                  />
+                </button>
+              </div>
+            </motion.div>
           ))}
-        <input
-          placeholder="Type to search tags"
-          ref={inputRef}
-          className={classNames(
-            'border-0 bg-transparent p-2 text-sm outline-0'
-          )}
-          value={inputValue}
-          onKeyDown={handleOnKeyDown}
-          onFocus={() => setIsFocused(true)}
-          onChange={(e) => setInputValue(e.target.value)}
-        />
-      </div>
+        <motion.div
+          key="input"
+          layout="preserve-aspect"
+          className="relative w-full min-w-[170px] flex-1"
+        >
+          <input
+            ref={inputRef}
+            autoComplete="off"
+            spellCheck="false"
+            type="search"
+            autoCorrect="off"
+            autoCapitalize="off"
+            name="search"
+            id="search"
+            placeholder="Type to search tags"
+            className={classNames(
+              'block w-full border-2 border-transparent bg-transparent px-1 py-1 ring-0 transition duration-200 hover:border-transparent focus:border-transparent focus:ring-0 focus:ring-offset-0 dark:border-transparent dark:hover:border-transparent dark:focus:border-transparent sm:text-sm md:text-base'
+            )}
+            value={inputValue}
+            onKeyDown={handleOnKeyDown}
+            onFocus={() => setIsFocused(true)}
+            onChange={(e) => setInputValue(e.target.value)}
+          />
+        </motion.div>
+      </motion.div>
+      {/* </AnimatePresence> */}
       {!!searchResult?.records?.length && isFocused && (
         <div className="absolute top-full left-0 right-0 flex flex-col bg-white">
           {searchResult?.records.map((searchRecord, searchRecordIndex) => {
