@@ -6,13 +6,12 @@ import {
 } from '@fafty/shared/ui'
 import qs from 'qs'
 import MainLayout from '../../layouts/main'
+import { useAsync, getCollections } from '@fafty/shared/api'
 import {
-  useAsync,
-  getCollections,
-  GetCollectionsParamsProps,
-  GetCollectionsResponseProps,
-  CollectionProps
-} from '@fafty/shared/api'
+  CollectionType,
+  GetCollectionsResponseType,
+  GetCollectionsParamsType
+} from '@fafty/shared/types'
 import Item from '../../components/items/collection/item'
 import {
   // BillingType,
@@ -94,9 +93,9 @@ const Tabs = lazy(() => import('../../components/asset/tabs'))
 // )
 
 const mapper = (
-  data: GetCollectionsResponseProps,
-  prev?: GetCollectionsResponseProps
-): GetCollectionsResponseProps => {
+  data: GetCollectionsResponseType,
+  prev?: GetCollectionsResponseType
+): GetCollectionsResponseType => {
   if (prev && Object.keys(prev).length) {
     return { ...prev, ...data, records: [...prev.records, ...data.records] }
   }
@@ -145,8 +144,8 @@ const Collections = () => {
   }
 
   const { data, call, isLoading, isSuccess, clearAsyncData } = useAsync<
-    GetCollectionsResponseProps,
-    GetCollectionsParamsProps
+    GetCollectionsResponseType,
+    GetCollectionsParamsType
   >({
     callback: getCollections,
     mapper
@@ -243,7 +242,7 @@ const Collections = () => {
     return Array.from(
       { length: count },
       (_, index) => data?.records[index] ?? {}
-    ) as CollectionProps[]
+    ) as CollectionType[]
   }, [data?.paginate?.count, data?.records, localFiltersState.paginate.offset])
 
   return (

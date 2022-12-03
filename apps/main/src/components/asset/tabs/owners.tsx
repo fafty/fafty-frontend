@@ -1,15 +1,12 @@
-import {
-  useAsync,
-  AssetOwnersResponseProps,
-  getAssetOwners
-} from '@fafty/shared/api'
+import { useAsync, getAssetOwners } from '@fafty/shared/api'
 import { useRouter } from 'next/router'
+import { AssetOwnersResponseType } from '@fafty/shared/types'
 
 export const Owners = () => {
   const param = useRouter()
   const { slug } = param.query
 
-  const { data } = useAsync<AssetOwnersResponseProps, string>({
+  const { data } = useAsync<AssetOwnersResponseType, string>({
     callback: () => getAssetOwners(slug as string),
     withMount: true
   })

@@ -4,8 +4,8 @@ export const COMMENTS_MODERATION_OPTIONS = [
     value: 'allow_all'
   },
   {
-    title: 'Automoderation',
-    value: 'automoderation'
+    title: 'Auto moderation',
+    value: 'auto_moderation'
   },
   {
     title: 'Hold all',

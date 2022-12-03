@@ -1,14 +1,14 @@
 import api from '../../../index'
 import {
-  GetUserBundlesCallbackProps,
-  GetUserBundlesResponseProps,
-} from './types'
+  GetUserBundlesResponseType,
+  GetUserBundlesParamsType
+} from '@fafty/shared/types'
 
 const getUserBundles = async (
-  props?: GetUserBundlesCallbackProps
-): Promise<GetUserBundlesResponseProps> => {
+  props?: GetUserBundlesParamsType
+): Promise<GetUserBundlesResponseType> => {
   const { data } = await api.get(`/user/${props?.address}/bundles`, {
-    params: props?.params,
+    params: props?.params
   })
 
   return data

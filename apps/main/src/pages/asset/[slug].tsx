@@ -1,7 +1,8 @@
 import MainLayout from '../../layouts/main'
 import Image from 'next/image'
 import { useRouter } from 'next/router'
-import { api, TagProps } from '@fafty/shared/api'
+import { api } from '@fafty/shared/api'
+import { GetAssetResponseType, AssetType } from '@fafty/shared/types'
 import { SVGProps, useEffect, useMemo, useState } from 'react'
 import Tabs from '../../components/asset/tabs'
 import { Info } from '../../components/asset/tabs/info'
@@ -28,29 +29,6 @@ interface BreadcrumbProps {
   href?: string
 }
 
-interface AssetProps {
-  category: string
-  name: string
-  description: string
-  media: {
-    src: string
-    dominant_color: string
-  }
-  slug: string
-  price: string
-  ticker: string
-  tags: TagProps[]
-  owner: string
-  token: string
-  available_supply_units: number
-  created_at: string
-  updated_at: string
-}
-
-interface ResponseProps {
-  record: AssetProps
-}
-
 export default function Asset() {
   const param = useRouter()
   const { slug } = param.query
@@ -58,7 +36,7 @@ export default function Asset() {
   const [isHovered, setHovered] = useState(false)
   const [tagsZoneHovered, setTagsZoneHovered] = useState(false)
 
-  const [detail, setDetail] = useState<AssetProps | null>(null)
+  const [detail, setDetail] = useState<AssetType | null>(null)
   // const [isLoading, setLoading] = useState(false);
   const [isError, setError] = useState(false)
 
@@ -79,7 +57,7 @@ export default function Asset() {
     const fetchData = async () => {
       // setLoading(true);
       if (slug) {
-        const response = await api.get<ResponseProps>(`asset/${slug}`)
+        const response = await api.get<GetAssetResponseType>(`asset/${slug}`)
         if (response.status === 200 && response.data) {
           const { data } = response
           breadcrumb.push(
@@ -180,7 +158,9 @@ export default function Asset() {
     <>
       <MainLayout
         title={detail?.name || '...'}
-        description={detail?.description || '...'}
+        description={
+          typeof detail?.description === 'string' ? detail?.description : '...'
+        }
         className="container"
       >
         <div className="2xl:gap-x-13 grid gap-y-16 py-24 px-4 sm:grid-cols-1 sm:gap-x-2 md:grid-cols-[1fr,350px] md:gap-x-4 lg:grid-cols-[1fr,400px]  lg:gap-x-8 xl:gap-x-10">

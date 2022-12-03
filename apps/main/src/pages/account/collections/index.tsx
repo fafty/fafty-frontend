@@ -4,13 +4,12 @@ import AccountLayout from '../../../layouts/account'
 import Image from 'next/image'
 import { useRouter } from 'next/router'
 import { Viewer } from '@fafty/text/viewer'
+import { useAsync, getUserCollections } from '@fafty/shared/api'
 import {
-  useAsync,
-  getUserCollections,
-  GetUserCollectionsResponseProps,
-  CollectionProps,
-  GetUserCollectionsCallbackProps
-} from '@fafty/shared/api'
+  GetUserCollectionsResponseType,
+  GetUserCollectionsCallbackType,
+  CollectionType
+} from '@fafty/shared/types'
 import { List } from 'masonic'
 import { useEffect, useMemo, useState } from 'react'
 import { useComponentDidUpdate } from '@fafty/usehooks'
@@ -54,9 +53,9 @@ const isObjectEmpty = (value: object | string | null) => {
 }
 
 const mapper = (
-  data: GetUserCollectionsResponseProps,
-  prev?: GetUserCollectionsResponseProps
-): GetUserCollectionsResponseProps => {
+  data: GetUserCollectionsResponseType,
+  prev?: GetUserCollectionsResponseType
+): GetUserCollectionsResponseType => {
   if (prev && Object.keys(prev).length) {
     return { ...prev, ...data, records: [...prev.records, ...data.records] }
   }
@@ -139,8 +138,8 @@ const AccountCollections = () => {
   }
 
   const { data, call, isLoading, isSuccess, clearAsyncData } = useAsync<
-    GetUserCollectionsResponseProps,
-    GetUserCollectionsCallbackProps
+    GetUserCollectionsResponseType,
+    GetUserCollectionsCallbackType
   >({
     callback: getUserCollections,
     mapper
@@ -189,7 +188,7 @@ const AccountCollections = () => {
   )
 
   interface VisibilityProps {
-    visibility: CollectionProps['visibility']
+    visibility: CollectionType['visibility']
     date: string | undefined
   }
 
@@ -271,7 +270,7 @@ const AccountCollections = () => {
   }
 
   type Props = {
-    item: CollectionProps
+    item: CollectionType
   }
   /**
    * @name Item
@@ -499,7 +498,7 @@ const AccountCollections = () => {
     return Array.from(
       { length: count },
       (_, index) => data?.records[index] ?? {}
-    ) as CollectionProps[]
+    ) as CollectionType[]
   }, [data?.paginate?.count, data?.records, localFiltersState.paginate.offset])
 
   const renderMasonry = useMemo(() => {

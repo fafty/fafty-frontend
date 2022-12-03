@@ -5,13 +5,12 @@ import AccountLayout from '../../../layouts/account'
 import Image from 'next/image'
 import { useRouter } from 'next/router'
 import { Viewer } from '@fafty/text/viewer'
+import { useAsync, getUserAssets } from '@fafty/shared/api'
 import {
-  useAsync,
-  getUserAssets,
-  GetUserAssetsResponseProps,
-  AssetProps,
-  GetUserAssetsCallbackProps
-} from '@fafty/shared/api'
+  AssetType,
+  GetUserAssetsResponseType,
+  GetUserAssetsParamsType
+} from '@fafty/shared/types'
 import { List } from 'masonic'
 
 import { useEffect, useMemo, useState } from 'react'
@@ -58,9 +57,9 @@ const isObjectEmpty = (value: object | string | null) => {
 }
 
 const mapper = (
-  data: GetUserAssetsResponseProps,
-  prev?: GetUserAssetsResponseProps
-): GetUserAssetsResponseProps => {
+  data: GetUserAssetsResponseType,
+  prev?: GetUserAssetsResponseType
+): GetUserAssetsResponseType => {
   if (prev && Object.keys(prev).length) {
     return { ...prev, ...data, records: [...prev.records, ...data.records] }
   }
@@ -153,7 +152,7 @@ const AccountAssets = () => {
   }
 
   const { data, call, isLoading, isSuccess, clearAsyncData, dataUpdater } =
-    useAsync<GetUserAssetsResponseProps, GetUserAssetsCallbackProps>({
+    useAsync<GetUserAssetsResponseType, GetUserAssetsParamsType>({
       callback: getUserAssets,
       mapper
     })
@@ -289,7 +288,7 @@ const AccountAssets = () => {
   }
 
   type Props = {
-    item: AssetProps
+    item: AssetType
   }
 
   const Item = ({ item }: Props) => {
@@ -577,7 +576,7 @@ const AccountAssets = () => {
             return <ItemPlaceholder />
           }
 
-          return <Item item={data as AssetProps} />
+          return <Item item={data as AssetType} />
         }}
       />
     )

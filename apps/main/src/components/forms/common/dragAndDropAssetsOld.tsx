@@ -1,10 +1,9 @@
+import { getUserAssets, useAsync } from '@fafty/shared/api'
 import {
-  AssetProps,
-  getUserAssets,
-  GetUserAssetsCallbackProps,
-  GetUserAssetsResponseProps,
-  useAsync,
-} from '@fafty/shared/api'
+  AssetType,
+  GetUserAssetsParamsType,
+  GetUserAssetsResponseType
+} from '@fafty/shared/types'
 import { useEffect, useMemo, useRef, useState } from 'react'
 import Sortable, { MultiDrag } from 'sortablejs'
 import { InfinityLoadChecker } from '../../common/infinityLoadChecker'
@@ -13,16 +12,16 @@ import { FunnelIcon } from '@heroicons/react/24/outline'
 import classNames from 'classnames'
 
 interface DragAndDropAssetsProps {
-  current: AssetProps[];
-  onChange: (assets: AssetProps[]) => void;
-  onDragStart: () => void;
-  onDragEnd: () => void;
-  hasError: boolean;
+  current: AssetType[]
+  onChange: (assets: AssetType[]) => void
+  onDragStart: () => void
+  onDragEnd: () => void
+  hasError: boolean
 }
 
 type Props = {
-  item: AssetProps;
-};
+  item: AssetType
+}
 
 const Item = ({ item }: Props): JSX.Element => {
   return (
@@ -37,8 +36,7 @@ const Item = ({ item }: Props): JSX.Element => {
                     <Image
                       src={item.media?.src}
                       style={{
-                        backgroundColor:
-                          item.media?.dominant_color || undefined,
+                        backgroundColor: item.media?.dominant_color || undefined
                       }}
                       width={300}
                       height={300}
@@ -80,7 +78,7 @@ const DragAndDropAssets = (props: DragAndDropAssetsProps) => {
     useState(false)
   const [
     onDragOverSortableCollectionAssets,
-    setOnDragOverSortableCollectionAssets,
+    setOnDragOverSortableCollectionAssets
   ] = useState(false)
   // const [
   //   selectedSortableAccountAssetsCount,
@@ -91,13 +89,13 @@ const DragAndDropAssets = (props: DragAndDropAssetsProps) => {
   //   setSelectedSortableCollectionAssetsCount,
   // ] = useState(0);
 
-  const [currentAssets] = useState<AssetProps[]>(current || [])
+  const [currentAssets] = useState<AssetType[]>(current || [])
 
   // console.log('currentcurrent', current);
   const mapper = (
-    data: GetUserAssetsResponseProps,
-    prev?: GetUserAssetsResponseProps
-  ): GetUserAssetsResponseProps => {
+    data: GetUserAssetsResponseType,
+    prev?: GetUserAssetsResponseType
+  ): GetUserAssetsResponseType => {
     if (prev && Object.keys(prev).length) {
       return { ...prev, ...data, records: [...prev.records, ...data.records] }
     }
@@ -109,26 +107,26 @@ const DragAndDropAssets = (props: DragAndDropAssetsProps) => {
 
   type QueryFiltersProps = {
     paginate: {
-      limit: number;
-      offset: number;
-    };
-  };
+      limit: number
+      offset: number
+    }
+  }
 
   const [localFiltersState, setLocalFiltersState] = useState<QueryFiltersProps>(
     {
       paginate: {
         limit: LIMIT,
-        offset: 0,
-      },
+        offset: 0
+      }
     }
   )
 
   const { data, call, isLoading, isSuccess } = useAsync<
-    GetUserAssetsResponseProps,
-    GetUserAssetsCallbackProps
+    GetUserAssetsResponseType,
+    GetUserAssetsParamsType
   >({
     callback: getUserAssets,
-    mapper,
+    mapper
   })
 
   const allowLoad = data
@@ -140,8 +138,8 @@ const DragAndDropAssets = (props: DragAndDropAssetsProps) => {
       ...prev,
       paginate: {
         ...prev.paginate,
-        offset: prev.paginate.offset + LIMIT,
-      },
+        offset: prev.paginate.offset + LIMIT
+      }
     }))
   }
 
@@ -152,8 +150,8 @@ const DragAndDropAssets = (props: DragAndDropAssetsProps) => {
       address: 'abcd',
       params: {
         limit: LIMIT,
-        offset: paginate.offset,
-      },
+        offset: paginate.offset
+      }
     })
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [localFiltersState])
@@ -187,7 +185,7 @@ const DragAndDropAssets = (props: DragAndDropAssetsProps) => {
           //@ts-ignore
           return currentItem.token === item?.token
         })
-    ) as AssetProps[]
+    ) as AssetType[]
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data?.paginate?.count, data?.records, localFiltersState.paginate.offset])
 
@@ -227,12 +225,12 @@ const DragAndDropAssets = (props: DragAndDropAssetsProps) => {
           console.log('onDeselect', evt)
         },
         group: {
-          name: 'assets',
+          name: 'assets'
         },
         onStart: onDragStart,
         onEnd: (e) => {
           onDragEnd()
-        },
+        }
       }
     )
     sortableCollectionAssets.current = Sortable.create(
@@ -268,14 +266,14 @@ const DragAndDropAssets = (props: DragAndDropAssetsProps) => {
                 }
                 return data?.records.find((asset) => asset.token === token)
               })
-              .filter(Boolean) as AssetProps[]
+              .filter(Boolean) as AssetType[]
             // set selected assets to state
             selectedAssets && onChange(selectedAssets)
-          },
+          }
         },
 
         group: {
-          name: 'assets',
+          name: 'assets'
         },
         onStart: (e) => {
           onDragStart()
@@ -285,22 +283,22 @@ const DragAndDropAssets = (props: DragAndDropAssetsProps) => {
         },
         onAdd: (e) => {
           console.log('onAdd', e)
-        },
+        }
       }
     )
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentAssets, data?.records])
 
   return (
-    <div className="flex flex-col my-5">
+    <div className="my-5 flex flex-col">
       <div className="relative flex flex-col">
         <div>
-          <div className="relative w-full h-[50px] flex flex-row">
-            <div className="pointer-events-none absolute py-2 inset-0 left-0 flex items-center pr-5">
-              <div className="w-8 h-8 rounded-full hover:bg-blue-100 dark:hover:bg-neutral-600 box-border justify-center p-0 m-0 cursor-pointer flex relative dark:text-gray-200 touch-manipulation items-center select-none border-0 list-none outline-none decoration-0 transition duration-250 ease-in-out bg-neutral-200 dark:bg-neutral-700">
+          <div className="relative flex h-[50px] w-full flex-row">
+            <div className="pointer-events-none absolute inset-0 left-0 flex items-center py-2 pr-5">
+              <div className="duration-250 relative m-0 box-border flex h-8 w-8 cursor-pointer touch-manipulation select-none list-none items-center justify-center rounded-full border-0 bg-neutral-200 p-0 decoration-0 outline-none transition ease-in-out hover:bg-blue-100 dark:bg-neutral-700 dark:text-gray-200 dark:hover:bg-neutral-600">
                 <FunnelIcon
                   strokeWidth="2"
-                  className="touch-manipulation select-none w-5 h-5"
+                  className="h-5 w-5 touch-manipulation select-none"
                 />
               </div>
             </div>
@@ -312,7 +310,7 @@ const DragAndDropAssets = (props: DragAndDropAssetsProps) => {
               autoCapitalize="off"
               name="search"
               id="search"
-              className="border-2 focus:ring-0 focus:ring-offset-0 block w-full bg-transparent border-transparent dark:border-transparent pl-[2.5rem] pr-3 p-3 focus:border-transparent hover:border-transparent dark:focus:border-transparent dark:hover:border-transparent transition duration-200 ring-0 sm:text-sm md:text-base"
+              className="block w-full border-2 border-transparent bg-transparent p-3 pl-[2.5rem] pr-3 ring-0 transition duration-200 hover:border-transparent focus:border-transparent focus:ring-0 focus:ring-offset-0 dark:border-transparent dark:hover:border-transparent dark:focus:border-transparent sm:text-sm md:text-base"
               placeholder="Filter"
             />
           </div>
@@ -327,11 +325,11 @@ const DragAndDropAssets = (props: DragAndDropAssetsProps) => {
           </div>
           <div
             className={classNames(
-              'border-[2px] rounded-md w-full h-full min-w-full min-h-full',
+              'h-full min-h-full w-full min-w-full rounded-md border-[2px]',
               {
                 'border-blue-700': onDragOverSortableAccountAssets,
                 'border-gray-200 bg-gray-100 dark:border-neutral-900 dark:bg-neutral-900/50':
-                  !onDragOverSortableAccountAssets,
+                  !onDragOverSortableAccountAssets
               }
             )}
           >
@@ -375,19 +373,19 @@ const DragAndDropAssets = (props: DragAndDropAssetsProps) => {
           </div>
           <div
             className={classNames(
-              'border-[2px] rounded-md w-full h-full min-w-full min-h-full',
+              'h-full min-h-full w-full min-w-full rounded-md border-[2px]',
               {
                 'border-blue-700': onDragOverSortableCollectionAssets,
                 'border-gray-200 bg-gray-100 dark:border-neutral-900 dark:bg-neutral-900/50':
                   !onDragOverSortableCollectionAssets && !hasError,
-                'border-red-500': hasError,
+                'border-red-500': hasError
               }
             )}
           >
-            <div className="w-full h-full min-w-full min-h-full wrapper-items">
+            <div className="wrapper-items h-full min-h-full w-full min-w-full">
               <div
                 id="sortable-collection-assets"
-                className="items grided small min-w-full min-h-full w-full h-full"
+                className="items grided small h-full min-h-full w-full min-w-full"
                 onDragEnter={(e) => {
                   setOnDragOverSortableCollectionAssets(true)
                 }}

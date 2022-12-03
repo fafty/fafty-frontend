@@ -1,15 +1,15 @@
 import Link from 'next/link'
 import Image from 'next/image'
-import { BundleProps } from '@fafty/shared/api'
+import { BundleType } from '@fafty/shared/types'
 
 type Props = {
-  item: BundleProps
+  item: BundleType
 }
 
 /**
  * @name Item component for Bundle
  * @param {Props} props
- * @param {BundleProps} props.item
+ * @param {BundleType} props.item
  * @returns {JSX.Element}
  * @example
  * <Item item={item} />

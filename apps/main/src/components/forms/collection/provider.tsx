@@ -1,9 +1,9 @@
 import { useState, ReactNode, useCallback, useEffect } from 'react'
 import {
+  CollectionType,
   CommentsOrderType,
-  CommentsModerationType,
-  CollectionProps
-} from '@fafty/shared/api'
+  CommentsModerationType
+} from '@fafty/shared/types'
 import Context from './context'
 import { FormProps, SetStepDataProps, StepsProps } from './types'
 
@@ -62,7 +62,7 @@ const FormCollectionContextProvider = ({
 }: {
   onChangeDismiss: (data: { title: string; disabled: boolean }) => void
   rawDataCallback: boolean
-  defaultData?: CollectionProps
+  defaultData?: CollectionType
   onRawDataCallback: (data: FormProps) => void
   onFinished: () => void
   children: ReactNode

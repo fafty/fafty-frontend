@@ -6,7 +6,7 @@ import isClient from '../utils/isClient'
 import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/24/outline'
 import classNames from 'classnames'
 import { useDebouncedCallback } from '@fafty/usehooks'
-import { AssetProps, BundleProps, CollectionProps } from '@fafty/shared/api'
+import { CollectionType, BundleType, AssetType } from '@fafty/shared/types'
 
 interface Props<T> {
   type: 'asset' | 'bundle' | 'collection'
@@ -16,7 +16,7 @@ interface Props<T> {
 /**
  * @description - Grid component
  */
-const Items = <T extends AssetProps[] | BundleProps[] | CollectionProps[]>({
+const Items = <T extends AssetType[] | BundleType[] | CollectionType[]>({
   type,
   items
 }: Props<T>): JSX.Element => {
@@ -153,14 +153,14 @@ const Items = <T extends AssetProps[] | BundleProps[] | CollectionProps[]>({
               items.map((item, index) => {
                 switch (type) {
                   case 'asset':
-                    return <AssetItem key={index} item={item as AssetProps} />
+                    return <AssetItem key={index} item={item as AssetType} />
                   case 'bundle':
-                    return <BundleItem key={index} item={item as BundleProps} />
+                    return <BundleItem key={index} item={item as BundleType} />
                   case 'collection':
                     return (
                       <CollectionItem
                         key={index}
-                        item={item as CollectionProps}
+                        item={item as CollectionType}
                       />
                     )
                   default:

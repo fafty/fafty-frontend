@@ -1,10 +1,10 @@
 import api from '../../index'
 import {
-  GetPopularTagsResponseProps,
-  GetSearchTagsResponseProps
-} from './types'
+  GetPopularTagsResponseType,
+  GetSearchTagsResponseType
+} from '@fafty/shared/types'
 
-const getPopularTags = async (): Promise<GetPopularTagsResponseProps> => {
+const getPopularTags = async (): Promise<GetPopularTagsResponseType> => {
   const { data } = await api.get('/tags/popular')
 
   return data
@@ -12,7 +12,7 @@ const getPopularTags = async (): Promise<GetPopularTagsResponseProps> => {
 
 const getTagsBySearch = async (
   query?: string
-): Promise<GetSearchTagsResponseProps> => {
+): Promise<GetSearchTagsResponseType> => {
   const { data } = await api.get('/tags/search', { params: { query } })
 
   return data

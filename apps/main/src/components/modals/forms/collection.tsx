@@ -2,15 +2,13 @@ import { Modal } from '@fafty/shared/modals'
 import FormCollection from '../../forms/collection/main'
 import FormCollectionContextProvider from '../../forms/collection/provider'
 import { useEffect, useState } from 'react'
+import { api, useAsync, putCollection, getCollection } from '@fafty/shared/api'
 import {
-  api,
-  useAsync,
-  putCollection,
-  getCollection,
-  GetCollectionResponseProps,
-  PutCollectionParamsProps,
-  GetCollectionParamsProps
-} from '@fafty/shared/api'
+  GetCollectionResponseType,
+  PutCollectionResponseType,
+  PutCollectionParamsType,
+  GetCollectionParamsType
+} from '@fafty/shared/types'
 import { useNotifications } from '@fafty/notifications'
 import { FormProps } from '../../forms/collection/types'
 
@@ -44,15 +42,15 @@ const FormCollectionModal = ({
     data: preloadedCollection,
     call: callPreloadCollection,
     isSuccess
-  } = useAsync<GetCollectionResponseProps, GetCollectionParamsProps>({
+  } = useAsync<GetCollectionResponseType, GetCollectionParamsType>({
     callback: getCollection
   })
 
   const { call: putCollectionData } = useAsync<
-    GetCollectionResponseProps,
-    PutCollectionParamsProps
+    PutCollectionResponseType,
+    PutCollectionParamsType
   >({
-    callback: (params?: PutCollectionParamsProps) => putCollection(params)
+    callback: (params?: PutCollectionParamsType) => putCollection(params)
   })
 
   const [submitting, setSubmitting] = useState(false)

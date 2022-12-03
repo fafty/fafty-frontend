@@ -1,14 +1,15 @@
 import api from '../../index'
 import {
-  AssetInfoResponseProps,
-  AssetOwnersResponseProps,
-  AssetPutParamsProps,
-  GetAssetResponseProps
-} from './types'
+  AssetInfoResponseType,
+  GetAssetResponseType,
+  AssetPutParamsType,
+  AssetOwnersResponseType,
+  AssetPutResponseType
+} from '@fafty/shared/types'
 
 export const getAsset = async (
   slug?: string
-): Promise<GetAssetResponseProps> => {
+): Promise<GetAssetResponseType> => {
   const { data } = await api.get(`asset/${slug}`)
 
   return data
@@ -16,21 +17,21 @@ export const getAsset = async (
 
 const getAssetOwners = async (
   slug?: string
-): Promise<AssetOwnersResponseProps> => {
+): Promise<AssetOwnersResponseType> => {
   const { data } = await api.get(`/asset/${slug}/owners`)
 
   return data
 }
 
-const getAssetInfo = async (slug?: string): Promise<AssetInfoResponseProps> => {
+const getAssetInfo = async (slug?: string): Promise<AssetInfoResponseType> => {
   const { data } = await api.get(`/asset/${slug}/info`)
 
   return data
 }
 
 export const putAsset = async (
-  params?: AssetPutParamsProps
-): Promise<GetAssetResponseProps> => {
+  params?: AssetPutParamsType
+): Promise<AssetPutResponseType> => {
   const { data } = await api.put(`/asset/${params?.slug}`, {
     asset: params?.asset
   })

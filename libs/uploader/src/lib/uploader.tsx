@@ -18,12 +18,11 @@ import classNames from 'classnames'
 import { useIsomorphicLayoutEffect } from '@fafty/usehooks'
 import Sortable from 'sortablejs'
 import { gsap } from 'gsap'
+import { getPresignFile, useAsync } from '@fafty/shared/api'
 import {
-  getPresignFile,
-  GetPresignFileCallbackProps,
-  GetPresignFileResponseProps,
-  useAsync
-} from '@fafty/shared/api'
+  GetPresignFileCallbackType,
+  GetPresignFileResponseType
+} from '@fafty/shared/types'
 
 export interface ExistingFileProps {
   id: string
@@ -144,8 +143,8 @@ const Uploader = ({
   const uploadIconRef = useRef<SVGSVGElement>(null)
 
   const { call } = useAsync<
-    GetPresignFileResponseProps,
-    GetPresignFileCallbackProps
+    GetPresignFileResponseType,
+    GetPresignFileCallbackType
   >({
     callback: getPresignFile
   })
@@ -319,7 +318,7 @@ const Uploader = ({
               endpoint: presignEndpoint
             })
             // Return the presigned URL and other data to the client.
-            return data as GetPresignFileResponseProps
+            return data as GetPresignFileResponseType
           }
         })
         .use(Compressor, {

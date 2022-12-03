@@ -1,9 +1,9 @@
 import Link from 'next/link'
 import Image from 'next/image'
-import { AssetProps } from '@fafty/shared/api'
+import { AssetType } from '@fafty/shared/types'
 
 type Props = {
-  item: AssetProps
+  item: AssetType
 }
 
 /**

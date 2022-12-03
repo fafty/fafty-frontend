@@ -4,13 +4,12 @@ import AccountLayout from '../../../layouts/account'
 import Image from 'next/image'
 import { useRouter } from 'next/router'
 import { Viewer } from '@fafty/text/viewer'
+import { useAsync, getUserBundles } from '@fafty/shared/api'
 import {
-  useAsync,
-  getUserBundles,
-  GetUserBundlesResponseProps,
-  BundleProps,
-  GetUserBundlesCallbackProps
-} from '@fafty/shared/api'
+  BundleType,
+  GetUserBundlesParamsType,
+  GetUserBundlesResponseType
+} from '@fafty/shared/types'
 import { List } from 'masonic'
 import { useEffect, useMemo, useState } from 'react'
 import { useComponentDidUpdate } from '@fafty/usehooks'
@@ -54,9 +53,9 @@ const isObjectEmpty = (value: object | string | null) => {
 }
 
 const mapper = (
-  data: GetUserBundlesResponseProps,
-  prev?: GetUserBundlesResponseProps
-): GetUserBundlesResponseProps => {
+  data: GetUserBundlesResponseType,
+  prev?: GetUserBundlesResponseType
+): GetUserBundlesResponseType => {
   if (prev && Object.keys(prev).length) {
     return { ...prev, ...data, records: [...prev.records, ...data.records] }
   }
@@ -150,8 +149,8 @@ const AccountBundles = () => {
   }
 
   const { data, call, isLoading, isSuccess, clearAsyncData } = useAsync<
-    GetUserBundlesResponseProps,
-    GetUserBundlesCallbackProps
+    GetUserBundlesResponseType,
+    GetUserBundlesParamsType
   >({
     callback: getUserBundles,
     mapper
@@ -269,7 +268,7 @@ const AccountBundles = () => {
   }
 
   type Props = {
-    item: BundleProps
+    item: BundleType
   }
 
   /**
@@ -498,7 +497,7 @@ const AccountBundles = () => {
     return Array.from(
       { length: count },
       (_, index) => data?.records[index] ?? {}
-    ) as BundleProps[]
+    ) as BundleType[]
   }, [data?.paginate?.count, data?.records, localFiltersState.paginate.offset])
 
   const renderMasonry = useMemo(() => {

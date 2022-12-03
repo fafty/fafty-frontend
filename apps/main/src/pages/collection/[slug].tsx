@@ -9,17 +9,19 @@ import { Viewer } from '@fafty/text/viewer'
 import {
   useAsync,
   getCollection,
-  getCollectionAssetsBySlug,
-  GetCollectionAssetsBySlugParamsProps,
-  GetCollectionAssetsBySlugResponseProps,
-  GetCollectionParamsProps,
-  GetCollectionResponseProps,
-  AssetProps
+  getCollectionAssetsBySlug
 } from '@fafty/shared/api'
+import {
+  AssetType,
+  GetCollectionParamsType,
+  GetCollectionResponseType,
+  GetCollectionAssetsBySlugResponseType,
+  GetCollectionAssetsBySlugParamsType
+} from '@fafty/shared/types'
 import {
   // BillingType,
   BillingTypeValue,
-  PriceFilterProps,
+  // PriceFilterProps,
   PriceFiltersValue
 } from '../../components/assets/filters'
 import { InfinityLoadChecker } from '../../components/common/infinityLoadChecker'
@@ -96,9 +98,9 @@ const Tabs = lazy(() => import('../../components/asset/tabs'))
 // )
 
 const mapper = (
-  assetsData: GetCollectionAssetsBySlugResponseProps,
-  prev?: GetCollectionAssetsBySlugResponseProps
-): GetCollectionAssetsBySlugResponseProps => {
+  assetsData: GetCollectionAssetsBySlugResponseType,
+  prev?: GetCollectionAssetsBySlugResponseType
+): GetCollectionAssetsBySlugResponseType => {
   if (prev && Object.keys(prev).length) {
     return {
       ...prev,
@@ -173,8 +175,8 @@ const Collection = () => {
   }
 
   const { data, call } = useAsync<
-    GetCollectionResponseProps,
-    GetCollectionParamsProps
+    GetCollectionResponseType,
+    GetCollectionParamsType
   >({
     callback: getCollection
   })
@@ -187,8 +189,8 @@ const Collection = () => {
     isSuccess: isAssetsSuccess,
     clearAsyncData
   } = useAsync<
-    GetCollectionAssetsBySlugResponseProps,
-    GetCollectionAssetsBySlugParamsProps
+    GetCollectionAssetsBySlugResponseType,
+    GetCollectionAssetsBySlugParamsType
   >({
     callback: getCollectionAssetsBySlug,
     mapper
@@ -294,7 +296,7 @@ const Collection = () => {
     return Array.from(
       { length: count },
       (_, index) => assetsData?.record.assets.records[index] ?? {}
-    ) as AssetProps[]
+    ) as AssetType[]
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
     assetsData?.record?.assets?.paginate?.count,

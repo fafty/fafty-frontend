@@ -1,7 +1,9 @@
 import { useState, useEffect, useCallback } from 'react'
 import axios, { AxiosError } from 'axios'
 
-type useAsyncParams<D, P> = (params?: P) => Promise<D>
+type useAsyncParams<D, P> = P extends undefined
+  ? (params?: P) => Promise<D>
+  : (params: P) => Promise<D>
 
 type RequestParams<D, P> = {
   callback: useAsyncParams<D, P>
@@ -32,7 +34,7 @@ function useAsync<D, P>({
       }))
 
       try {
-        const data = await callback(params)
+        const data = await callback(params as P)
 
         setState((prev) => ({
           ...prev,

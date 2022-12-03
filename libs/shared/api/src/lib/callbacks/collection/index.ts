@@ -1,31 +1,32 @@
 import api from '../../index'
 import {
-  PutCollectionParamsProps,
-  GetCollectionAssetsBySlugParamsProps,
-  GetCollectionAssetsBySlugResponseProps,
-  GetCollectionParamsProps,
-  GetCollectionResponseProps
-} from './types'
+  PutCollectionParamsType,
+  PutCollectionResponseType,
+  GetCollectionAssetsBySlugResponseType,
+  GetCollectionAssetsBySlugParamsType,
+  GetCollectionResponseType,
+  GetCollectionParamsType
+} from '@fafty/shared/types'
 
 const getCollection = async (
-  params?: GetCollectionParamsProps
-): Promise<GetCollectionResponseProps> => {
+  params?: GetCollectionParamsType
+): Promise<GetCollectionResponseType> => {
   const { data } = await api.get(`/collection/${params?.slug}`)
 
   return data
 }
 
 const getCollectionAssetsBySlug = async (
-  params?: GetCollectionAssetsBySlugParamsProps
-): Promise<GetCollectionAssetsBySlugResponseProps> => {
+  params?: GetCollectionAssetsBySlugParamsType
+): Promise<GetCollectionAssetsBySlugResponseType> => {
   const { data } = await api.get(`/collection/${params?.slug}/assets`)
 
   return data
 }
 
 const putCollection = async (
-  params?: PutCollectionParamsProps
-): Promise<GetCollectionResponseProps> => {
+  params?: PutCollectionParamsType
+): Promise<PutCollectionResponseType> => {
   const { data } = await api.put(`/collection/${params?.slug}`, {
     collection: params?.collection
   })

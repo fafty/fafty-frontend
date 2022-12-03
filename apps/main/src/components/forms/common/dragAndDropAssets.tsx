@@ -1,10 +1,9 @@
+import { getUserAssets, useAsync } from '@fafty/shared/api'
 import {
-  AssetProps,
-  getUserAssets,
-  GetUserAssetsCallbackProps,
-  GetUserAssetsResponseProps,
-  useAsync
-} from '@fafty/shared/api'
+  AssetType,
+  GetUserAssetsResponseType,
+  GetUserAssetsParamsType
+} from '@fafty/shared/types'
 import { SVGProps, useEffect, useMemo, useState } from 'react'
 import {
   // DragStartEvent,
@@ -77,7 +76,7 @@ const ActionButton = ({
   )
 }
 type Props = {
-  item: AssetProps
+  item: AssetType
   addable?: boolean
   removable?: boolean
   onAdd?: (token: string) => void
@@ -129,7 +128,7 @@ const Item = ({
       }
       transition={{
         duration: !isDragging ? 0.25 : 0,
-        easings: {
+        ease: {
           type: 'spring'
         },
         scale: {
@@ -200,8 +199,8 @@ const Item = ({
 }
 
 interface DragAndDropAssetsProps {
-  initial: AssetProps[]
-  onChange: (assets: AssetProps[]) => void
+  initial: AssetType[]
+  onChange: (assets: AssetType[]) => void
   onDragStart: () => void
   onDragEnd: () => void
   hasError: boolean
@@ -225,7 +224,7 @@ const DragAndDropAssets = ({
   onChange,
   hasError
 }: DragAndDropAssetsProps): JSX.Element => {
-  const [assets, setAssets] = useState<AssetProps[]>(initial || [])
+  const [assets, setAssets] = useState<AssetType[]>(initial || [])
 
   // const [activeAssetToken, setActiveAssetToken] = useState<
   //   string | number | null
@@ -270,9 +269,9 @@ const DragAndDropAssets = ({
   }
 
   const mapper = (
-    data: GetUserAssetsResponseProps,
-    prev?: GetUserAssetsResponseProps
-  ): GetUserAssetsResponseProps => {
+    data: GetUserAssetsResponseType,
+    prev?: GetUserAssetsResponseType
+  ): GetUserAssetsResponseType => {
     if (prev && Object.keys(prev).length) {
       return { ...prev, ...data, records: [...prev.records, ...data.records] }
     }
@@ -299,8 +298,8 @@ const DragAndDropAssets = ({
   )
 
   const { data, call, isLoading, isSuccess } = useAsync<
-    GetUserAssetsResponseProps,
-    GetUserAssetsCallbackProps
+    GetUserAssetsResponseType,
+    GetUserAssetsParamsType
   >({
     callback: getUserAssets,
     mapper
@@ -342,11 +341,11 @@ const DragAndDropAssets = ({
       { length: count },
       (_, index) => data?.records[index] ?? {}
     ).filter(
-      (item: AssetProps) =>
+      (item: AssetType) =>
         !assets.find((asset) => {
           return asset?.token === item?.token
         })
-    ) as AssetProps[]
+    ) as AssetType[]
   }, [
     data?.paginate?.count,
     data?.records,

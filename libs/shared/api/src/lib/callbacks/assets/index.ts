@@ -1,9 +1,9 @@
 import api from '../../index'
-import { GetAssetsParamsProps, GetAssetsResponseProps } from './types'
+import { GetAssetsResponseType, GetAssetsParamsType } from '@fafty/shared/types'
 
 const getAssets = async (
-  params?: GetAssetsParamsProps
-): Promise<GetAssetsResponseProps> => {
+  params?: GetAssetsParamsType
+): Promise<GetAssetsResponseType> => {
   const { data } = await api.get('/assets', { params })
 
   return data

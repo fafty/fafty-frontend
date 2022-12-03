@@ -3,18 +3,14 @@ import { XMarkIcon } from '@heroicons/react/24/outline'
 
 import React, { useEffect, useRef, useState } from 'react'
 import { useDebounce, useOnClickOutside } from '@fafty/usehooks'
-import {
-  GetSearchTagsResponseProps,
-  getTagsBySearch,
-  TagProps,
-  useAsync
-} from '@fafty/shared/api'
+import { getTagsBySearch, useAsync } from '@fafty/shared/api'
+import { GetSearchTagsResponseType, TagType } from '@fafty/shared/types'
 import { motion } from 'framer-motion'
 
 type Props = {
-  tags: TagProps[]
-  onDelete: (value: TagProps) => void
-  onChange: (value: TagProps) => void
+  tags: TagType[]
+  onDelete: (value: TagType) => void
+  onChange: (value: TagType) => void
 }
 
 const TagsInput = ({ tags, onChange, onDelete }: Props) => {
@@ -30,7 +26,7 @@ const TagsInput = ({ tags, onChange, onDelete }: Props) => {
     data: searchResult,
     call: callSearchTags,
     clearAsyncData
-  } = useAsync<GetSearchTagsResponseProps, string>({
+  } = useAsync<GetSearchTagsResponseType, string>({
     callback: (query?: string) => getTagsBySearch(query)
   })
 
@@ -80,7 +76,7 @@ const TagsInput = ({ tags, onChange, onDelete }: Props) => {
     }
   }
 
-  const onMouseDown = (searchRecord: TagProps) => () => {
+  const onMouseDown = (searchRecord: TagType) => () => {
     onChange(searchRecord)
     clearAsyncData()
     setInputValue('')
