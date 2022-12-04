@@ -32,12 +32,14 @@ const Tag = <T,>({
 
       return (
         <ArrayFilter
+          title={currentFilter.title}
           options={currentFilter.options}
           value={value as string[]}
           onChange={(value) => {
             setOpenedFilterTag(false)
             onChange(value)
           }}
+          onDismiss={() => setOpenedFilterTag(false)}
         />
       )
     }
@@ -47,12 +49,14 @@ const Tag = <T,>({
 
       return (
         <RangeFilter
+          title={currentFilter.title}
           value={value as RangeFilterValueProps}
           params={currentFilter.params}
           onChange={(value) => {
             setOpenedFilterTag(false)
             onChange(value)
           }}
+          onDismiss={() => setOpenedFilterTag(false)}
         />
       )
     }
@@ -112,12 +116,9 @@ const Tag = <T,>({
           {currentFilter.title}: {firstTitle}
           {firstValue && secondValue && (
             <>
-              <span className="mx-1">
-                -
-              </span>
+              <span className="mx-1">-</span>
               {secondTitle}
             </>
-            
           )}
         </span>
       )
@@ -129,11 +130,16 @@ const Tag = <T,>({
       key={filter.title}
       layout
       ref={tagRef}
-      className="relative z-20">
+      className="relative z-20"
+    >
       <div
         onClick={() => setOpenedFilterTag(!openedFilterTag)}
         className={classNames(
-          'duration-250 relative m-0 box-border flex flex-shrink-0 cursor-pointer touch-manipulation select-none items-center justify-center rounded-full border-0 bg-neutral-200 p-0 py-1 pl-3 pr-1 decoration-0 outline-none transition ease-in-out hover:bg-blue-100 dark:bg-neutral-700 dark:text-gray-200 dark:hover:bg-neutral-600'
+          'duration-250 relative m-0 box-border flex flex-shrink-0 cursor-pointer touch-manipulation select-none items-center justify-center rounded-full border bg-neutral-200 p-0 py-1 pl-3 pr-1 decoration-0 outline-none transition ease-in-out hover:bg-blue-100 dark:bg-neutral-700 dark:text-gray-200 dark:hover:bg-neutral-600',
+          {
+            'border-blue-600/50': openedFilterTag,
+            'border-neutral-300 dark:border-neutral-900/80': !openedFilterTag
+          }
         )}
       >
         <motion.span
@@ -162,7 +168,7 @@ const Tag = <T,>({
         </button>
       </div>
       {openedFilterTag && (
-        <div className="absolute left-0 z-[999] pt-4">
+        <div className="absolute left-0 z-[999] pt-1">
           <div className="inline-table">{renderAbsoluteContent}</div>
         </div>
       )}

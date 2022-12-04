@@ -1,4 +1,5 @@
 import { format } from 'date-fns'
+import { ReactComponent as EmptyIllustration } from '../../../assets/empty.svg'
 
 import AccountLayout from '../../../layouts/account'
 import Image from 'next/image'
@@ -103,8 +104,8 @@ const ASSETS_FILTERS = [
     params: {
       firstTitle: 'min',
       secondTitle: 'max',
-      firstKey: 'min',
-      secondKey: 'max'
+      firstKey: 'ge',
+      secondKey: 'le'
     }
   },
   {
@@ -135,7 +136,7 @@ const AccountAssets = () => {
 
   const onChangeFilters = (key: string, value: OnChangeValueProps) => {
     clearAsyncData()
-
+    console.log('localFiltersState', localFiltersState)
     setLocalFiltersState((prev) => ({
       ...prev,
       paginate: { limit: LIMIT, offset: 0 },
@@ -196,7 +197,7 @@ const AccountAssets = () => {
     call({
       address: 'abcd',
       params: {
-        ...restFilters,
+        filters: restFilters,
         limit: LIMIT,
         offset: paginate.offset
       }
@@ -515,11 +516,52 @@ const AccountAssets = () => {
   const renderMasonry = useMemo(() => {
     if (!isSuccess && !data?.paginate?.count) {
       return (
-        <div className="relative">
+        <motion.div
+          variants={{
+            initial: {
+              opacity: 0
+            },
+            animate: {
+              opacity: 1
+            },
+            exit: {
+              opacity: 0
+            }
+          }}
+          // layout="preserve-aspect"
+          className="relative"
+        >
           {Array.from({ length: 20 }, (_, index) => (
             <ItemPlaceholder key={index} />
           ))}
-        </div>
+        </motion.div>
+      )
+    }
+
+    if (isSuccess && items.length === 0) {
+      return (
+        <motion.div
+        variants={{
+          initial: {
+            opacity: 0
+          },
+          animate: {
+            opacity: 1
+          },
+          exit: {
+            opacity: 0
+          }
+        }}
+          // layout="preserve-aspect"
+          className="flex flex-col items-center justify-center w-full h-full p-20"
+        >
+          <div className="w-[25rem] h-[20rem]">
+            <EmptyIllustration />
+          </div>
+          <h2 className="text-2xl font-medium text-neutral-500 dark:text-neutral-50 mt-5">
+            No items found
+          </h2>
+        </motion.div>
       )
     }
 

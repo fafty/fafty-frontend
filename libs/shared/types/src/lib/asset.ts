@@ -15,7 +15,7 @@ export type AssetCreatorType = {
 
 export type AssetCommentsModerationTypes =
   | 'allow_all'
-  | 'automoderation'
+  | 'auto_moderation'
   | 'hold_all'
   | 'disabled'
 
@@ -62,7 +62,7 @@ export type AssetType = {
   sensitive_content?: boolean
   contract_address?: string
   token_id?: number
-  token_standart?: string
+  token_standard?: string
   blockchain?: string
   restrictions?: string
   visibility?: string

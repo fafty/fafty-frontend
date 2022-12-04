@@ -4,7 +4,7 @@ export type ApiResponseGeneric<T> = T extends unknown[]
 
 export type CommentsModerationType =
   | 'allow_all'
-  | 'automoderation'
+  | 'auto_moderation'
   | 'hold_all'
   | 'disabled'
 

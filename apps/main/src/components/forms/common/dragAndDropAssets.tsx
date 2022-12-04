@@ -128,7 +128,7 @@ const Item = ({
       }
       transition={{
         duration: !isDragging ? 0.25 : 0,
-        easings: {
+        ease: {
           type: 'spring'
         },
         scale: {

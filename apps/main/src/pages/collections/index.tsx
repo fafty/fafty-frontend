@@ -1,4 +1,5 @@
 import { useRouter } from 'next/router'
+import { ReactComponent as EmptyIllustration } from '../../assets/empty.svg'
 import {
   AssetTabsPlaceholder,
   CollectionItemPlaceholder
@@ -13,7 +14,7 @@ import {
 } from '@fafty/shared/types'
 import Item from '../../components/items/collection/item'
 import {
-  BillingType,
+  // BillingType,
   BillingTypeValue,
   PriceFilterProps,
   PriceFiltersValue
@@ -21,9 +22,21 @@ import {
 import { lazy, Suspense, useEffect, useMemo, useState } from 'react'
 import dynamic from 'next/dynamic'
 import { InfinityLoadChecker } from '../../components/common/infinityLoadChecker'
-import { Panel } from '../../components/common/bar'
+// import { Panel } from '../../components/common/bar'
 // import { Pills } from '../../components/assets/pills'
 import { useComponentDidUpdate } from '@fafty/usehooks'
+
+import {
+  TypeProps,
+  OnChangeValueProps
+} from '../../components/common/filterBar/types'
+
+import FilterBar from '../../components/common/filterBar'
+import {
+  BLOCKCHAIN_CHECKS,
+} from '../../constants/user/assets'
+import { AssetsUserFilterStateType } from '../../types/user/assets'
+import { motion } from 'framer-motion'
 
 export type FiltersValues = {
   blockchain?: string
@@ -49,15 +62,35 @@ const TABS = [
   }
 ]
 
+const COLLECTIONS_FILTERS = [
+  {
+    title: 'Blockchain',
+    value: 'blockchain',
+    type: TypeProps.ARRAY,
+    options: BLOCKCHAIN_CHECKS
+  },
+  {
+    title: 'Included Items',
+    value: 'cached_assets_count',
+    type: TypeProps.RANGE,
+    params: {
+      firstTitle: 'min',
+      secondTitle: 'max',
+      firstKey: 'ge',
+      secondKey: 'le'
+    }
+  }
+]
+
 const Tabs = lazy(() => import('../../components/asset/tabs'))
 
-const Price = dynamic<PriceFilterProps>(
-  () =>
-    import('../../components/assets/filters/price').then((mod) => mod.Price),
-  {
-    ssr: false
-  }
-)
+// const Price = dynamic<PriceFilterProps>(
+//   () =>
+//     import('../../components/assets/filters/price').then((mod) => mod.Price),
+//   {
+//     ssr: false
+//   }
+// )
 
 const mapper = (
   data: GetCollectionsResponseType,
@@ -72,7 +105,7 @@ const mapper = (
 
 const LIMIT = 20
 
-type QueryFiltersProps = {
+type QueryFiltersProps = AssetsUserFilterStateType & {
   paginate: {
     limit: number
     offset: number
@@ -94,6 +127,22 @@ const Collections = () => {
     }
   )
 
+  const onChangeFilters = (key: string, value: OnChangeValueProps) => {
+    clearAsyncData()
+    setLocalFiltersState((prev) => ({
+      ...prev,
+      paginate: { limit: LIMIT, offset: 0 },
+      [key]: value
+    }))
+  }
+
+  const onCloseTag = (key: keyof AssetsUserFilterStateType) => {
+    const { [key]: deletedProp, ...rest } = localFiltersState
+    clearAsyncData()
+
+    setLocalFiltersState({ ...rest, paginate: { limit: LIMIT, offset: 0 } })
+  }
+
   const { data, call, isLoading, isSuccess, clearAsyncData } = useAsync<
     GetCollectionsResponseType,
     GetCollectionsParamsType
@@ -101,6 +150,8 @@ const Collections = () => {
     callback: getCollections,
     mapper
   })
+
+  const { paginate, ...panelFilterState } = localFiltersState
 
   const allowLoad = data
     ? !isLoading && data?.records.length < data?.paginate?.count
@@ -155,7 +206,7 @@ const Collections = () => {
   // }
 
   useEffect(() => {
-    const { filters, paginate } = localFiltersState
+    const { filters, paginate, ...restFilters } = localFiltersState
     const nextQuery = qs.stringify(filters)
     if (nextQuery !== search) {
       replace(`/collections?${nextQuery}`)
@@ -164,9 +215,7 @@ const Collections = () => {
     call({
       limit: LIMIT,
       offset: paginate.offset,
-      filters: {
-        blockchain: filters?.blockchain
-      },
+      filters: restFilters,
       sort: TABS[tabIndex]?.value || TABS[0].value
     })
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -200,51 +249,75 @@ const Collections = () => {
     <MainLayout
       title={'Collections | Marketplace'}
       description={'Collections | Marketplace'}
-      className=""
+      className="px-0"
     >
-      <div className="relative flex items-start py-10">
-        <div className="sticky top-[120px]  flex w-[250px] flex-shrink-0 items-start pr-5">
-          <div className="flex w-full flex-col rounded bg-white  p-2.5 dark:bg-neutral-800">
-            <Panel title="Price" initialState>
-              <Price
-                value={{
-                  currency: '',
-                  from: '',
-                  to: ''
-                }}
-                onChange={onChangeFiltersByKey('price')}
-              />
-            </Panel>
-            <Panel title="Billing type" initialState>
-              <BillingType
-                value={'fixed_price'}
-                onChange={onChangeFiltersByKey('billing_type')}
-              />
-            </Panel>
-          </div>
-        </div>
-        <div className="flex w-full flex-col">
-          <div className="flex items-center justify-end">
-            <div className="flex">
-              <Suspense fallback={<AssetTabsPlaceholder />}>
-                <Tabs
-                  tabs={TABS}
-                  tabIndex={tabIndex}
-                  setTabIndex={onChangeTab}
-                />
-              </Suspense>
+      <motion.div
+        initial={{ opacity: 0, y: -5, scale: 1.1 }}
+        animate={{ opacity: 1, y: 0, scale: 1 }}
+        transition={{ ease: 'easeOut', duration: 1, delay: 0.3 }}
+        className="my-20 flex flex-col items-center justify-center"
+      >
+        <h1 className="font text-4xl font-extrabold tracking-tight text-slate-900 dark:text-gray-50 sm:text-8xl">
+          Explore Collectibles
+        </h1>
+        <p className="mt-4 text-3xl tracking-tight text-slate-900 dark:text-gray-50">
+          Discover the most popular collectibles on the Fafty marketplace.
+        </p>
+      </motion.div>
+      <div className="flex w-full flex-col">
+        <div className="z-1 sticky top-[82px] mx-auto flex w-full flex-col bg-white shadow-[0_10px_5px_-10px_rgba(0,0,0,0.2)] dark:bg-neutral-800">
+          <div className="grid grid-flow-col">
+            <FilterBar<AssetsUserFilterStateType>
+              filters={COLLECTIONS_FILTERS}
+              onCloseTag={onCloseTag}
+              values={panelFilterState}
+              onChange={onChangeFilters}
+            />
+            <div className="relative ml-auto mr-8 flex">
+              <div className="mt-2 flex">
+                <Suspense fallback={<AssetTabsPlaceholder />}>
+                  <Tabs
+                    tabs={TABS}
+                    tabIndex={tabIndex}
+                    setTabIndex={onChangeTab}
+                  />
+                </Suspense>
+              </div>
             </div>
           </div>
-          <div className="my-4 flex">
-            {/*<Pills onClosePill={onClosePill} onClearFilters={onClearFilters} />*/}
-          </div>
+        </div>
+        <div className="m-8">
           <div className="wrapper-items">
             <div className="items grided">
               {!isSuccess && !data?.paginate?.count
                 ? Array.from({ length: 24 }, (_, index) => (
                     <CollectionItemPlaceholder key={index} />
                   ))
-                : items.map((item) => <Item key={item.token} item={item} />)}
+                : items.map((item) => <Item key={item.token} item={item} />
+              )}
+              {isSuccess && items.length === 0 && (
+                <motion.div
+                  variants={{
+                    initial: {
+                      opacity: 0
+                    },
+                    animate: {
+                      opacity: 1
+                    },
+                    exit: {
+                      opacity: 0
+                    }
+                  }}
+                  className="flex h-full w-full flex-col items-center justify-center p-20"
+                >
+                  <div className="h-[20rem] w-[25rem]">
+                    <EmptyIllustration />
+                  </div>
+                  <h2 className="mt-5 text-2xl font-medium text-neutral-500 dark:text-neutral-50">
+                    No items found
+                  </h2>
+                </motion.div>
+              )}
             </div>
           </div>
           <InfinityLoadChecker

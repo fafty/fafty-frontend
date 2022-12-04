@@ -27,15 +27,17 @@ const Item = ({ item }: Props): JSX.Element => {
             >
               <>
                 <div className="thumbnail-wrapper asset">
-                  <div className="thumbnail">
+                  <div className="thumbnail"
+                    style={{
+                      backgroundColor: item.cover?.dominant_color || undefined
+                    }}
+                  >
                     <Image
                       src={item.cover?.src}
-                      style={{
-                        backgroundColor: item.cover?.dominant_color || undefined
-                      }}
                       width="300"
                       height="300"
                       alt={item.name}
+                      style={{clipPath: 'inset(0.5px)'}}
                     />
                   </div>
                 </div>
@@ -77,6 +79,7 @@ const Item = ({ item }: Props): JSX.Element => {
                                     alt=""
                                     width={36}
                                     height={36}
+                                    style={{clipPath: 'inset(0.5px)'}}
                                   />
                                 </div>
                               </div>

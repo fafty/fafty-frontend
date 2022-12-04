@@ -17,7 +17,7 @@ export type AssetInfoType = Pick<
   | 'slug'
   | 'token'
   | 'token_id'
-  | 'token_standart'
+  | 'token_standard'
 >
 
 export type GetAssetResponseType = ApiResponseGeneric<AssetType>
