@@ -12,10 +12,14 @@ import dynamic from 'next/dynamic'
 import { AnimatePresence, motion } from 'framer-motion'
 import classNames from 'classnames'
 import { ReactComponent as CompleteIllustration } from '../../../assets/complete.svg'
-import { FileProps, Props, UploaderProps } from './types'
+import {
+  UploaderPropsType,
+  FileType,
+  CollectionFormMainPropsType
+} from '@fafty/shared/types'
 import StepsBar from '../common/stepsBar'
 
-const Uploader = dynamic<UploaderProps>(
+const Uploader = dynamic<UploaderPropsType>(
   () => import('@fafty/uploader').then((mod) => mod.Uploader),
   { ssr: false, loading: () => <UploaderPlaceholder /> }
 )
@@ -36,7 +40,7 @@ const FormCollection = ({
   onSubmit,
   submitting,
   defaultCover
-}: Props): JSX.Element => {
+}: CollectionFormMainPropsType): JSX.Element => {
   /*
    * Form Store
    */
@@ -158,7 +162,7 @@ const FormCollection = ({
   }
 
   const onChangeFile = useCallback(
-    (values: FileProps | FileProps[]) => {
+    (values: FileType | FileType[]) => {
       if (!data?.cover?.id) {
         const currentFile = Array.isArray(values) ? values[0] : values
 

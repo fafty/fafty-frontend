@@ -3,10 +3,12 @@ import FormAsset from '../../forms/asset/main'
 import FormAssetContextProvider from '../../forms/asset/provider'
 import { useEffect, useState } from 'react'
 import { api, useAsync, putAsset, getAsset } from '@fafty/shared/api'
-import { AssetPutResponseType, AssetPutParamsType } from '@fafty/shared/types'
+import {
+  AssetPutResponseType,
+  AssetPutParamsType,
+  AssetFormDataType
+} from '@fafty/shared/types'
 import { useNotifications } from '@fafty/notifications'
-
-import { FormProps } from '../../forms/asset/types'
 
 type Props = {
   title: string
@@ -60,7 +62,7 @@ const FormAssetModal = ({
   const [drafted, setDrafted] = useState(false)
   const { enqueueNotification } = useNotifications()
 
-  const onSubmit = async (data: FormProps) => {
+  const onSubmit = async (data: AssetFormDataType) => {
     if (submitting) {
       return
     }

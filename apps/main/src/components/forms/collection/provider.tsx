@@ -5,9 +5,13 @@ import {
   CommentsModerationType
 } from '@fafty/shared/types'
 import Context from './context'
-import { FormProps, SetStepDataProps, StepsProps } from './types'
+import {
+  CollectionFormSetStepDataType,
+  CollectionFormStepDataType,
+  CollectionFormDataType
+} from '@fafty/shared/types'
 
-const defaultStepsData: StepsProps = {
+const defaultStepsData: CollectionFormStepDataType = {
   cover: {
     id: '',
     storage: '',
@@ -63,7 +67,7 @@ const FormCollectionContextProvider = ({
   onChangeDismiss: (data: { title: string; disabled: boolean }) => void
   rawDataCallback: boolean
   defaultData?: CollectionType
-  onRawDataCallback: (data: FormProps) => void
+  onRawDataCallback: (data: CollectionFormDataType) => void
   onFinished: () => void
   children: ReactNode
 }) => {
@@ -73,7 +77,7 @@ const FormCollectionContextProvider = ({
   const [step4Answered, setStep4Answered] = useState(false)
   const [finished, setFinished] = useState<boolean>(false)
 
-  const [stepData, setStepData] = useState<StepsProps>({
+  const [stepData, setStepData] = useState<CollectionFormStepDataType>({
     cover: {
       id: defaultData?.cover?.file_id || '',
       storage: defaultData?.cover?.storage || '',
@@ -163,7 +167,7 @@ const FormCollectionContextProvider = ({
   }, [finished, step1Answered, stepData.cover])
 
   const onSetStepData = useCallback(
-    (data: SetStepDataProps) => {
+    (data: CollectionFormSetStepDataType) => {
       setStepData((prev) => ({ ...prev, ...data }))
     },
     [setStepData]

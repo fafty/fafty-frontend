@@ -2,19 +2,23 @@ import { motion } from 'framer-motion'
 import { useEffect, useContext, lazy, useLayoutEffect, Context } from 'react'
 import { Controller, useForm } from 'react-hook-form'
 import { childVariants, variants } from '../constants'
-import { ContextProps } from '../types'
+import { AssetFormContextType } from '@fafty/shared/types'
 
 const SelectBlockchain = lazy(() => import('../../common/selectBlockchain'))
 const SelectCollection = lazy(() => import('../../common/selectCollection'))
 
 const CounterInput = lazy(() => import('../../common/counterInput'))
 
-const SelectStep2 = ({ Context }: { Context: Context<ContextProps> }) => {
+const SelectStep2 = ({
+  Context
+}: {
+  Context: Context<AssetFormContextType>
+}) => {
   /**
    * Context Store
    */
   const { setStep2Answered, stepData, setStepData } =
-    useContext<ContextProps>(Context)
+    useContext<AssetFormContextType>(Context)
 
   /**
    * React-Hook-Form hook

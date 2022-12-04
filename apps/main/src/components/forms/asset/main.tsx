@@ -12,10 +12,14 @@ import dynamic from 'next/dynamic'
 import { AnimatePresence, motion } from 'framer-motion'
 import classNames from 'classnames'
 import { ReactComponent as CompleteIllustration } from '../../../assets/complete.svg'
-import { FileProps, Props, UploaderProps } from './types'
+import {
+  UploaderPropsType,
+  FileType,
+  AssetFormMainPropsType
+} from '@fafty/shared/types'
 import StepsBar from '../common/stepsBar'
 
-const Uploader = dynamic<UploaderProps>(
+const Uploader = dynamic<UploaderPropsType>(
   () => import('@fafty/uploader').then((mod) => mod.Uploader),
   { ssr: false, loading: () => <UploaderPlaceholder /> }
 )
@@ -36,14 +40,11 @@ const FormAsset = ({
   onSubmit,
   submitting,
   defaultAsset
-}: Props): JSX.Element => {
+}: AssetFormMainPropsType): JSX.Element => {
   /*
    * Form Store
    */
   const {
-    // step1Answered,
-    // step2Answered,
-    // step3Answered,
     step4Answered,
     finished,
     stepData: data,
@@ -147,7 +148,7 @@ const FormAsset = ({
 
   const handleSkip = () => {
     if (!isStepOptional(activeStep)) {
-      throw new Error('You can\'t skip a step that isn\'t optional.')
+      throw new Error("You can't skip a step that isn't optional.")
     }
 
     setActiveStep((prevActiveStep) => prevActiveStep + 1)
@@ -159,7 +160,7 @@ const FormAsset = ({
   }
 
   const onChangeFile = useCallback(
-    (values: FileProps | FileProps[]) => {
+    (values: FileType | FileType[]) => {
       if (!data?.media?.id) {
         const currentFile = Array.isArray(values) ? values[0] : values
         const formattedFileName = (currentFile?.metadata?.filename || '')
@@ -191,7 +192,7 @@ const FormAsset = ({
 
   const StepsList = [
     {
-      name: 'Information\'s',
+      name: "Information's",
       active: activeStep === 0,
       completed: data?.step1.solved,
       optional: false,

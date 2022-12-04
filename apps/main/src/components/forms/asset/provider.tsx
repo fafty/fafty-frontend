@@ -2,12 +2,14 @@ import { useState, ReactNode, useCallback, useEffect } from 'react'
 import {
   AssetType,
   CommentsOrderType,
-  CommentsModerationType
+  AssetFormDataType,
+  AssetFormStepDataType,
+  CommentsModerationType,
+  AssetFormSetStepDataType
 } from '@fafty/shared/types'
 import Context from './context'
-import { FormProps, SetStepDataProps, StepsProps } from './types'
 
-const defaultStepsData: StepsProps = {
+const defaultStepsData: AssetFormStepDataType = {
   media: {
     id: '',
     storage: '',
@@ -61,7 +63,7 @@ interface Props {
   onChangeDismiss: (data: { title: string; disabled: boolean }) => void
   rawDataCallback: boolean
   defaultData?: AssetType
-  onRawDataCallback: (data: FormProps) => void
+  onRawDataCallback: (data: AssetFormDataType) => void
   onFinished: () => void
 }
 
@@ -99,7 +101,7 @@ const FormAssetContextProvider = ({
   const [step4Answered, setStep4Answered] = useState(false)
   const [finished, setFinished] = useState<boolean>(false)
 
-  const [stepData, setStepData] = useState<StepsProps>({
+  const [stepData, setStepData] = useState<AssetFormStepDataType>({
     media: {
       id: defaultData?.media?.file_id || '',
       storage: defaultData?.media?.storage || '',
@@ -203,7 +205,7 @@ const FormAssetContextProvider = ({
   }, [finished, step1Answered, stepData.media])
 
   const onSetStepData = useCallback(
-    (data: SetStepDataProps) => {
+    (data: AssetFormSetStepDataType) => {
       setStepData((prev) => ({ ...prev, ...data }))
     },
     [setStepData]

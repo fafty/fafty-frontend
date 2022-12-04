@@ -10,7 +10,7 @@ import {
   GetCollectionParamsType
 } from '@fafty/shared/types'
 import { useNotifications } from '@fafty/notifications'
-import { FormProps } from '../../forms/collection/types'
+import { CollectionFormDataType } from '@fafty/shared/types'
 
 type Props = {
   title: string
@@ -62,7 +62,7 @@ const FormCollectionModal = ({
   const [drafted, setDrafted] = useState(false)
   const { enqueueNotification } = useNotifications()
 
-  const onSubmit = async (data: FormProps) => {
+  const onSubmit = async (data: CollectionFormDataType) => {
     if (submitting) {
       return
     }

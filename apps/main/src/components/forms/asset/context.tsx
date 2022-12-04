@@ -1,6 +1,6 @@
 import { createContext } from 'react'
-import { ContextProps } from './types'
+import { AssetFormContextType } from '@fafty/shared/types'
 
-const Context = createContext<Partial<ContextProps>>({})
+const Context = createContext<Partial<AssetFormContextType>>({})
 
 export default Context

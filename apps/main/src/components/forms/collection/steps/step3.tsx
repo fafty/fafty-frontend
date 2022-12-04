@@ -12,14 +12,18 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { ArrowDownSIcon } from '@remixicons/react/line'
 import TagsSelect from '../../common/tagsSelect'
 import { useComponentDidUpdate } from '@fafty/usehooks'
-import { ContextProps } from '../types'
+import { CollectionFormContextType } from '@fafty/shared/types'
 
-const SelectStep3 = ({ Context }: { Context: Context<ContextProps> }) => {
+const SelectStep3 = ({
+  Context
+}: {
+  Context: Context<CollectionFormContextType>
+}) => {
   /**
    * Context Store
    */
   const { setStep3Answered, stepData, setStepData } =
-    useContext<ContextProps>(Context)
+    useContext<CollectionFormContextType>(Context)
 
   /**
    * React-Hook-Form hook

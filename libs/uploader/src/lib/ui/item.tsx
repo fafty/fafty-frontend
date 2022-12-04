@@ -2,7 +2,10 @@
 import { XMarkIcon } from '@heroicons/react/24/outline'
 import { useEffect, useRef, useState } from 'react'
 import ProgressIndicator from './progressIndicator'
-import { ProgressProps, ThumbnailProps } from '../uploader'
+import {
+  UploaderThumbnailPropsType,
+  UploaderItemProgressType
+} from '@fafty/shared/types'
 import classNames from 'classnames'
 import Uppy, { FileRemoveReason } from '@uppy/core'
 
@@ -10,8 +13,8 @@ const Label = ({
   item,
   progress
 }: {
-  item: ThumbnailProps
-  progress: ProgressProps
+  item: UploaderThumbnailPropsType
+  progress: UploaderItemProgressType
 }): null | JSX.Element => {
   const size = (value: number) => {
     if (value === 0) return 0 + ' B'
@@ -50,7 +53,7 @@ const Item = ({
   onAction
 }: {
   engine: Uppy
-  item: ThumbnailProps
+  item: UploaderThumbnailPropsType
   // previewHeight: number,
   onAction: ({
     id,
@@ -63,13 +66,13 @@ const Item = ({
     reason: FileRemoveReason
   }) => void
 }) => {
-  const [progress, setProgress] = useState<ProgressProps>({
+  const [progress, setProgress] = useState<UploaderItemProgressType>({
     percentage: 0,
     bytesUploaded: 0,
     bytesTotal: 0
   })
   const [src, setSrc] = useState<string>()
-  engine.on('upload-progress', (file, progress: ProgressProps) => {
+  engine.on('upload-progress', (file, progress: UploaderItemProgressType) => {
     if (file && item && item.id === file.id) {
       setProgress(progress)
     }

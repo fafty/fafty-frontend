@@ -3,14 +3,21 @@ import { useEffect, useContext, useLayoutEffect, Context } from 'react'
 import { Controller, useForm } from 'react-hook-form'
 import DragAndDropAssets from '../../common/dragAndDropAssets'
 import { childVariants, variants } from '../constants'
-import { ContextProps, Step2Props } from '../types'
+import {
+  CollectionFormContextType,
+  CollectionFormStep2Type
+} from '@fafty/shared/types'
 
-const SelectStep2 = ({ Context }: { Context: Context<ContextProps> }) => {
+const SelectStep2 = ({
+  Context
+}: {
+  Context: Context<CollectionFormContextType>
+}) => {
   /**
    * Context Store
    */
   const { setStep2Answered, stepData, setStepData } =
-    useContext<ContextProps>(Context)
+    useContext<CollectionFormContextType>(Context)
 
   /**
    * React-Hook-Form hook
@@ -72,7 +79,7 @@ const SelectStep2 = ({ Context }: { Context: Context<ContextProps> }) => {
     setStepData({
       step2: {
         solved: isValidStore,
-        state: getValues() as Step2Props,
+        state: getValues() as CollectionFormStep2Type,
         error: !isValidStore
       }
     })

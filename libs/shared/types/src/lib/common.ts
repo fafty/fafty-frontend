@@ -36,10 +36,18 @@ export type PaginateWrapperType = {
 
 export type FileType = {
   id: string
+  src?: string
+  file_id?: string
   storage: string
   metadata: {
     size: number
     filename: string
     mime_type: string
   }
+}
+
+export interface FormStepDataType<T> {
+  state: T
+  solved: boolean
+  error: boolean
 }

@@ -20,80 +20,13 @@ import Sortable from 'sortablejs'
 import { gsap } from 'gsap'
 import { getPresignFile, useAsync } from '@fafty/shared/api'
 import {
+  FileType,
   GetPresignFileCallbackType,
-  GetPresignFileResponseType
+  GetPresignFileResponseType,
+  UploaderFileType,
+  UploaderPropsType,
+  UploaderThumbnailPropsType
 } from '@fafty/shared/types'
-
-export interface ExistingFileProps {
-  id: string
-  file_id: string
-  type: string
-  storage: string
-  position: number
-  size: number
-  filename: string
-  mime_type: string
-  src: string
-}
-export interface AttachmentProps {
-  id: string
-  storage: string
-  metadata: {
-    size: number
-    filename: string
-    mime_type: string
-  }
-}
-export interface FileProps {
-  id: string
-  file_id?: string
-  type: string
-  position: number
-  attachment: AttachmentProps
-  meta?: {
-    existing: boolean
-  }
-}
-export interface ProgressProps {
-  // action?: string
-  percentage: number
-  bytesUploaded: number
-  bytesTotal: number
-  attachment?: {
-    id: string
-    storage: string
-    metadata: {
-      size: number
-      filename: string
-      mime_type: string
-    }
-  }
-}
-export interface ThumbnailProps {
-  id: string
-  file_id?: string
-  type: string
-  position: number
-  state: string
-  // progress: ProgressInterface
-  meta?: {
-    existing: boolean
-  }
-  src?: string
-}
-interface Props {
-  hasError?: boolean
-  loading?: boolean
-  type?: string
-  maxNumberOfFiles?: number
-  // previewHeight?: number;
-  existingFiles?: ExistingFileProps[]
-  allowedFileTypes?: string[]
-  style?: CSSProperties
-  presignEndpoint?: string
-  onChange: (value: AttachmentProps | AttachmentProps[]) => void
-  OnGeneratedThumbnail: () => void
-}
 
 const Uploader = ({
   hasError = false,
@@ -126,10 +59,10 @@ const Uploader = ({
   presignEndpoint = 'assets/presign',
   onChange,
   OnGeneratedThumbnail
-}: Props): JSX.Element => {
+}: UploaderPropsType): JSX.Element => {
   const [isMounted, setIsMounted] = useState(false)
-  const [files, setFiles] = useState<FileProps[]>([])
-  const [thumbnails, setThumbnails] = useState<ThumbnailProps[]>([])
+  const [files, setFiles] = useState<UploaderFileType[]>([])
+  const [thumbnails, setThumbnails] = useState<UploaderThumbnailPropsType[]>([])
   // const [isSorting, setIsSorting] = useState(false)
   const [isDraggingOver, setIsDraggingOver] = useState(false)
   const [isDragging, setIsDragging] = useState(false)

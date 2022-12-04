@@ -1,9 +1,13 @@
 import { useContext, Context, useEffect } from 'react'
-import { ContextProps } from '../types'
+import { CollectionFormContextType } from '@fafty/shared/types'
 import { CheckIcon } from '@remixicons/react/fill'
 
-const SelectStep4 = ({ Context }: { Context: Context<ContextProps> }) => {
-  const { setStep4Answered } = useContext<ContextProps>(Context)
+const SelectStep4 = ({
+  Context
+}: {
+  Context: Context<CollectionFormContextType>
+}) => {
+  const { setStep4Answered } = useContext<CollectionFormContextType>(Context)
   useEffect(() => {
     setStep4Answered(true)
     // eslint-disable-next-line react-hooks/exhaustive-deps

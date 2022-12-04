@@ -13,25 +13,14 @@ import dynamic from 'next/dynamic'
 import { motion } from 'framer-motion'
 import { childVariants, variants } from '../constants'
 import classNames from 'classnames'
-import { EditorState } from 'lexical'
-import { ContextProps, Step1Props } from '../types'
+import {
+  AssetFormContextType,
+  AssetFormStep1Type,
+  EditorPropsType
+} from '@fafty/shared/types'
 import { useComponentDidUpdate } from '@fafty/usehooks'
 
-interface EditorProps {
-  isAutocomplete?: boolean
-  maxCharacters?: null | number
-  isRichText?: boolean
-  showTreeView?: boolean
-  initialEditorState: null | string | EditorState
-  placeholder?: string
-  name: string
-  hasError: boolean
-  onChange: ChangeEventHandler
-  namespace: string
-  loading?: boolean
-}
-
-const Editor = dynamic<EditorProps>(
+const Editor = dynamic<EditorPropsType>(
   () => import('@fafty/text/editor').then((mod) => mod.Editor),
   {
     ssr: false,
@@ -39,13 +28,17 @@ const Editor = dynamic<EditorProps>(
   }
 )
 
-const SelectStep1 = ({ Context }: { Context: Context<ContextProps> }) => {
+const SelectStep1 = ({
+  Context
+}: {
+  Context: Context<AssetFormContextType>
+}) => {
   const [isMounted, setIsMounted] = useState(false)
   /**
    * Context Store
    */
   const { setStep1Answered, stepData, setStepData } =
-    useContext<ContextProps>(Context)
+    useContext<AssetFormContextType>(Context)
 
   /**
    * React-Hook-Form hook
@@ -114,7 +107,7 @@ const SelectStep1 = ({ Context }: { Context: Context<ContextProps> }) => {
 
     setStepData({
       step1: {
-        state: getValues() as Step1Props,
+        state: getValues() as AssetFormStep1Type,
         solved: isValidForm,
         error: !isValidForm
       }
@@ -125,7 +118,7 @@ const SelectStep1 = ({ Context }: { Context: Context<ContextProps> }) => {
     if (stepData?.media?.id && isMounted) {
       setStepData({
         step1: {
-          state: getValues() as Step1Props,
+          state: getValues() as AssetFormStep1Type,
           solved: isValid,
           error: !isValid
         }

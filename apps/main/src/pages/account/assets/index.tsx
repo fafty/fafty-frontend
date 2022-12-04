@@ -41,7 +41,7 @@ import {
   CONTENT_TYPE_CHECKS
 } from '../../../constants/user/assets'
 
-import { AssetsUserFilterStateType } from '../../../types/user/assets'
+import { AssetsUserFilterStateType } from '@fafty/shared/types'
 
 const isObjectEmpty = (value: object | string | null) => {
   return (
