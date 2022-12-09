@@ -179,11 +179,9 @@ const Assets = () => {
     call({
       limit: LIMIT,
       offset: paginate.offset,
-      filters: {
-        currency: filters?.price?.currency,
-        price: { lg: filters?.price?.from, ge: filters?.price?.to },
-        billing_type: filters?.billing_type
-      },
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      //@ts-ignore
+      filters: filters,
       sort: TABS[tabIndex]?.value || TABS[0].value
     })
     // eslint-disable-next-line react-hooks/exhaustive-deps
