@@ -5,67 +5,24 @@ import MainLayout from '../../layouts/main'
 import { useAsync, getAssets } from '@fafty/shared/api'
 import {
   AssetType,
+  GetAssetsParamsType,
   GetAssetsResponseType,
-  GetAssetsParamsType
+  GetAssetsFiltersParamsType
 } from '@fafty/shared/types'
-// import { useVirtualizer } from '@tanstack/react-virtual';
 import Item from '../../components/items/asset/item'
-import {
-  BillingType,
-  BillingTypeValue,
-  PriceFilterProps,
-  PriceFiltersValue
-} from '../../components/assets/filters'
 import { lazy, Suspense, useEffect, useMemo, useState } from 'react'
-import dynamic from 'next/dynamic'
-import { Panel } from '../../components/common/bar'
-import { Pills } from '../../components/assets/pills'
 import { useComponentDidUpdate } from '@fafty/usehooks'
 import { InfinityLoadChecker } from '../../components/common/infinityLoadChecker'
-
-export type FiltersValues = {
-  price?: PriceFiltersValue
-  sort?: string
-  billing_type?: BillingTypeValue
-}
-
-const TABS = [
-  {
-    title: 'Newest',
-    value: 'newest'
-  },
-  {
-    title: 'Oldest',
-    value: 'oldest'
-  },
-  {
-    title: 'Min price',
-    value: 'min_price'
-  },
-  {
-    title: 'Max price',
-    value: 'max_price'
-  }
-]
-
-// const Tabs = dynamic<TabsProps>(
-//   () => import('../../components/asset/tabs').then((mod) => mod.Tabs),
-//   {
-//     // loading: () => <AssetTabsPlaceholder />,
-//     ssr: false,
-//     // suspense: true,
-//   }
-// );
+import { motion } from 'framer-motion'
+import FilterBar from '../../components/common/filterBar'
+import { ReactComponent as EmptyIllustration } from '../../assets/empty.svg'
+import {
+  TypeProps,
+  OnChangeValueProps
+} from '../../components/common/filterBar/types'
+import { BILLING_TYPE_OPTIONS, ASSETS_SORT_TABS } from '../../constants/assets'
 
 const Tabs = lazy(() => import('../../components/asset/tabs'))
-
-const Price = dynamic<PriceFilterProps>(
-  () =>
-    import('../../components/assets/filters/price').then((mod) => mod.Price),
-  {
-    ssr: false
-  }
-)
 
 const mapper = (
   data: GetAssetsResponseType,
@@ -78,6 +35,26 @@ const mapper = (
   return data
 }
 
+const BUNDLES_FILTERS = [
+  {
+    title: 'Price',
+    value: 'price',
+    type: TypeProps.RANGE,
+    params: {
+      firstTitle: 'min',
+      secondTitle: 'max',
+      firstKey: 'ge',
+      secondKey: 'le'
+    }
+  },
+  {
+    title: 'Billing type',
+    value: 'billing_type',
+    type: TypeProps.ARRAY,
+    options: BILLING_TYPE_OPTIONS
+  }
+]
+
 const LIMIT = 20
 
 type QueryFiltersProps = {
@@ -85,14 +62,15 @@ type QueryFiltersProps = {
     limit: number
     offset: number
   }
-  filters?: FiltersValues
+  filters?: GetAssetsFiltersParamsType
   sort?: string
 }
 
 const Assets = () => {
   const { replace, asPath } = useRouter()
-  // const containerRef = useRef(null);
-  const search = asPath.split('?')[1]
+
+  const search = asPath.split('?')[1] ?? ''
+  const params = qs.parse(search) as Omit<QueryFiltersProps, 'paginate'>
 
   const [localFiltersState, setLocalFiltersState] = useState<QueryFiltersProps>(
     {
@@ -100,9 +78,11 @@ const Assets = () => {
         limit: LIMIT,
         offset: 0
       },
-      filters: { ...(qs.parse(search) as FiltersValues) }
+      ...params
     }
   )
+
+  const { paginate, sort, ...panelFilterState } = localFiltersState
 
   const { data, call, isLoading, isSuccess, clearAsyncData } = useAsync<
     GetAssetsResponseType,
@@ -116,28 +96,30 @@ const Assets = () => {
     ? !isLoading && data?.records.length < data?.paginate?.count
     : false
 
-  const onChangeFiltersByKey =
-    (key: string) => (value: PriceFiltersValue | string | BillingTypeValue) => {
-      clearAsyncData()
-
-      setLocalFiltersState((prev) => ({
-        paginate: { ...prev.paginate, offset: 0 },
-        filters: { ...prev.filters, [key]: value }
-      }))
-    }
-
   const tabIndex = useMemo(() => {
-    const index = TABS.findIndex(
-      (tab) => tab.value === localFiltersState?.filters?.sort
+    const index = ASSETS_SORT_TABS.findIndex(
+      (tab) => tab.value === localFiltersState?.sort
     )
 
     return index >= 0 ? index : 0
-  }, [localFiltersState?.filters?.sort])
+  }, [localFiltersState?.sort])
 
   const onChangeTab = (index: number) => {
-    const tab = TABS[index]
+    const tab = ASSETS_SORT_TABS[index]
 
-    onChangeFiltersByKey('sort')(tab.value)
+    clearAsyncData()
+    setLocalFiltersState((prev) => ({ ...prev, sort: tab.value }))
+  }
+
+  const onCloseTag = (key: keyof GetAssetsFiltersParamsType) => {
+    const { [key]: deletedProp, ...rest } = localFiltersState.filters
+    clearAsyncData()
+
+    setLocalFiltersState((prev) => ({
+      ...prev,
+      filters: { ...rest },
+      paginate: { limit: LIMIT, offset: 0 }
+    }))
   }
 
   const loadMore = () => {
@@ -150,27 +132,19 @@ const Assets = () => {
     }))
   }
 
-  const onClosePill = (key: keyof FiltersValues) => {
-    const { [key]: omitted, ...rest } = localFiltersState.filters || {}
+  const onChangeFilters = (key: string, value: OnChangeValueProps) => {
     clearAsyncData()
 
     setLocalFiltersState((prev) => ({
-      paginate: { ...prev.paginate },
-      filters: { ...rest }
-    }))
-  }
-
-  const onClearFilters = () => {
-    clearAsyncData()
-
-    setLocalFiltersState((prev) => ({
-      paginate: { ...prev.paginate, offset: 0 }
+      ...prev,
+      paginate: { limit: LIMIT, offset: 0 },
+      filters: { ...prev.filters, [key]: value }
     }))
   }
 
   useEffect(() => {
-    const { filters, paginate } = localFiltersState
-    const nextQuery = qs.stringify(filters)
+    const { filters, paginate, sort } = localFiltersState
+    const nextQuery = qs.stringify({ sort, filters })
 
     if (nextQuery !== search) {
       replace(`/assets?${nextQuery}`)
@@ -178,11 +152,9 @@ const Assets = () => {
 
     call({
       limit: LIMIT,
+      filters: filters || {},
       offset: paginate.offset,
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      //@ts-ignore
-      filters: filters,
-      sort: TABS[tabIndex]?.value || TABS[0].value
+      sort: ASSETS_SORT_TABS[tabIndex]?.value || ASSETS_SORT_TABS[0].value
     })
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [localFiltersState])
@@ -212,185 +184,109 @@ const Assets = () => {
     ) as AssetType[]
   }, [data?.paginate?.count, data?.records, localFiltersState.paginate.offset])
 
-  // const groupedItems = useMemo(() => {
-  //   if (!items || items.length === 0) {
-  //     return [];
-  //   }
-
-  //   const byGroups = 20;
-
-  //   const totalGroups = Math.ceil(items.length / byGroups);
-  //   return [...Array(totalGroups)].map((_, index) => {
-  //     const endIndex: number = (index + 1) * byGroups;
-  //     const startIndex: number = endIndex - byGroups;
-  //     return items.slice(startIndex, endIndex);
-  //   });
-  // }, [items]);
-
-  // const renderMasonry = useMemo(() => {
-  //   if (!isSuccess && !data?.paginate?.count) {
-  //     return (
-  //       // grid grid-cols-placeholders_assets_desktop gap-[5px]
-  //       <div className="">
-  //         {Array.from({ length: 15 }, (_, index) => (
-  //           <ItemPlaceholder key={index} />
-  //         ))}
-  //       </div>
-  //     );
-  //   }
-
-  //   return (
-  //     <MasonryScroller
-  //       positioner={positioner}
-  //       // The distance in px between the top of the document and the top of the
-  //       // masonry grid container
-  //       offset={offset}
-  //       // The height of the virtualization window
-  //       height={windowHeight}
-  //       // Forwards the ref to the masonry container element
-  //       containerRef={containerRef}
-  //       items={items}
-  //       overscanBy={6}
-  //       render={({ data }) => {
-  //         if (!Object.keys(data).length) {
-  //           return <ItemPlaceholder />;
-  //         }
-
-  //         return <Item item={data as AssetProps} />;
-  //       }}
-  //     />
-  //     // <Masonry
-  //     //   columnGutter={5}
-  //     //   items={items}
-  //     //   render={({ data }) => {
-  //     //     if (!Object.keys(data).length) {
-  //     //       return <ItemPlaceholder />;
-  //     //     }
-
-  //     //     return <Item item={data as AssetProps} />;
-  //     //   }}
-  //     // />
-  //   );
-  // }, [data?.paginate?.count, isSuccess, items]);
-
-  // const GridVirtualizerDynamic = ({ rows }: { rows: any[] }) => {
-  //   const parentRef = useRef();
-
-  //   const rowVirtualizer = useVirtualizer({
-  //     count: rows.length,
-  //     getScrollElement: () => parentRef.current,
-  //     estimateSize: () => 400,
-  //   });
-
-  //   return (
-  //     <>
-  //       <div
-  //         ref={parentRef}
-  //         className="wrapper-items"
-  //         style={{
-  //           height: `100vh`,
-  //           width: `100%`,
-  //           overflow: 'auto',
-  //         }}
-  //       >
-  //         <div
-  //           // className="items"
-  //           style={{
-  //             height: rowVirtualizer.getTotalSize(),
-  //             position: 'relative',
-  //           }}
-  //         >
-  //           {rowVirtualizer.getVirtualItems().map((virtualRow) => (
-  //             <div
-  //               key={virtualRow.key}
-  //               ref={(el) => {
-  //                 virtualRow.measureElement(el);
-  //               }}
-  //               className="items"
-  //               // style={{
-  //               //   position: 'absolute',
-  //               //   top: 0,
-  //               //   left: 0,
-  //               //   transform: `translateY(${virtualRow.start}px)`,
-  //               // }}
-  //             >
-  //               {rows[virtualRow.index].map((item: AssetProps) => (
-  //                 <Item key={item.token} item={item} />
-  //                 // items.map((item) => <Item key={item.token} item={item} />)
-  //                 // JSON.stringify(items)
-  //               ))}
-  //               {/* <div
-  //                 style={{
-  //                   height: rows[virtualRow.index],
-  //                 }}
-  //               >
-  //               </div> */}
-  //             </div>
-  //           ))}
-  //         </div>
-  //       </div>
-  //     </>
-  //   );
-  // };
-
   return (
     <MainLayout
       title={'Assets | Marketplace'}
       description={'Assets | Marketplace'}
-      className=""
+      className="px-0"
     >
+      <motion.div
+        initial={{ opacity: 0, y: -5, scale: 1.1 }}
+        animate={{ opacity: 1, y: 0, scale: 1 }}
+        transition={{ ease: 'easeOut', duration: 1, delay: 0.3 }}
+        className="my-20 flex flex-col items-center justify-center"
+      >
+        <h1 className="font text-4xl font-extrabold tracking-tight text-slate-900 dark:text-gray-50 sm:text-8xl">
+          Explore Assets
+        </h1>
+        <p className="mt-4 text-3xl tracking-tight text-slate-900 dark:text-gray-50">
+          Discover the most popular Assets on the Fafty marketplace.
+        </p>
+      </motion.div>
       <div className="relative flex items-start py-10">
-        <div className="sticky top-[120px]  flex w-[250px] flex-shrink-0 items-start pr-5">
-          <div className="flex w-full flex-col rounded bg-white  p-2.5 dark:bg-neutral-800">
-            <Panel
-              title="Price"
-              initialState={!!localFiltersState?.filters?.price}
-            >
-              <Price
-                value={localFiltersState?.filters?.price}
-                onChange={onChangeFiltersByKey('price')}
-              />
-            </Panel>
-            <Panel
-              title="Billing type"
-              initialState={!!localFiltersState?.filters?.billing_type}
-            >
-              <BillingType
-                value={localFiltersState?.filters?.billing_type}
-                onChange={onChangeFiltersByKey('billing_type')}
-              />
-            </Panel>
-          </div>
-        </div>
+        {/*<div className="sticky top-[120px]  flex w-[250px] flex-shrink-0 items-start pr-5">*/}
+        {/*  <div className="flex w-full flex-col rounded bg-white  p-2.5 dark:bg-neutral-800">*/}
+        {/*    <Panel*/}
+        {/*      title="Price"*/}
+        {/*      initialState={!!localFiltersState?.filters?.price}*/}
+        {/*    >*/}
+        {/*      <Price*/}
+        {/*        value={localFiltersState?.filters?.price}*/}
+        {/*        onChange={onChangeFiltersByKey('price')}*/}
+        {/*      />*/}
+        {/*    </Panel>*/}
+        {/*    <Panel*/}
+        {/*      title="Billing type"*/}
+        {/*      initialState={!!localFiltersState?.filters?.billing_type}*/}
+        {/*    >*/}
+        {/*      <BillingType*/}
+        {/*        value={localFiltersState?.filters?.billing_type}*/}
+        {/*        onChange={onChangeFiltersByKey('billing_type')}*/}
+        {/*      />*/}
+        {/*    </Panel>*/}
+        {/*  </div>*/}
+        {/*</div>*/}
         <div className="flex w-full flex-col">
-          <div className="flex items-center justify-end">
-            <div className="flex">
-              <Suspense fallback={<AssetTabsPlaceholder />}>
-                <Tabs
-                  tabs={TABS}
-                  tabIndex={tabIndex}
-                  setTabIndex={onChangeTab}
-                />
-              </Suspense>
+          <div className="z-1 sticky top-[82px] mx-auto flex w-full flex-col bg-white shadow-[0_10px_5px_-10px_rgba(0,0,0,0.2)] dark:bg-neutral-800">
+            <div className="grid grid-flow-col">
+              <FilterBar<GetAssetsFiltersParamsType>
+                filters={BUNDLES_FILTERS}
+                onCloseTag={onCloseTag}
+                values={panelFilterState.filters || {}}
+                onChange={onChangeFilters}
+              />
+              <div className="relative ml-auto mr-8 flex">
+                <div className="mt-2 flex">
+                  <Suspense fallback={<AssetTabsPlaceholder />}>
+                    <Tabs
+                      tabs={ASSETS_SORT_TABS}
+                      tabIndex={tabIndex}
+                      setTabIndex={onChangeTab}
+                    />
+                  </Suspense>
+                </div>
+              </div>
             </div>
           </div>
-          <div className="my-4 flex">
-            <Pills onClosePill={onClosePill} onClearFilters={onClearFilters} />
-          </div>
-          <div className="wrapper-items">
-            <div className="items grided">
-              {!isSuccess && !data?.paginate?.count
-                ? Array.from({ length: 24 }, (_, index) => (
-                    <AssetItemPlaceholder key={index} />
-                  ))
-                : items.map((item) => <Item key={item.token} item={item} />)}
+          <div className="m-8">
+            <div className="wrapper-items">
+              <div className="items grided">
+                {!isSuccess && !data?.paginate?.count
+                  ? Array.from({ length: 24 }, (_, index) => (
+                      <AssetItemPlaceholder key={index} />
+                    ))
+                  : items.map((item) => <Item key={item.token} item={item} />)}
+                {isSuccess && items.length === 0 && (
+                  <motion.div
+                    variants={{
+                      initial: {
+                        opacity: 0
+                      },
+                      animate: {
+                        opacity: 1
+                      },
+                      exit: {
+                        opacity: 0
+                      }
+                    }}
+                    className="flex h-full w-full flex-col items-center justify-center p-20"
+                  >
+                    <div className="h-[20rem] w-[25rem]">
+                      <EmptyIllustration />
+                    </div>
+                    <h2 className="mt-5 text-2xl font-medium text-neutral-500 dark:text-neutral-50">
+                      No items found
+                    </h2>
+                  </motion.div>
+                )}
+              </div>
             </div>
+            <InfinityLoadChecker
+              allowLoad={allowLoad}
+              isLoading={isLoading}
+              loadMore={loadMore}
+            />
           </div>
-          <InfinityLoadChecker
-            allowLoad={allowLoad}
-            isLoading={isLoading}
-            loadMore={loadMore}
-          />
         </div>
       </div>
     </MainLayout>

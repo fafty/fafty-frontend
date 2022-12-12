@@ -308,9 +308,13 @@ const Collection = () => {
     typeof value === 'object' ? Object.keys(value).length === 0 : !value
 
   return (
-    <MainLayout title={data?.record.name} description={`Collection ${slug}`} className="px-0">
+    <MainLayout
+      title={data?.record.name}
+      description={`Collection ${slug}`}
+      className="px-0"
+    >
       <div className="flex h-full w-full flex-col">
-        <div className="flex m-8">
+        <div className="m-8 flex">
           {/* <div className="w-48 h-48 bg-neutral-800 shadow rounded-full" /> */}
           <div className="relative flex h-48 w-48 flex-shrink-0 items-center justify-center rounded-full bg-blue-600 hover:bg-blue-500 focus:outline-none dark:bg-neutral-700 dark:hover:bg-neutral-600">
             {data && data?.record.cover && (
@@ -369,9 +373,7 @@ const Collection = () => {
                   ? Array.from({ length: 24 }, (_, index) => (
                       <AssetItemPlaceholder key={index} />
                     ))
-                  : items.map((item) => (
-                      <Item key={item.token} item={item} />
-                    ))}
+                  : items.map((item) => <Item key={item.token} item={item} />)}
                 {isAssetsSuccess && items.length === 0 && (
                   <motion.div
                     variants={{

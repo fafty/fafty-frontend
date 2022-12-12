@@ -4,11 +4,13 @@ import { CollectionType } from '../collection'
 export type GetCollectionsResponseType = PaginateWrapperType &
   ApiResponseGeneric<CollectionType[]>
 
+export type GetCollectionsFiltersParamsType = {
+  blockchain?: string
+}
+
 export type GetCollectionsParamsType = {
   limit?: number
   offset?: number
-  filters?: {
-    blockchain?: string
-  }
+  filters?: GetCollectionsFiltersParamsType
   sort?: string
 }

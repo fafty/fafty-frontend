@@ -4,7 +4,6 @@ import { GetAssetsResponseType, GetAssetsParamsType } from '@fafty/shared/types'
 const getAssets = async (
   params?: GetAssetsParamsType
 ): Promise<GetAssetsResponseType> => {
-  console.log(params)
   const { data } = await api.get('/assets', { params })
 
   return data

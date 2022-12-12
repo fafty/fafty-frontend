@@ -23,25 +23,7 @@ import FilterBar from '../../components/common/filterBar'
 import { BLOCKCHAIN_CHECKS } from '../../constants/user/assets'
 import { GetBundlesFiltersParamsType } from '@fafty/shared/types'
 import { motion } from 'framer-motion'
-
-const TABS = [
-  {
-    title: 'Newest',
-    value: 'newest'
-  },
-  {
-    title: 'Oldest',
-    value: 'oldest'
-  },
-  {
-    title: 'Min price',
-    value: 'min_price'
-  },
-  {
-    title: 'Max price',
-    value: 'max_price'
-  }
-]
+import { BUNDLES_SORT_TABS } from '../../constants/bundles'
 
 const BUNDLES_FILTERS = [
   {
@@ -150,13 +132,15 @@ const Bundles = () => {
     : false
 
   const tabIndex = useMemo(() => {
-    const index = TABS.findIndex((tab) => tab.value === localFiltersState?.sort)
+    const index = BUNDLES_SORT_TABS.findIndex(
+      (tab) => tab.value === localFiltersState?.sort
+    )
 
     return index >= 0 ? index : 0
   }, [localFiltersState?.sort])
 
   const onChangeTab = (index: number) => {
-    const tab = TABS[index]
+    const tab = BUNDLES_SORT_TABS[index]
 
     clearAsyncData()
     setLocalFiltersState((prev) => ({ ...prev, sort: tab.value }))
@@ -184,7 +168,7 @@ const Bundles = () => {
       filters: filters || {},
       limit: LIMIT,
       offset: paginate.offset,
-      sort: TABS[tabIndex]?.value || TABS[0].value
+      sort: BUNDLES_SORT_TABS[tabIndex]?.value || BUNDLES_SORT_TABS[0].value
     })
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [localFiltersState])
@@ -247,7 +231,7 @@ const Bundles = () => {
               <div className="mt-2 flex">
                 <Suspense fallback={<AssetTabsPlaceholder />}>
                   <Tabs
-                    tabs={TABS}
+                    tabs={BUNDLES_SORT_TABS}
                     tabIndex={tabIndex}
                     setTabIndex={onChangeTab}
                   />

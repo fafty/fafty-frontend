@@ -13,18 +13,10 @@ import {
   GetCollectionsParamsType
 } from '@fafty/shared/types'
 import Item from '../../components/items/collection/item'
-import {
-  // BillingType,
-  BillingTypeValue,
-  PriceFilterProps,
-  PriceFiltersValue
-} from '../../components/assets/filters'
 import { lazy, Suspense, useEffect, useMemo, useState } from 'react'
-import dynamic from 'next/dynamic'
 import { InfinityLoadChecker } from '../../components/common/infinityLoadChecker'
-// import { Panel } from '../../components/common/bar'
-// import { Pills } from '../../components/assets/pills'
 import { useComponentDidUpdate } from '@fafty/usehooks'
+import { GetCollectionsFiltersParamsType } from '@fafty/shared/types'
 
 import {
   TypeProps,
@@ -32,35 +24,9 @@ import {
 } from '../../components/common/filterBar/types'
 
 import FilterBar from '../../components/common/filterBar'
-import {
-  BLOCKCHAIN_CHECKS,
-} from '../../constants/user/assets'
-import { AssetsUserFilterStateType } from '../../types/user/assets'
+import { BLOCKCHAIN_CHECKS } from '../../constants/user/assets'
 import { motion } from 'framer-motion'
-
-export type FiltersValues = {
-  blockchain?: string
-  sort?: string
-}
-
-const TABS = [
-  {
-    title: 'Newest',
-    value: 'newest'
-  },
-  {
-    title: 'Oldest',
-    value: 'oldest'
-  },
-  {
-    title: 'Min price',
-    value: 'min_price'
-  },
-  {
-    title: 'Max price',
-    value: 'max_price'
-  }
-]
+import { COLLECTIONS_SORT_TABS } from '../../constants/collections'
 
 const COLLECTIONS_FILTERS = [
   {
@@ -84,14 +50,6 @@ const COLLECTIONS_FILTERS = [
 
 const Tabs = lazy(() => import('../../components/asset/tabs'))
 
-// const Price = dynamic<PriceFilterProps>(
-//   () =>
-//     import('../../components/assets/filters/price').then((mod) => mod.Price),
-//   {
-//     ssr: false
-//   }
-// )
-
 const mapper = (
   data: GetCollectionsResponseType,
   prev?: GetCollectionsResponseType
@@ -105,39 +63,42 @@ const mapper = (
 
 const LIMIT = 20
 
-type QueryFiltersProps = AssetsUserFilterStateType & {
+type QueryFiltersProps = {
   paginate: {
     limit: number
     offset: number
   }
-  filters?: FiltersValues
+  filters?: GetCollectionsFiltersParamsType
   sort?: string
 }
 
 const Collections = () => {
   const { replace, asPath } = useRouter()
-  const search = asPath.split('?')[1]
+  const search = asPath.split('?')[1] ?? ''
+  const params = qs.parse(search) as Omit<QueryFiltersProps, 'paginate'>
+
   const [localFiltersState, setLocalFiltersState] = useState<QueryFiltersProps>(
     {
       paginate: {
         limit: LIMIT,
         offset: 0
       },
-      filters: { ...(qs.parse(search) as FiltersValues) }
+      ...params
     }
   )
 
   const onChangeFilters = (key: string, value: OnChangeValueProps) => {
     clearAsyncData()
+
     setLocalFiltersState((prev) => ({
       ...prev,
       paginate: { limit: LIMIT, offset: 0 },
-      [key]: value
+      filters: { ...prev.filters, [key]: value }
     }))
   }
 
-  const onCloseTag = (key: keyof AssetsUserFilterStateType) => {
-    const { [key]: deletedProp, ...rest } = localFiltersState
+  const onCloseTag = (key: keyof GetCollectionsFiltersParamsType) => {
+    const { [key]: deletedProp, ...rest } = localFiltersState.filters
     clearAsyncData()
 
     setLocalFiltersState({ ...rest, paginate: { limit: LIMIT, offset: 0 } })
@@ -157,26 +118,19 @@ const Collections = () => {
     ? !isLoading && data?.records.length < data?.paginate?.count
     : false
 
-  const onChangeFiltersByKey =
-    (key: string) => (value: PriceFiltersValue | string | BillingTypeValue) => {
-      clearAsyncData()
-      setLocalFiltersState((prev) => ({
-        paginate: { ...prev.paginate, offset: 0 },
-        filters: { ...prev.filters, [key]: value }
-      }))
-    }
-
   const tabIndex = useMemo(() => {
-    const index = TABS.findIndex(
-      (tab) => tab.value === localFiltersState?.filters?.sort
+    const index = COLLECTIONS_SORT_TABS.findIndex(
+      (tab) => tab.value === localFiltersState?.sort
     )
 
     return index >= 0 ? index : 0
-  }, [localFiltersState?.filters?.sort])
+  }, [localFiltersState?.sort])
 
   const onChangeTab = (index: number) => {
-    const tab = TABS[index]
-    onChangeFiltersByKey('sort')(tab.value)
+    const tab = COLLECTIONS_SORT_TABS[index]
+
+    clearAsyncData()
+    setLocalFiltersState((prev) => ({ ...prev, sort: tab.value }))
   }
 
   const loadMore = () => {
@@ -189,25 +143,9 @@ const Collections = () => {
     }))
   }
 
-  // const onClosePill = (key: keyof FiltersValues) => {
-  //   const { [key]: omitted, ...rest } = localFiltersState.filters || {}
-  //   clearAsyncData()
-  //   setLocalFiltersState((prev) => ({
-  //     paginate: { ...prev.paginate },
-  //     filters: { ...rest },
-  //   }))
-  // }
-
-  // const onClearFilters = () => {
-  //   clearAsyncData()
-  //   setLocalFiltersState((prev) => ({
-  //     paginate: { ...prev.paginate, offset: 0 },
-  //   }))
-  // }
-
   useEffect(() => {
-    const { filters, paginate, ...restFilters } = localFiltersState
-    const nextQuery = qs.stringify(filters)
+    const { filters, paginate, sort } = localFiltersState
+    const nextQuery = qs.stringify({ filters, sort })
     if (nextQuery !== search) {
       replace(`/collections?${nextQuery}`)
     }
@@ -215,8 +153,9 @@ const Collections = () => {
     call({
       limit: LIMIT,
       offset: paginate.offset,
-      filters: restFilters,
-      sort: TABS[tabIndex]?.value || TABS[0].value
+      filters: filters || {},
+      sort:
+        COLLECTIONS_SORT_TABS[tabIndex]?.value || COLLECTIONS_SORT_TABS[0].value
     })
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [localFiltersState])
@@ -267,17 +206,17 @@ const Collections = () => {
       <div className="flex w-full flex-col">
         <div className="z-1 sticky top-[82px] mx-auto flex w-full flex-col bg-white shadow-[0_10px_5px_-10px_rgba(0,0,0,0.2)] dark:bg-neutral-800">
           <div className="grid grid-flow-col">
-            <FilterBar<AssetsUserFilterStateType>
+            <FilterBar<GetCollectionsFiltersParamsType>
               filters={COLLECTIONS_FILTERS}
               onCloseTag={onCloseTag}
-              values={panelFilterState}
+              values={panelFilterState.filters || {}}
               onChange={onChangeFilters}
             />
             <div className="relative ml-auto mr-8 flex">
               <div className="mt-2 flex">
                 <Suspense fallback={<AssetTabsPlaceholder />}>
                   <Tabs
-                    tabs={TABS}
+                    tabs={COLLECTIONS_SORT_TABS}
                     tabIndex={tabIndex}
                     setTabIndex={onChangeTab}
                   />
@@ -293,8 +232,7 @@ const Collections = () => {
                 ? Array.from({ length: 24 }, (_, index) => (
                     <CollectionItemPlaceholder key={index} />
                   ))
-                : items.map((item) => <Item key={item.token} item={item} />
-              )}
+                : items.map((item) => <Item key={item.token} item={item} />)}
               {isSuccess && items.length === 0 && (
                 <motion.div
                   variants={{
