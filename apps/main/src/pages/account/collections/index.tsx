@@ -300,6 +300,7 @@ const AccountCollections = () => {
               alt=""
               width={32}
               height={32}
+              unoptimized
             />
           </div>
           <div className="ml-4">
@@ -416,6 +417,7 @@ const AccountCollections = () => {
                       alt=""
                       width={36}
                       height={36}
+                      unoptimized
                     />
                   </div>
                 </div>

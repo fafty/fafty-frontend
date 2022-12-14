@@ -182,7 +182,8 @@ export default function Asset() {
                     alt={detail.name}
                     width={400}
                     height={400}
-                    className="z-1  absolute h-full w-full overflow-hidden rounded-2xl object-cover object-center"
+                    className="z-1 absolute h-full w-full overflow-hidden rounded-2xl object-cover object-center"
+                    unoptimized
                   />
                   <motion.div
                     initial={'visible'}
@@ -215,7 +216,8 @@ export default function Asset() {
                       alt={detail.name}
                       width={400}
                       height={400}
-                      className="absolute inset-0 z-0 h-full w-full overflow-hidden rounded-2xl object-cover  object-center blur-xl"
+                      className="absolute inset-0 z-0 h-full w-full overflow-hidden rounded-2xl object-cover object-center blur-xl"
+                      unoptimized
                     />
                   </motion.div>
                 </>

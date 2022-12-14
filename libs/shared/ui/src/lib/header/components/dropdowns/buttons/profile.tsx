@@ -20,6 +20,7 @@ const ProfileButton = ({
         // layout="raw"
         width="32"
         height="32"
+        unoptimized
       />
       <span className="pr-3 text-sm dark:text-gray-200">{balance}</span>
       <span className="text-sm text-green-600 pr-2">{ticker}</span>

@@ -38,6 +38,7 @@ const Item = ({ item }: Props): JSX.Element => {
                       height="300"
                       alt={item.name}
                       style={{clipPath: 'inset(0.5px)'}}
+                      unoptimized
                     />
                   </div>
                 </div>

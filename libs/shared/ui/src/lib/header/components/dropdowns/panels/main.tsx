@@ -303,6 +303,7 @@ const MainPanel = ({
                           alt={address as string}
                           width={32}
                           height={32}
+                          unoptimized
                         />
                       </div>
                       <div className="ml-4 grid">

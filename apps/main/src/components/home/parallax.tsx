@@ -82,6 +82,7 @@ const Parallax = () => {
             width={440}
             height={640}
             className="h-full w-full object-cover object-center"
+            unoptimized
           />
         </div>
         <div className="w-max-[12rem] relative h-64 overflow-hidden rounded-lg">
@@ -92,6 +93,7 @@ const Parallax = () => {
             width={440}
             height={640}
             className="h-full w-full object-cover object-center"
+            unoptimized
           />
         </div>
         <div className="w-max-[12rem] relative h-64 overflow-hidden rounded-lg">
@@ -102,6 +104,7 @@ const Parallax = () => {
             width={440}
             height={640}
             className="h-full w-full object-cover object-center"
+            unoptimized
           />
         </div>
         <div className="w-max-[12rem] relative h-64 overflow-hidden rounded-lg">
@@ -112,6 +115,7 @@ const Parallax = () => {
             width={440}
             height={640}
             className="h-full w-full object-cover object-center"
+            unoptimized
           />
         </div>
       </Column>
@@ -124,6 +128,7 @@ const Parallax = () => {
             width={440}
             height={640}
             className="h-full w-full object-cover object-center"
+            unoptimized
           />
         </div>
         <div className="w-max-[12rem] relative h-64 overflow-hidden rounded-lg">
@@ -134,6 +139,7 @@ const Parallax = () => {
             width={440}
             height={640}
             className="h-full w-full object-cover object-center"
+            unoptimized
           />
         </div>
         <div className="w-max-[12rem] relative h-64 overflow-hidden rounded-lg">
@@ -144,6 +150,7 @@ const Parallax = () => {
             width={440}
             height={640}
             className="h-full w-full object-cover object-center"
+            unoptimized
           />
         </div>
         <div className="w-max-[12rem] relative h-64 overflow-hidden rounded-lg">
@@ -154,6 +161,7 @@ const Parallax = () => {
             width={440}
             height={640}
             className="h-full w-full object-cover object-center"
+            unoptimized
           />
         </div>
       </Column>
@@ -167,6 +175,7 @@ const Parallax = () => {
             width={440}
             height={640}
             className="h-full w-full object-cover object-center"
+            unoptimized
           />
         </div>
         <div className="w-max-[12rem] relative h-64 overflow-hidden rounded-lg">
@@ -177,6 +186,7 @@ const Parallax = () => {
             width={440}
             height={640}
             className="h-full w-full object-cover object-center"
+            unoptimized
           />
         </div>
         <div className="w-max-[12rem] relative h-64 overflow-hidden rounded-lg">
@@ -187,6 +197,7 @@ const Parallax = () => {
             width={440}
             height={640}
             className="h-full w-full object-cover object-center"
+            unoptimized
           />
         </div>
         <div className="w-max-[12rem] relative h-64 overflow-hidden rounded-lg">
@@ -197,6 +208,7 @@ const Parallax = () => {
             width={440}
             height={640}
             className="h-full w-full object-cover object-center"
+            unoptimized
           />
         </div>
       </Column>
@@ -209,6 +221,7 @@ const Parallax = () => {
               width={440}
               height={640}
               className="h-full w-full object-cover object-center"
+              unoptimized
             />
           </div>
           <div className="w-max-[12rem] relative h-64 overflow-hidden rounded-lg">
@@ -219,6 +232,7 @@ const Parallax = () => {
               width={440}
               height={640}
               className="h-full w-full object-cover object-center"
+              unoptimized
             />
           </div>
           <div className="w-max-[12rem] relative h-64 overflow-hidden rounded-lg">
@@ -229,6 +243,7 @@ const Parallax = () => {
               width={440}
               height={640}
               className="h-full w-full object-cover object-center"
+              unoptimized
             />
           </div>
           <div className="w-max-[12rem] relative h-64 overflow-hidden rounded-lg">
@@ -239,6 +254,7 @@ const Parallax = () => {
               width={440}
               height={640}
               className="h-full w-full object-cover object-center"
+              unoptimized
             />
           </div>
         </Column>
@@ -251,6 +267,7 @@ const Parallax = () => {
               width={440}
               height={640}
               className="h-full w-full object-cover object-center"
+              unoptimized
             />
           </div>
           <div className="w-max-[12rem] relative h-64 overflow-hidden rounded-lg">
@@ -261,6 +278,7 @@ const Parallax = () => {
               width={440}
               height={640}
               className="h-full w-full object-cover object-center"
+              unoptimized
             />
           </div>
           <div className="w-max-[12rem] relative h-64 overflow-hidden rounded-lg">
@@ -271,6 +289,7 @@ const Parallax = () => {
               width={440}
               height={640}
               className="h-full w-full object-cover object-center"
+              unoptimized
             />
           </div>
           <div className="w-max-[12rem] relative h-64 overflow-hidden rounded-lg">
@@ -281,6 +300,7 @@ const Parallax = () => {
               width={440}
               height={640}
               className="h-full w-full object-cover object-center"
+              unoptimized
             />
           </div>
         </Column>
@@ -293,6 +313,7 @@ const Parallax = () => {
               width={440}
               height={640}
               className="h-full w-full object-cover object-center"
+              unoptimized
             />
           </div>
           <div className="w-max-[12rem] relative h-64 overflow-hidden rounded-lg">
@@ -303,6 +324,7 @@ const Parallax = () => {
               width={440}
               height={640}
               className="h-full w-full object-cover object-center"
+              unoptimized
             />
           </div>
           <div className="w-max-[12rem] relative h-64 overflow-hidden rounded-lg">
@@ -313,6 +335,7 @@ const Parallax = () => {
               width={440}
               height={640}
               className="h-full w-full object-cover object-center"
+              unoptimized
             />
           </div>
           <div className="w-max-[12rem] relative h-64 overflow-hidden rounded-lg">
@@ -323,6 +346,7 @@ const Parallax = () => {
               width={440}
               height={640}
               className="h-full w-full object-cover object-center"
+              unoptimized
             />
           </div>
         </Column>
