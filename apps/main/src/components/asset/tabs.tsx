@@ -1,7 +1,8 @@
 import { Tab } from '@headlessui/react'
 import { Dispatch, Fragment, useMemo } from 'react'
-import { AnimateSharedLayout, motion } from 'framer-motion'
+import { motion } from 'framer-motion'
 import { getSystemTheme, useTheme } from '@fafty/shared/theme'
+import { useRouter } from 'next/router'
 
 type TabType = {
   title: string
@@ -15,6 +16,7 @@ type TabsProps = {
 }
 
 const Tabs = ({ tabIndex, setTabIndex, tabs }: TabsProps) => {
+  const { asPath } = useRouter()
   const { theme } = useTheme()
 
   const tabsTitlesId = useMemo(() => {
@@ -30,8 +32,8 @@ const Tabs = ({ tabIndex, setTabIndex, tabs }: TabsProps) => {
 
   const tabStyles = useMemo(() => {
     return {
-      background: isDarkMode ? 'rgb(249 250 251)' : 'rgb(55 65 81)',
-      text: isDarkMode ? 'rgb(55 65 81)' : 'rgb(249 250 251)'
+      background: isDarkMode ? 'rgb(249,250,251)' : 'rgb(55,65,81)',
+      text: isDarkMode ? 'rgb(55,65,81)' : 'rgb(249,250,251)'
     }
   }, [isDarkMode])
 
@@ -40,7 +42,7 @@ const Tabs = ({ tabIndex, setTabIndex, tabs }: TabsProps) => {
       <div className="flex w-full flex-col items-start justify-start space-y-8">
         <div className="flex w-full flex-col items-start justify-start rounded-full border-2 border-gray-200 p-1 dark:border-neutral-700">
           <Tab.List>
-            <AnimateSharedLayout>
+            <motion.div layout>
               <div className="inline-flex items-start justify-start space-x-2 overflow-hidden">
                 {tabs.map((tab) => (
                   <Tab as={Fragment} key={tab.value}>
@@ -49,10 +51,10 @@ const Tabs = ({ tabIndex, setTabIndex, tabs }: TabsProps) => {
                         layout
                         className="relative flex cursor-pointer items-center justify-center rounded-full px-3 py-1.5 outline-none"
                         initial={{
-                          color: selected ? tabStyles.text : ''
+                          color: selected ? tabStyles.text : 'initial'
                         }}
                         animate={{
-                          color: selected ? tabStyles.text : ''
+                          color: selected ? tabStyles.text : 'initial'
                         }}
                         transition={{ duration: 0.3 }}
                       >
@@ -62,11 +64,7 @@ const Tabs = ({ tabIndex, setTabIndex, tabs }: TabsProps) => {
                         {selected && (
                           <motion.div
                             className="absolute top-0 left-0 h-full w-full rounded-full outline-none"
-                            layoutId='tab'
-                            // initial={{
-                            //   opacity: 0,
-                            //   backgroundColor: 'transparent'
-                            // }}
+                            layoutId={`${asPath}_${tabsTitlesId}`}
                             initial={false}
                             animate={{
                               opacity: 1,
@@ -84,7 +82,7 @@ const Tabs = ({ tabIndex, setTabIndex, tabs }: TabsProps) => {
                   </Tab>
                 ))}
               </div>
-            </AnimateSharedLayout>
+            </motion.div>
           </Tab.List>
         </div>
       </div>

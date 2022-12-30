@@ -154,6 +154,8 @@ export default function Asset() {
 
   if (isError) return <div>Failed to load</div>
 
+  if (!detail) return null
+
   return (
     <>
       <MainLayout

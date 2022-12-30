@@ -2,6 +2,7 @@ import { CollectionFormDataType } from '../forms/collection'
 import { ApiResponseGeneric } from '../common'
 import { CollectionType } from '../collection'
 import { GetAssetsResponseType } from '../api/assets'
+import { GetBundlesFiltersParamsType } from './bundles'
 
 export type CollectionAssetsType = {
   assets: GetAssetsResponseType
@@ -25,17 +26,21 @@ export type GetCollectionParamsType = {
   offset?: number
 }
 
+export type GetCollectionAssetsBySlugFiltersParamsType = {
+  cached_assets_count?: {
+    lg?: number | string
+    ge?: number | string
+  }
+  price?: {
+    lg?: number | string
+    ge?: number | string
+  }
+}
+
 export type GetCollectionAssetsBySlugParamsType = {
   slug: string
   limit: number
   offset: number
-  filters?: {
-    currency?: string
-    price?: {
-      lg?: number | string
-      ge?: number | string
-    }
-    // billing_type?: BillingTypeValue;
-  }
+  filters?: GetCollectionAssetsBySlugFiltersParamsType
   sort?: string
 }
