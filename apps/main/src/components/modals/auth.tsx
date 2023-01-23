@@ -1,8 +1,9 @@
 import { Modal } from '@fafty/shared/modals'
-import { useAuth } from '../../utils/auth'
+import { AuthTypes, useAuth } from '../../utils/auth'
 import classNames from 'classnames'
 import { ReactComponent as PlugLogo } from '../../assets/plug.svg'
 import { ReactComponent as InternetIdentityLogo } from '../../assets/internet-identity.svg'
+import { ReactComponent as MetaMaskLogo } from '../../assets/metamask.svg'
 
 type Props = {
   onClose: () => void
@@ -29,6 +30,15 @@ const List = [
       src: InternetIdentityLogo,
       fill: 'fill-[#23262F] dark:fill-[#F4F5F6]'
     }
+  },
+  {
+    name: 'Metamask',
+    description:
+      'MetaMask is an extension for accessing Ethereum enabled distributed applications',
+    value: 'metamask',
+    logo: {
+      src: MetaMaskLogo
+    }
   }
 ]
 
@@ -49,12 +59,7 @@ export const AuthModal = ({ isOpened, onClose }: Props): JSX.Element => {
   const auth = useAuth()
 
   const onClickAuth = (key: string) => () => {
-    if (key === 'ii') {
-      auth.useInternetIdentity()
-    } else if (key === 'plug') {
-      auth.usePlug()
-    }
-
+    auth.useAuthByType(key as AuthTypes)
     onClose()
   }
 

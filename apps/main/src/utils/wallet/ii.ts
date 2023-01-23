@@ -19,7 +19,7 @@ export default function internetIdentity(): WalletInterface {
     canisterId: string,
     idl: any
   ): Promise<Type | undefined> {
-    const agent = auth.agent
+    const agent = auth.icpState.agent
 
     const actor = Actor.createActor<Type>(idl, {
       agent,
@@ -42,9 +42,12 @@ export default function internetIdentity(): WalletInterface {
           identity = client.getIdentity()
 
           const agent = new HttpAgent({ host, identity })
-          auth.setAgent(agent)
 
-          auth.setPrincipal(identity.getPrincipal())
+          auth.setIcpState((prev) => ({
+            ...prev,
+            agent,
+            principal: identity.getPrincipal()
+          }))
 
           setTimeout(() => {
             getBalance()
@@ -61,8 +64,12 @@ export default function internetIdentity(): WalletInterface {
 
   function logOut() {
     authClient?.logout()
-    auth.setAgent(undefined)
-    auth.setPrincipal(undefined)
+
+    auth.setIcpState((prev) => ({
+      ...prev,
+      agent: undefined,
+      principal: undefined
+    }))
   }
 
   async function requestTransfer(data: any): Promise<any> {
@@ -96,7 +103,7 @@ export default function internetIdentity(): WalletInterface {
     return false
   }
 
-  async function getBalance(): Promise<any> {
+  async function getBalance(): Promise<bigint | number> {
     if (identity !== null) {
       const principals = getCanisterIds()
       const ledgerActor = await getActor<_SERVICE>(
@@ -113,9 +120,7 @@ export default function internetIdentity(): WalletInterface {
       const raw_balance = await ledgerActor?.account_balance_dfx(req)
 
       if (raw_balance !== undefined) {
-        const balance = raw_balance.e8s
-
-        auth.setBalance(balance)
+        return raw_balance.e8s
       }
     }
   }
