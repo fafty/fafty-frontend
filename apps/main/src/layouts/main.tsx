@@ -45,19 +45,20 @@ const MainLayout = ({ children, title, description, className }: Props) => {
   }
 
   const balance = useMemo(() => {
-    return Number(auth?.balance) / Math.pow(10, 8) || 0
-  }, [auth?.balance])
+    return 0
+  }, [])
 
   return (
     <>
       <Meta title={title} description={description} />
       <Header
-        address={auth?.principal && getAccountId(auth.principal?.toString(), 0)}
-        onLogOut={() => auth.wallet?.logOut?.()}
+        address={auth.accountAddress}
+        onLogOut={auth.onLogout}
+        isAuth={!!auth.accountAddress}
         onAuth={onAuth}
         onCreate={onForm}
         balance={balance}
-        isAuth={!!auth?.principal?.toString()}
+        currency={auth.currency}
       />
       <motion.main
         initial="hidden"

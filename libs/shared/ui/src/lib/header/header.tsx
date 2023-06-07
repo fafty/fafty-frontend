@@ -10,7 +10,13 @@ import {
 import { GalleryIcon, ImageAddIcon } from '@remixicons/react/line'
 import ProfileMenu from './components/dropdowns/profile'
 import { Search } from './components/search/main'
-import { AnimatePresence, AnimateSharedLayout, motion, usePresence, useWillChange } from 'framer-motion'
+import {
+  AnimatePresence,
+  AnimateSharedLayout,
+  motion,
+  usePresence,
+  useWillChange
+} from 'framer-motion'
 
 const pagesLinks = [
   {
@@ -50,6 +56,7 @@ const createButtons = [
 ]
 
 type Props = {
+  currency: string
   address: string | undefined
   balance: number
   isAuth: boolean
@@ -59,6 +66,7 @@ type Props = {
 }
 
 const Header = ({
+  currency,
   onAuth,
   onCreate,
   balance,
@@ -142,149 +150,149 @@ const Header = ({
               </Link>
             </Popover.Group>
 
-            
-              <motion.div
-                // layout
-                
-                variants={{
-                  enter: () => ({
-                    zIndex: 0,
-                    opacity: 0,
-                    scale: 0.9,
-                    with: 'auto',
-                    transition: {
-                      duration: 0.2,
-                      delay: 0.1
-                    },
-                    transitionBegin: {
-                      zIndex: -1,
-                      opacity: 0
-                    }
-                  }),
-                  center: () => ({
-                    zIndex: 1,
-                    opacity: 1,
-                    scale: 1,
-                    width: 'auto',
-                    transition: {
-                      duration: 0.3,
-                      delay: 0.1
-                    }
-                  }),
-                  exit: () => ({
-                    zIndex: 1,
-                    opacity: 0,
-                    scale: 0.9,
-                    width: 'auto',
-                    transition: {
-                      duration: 0.2,
-                      delay: 0.1
-                    }
-                  })
-                }}
-                initial="enter"
-                animate="center"
-                exit="exit"
-                className="relative"
-                style={{ willChange }}
-              >
-                {!isAuth && (
-                  <motion.div
-                    layout
-                    layoutId="noauth"
-                    className="flex items-center justify-end"
-                    style={{ willChange }} // Prevents layout animation on initial render
+            <motion.div
+              // layout
+
+              variants={{
+                enter: () => ({
+                  zIndex: 0,
+                  opacity: 0,
+                  scale: 0.9,
+                  with: 'auto',
+                  transition: {
+                    duration: 0.2,
+                    delay: 0.1
+                  },
+                  transitionBegin: {
+                    zIndex: -1,
+                    opacity: 0
+                  }
+                }),
+                center: () => ({
+                  zIndex: 1,
+                  opacity: 1,
+                  scale: 1,
+                  width: 'auto',
+                  transition: {
+                    duration: 0.3,
+                    delay: 0.1
+                  }
+                }),
+                exit: () => ({
+                  zIndex: 1,
+                  opacity: 0,
+                  scale: 0.9,
+                  width: 'auto',
+                  transition: {
+                    duration: 0.2,
+                    delay: 0.1
+                  }
+                })
+              }}
+              initial="enter"
+              animate="center"
+              exit="exit"
+              className="relative"
+              style={{ willChange }}
+            >
+              {!isAuth && (
+                <motion.div
+                  layout
+                  layoutId="noauth"
+                  className="flex items-center justify-end"
+                  style={{ willChange }} // Prevents layout animation on initial render
+                >
+                  <button
+                    type="button"
+                    className="relative ml-5 inline-block rounded-md border border-transparent bg-blue-600 py-2 px-6 text-center font-medium text-white hover:bg-blue-700"
+                    onClick={() => onAuth?.()}
                   >
-                    <button
-                      type="button"
-                      className="relative ml-5 inline-block rounded-md border border-transparent bg-blue-600 py-2 px-6 text-center font-medium text-white hover:bg-blue-700"
-                      onClick={() => onAuth?.()}
-                    >
-                      Login
-                    </button>
-                  </motion.div>
-                )}
-                {isAuth && (
-                  <motion.div
-                    layout
-                    layoutId="auth"
-                    className="ml-5 hidden items-center justify-end md:flex"
-                    style={{ willChange }} // Prevents layout animation on initial render
-                  >
-                    <Popover className="align-center relative mr-5 flex rounded-full bg-white/95 backdrop-blur dark:bg-neutral-800/95">
-                      {({ open, close }) => (
-                        <>
-                          <Popover.Button
-                            title="Add items"
-                            aria-label="Add items"
+                    Login
+                  </button>
+                </motion.div>
+              )}
+              {isAuth && (
+                <motion.div
+                  layout
+                  layoutId="auth"
+                  className="ml-5 hidden items-center justify-end md:flex"
+                  style={{ willChange }} // Prevents layout animation on initial render
+                >
+                  <Popover className="align-center relative mr-5 flex rounded-full bg-white/95 backdrop-blur dark:bg-neutral-800/95">
+                    {({ open, close }) => (
+                      <>
+                        <Popover.Button
+                          title="Add items"
+                          aria-label="Add items"
+                          className={`${
+                            open
+                              ? 'bg-blue-50 dark:bg-blue-500/20'
+                              : 'bg-neutral-200 dark:bg-neutral-700'
+                          } duration-250 relative m-0 box-border  flex h-10 w-10 cursor-pointer touch-manipulation select-none list-none items-center justify-center rounded-full border-0 p-0 decoration-0 outline-none transition ease-in-out hover:bg-blue-100 dark:text-gray-200 dark:hover:bg-neutral-600`}
+                        >
+                          <PlusIcon
+                            strokeWidth="3"
                             className={`${
-                              open
-                                ? 'bg-blue-50 dark:bg-blue-500/20'
-                                : 'bg-neutral-200 dark:bg-neutral-700'
-                            } duration-250 relative m-0 box-border  flex h-10 w-10 cursor-pointer touch-manipulation select-none list-none items-center justify-center rounded-full border-0 p-0 decoration-0 outline-none transition ease-in-out hover:bg-blue-100 dark:text-gray-200 dark:hover:bg-neutral-600`}
-                          >
-                            <PlusIcon
-                              strokeWidth="3"
-                              className={`${
-                                open ? 'text-blue-500' : 'text-slate-900'
-                              } w-5 touch-manipulation select-none list-none border-0 decoration-0 outline-none dark:text-slate-50`}
-                            />
-                          </Popover.Button>
-                          <Transition
-                            as={Fragment}
-                            enter="transition ease-out duration-200"
-                            enterFrom="opacity-0 translate-y-1"
-                            enterTo="opacity-100 translate-y-0"
-                            leave="transition ease-in duration-150"
-                            leaveFrom="opacity-100 translate-y-0"
-                            leaveTo="opacity-0 translate-y-1"
-                          >
-                            <Popover.Panel className="absolute left-1/2 z-10 mt-14 w-screen max-w-xs -translate-x-1/2 transform sm:px-0">
-                              <div className="overflow-hidden rounded-lg bg-white p-2 shadow-lg ring-1 ring-black ring-opacity-5 drop-shadow-lg dark:bg-neutral-800">
-                                <div className="relative grid gap-1 p-1">
-                                  {createButtons.map((item) => (
-                                    <button
-                                      key={item.key}
-                                      type="button"
-                                      className="flex items-center rounded-lg p-2 text-neutral-700 transition duration-150 ease-in-out hover:bg-neutral-100 focus:outline-none dark:text-neutral-100 dark:hover:bg-neutral-700"
-                                      onClick={() => {
-                                        onCreate?.(item.key)
-                                        close()
-                                      }}
-                                    >
-                                      <div className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-full bg-neutral-200 px-1 py-1 text-neutral-700 focus:outline-none dark:bg-neutral-700 dark:fill-neutral-200 dark:text-neutral-200">
-                                        <item.icon
-                                          className="h-6 w-6 flex-shrink-0 fill-slate-900 dark:fill-slate-50"
-                                          aria-hidden="true"
-                                        />
-                                      </div>
-                                      <div className="text-left">
-                                        <p className="ml-4 text-base font-medium">
-                                          {item.name}
-                                        </p>
-                                        <p className="ml-4 text-sm text-gray-400">
-                                          {item.description}
-                                        </p>
-                                      </div>
-                                    </button>
-                                  ))}
-                                </div>
+                              open ? 'text-blue-500' : 'text-slate-900'
+                            } w-5 touch-manipulation select-none list-none border-0 decoration-0 outline-none dark:text-slate-50`}
+                          />
+                        </Popover.Button>
+                        <Transition
+                          as={Fragment}
+                          enter="transition ease-out duration-200"
+                          enterFrom="opacity-0 translate-y-1"
+                          enterTo="opacity-100 translate-y-0"
+                          leave="transition ease-in duration-150"
+                          leaveFrom="opacity-100 translate-y-0"
+                          leaveTo="opacity-0 translate-y-1"
+                        >
+                          <Popover.Panel className="absolute left-1/2 z-10 mt-14 w-screen max-w-xs -translate-x-1/2 transform sm:px-0">
+                            <div className="overflow-hidden rounded-lg bg-white p-2 shadow-lg ring-1 ring-black ring-opacity-5 drop-shadow-lg dark:bg-neutral-800">
+                              <div className="relative grid gap-1 p-1">
+                                {createButtons.map((item) => (
+                                  <button
+                                    key={item.key}
+                                    type="button"
+                                    className="flex items-center rounded-lg p-2 text-neutral-700 transition duration-150 ease-in-out hover:bg-neutral-100 focus:outline-none dark:text-neutral-100 dark:hover:bg-neutral-700"
+                                    onClick={() => {
+                                      onCreate?.(item.key)
+                                      close()
+                                    }}
+                                  >
+                                    <div className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-full bg-neutral-200 px-1 py-1 text-neutral-700 focus:outline-none dark:bg-neutral-700 dark:fill-neutral-200 dark:text-neutral-200">
+                                      <item.icon
+                                        className="h-6 w-6 flex-shrink-0 fill-slate-900 dark:fill-slate-50"
+                                        aria-hidden="true"
+                                      />
+                                    </div>
+                                    <div className="text-left">
+                                      <p className="ml-4 text-base font-medium">
+                                        {item.name}
+                                      </p>
+                                      <p className="ml-4 text-sm text-gray-400">
+                                        {item.description}
+                                      </p>
+                                    </div>
+                                  </button>
+                                ))}
                               </div>
-                            </Popover.Panel>
-                          </Transition>
-                        </>
-                      )}
-                    </Popover>
-                    <div className="flex items-center">
-                      <ProfileMenu
-                        address={address}
-                        balance={balance}
-                        onLogOut={onLogOut}
-                      />
-                    </div>
-                  </motion.div>
-                )}
-              </motion.div>
+                            </div>
+                          </Popover.Panel>
+                        </Transition>
+                      </>
+                    )}
+                  </Popover>
+                  <div className="flex items-center">
+                    <ProfileMenu
+                      currency={currency}
+                      address={address}
+                      balance={balance}
+                      onLogOut={onLogOut}
+                    />
+                  </div>
+                </motion.div>
+              )}
+            </motion.div>
             {/* </AnimateSharedLayout> */}
           </div>
         </div>

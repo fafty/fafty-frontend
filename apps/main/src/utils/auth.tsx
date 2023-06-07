@@ -1,51 +1,103 @@
-import { createContext, ReactNode, useContext, useState } from 'react'
+import {
+  createContext,
+  Dispatch,
+  ReactNode,
+  SetStateAction,
+  useContext,
+  useEffect,
+  useMemo,
+  useState
+} from 'react'
 import { HttpAgent } from '@dfinity/agent'
 
 import internetIdentity from './wallet/ii'
 
 import plugWallet, { WalletInterface } from './wallet/plug'
 import { Principal } from '@dfinity/principal'
+import { UnsupportedChainIdError, useWeb3React } from '@web3-react/core'
+import { AbstractConnector } from '@web3-react/abstract-connector'
+import { injectedConnector } from './wallet/ethereum'
+import { getAccountId } from './account'
+
+export type AuthTypes = 'ii' | 'plug' | 'metamask'
+type Networks = 'eth' | 'icp'
+
+type ICPState = {
+  agent: HttpAgent
+  wallet: WalletInterface
+  principal: Principal
+}
 
 export interface AuthContext {
   isShow: boolean
   showModal: (show: boolean) => void
+  currency: string
 
-  wallet?: WalletInterface
-  principal?: Principal
-  agent?: HttpAgent
+  icpState: ICPState
+  setIcpState: Dispatch<SetStateAction<ICPState>>
 
-  balance: bigint | null
+  accountAddress: string
 
-  usePlug: () => void
-  useInternetIdentity: () => void
+  network: string
 
-  setPrincipal: (principal: Principal | undefined) => void
-  setAgent: (agent: HttpAgent | undefined) => void
-
-  setBalance: (data: bigint | null) => void
+  useAuthByType: (type: AuthTypes) => void
+  onLogout: () => void
 }
 
 // Provider hook that creates auth object and handles state
 export function useProvideAuth(): AuthContext {
-  const [wallet, setWallet] = useState<WalletInterface | undefined>()
+  const { activate, account, deactivate, active } = useWeb3React()
 
-  const [principal, setPrincipal] = useState<Principal | undefined>(undefined)
-  const [agent, setAgent] = useState<HttpAgent | undefined>(undefined)
+  const [icpState, setIcpState] = useState<ICPState>({
+    agent: undefined,
+    wallet: undefined,
+    principal: undefined
+  })
+
+  const [network, setNetwork] = useState<Networks>()
 
   const [display, setDisplay] = useState(false)
 
-  const [balance, setBalance] = useState<bigint | null>(null)
+  useEffect(() => {
+    if (account && !icpState.wallet) {
+      setNetwork(active ? 'eth' : undefined)
+    }
+  }, [active, account])
 
-  const usePlug = function () {
-    const wlt = plugWallet()
-    setWallet(wlt)
-    setDisplay(false)
+  useEffect(() => {
+    if (!icpState.principal && icpState.wallet && network !== 'eth') {
+      icpState.wallet?.logIn()
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [icpState.wallet])
+
+  const tryActivation = async (connector: AbstractConnector) => {
+    try {
+      connector && (await activate(connector, undefined, true))
+    } catch (e) {
+      if (e instanceof UnsupportedChainIdError) {
+        //
+      } else {
+        console.log(e)
+      }
+    }
   }
 
-  const useInternetIdentity = function () {
-    const wlt = internetIdentity()
-    setWallet(wlt)
-    setDisplay(false)
+  const useAuthByType = (type: AuthTypes) => {
+    if (type === 'ii' || type === 'plug') {
+      const wlt = type === 'plug' ? plugWallet() : internetIdentity()
+      setIcpState((prev) => ({ ...prev, wallet: wlt }))
+
+      setDisplay(false)
+
+      setNetwork('icp')
+    } else if (type === 'metamask') {
+      tryActivation(injectedConnector)
+
+      setDisplay(false)
+
+      setNetwork('eth')
+    }
   }
 
   //Displays modal to select wallet
@@ -53,23 +105,52 @@ export function useProvideAuth(): AuthContext {
     setDisplay(show)
   }
 
-  function get() {
-    return {
-      showModal,
-      isShow: display,
-      setPrincipal,
-      principal: principal,
-      setAgent,
-      agent: agent,
-      setBalance,
-      balance,
-      wallet,
-      usePlug,
-      useInternetIdentity
+  const accountAddress = useMemo(() => {
+    switch (network) {
+      case 'eth':
+        return account
+      case 'icp':
+        return (
+          icpState.principal && getAccountId(icpState.principal?.toString(), 0)
+        )
+      default:
+        return ''
+    }
+  }, [account, icpState.principal, network])
+
+  const currency = useMemo(() => {
+    switch (network) {
+      case 'eth':
+        return 'ETH'
+      case 'icp':
+        return 'icp'
+      default:
+        return ''
+    }
+  }, [network])
+
+  const onLogout = () => {
+    switch (network) {
+      case 'eth':
+        return deactivate()
+      case 'icp':
+        return icpState.wallet?.logOut()
+      default:
+        return ''
     }
   }
 
-  return get()
+  return {
+    currency,
+    network,
+    showModal,
+    icpState,
+    isShow: display,
+    setIcpState,
+    useAuthByType,
+    accountAddress,
+    onLogout
+  }
 }
 
 const authContext = createContext<AuthContext>(null!)

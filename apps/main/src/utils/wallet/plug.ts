@@ -61,14 +61,15 @@ export default function plugWallet(): WalletInterface {
 
     const principal = await agent.getPrincipal()
 
-    auth.setAgent(agent)
-    auth.setPrincipal(principal)
+    auth.setIcpState((prev) => ({ ...prev, agent, principal }))
   }
 
   function logOut() {
-    console.log('hello logout')
-    auth.setAgent(undefined)
-    auth.setPrincipal(undefined)
+    auth.setIcpState((prev) => ({
+      ...prev,
+      agent: undefined,
+      principal: undefined
+    }))
   }
 
   async function requestTransfer(data: any): Promise<any> {

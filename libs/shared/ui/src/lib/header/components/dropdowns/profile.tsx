@@ -6,33 +6,37 @@ import classNames from 'classnames'
 const MainPanel = lazy(() => import('./panels/main'))
 
 const ProfileMenu = ({
+  currency,
   address,
   balance,
-  onLogOut,
+  onLogOut
 }: {
-  address: string | undefined;
-  balance: number;
-  onLogOut: () => void;
+  currency: string
+  address: string | undefined
+  balance: number
+  onLogOut: () => void
 }): JSX.Element => {
   return (
-    <Popover className="relative inline-block align-center">
+    <Popover className="align-center relative inline-block">
       {({ open }) => {
         return (
           <>
             <Popover.Button
               className={classNames(
-                'flex -space-x-1 overflow-hidden border rounded-full dark:hover:bg-blue-600/25 box-border justify-center h-10 p-0 m-0 cursor-pointer relative dark:text-gray-200 touch-manipulation items-center select-none list-none outline-none decoration-0 transition duration-150 ease-in-out',
+                'relative m-0 box-border flex h-10 cursor-pointer touch-manipulation select-none list-none items-center justify-center -space-x-1 overflow-hidden rounded-full border p-0 decoration-0 outline-none transition duration-150 ease-in-out dark:text-gray-200 dark:hover:bg-blue-600/25',
                 {
-                  'bg-blue-100 dark:bg-blue-800/25 border-blue-500': open,
-                  'text-slate-900 border-neutral-300 dark:border-neutral-700':
-                    !open,
+                  'border-blue-500 bg-blue-100 dark:bg-blue-800/25': open,
+                  'border-neutral-300 text-slate-900 dark:border-neutral-700':
+                    !open
                 }
               )}
             >
               <ProfileButton
-                avatarUrl={`https://avatars.dicebear.com/api/pixel-art/${address || 'nouser'}.svg`}
+                avatarUrl={`https://avatars.dicebear.com/api/pixel-art/${
+                  address || 'nouser'
+                }.svg`}
                 balance={balance}
-                ticker={'ICP'}
+                ticker={currency}
               />
             </Popover.Button>
             <Transition
@@ -44,7 +48,7 @@ const ProfileMenu = ({
               leaveFrom="opacity-100 translate-y-0"
               leaveTo="opacity-0 translate-y-1"
             >
-              <Popover.Panel className="absolute z-10 right-0 origin-top-right mt-4 px-2 w-screen max-w-xs max-h-[calc(100vh_-_90px)] rounded-lg overflow-x-scroll sm:px-0 drop-shadow-lg">
+              <Popover.Panel className="absolute right-0 z-10 mt-4 max-h-[calc(100vh_-_90px)] w-screen max-w-xs origin-top-right overflow-x-scroll rounded-lg px-2 drop-shadow-lg sm:px-0">
                 <Suspense fallback={<MainPanelPlaceholder />}>
                   <MainPanel address={address} onLogOut={onLogOut} open close />
                 </Suspense>

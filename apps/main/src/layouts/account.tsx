@@ -36,8 +36,8 @@ const AccountLayout = ({ children, title, description, className }: Props) => {
   const auth = useAuth()
 
   const balance = useMemo(() => {
-    return Number(auth?.balance) / Math.pow(10, 8) || 0
-  }, [auth?.balance])
+    return 0
+  }, [])
 
   const onForm = (key: string) => {
     switch (key) {
@@ -93,11 +93,12 @@ const AccountLayout = ({ children, title, description, className }: Props) => {
     <>
       <Meta title={title} description={description} />
       <Header
-        address={auth?.principal && getAccountId(auth.principal?.toString(), 0)}
-        onLogOut={() => auth.wallet?.logOut?.()}
+        address={auth.accountAddress}
+        onLogOut={auth.onLogout}
         onCreate={onForm}
         balance={balance}
-        isAuth={!!auth?.principal?.toString()}
+        isAuth={!!auth.accountAddress}
+        currency={auth.currency}
       />
       <>
         <nav className="fixed inset-0 top-[5.12rem] left-0 right-auto z-20 hidden w-[15.5rem] overflow-y-auto border-r border-gray-100 bg-white/95 px-2 pb-10 backdrop-blur dark:border-neutral-700 dark:bg-neutral-800/95 lg:block">
