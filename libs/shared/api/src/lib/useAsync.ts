@@ -50,6 +50,7 @@ function useAsync<D, P>({
 
         return data
       } catch (error) {
+        console.log(error)
         if (error instanceof AxiosError || error instanceof Error) {
           if (!axios.isCancel(error)) {
             // eslint-disable-next-line @typescript-eslint/ban-ts-comment

@@ -8,11 +8,12 @@ export type AssetsUserFilterStateType = {
   visibility?: string[]
   restrictions?: string[]
   blockchain?: string[]
-  price?: { min: string; max: string }
+  price?: { lg?: string; ge?: string }
   type?: string[]
 }
 
-export type GetUserFilterPaginateType = AssetsUserFilterStateType & {
+export type GetUserFilterPaginateType = {
+  filters?: AssetsUserFilterStateType
   limit: number
   offset: number
 }

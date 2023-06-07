@@ -147,7 +147,7 @@ const DragAndDropAssets = (props: DragAndDropAssetsProps) => {
     const { paginate } = localFiltersState
 
     call({
-      address: 'abcd',
+      address: '0xfaftyandrew',
       params: {
         limit: LIMIT,
         offset: paginate.offset

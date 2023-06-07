@@ -13,3 +13,15 @@ export const isEmpty = (value: unknown): boolean => {
 
   return false
 }
+
+export const isObjectEmpty = (value: object | string | null) => {
+  return (
+    (!value && value == null) ||
+    value === undefined ||
+    value === '' ||
+    value === 'null' ||
+    (typeof value === 'object' &&
+      Object.keys(value).length === 0 &&
+      Object.getPrototypeOf(value) === Object.prototype)
+  )
+}

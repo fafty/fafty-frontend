@@ -18,6 +18,7 @@ const nextConfig = {
   concurrentFeatures: true,
   images: {
     domains: [
+      'http://127.0.0.1:9000',
       'fafty-assets.s3.amazonaws.com',
       'dhch6dszrgnpb.cloudfront.net',
       'avatars.dicebear.com',

@@ -168,7 +168,7 @@ const SelectCollection = ({ initial, onChange }: Props): JSX.Element => {
 
   const fetchData = async () => {
     setLoading(true)
-    const response = await api.get<ResponceProps>('user/abcd/collections')
+    const response = await api.get<ResponceProps>('user/0xfaftyandrew/collections')
     if (response.status === 200 && response.data) {
       const { data } = response
       setData(data.records)

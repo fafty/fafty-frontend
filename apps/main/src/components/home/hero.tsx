@@ -21,7 +21,7 @@ const Hero = () => {
           transition={{ ease: 'easeOut', duration: 1, delay: 0.3 }}
           className="absolute z-10 mt-[5rem] flex h-full w-full flex-col items-center justify-center"
         >
-          <h1 className="font text-4xl font-extrabold tracking-tight text-slate-900 dark:text-slate-50 sm:text-8xl">
+          <h1 className="font text-4xl text-2xl:md text-lg:md font-extrabold tracking-tight text-slate-900 dark:text-slate-50 sm:text-8xl">
             The new creative economy.
           </h1>
           <p className=" mt-4 text-3xl tracking-tight text-slate-900 dark:text-slate-50">
